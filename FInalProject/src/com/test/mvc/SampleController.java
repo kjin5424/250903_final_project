@@ -20,6 +20,9 @@ public class SampleController implements Controller
 		// Controller가 수행해야 하는 액션 코드
 		ModelAndView mav = new ModelAndView();
 		
+		// 결과 처리에 따른 반환값으로 분기처리하여 어쩌구 저쩌구
+		
+		// 최종 결과값 반환
 		return mav;
 	}
 	
