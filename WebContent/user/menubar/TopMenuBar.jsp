@@ -215,7 +215,7 @@ body {
 			<a href="?page=mygroups" class="tab <%= "mygroups".equals(currentPage) ? "active" : "" %>">내 모임</a>
 		</div>
 		<div class="nav-right">
-			<a href="login.jsp" class="login-btn">
+			<a href="../login/UserLogin.jsp" class="login-btn">
 				<span>🔐</span>
 				<span>로그인</span>
 			</a>
