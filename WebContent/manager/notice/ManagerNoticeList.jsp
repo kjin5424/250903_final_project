@@ -1,4 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+	// 페이지 정보 받기
+	String pageNum = request.getParameter("NoticeListPage");
+
+	if(pageNum==null)
+		pageNum = "1";
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -292,6 +299,11 @@ body {
 	opacity: 0.4;
 }
 
+a
+{
+	text-decoration: none;
+}
+
 /* 반응형 */
 @media (max-width: 1024px) {
 	.notice-table {
@@ -370,7 +382,7 @@ body {
 		<div class="table-container">
 			<table class="notice-table">
 				<thead>
-					<tr>
+					<tr onclick="location.href='ManagerNoticeOpen.jsp?noticeNum=14'">
 						<th style="width: 80px;">
 							<div class="sort-header <%= "number".equals(sortBy) ? "active " + sortOrder : "" %>" 
 							     onclick="sortTable('number')">
@@ -410,7 +422,7 @@ body {
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
+					<tr onclick="location.href='ManagerNoticeOpen.jsp?noticeNum=14'">
 						<td class="notice-number">23</td>
 						<td class="author">관리자</td>
 						<td>
@@ -423,12 +435,12 @@ body {
 						<td class="date">2025-01-05</td>
 						<td>
 							<div class="action-buttons">
-								<button class="btn btn-edit" onclick="editNotice(23)">수정</button>
-								<button class="btn btn-delete" onclick="deleteNotice(23)">삭제</button>
+								<button class="btn btn-edit" onclick="event.stopPropagation(); editNotice(23)">수정</button>
+								<button class="btn btn-delete" onclick="event.stopPropagation(); deleteNotice(23)">삭제</button>
 							</div>
 						</td>
 					</tr>
-					<tr onclick="">
+					<tr onclick="location.href='ManagerNoticeOpen.jsp?noticeNum=14'">
 						<td class="notice-number">22</td>
 						<td class="author">관리자</td>
 						<td>
@@ -441,12 +453,12 @@ body {
 						<td class="date">2025-01-03</td>
 						<td>
 							<div class="action-buttons">
-								<button class="btn btn-edit" onclick="editNotice(22)">수정</button>
-								<button class="btn btn-delete" onclick="deleteNotice(22)">삭제</button>
+								<button class="btn btn-edit" onclick="event.stopPropagation(); editNotice(22)">수정</button>
+								<button class="btn btn-delete" onclick="event.stopPropagation(); deleteNotice(22)">삭제</button>
 							</div>
 						</td>
 					</tr>
-					<tr>
+					<tr onclick="location.href='ManagerNoticeOpen.jsp?noticeNum=14'">
 						<td class="notice-number">21</td>
 						<td class="author">관리자</td>
 						<td>
@@ -459,12 +471,12 @@ body {
 						<td class="date">2025-01-02</td>
 						<td>
 							<div class="action-buttons">
-								<button class="btn btn-edit" onclick="editNotice(21)">수정</button>
-								<button class="btn btn-delete" onclick="deleteNotice(21)">삭제</button>
+								<button class="btn btn-edit" onclick="event.stopPropagation(); editNotice(21)">수정</button>
+								<button class="btn btn-delete" onclick="event.stopPropagation(); deleteNotice(21)">삭제</button>
 							</div>
 						</td>
 					</tr>
-					<tr>
+					<tr onclick="location.href='ManagerNoticeOpen.jsp?noticeNum=14'">
 						<td class="notice-number">20</td>
 						<td class="author">운영팀</td>
 						<td class="notice-title">모임 카테고리 추가 안내</td>
@@ -472,12 +484,12 @@ body {
 						<td class="date">2024-12-28</td>
 						<td>
 							<div class="action-buttons">
-								<button class="btn btn-edit" onclick="editNotice(20)">수정</button>
-								<button class="btn btn-delete" onclick="deleteNotice(20)">삭제</button>
+								<button class="btn btn-edit" onclick="event.stopPropagation(); editNotice(20)">수정</button>
+								<button class="btn btn-delete" onclick="event.stopPropagation(); deleteNotice(20)">삭제</button>
 							</div>
 						</td>
 					</tr>
-					<tr>
+					<tr onclick="location.href='ManagerNoticeOpen.jsp?noticeNum=14'">
 						<td class="notice-number">19</td>
 						<td class="author">관리자</td>
 						<td class="notice-title">연말연시 고객센터 운영 시간 안내</td>
@@ -485,12 +497,12 @@ body {
 						<td class="date">2024-12-25</td>
 						<td>
 							<div class="action-buttons">
-								<button class="btn btn-edit" onclick="editNotice(19)">수정</button>
-								<button class="btn btn-delete" onclick="deleteNotice(19)">삭제</button>
+								<button class="btn btn-edit" onclick="event.stopPropagation(); editNotice(19)">수정</button>
+								<button class="btn btn-delete" onclick="event.stopPropagation(); deleteNotice(19)">삭제</button>
 							</div>
 						</td>
 					</tr>
-					<tr>
+					<tr onclick="location.href='ManagerNoticeOpen.jsp?noticeNum=14'">
 						<td class="notice-number">18</td>
 						<td class="author">운영팀</td>
 						<td class="notice-title">신규 기능 업데이트 - 모임 일정 동기화</td>
@@ -498,12 +510,12 @@ body {
 						<td class="date">2024-12-20</td>
 						<td>
 							<div class="action-buttons">
-								<button class="btn btn-edit" onclick="editNotice(18)">수정</button>
-								<button class="btn btn-delete" onclick="deleteNotice(18)">삭제</button>
+								<button class="btn btn-edit" onclick="event.stopPropagation(); editNotice(18)">수정</button>
+								<button class="btn btn-delete" onclick="event.stopPropagation(); deleteNotice(18)">삭제</button>
 							</div>
 						</td>
 					</tr>
-					<tr>
+					<tr onclick="location.href='ManagerNoticeOpen.jsp?noticeNum=14'">
 						<td class="notice-number">17</td>
 						<td class="author">관리자</td>
 						<td class="notice-title">부적절한 콘텐츠 신고 기능 강화</td>
@@ -511,12 +523,12 @@ body {
 						<td class="date">2024-12-15</td>
 						<td>
 							<div class="action-buttons">
-								<button class="btn btn-edit" onclick="editNotice(17)">수정</button>
-								<button class="btn btn-delete" onclick="deleteNotice(17)">삭제</button>
+								<button class="btn btn-edit" onclick="event.stopPropagation(); editNotice(17)">수정</button>
+								<button class="btn btn-delete" onclick="event.stopPropagation(); deleteNotice(17)">삭제</button>
 							</div>
 						</td>
 					</tr>
-					<tr>
+					<tr onclick="location.href='ManagerNoticeOpen.jsp?noticeNum=14'">
 						<td class="notice-number">16</td>
 						<td class="author">운영팀</td>
 						<td class="notice-title">모임 후기 작성 이벤트 진행</td>
@@ -524,12 +536,12 @@ body {
 						<td class="date">2024-12-10</td>
 						<td>
 							<div class="action-buttons">
-								<button class="btn btn-edit" onclick="editNotice(16)">수정</button>
-								<button class="btn btn-delete" onclick="deleteNotice(16)">삭제</button>
+								<button class="btn btn-edit" onclick="event.stopPropagation(); editNotice(16)">수정</button>
+								<button class="btn btn-delete" onclick="event.stopPropagation(); deleteNotice(16)">삭제</button>
 							</div>
 						</td>
 					</tr>
-					<tr>
+					<tr onclick="location.href='ManagerNoticeOpen.jsp?noticeNum=14'">
 						<td class="notice-number">15</td>
 						<td class="author">관리자</td>
 						<td class="notice-title">이용약관 개정 안내</td>
@@ -537,21 +549,23 @@ body {
 						<td class="date">2024-12-05</td>
 						<td>
 							<div class="action-buttons">
-								<button class="btn btn-edit" onclick="editNotice(15)">수정</button>
-								<button class="btn btn-delete" onclick="deleteNotice(15)">삭제</button>
+								<button class="btn btn-edit" onclick="event.stopPropagation(); editNotice(15)">수정</button>
+								<button class="btn btn-delete" onclick="event.stopPropagation(); deleteNotice(15)">삭제</button>
 							</div>
 						</td>
 					</tr>
-					<tr>
+					<tr onclick="location.href='ManagerNoticeOpen.jsp?noticeNum=14'">
 						<td class="notice-number">14</td>
+						
 						<td class="author">운영팀</td>
 						<td class="notice-title">모바일 앱 출시 예정 안내</td>
 						<td class="views">2,156</td>
 						<td class="date">2024-12-01</td>
+						
 						<td>
 							<div class="action-buttons">
-								<button class="btn btn-edit" onclick="editNotice(14)">수정</button>
-								<button class="btn btn-delete" onclick="deleteNotice(14)">삭제</button>
+								<button class="btn btn-edit" onclick="event.stopPropagation(); editNotice(14)">수정</button>
+								<button class="btn btn-delete" onclick="event.stopPropagation(); deleteNotice(14)">삭제</button>
 							</div>
 						</td>
 					</tr>
@@ -559,11 +573,12 @@ body {
 			</table>
 		</div>
 		
+		<!-- 나중에 페이징 처리 하면서 반복문으로 빼고, 자동화 할 구문 -->
 		<div class="pagination">
 			<button class="page-btn" disabled>◀</button>
 			<button class="page-btn active">1</button>
-			<button class="page-btn">2</button>
-			<button class="page-btn">3</button>
+			<a href="ManagerNoticeList.jsp?NoticeListPage=2" class="page-btn">2</a>
+			<a href="ManagerNoticeList.jsp?NoticeListPage=3" class="page-btn">3</a>
 			<button class="page-btn">▶</button>
 		</div>
 	</div>
@@ -582,7 +597,7 @@ body {
 		}
 		
 		function editNotice(id) {
-			window.location.href = 'admin_notice_edit.jsp?id=' + id;
+			window.location.href = 'NoticeModify.jsp?id=' + id;
 		}
 		
 		function deleteNotice(id) {
