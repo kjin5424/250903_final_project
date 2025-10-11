@@ -1,0 +1,10 @@
+# Eclipse 관련
+*.class
+.metadata/
+Servers/
+.settings/
+bin/
+
+# OS 관련
+Thumbs.db
+.DS_Store
