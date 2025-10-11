@@ -3,7 +3,9 @@
 
 파일 폴더 구조
 C:\FinalProject\           <-- Git 루트
-│ ├─ README.md
+│
+├─ README.md
+├─ .gitignore
 ├─ FinalProject\           <-- Eclipse 작업 폴더
 │ ├─ 250903_finalproject\  <-- 다이나믹 웹 프로젝트
 │ │ ├─ src
