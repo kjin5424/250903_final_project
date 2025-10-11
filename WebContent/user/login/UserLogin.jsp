@@ -1,5 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+	String cp = request.getContextPath();
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -480,7 +482,7 @@ px
 			 -->
 
 			<div class="signup-section">
-				아직 회원이 아니신가요? <a href="signup.jsp" class="signup-link">회원가입</a>
+				아직 회원이 아니신가요? <a href="<%=cp %>/user/signup/UserSignUp.jsp" class="signup-link">회원가입</a>
 			</div>
 		</div>
 	</div>

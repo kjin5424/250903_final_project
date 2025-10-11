@@ -1,4 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+	String cp = request.getContextPath();
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -253,21 +256,17 @@ body {
 				</div>
 			</a>
 			
-			<!-- 문의/신고처리 -->
-			<a href="admin_reports.jsp" style="text-decoration: none;">
+			<!-- 신고처리 -->
+			<a href="<%=cp %>/manager/report/ReportList.jsp" style="text-decoration: none;">
 				<div class="menu-card">
 					<span class="badge">12</span>
 					<span class="menu-icon">📋</span>
-					<h2 class="menu-title">문의/신고처리</h2>
+					<h2 class="menu-title">신고처리</h2>
 					<p class="menu-description">
-						사용자 문의 답변 및 처리<br>
-						신고 내역 확인 및 조치
+						신고 내역 확인 및 조치<br>
+						수위에 맞는 제재 혹은 반려
 					</p>
 					<div class="menu-stats">
-						<div class="stat-item">
-							<span class="stat-number">12</span>
-							<span class="stat-label">미처리 문의</span>
-						</div>
 						<div class="stat-item">
 							<span class="stat-number">5</span>
 							<span class="stat-label">신규 신고</span>
@@ -276,23 +275,20 @@ body {
 				</div>
 			</a>
 			
-			<!-- 공지사항 작성 -->
-			<a href="../notice/ManagerNoticeList.jsp" style="text-decoration: none;">
+			<!-- 문의처리 -->
+			<a href="<%=cp %>/manager/inquiry/InquiryList.jsp" style="text-decoration: none;">
 				<div class="menu-card">
-					<span class="menu-icon">📢</span>
-					<h2 class="menu-title">공지사항 작성</h2>
+					<span class="badge">12</span>
+					<span class="menu-icon">📋</span>
+					<h2 class="menu-title">문의처리</h2>
 					<p class="menu-description">
-						공지사항 작성, 수정, 삭제<br>
-						중요 알림 및 업데이트 관리
+						사용자 문의 처리<br>
+						질의에 대한 답변 작성
 					</p>
 					<div class="menu-stats">
 						<div class="stat-item">
-							<span class="stat-number">23</span>
-							<span class="stat-label">전체 공지</span>
-						</div>
-						<div class="stat-item">
-							<span class="stat-number">3</span>
-							<span class="stat-label">상단 고정</span>
+							<span class="stat-number">12</span>
+							<span class="stat-label">미처리 문의</span>
 						</div>
 					</div>
 				</div>
@@ -315,6 +311,28 @@ body {
 						<div class="stat-item">
 							<span class="stat-number">8</span>
 							<span class="stat-label">승인 대기</span>
+						</div>
+					</div>
+				</div>
+			</a>
+			
+			<!-- 공지사항 작성 -->
+			<a href="<%=cp %>/manager/notice/ManagerNoticeList.jsp" style="text-decoration: none;">
+				<div class="menu-card">
+					<span class="menu-icon">📢</span>
+					<h2 class="menu-title">공지사항 작성</h2>
+					<p class="menu-description">
+						공지사항 작성, 수정, 삭제<br>
+						중요 알림 및 업데이트 관리
+					</p>
+					<div class="menu-stats">
+						<div class="stat-item">
+							<span class="stat-number">23</span>
+							<span class="stat-label">전체 공지</span>
+						</div>
+						<div class="stat-item">
+							<span class="stat-number">3</span>
+							<span class="stat-label">상단 고정</span>
 						</div>
 					</div>
 				</div>
