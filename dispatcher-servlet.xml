@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p" 
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+    <context:component-scan base-package="org.springframework.samples.petclinic.web"/>
+
+	<!-- 테스트용 -->
+    <bean name="/usertest.action" class="com.test.spr.TestController"></bean>
+    
+    <!-- 그룹 홈 접속 -->
+    <bean name="/grouphome.action" class="com.test.spr.GroupHomeController"></bean>
+
+
+	<!-- 공지 -->
+	<!-- 공지판 리스트(noticeboard) -->
+	<bean name="/noticeboard.action" class="com.test.spr.NoticeBoardController"></bean>
+	
+	<!-- 공지글(noticecontent) -->
+	<bean name="/noticecontent.action" class="com.test.spr.NoticeContentController"></bean>
+	
+	
+	<!-- 게시판 -->
+	<!-- 게시판 리스트(bulletinboard) -->
+	<bean name="/bulletinboard.action" class="com.test.spr.BulletinBoardController"></bean>
+	
+	<!-- 게시글(bulletincontent) -->
+	<bean name="/bulletincontent.action" class="com.test.spr.BulletinContentController"></bean>
+	
+	
+	<!-- 투표 -->
+	
+	
+</beans>
