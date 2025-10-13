@@ -83,6 +83,100 @@ body {
 	background: #8bc683;
 }
 
+/* 카테고리 필터 섹션 */
+.category-filter-section {
+	background: white;
+	padding: 30px;
+	margin: 20px 20px;
+	border-radius: 12px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.filter-title {
+	font-size: 18px;
+	font-weight: bold;
+	color: #2d5a29;
+	margin-bottom: 20px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.category-tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+}
+
+.category-tag {
+	padding: 10px 20px;
+	background: #f8faf9;
+	border: 2px solid #e8f5e6;
+	border-radius: 25px;
+	font-size: 15px;
+	font-weight: 500;
+	color: #666;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	text-decoration: none;
+}
+
+.category-tag:hover {
+	background: #e8f5e6;
+	border-color: #a8d5a1;
+	color: #2d5a29;
+	transform: translateY(-2px);
+	box-shadow: 0 2px 8px rgba(168, 213, 161, 0.3);
+}
+
+.category-tag.active {
+	background: #2d5a29;
+	border-color: #2d5a29;
+	color: white;
+	font-weight: 600;
+}
+
+.category-tag-icon {
+	font-size: 18px;
+}
+
+/* 컨텐츠 영역 */
+.content {
+	padding: 40px 30px;
+	max-width: 1400px;
+	margin: 0 auto;
+}
+
+/* 카테고리 섹션 */
+.category-section {
+	margin-bottom: 40px;
+}
+
+.category-header {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-bottom: 20px;
+}
+
+.category-title {
+	font-size: 24px;
+	font-weight: bold;
+	color: #2d5a29;
+}
+
+.category-count {
+	background: #a8d5a1;
+	color: white;
+	padding: 4px 12px;
+	border-radius: 20px;
+	font-size: 14px;
+	font-weight: 500;
+}
+
 /* 모임 카드 */
 .meeting-card {
 	background: white;
@@ -211,6 +305,24 @@ body {
 		min-width: 240px;
 		max-width: 240px;
 	}
+	
+	.category-title {
+		font-size: 20px;
+	}
+	
+	.category-filter-section {
+		margin: 15px;
+		padding: 20px;
+	}
+	
+	.category-tags {
+		gap: 8px;
+	}
+	
+	.category-tag {
+		padding: 8px 16px;
+		font-size: 14px;
+	}
 }
 </style>
 </head>
@@ -223,10 +335,63 @@ body {
 	
 
 	<div class="content">
+	
+	<!-- 카테고리 필터 섹션 -->
+	<%
+		// 현재 선택된 카테고리 (파라미터로 받기)
+		String selectedCategory = request.getParameter("category");
+		if (selectedCategory == null) selectedCategory = "all";
+	%>
+	
+	<div class="category-filter-section">
+		<div class="filter-title">
+			<span>🏷️</span>
+			<span>카테고리</span>
+		</div>
+		<div class="category-tags">
+			<a href="?category=all" class="category-tag <%= "all".equals(selectedCategory) ? "active" : "" %>">
+				<span class="category-tag-icon">📚</span>
+				<span>전체</span>
+			</a>
+			<a href="?category=reading" class="category-tag <%= "reading".equals(selectedCategory) ? "active" : "" %>">
+				<span class="category-tag-icon">📖</span>
+				<span>독서</span>
+			</a>
+			<a href="?category=language" class="category-tag <%= "language".equals(selectedCategory) ? "active" : "" %>">
+				<span class="category-tag-icon">🌐</span>
+				<span>어학</span>
+			</a>
+			<a href="?category=it" class="category-tag <%= "it".equals(selectedCategory) ? "active" : "" %>">
+				<span class="category-tag-icon">💻</span>
+				<span>IT</span>
+			</a>
+			<a href="?category=startup" class="category-tag <%= "startup".equals(selectedCategory) ? "active" : "" %>">
+				<span class="category-tag-icon">🚀</span>
+				<span>창업·취업</span>
+			</a>
+			<a href="?category=license" class="category-tag <%= "license".equals(selectedCategory) ? "active" : "" %>">
+				<span class="category-tag-icon">📜</span>
+				<span>자격증</span>
+			</a>
+			<a href="?category=exam" class="category-tag <%= "exam".equals(selectedCategory) ? "active" : "" %>">
+				<span class="category-tag-icon">✏️</span>
+				<span>시험</span>
+			</a>
+			<a href="?category=hobby" class="category-tag <%= "hobby".equals(selectedCategory) ? "active" : "" %>">
+				<span class="category-tag-icon">🎨</span>
+				<span>취미</span>
+			</a>
+			<a href="?category=etc" class="category-tag <%= "etc".equals(selectedCategory) ? "active" : "" %>">
+				<span class="category-tag-icon">📌</span>
+				<span>기타</span>
+			</a>
+		</div>
+	</div>
+	
 		<!-- 스터디 모임 -->
 		<div class="category-section">
 			<div class="category-header">
-				<h2 class="category-title">📚 스터디 모임</h2>
+				<h2 class="category-title">📚 IT</h2>
 				<span class="category-count">8</span>
 			</div>
 			<div class="meetings-container">
@@ -380,7 +545,7 @@ body {
 		<!-- 프로젝트 -->
 		<div class="category-section">
 			<div class="category-header">
-				<h2 class="category-title">🚀 프로젝트</h2>
+				<h2 class="category-title">🚀 언어</h2>
 				<span class="category-count">5</span>
 			</div>
 			<div class="meetings-container">
