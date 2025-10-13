@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Test1</title>
 <link rel="stylesheet" type="text/css" href="<%=cp%>/css/main.css">
 </head>
 <body>
