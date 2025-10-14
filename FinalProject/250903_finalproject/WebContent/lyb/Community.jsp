@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <%@ page language="java" %>
-
+<!-- 게시판 조회 화면 생성 -->
 
 <!DOCTYPE html>
 
