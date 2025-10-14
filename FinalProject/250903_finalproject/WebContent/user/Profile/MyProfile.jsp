@@ -793,7 +793,7 @@ body {
 		<div class="tab-navigation">
 			<button class="tab-btn active" onclick="showTab('basic')">기본 정보</button>
 			<button class="tab-btn" onclick="showTab('settings')">설정</button>
-			<button class="tab-btn" onclick="showTab('privacy')">공개 범위</button>
+			<!-- <button class="tab-btn" onclick="showTab('privacy')">공개 범위</button> -->
 			<button class="tab-btn" onclick="showTab('inquiry')">문의 내역</button>
 			<button class="tab-btn" onclick="showTab('account')">계정 관리</button>
 		</div>
@@ -959,6 +959,7 @@ body {
 		</div>
 		
 		<!-- 공개 범위 탭 -->
+		<!-- 
 		<div class="profile-container" id="tab-privacy">
 			<div class="section">
 				<h3 class="section-title">프로필 공개 설정</h3>
@@ -994,7 +995,7 @@ body {
 				</div>
 			</div>
 			
-			<!-- 프로필 미리보기 -->
+			프로필 미리보기
 			<div class="preview-box">
 				<div class="preview-title">
 					<span>👁️</span>
@@ -1027,7 +1028,8 @@ body {
 			<button class="btn-save" onclick="savePrivacy()">설정 저장</button>
 		</div>
 	</div>
-	
+	 -->
+	 
 	<!-- 문의 내역 탭 -->
 	<div class="profile-container" id="tab-inquiry">
 		<div class="section">
@@ -1120,7 +1122,7 @@ body {
 				<textarea 
 					class="form-input" 
 					id="withdrawComment"
-					style="min-height: 100px; resize: vertical;"
+					style="min-height: 100px; resize: none; width: 100%;"
 					placeholder="서비스 개선을 위해 의견을 남겨주세요"
 				></textarea>
 			</div>
