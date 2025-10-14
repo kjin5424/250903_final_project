@@ -1,11 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
-		// 현재 페이지 파라미터 받기 (기본값: meetings)
-		String currentPage = request.getParameter("page");
-		if (currentPage == null || currentPage.isEmpty()) 
-		{
-			currentPage = "meetings";
-		}
+	String cp = request.getContextPath();
+
+	// 현재 페이지 파라미터 받기 (기본값: meetings)
+	String currentPage = request.getParameter("page");
+	if (currentPage == null || currentPage.isEmpty()) 
+	{
+		currentPage = "meetings";
+	}
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -113,7 +115,7 @@ body {
 	background: #2d5a29;
 	color: white;
 	border: none;
-	padding: 8px 20px;
+	padding: 12px 20px;
 	border-radius: 6px;
 	cursor: pointer;
 	font-size: 14px;
@@ -149,6 +151,7 @@ body {
 	color: #666;
 	line-height: 1.6;
 }
+
 /* 반응형 */
 @media (max-width: 768px) {
 	.navbar {
@@ -213,11 +216,16 @@ body {
 			<a href="?page=groups" class="tab <%= "groups".equals(currentPage) ? "active" : "" %>">모임구경</a>
 			<a href="?page=creategroup" class="tab <%= "creategroup".equals(currentPage) ? "active" : "" %>">모임 개설</a>
 			<a href="?page=mygroups" class="tab <%= "mygroups".equals(currentPage) ? "active" : "" %>">내 모임</a>
+			<a href="?page=mypage" class="tab <%= "mypage".equals(currentPage) ? "active" : "" %>">마이 페이지</a>
 		</div>
 		<div class="nav-right">
-			<a href="../login/UserLogin.jsp" class="login-btn">
+			<a href="../login/UserLogin.jsp" class="login-btn" style="text-decoration: none;">
 				<span>🔐</span>
 				<span>로그인</span>
+			</a>
+			<a href="<%=cp%>/user/Profile/MyProfile.jsp" class="login-btn" 
+			style="text-decoration: none;">
+				<span>프로필</span>	
 			</a>
 		</div>
 	</nav>
