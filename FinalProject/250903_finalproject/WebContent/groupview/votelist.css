@@ -106,3 +106,38 @@ body {
   font-size: 0.9rem;
   color: #475569;
 }
+
+.card .button-group {
+  display: flex;
+  gap: 8px; /* 버튼 간 간격 */
+}
+
+.card button {
+  flex: 1;
+  padding: 10px 0;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+/* 제출 버튼 */
+.card #submit-btn {
+  background-color: #2563eb; 
+}
+
+.card #submit-btn:hover {
+  background-color: #1d4ed8; /* blue-700 */
+}
+
+/* 수정 버튼 (기본 숨김) */
+.card #edit-btn {
+  background-color: #2563eb;
+  /*display: none; *//* 기본 숨김 */
+}
+
+.card #edit-btn:hover {
+  background-color: #1d4ed8;
+}

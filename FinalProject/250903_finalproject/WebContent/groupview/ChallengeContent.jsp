@@ -11,7 +11,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>도전 과제</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+<script type="text/javascript"
+	src="http://code.jquery.com/jquery.min.js"></script>
 <script src="<%=cp%>/groupview/challenge.js"></script>
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap">
@@ -21,7 +22,15 @@
 <body class="p-6">
 
 	<div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md">
-		<h1 class="text-2xl font-bold mb-4">도전 과제 제목</h1>
+		<h1 class="text-2xl font-bold">도전 과제 제목</h1>
+		<div class="flex space-x-2">
+			<button
+				class="bg-yellow-400 text-white px-3 py-1 rounded hover:bg-yellow-500">수정</button>
+			<button
+				class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">삭제</button>
+			<button
+				class="bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-600">신고</button>
+		</div>
 
 		<h2 class="text-lg font-semibold mb-2">도전 과제 수행 가능 일자</h2>
 		<table class="w-full mb-6 border-collapse">

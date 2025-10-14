@@ -14,3 +14,7 @@ body {
 .toggle-button {
     cursor: pointer;
 }
+
+button {
+    transition: background-color 0.2s ease;
+}

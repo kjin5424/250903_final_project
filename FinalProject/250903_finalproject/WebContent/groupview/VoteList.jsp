@@ -11,11 +11,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>투표 프로토타입</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="<%=cp%>/css/votelist.css" />
+<link rel="stylesheet" href="<%=cp%>/groupview/votelist.css" />
 </head>
 <body>
-<!-- 투표 리스트(진행중 + 종료된) -->
-<!-- 투표는 추가 페이지 없이 컨트롤러로 해결 -->
+	<!-- 투표 리스트(진행중 + 종료된) -->
+	<!-- 투표는 추가 페이지 없이 컨트롤러로 해결 -->
 
 	<!-- 상단 메뉴바 -->
 	<header class="top-bar">
@@ -45,25 +45,33 @@
 						<span class="font-bold">진행중인 투표</span> <span>yy-mm-dd ~
 							yy-mm-dd</span>
 					</div>
+
 					<div class="text-sm text-gray-600 mb-2">
 						<span>총: 12명</span> | <span>투표자: 5명</span>
 					</div>
 					<div class="text-sm text-gray-600 mb-2">date hh ~ hh</div>
+
 					<div class="mb-2">
 						<div class="flex justify-between mb-1">
 							<span>참여</span> <span>4명 (80%)</span>
 						</div>
 						<div class="progress-bar bg-blue-500" style="width: 80%;"></div>
 					</div>
+
 					<div class="mb-4">
 						<div class="flex justify-between mb-1">
 							<span>미참</span> <span>1명 (20%)</span>
 						</div>
 						<div class="progress-bar bg-gray-300" style="width: 20%;"></div>
 					</div>
-					<button class="w-full bg-blue-500 text-white py-2 rounded"
-						id="submit-btn">제출</button>
+
+					<!-- ✅ 수정 & 제출 버튼 -->
+					<div class="button-group">
+						<button id="edit-btn">수정</button>
+						<button id="submit-btn">제출</button>
+					</div>
 				</div>
+
 
 				<!-- 종료된 투표 -->
 				<div class="card">
