@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
+<!-- 게시물 수정 화면 생성 -->
 <%@ page language="java" %>
 <%
     request.setCharacterEncoding("UTF-8");

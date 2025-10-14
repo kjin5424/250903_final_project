@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page language="java" %>
+<!-- 게시판 글쓰기 버튼 클릭했을 때 화면 -->
 <%
     request.setCharacterEncoding("UTF-8");
     String cp = request.getContextPath();

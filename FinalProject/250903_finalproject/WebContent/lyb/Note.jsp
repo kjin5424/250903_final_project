@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page language="java" %>
+<!-- 쪽지 기능 생성 -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
