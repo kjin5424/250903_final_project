@@ -2,23 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	request.setCharacterEncoding("UTF-8");
-<<<<<<< HEAD
 	String cp = request.getContextPath();
-%>
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>투표 리스트 프로토타입</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="<%=cp%>/css/votelist.css" />
-</head>
-<body>
-<!-- 투표 리스트(진행중 + 종료된) -->
-<!-- 투표는 추가 페이지 없이 컨트롤러로 해결 -->
-=======
-String cp = request.getContextPath();
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -30,7 +14,8 @@ String cp = request.getContextPath();
 <link rel="stylesheet" href="<%=cp%>/css/votelist.css" />
 </head>
 <body>
->>>>>>> refs/heads/develop
+<!-- 투표 리스트(진행중 + 종료된) -->
+<!-- 투표는 추가 페이지 없이 컨트롤러로 해결 -->
 
 	<!-- 상단 메뉴바 -->
 	<header class="top-bar">
