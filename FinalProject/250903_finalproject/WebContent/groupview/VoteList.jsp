@@ -50,6 +50,7 @@
 						<span>총: 12명</span> | <span>투표자: 5명</span>
 					</div>
 					<div class="text-sm text-gray-600 mb-2">date hh ~ hh</div>
+					<div class="text-sm text-gray-600 mb-2">장소 : 서울 마포구 ...</div>
 
 					<div class="mb-2">
 						<div class="flex justify-between mb-1">
@@ -83,6 +84,8 @@
 						<span>총: 12명</span> | <span>투표자: 10명</span>
 					</div>
 					<div class="text-sm text-gray-600 mb-2">date hh ~ hh</div>
+					<div class="text-sm text-gray-600 mb-2">장소 : 서울 마포구 ...</div>
+					
 					<div class="mb-2">
 						<div class="flex justify-between mb-1">
 							<span>참여</span> <span>8명 (80%)</span>
@@ -107,7 +110,8 @@
 						<span>총: 12명</span> | <span>투표자: 11명</span>
 					</div>
 					<div class="text-sm text-gray-600 mb-2">date hh ~ hh</div>
-
+					<div class="text-sm text-gray-600 mb-2">장소 : 서울 마포구 ...</div>
+					
 					<div class="mb-2">
 						<div class="flex justify-between mb-1">
 							<span>참여</span> <span>10명 (91%)</span>
