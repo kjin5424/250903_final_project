@@ -34,7 +34,7 @@
             gap: 4px;
             flex: 1;
         }
-        .nav-right {
+        .nav-right { 	
             display: flex;
             align-items: center;
             margin-left: auto;
