@@ -87,7 +87,7 @@ body {
 .category-filter-section {
 	background: white;
 	padding: 30px;
-	margin: 20px 20px;
+	margin: 20px 0px;
 	border-radius: 12px;
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
@@ -175,6 +175,129 @@ body {
 	border-radius: 20px;
 	font-size: 14px;
 	font-weight: 500;
+}
+
+.search-header {
+	background: white;
+	padding: 30px;
+	margin: 20px 0px;
+	border-radius: 12px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.search-info {
+	margin-bottom: 20px;
+}
+
+.search-keyword {
+	font-size: 24px;
+	font-weight: bold;
+	color: #2d5a29;
+	margin-bottom: 10px;
+}
+
+.search-keyword-text {
+	color: #2d5a29;
+	background: #e8f5e6;
+	padding: 4px 12px;
+	border-radius: 8px;
+}
+
+.search-count {
+	font-size: 15px;
+	color: #666;
+}
+
+.search-count-num {
+	font-weight: bold;
+	color: #2d5a29;
+}
+
+/* 검색바 */
+.search-bar-container {
+	display: flex;
+	gap: 10px;
+	max-width: 600px;
+}
+
+.search-input {
+	flex: 1;
+	padding: 12px 16px;
+	border: 2px solid #e0e0e0;
+	border-radius: 8px;
+	font-size: 15px;
+	transition: all 0.2s ease;
+}
+
+.search-input:focus {
+	outline: none;
+	border-color: #a8d5a1;
+	box-shadow: 0 0 0 3px rgba(168, 213, 161, 0.1);
+}
+
+.search-btn {
+	padding: 12px 24px;
+	background: #2d5a29;
+	color: white;
+	border: none;
+	border-radius: 8px;
+	font-size: 15px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	white-space: nowrap;
+}
+
+.search-btn:hover {
+	background: #1f4019;
+	transform: translateY(-1px);
+}
+
+/* 필터 섹션 */
+.filter-section {
+	background: white;
+	padding: 20px 30px;
+	margin: 20px 30px;
+	border-radius: 12px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+	display: flex;
+	gap: 20px;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.filter-label {
+	font-weight: 600;
+	color: #333;
+}
+
+.filter-select {
+	padding: 8px 14px;
+	border: 2px solid #e0e0e0;
+	border-radius: 8px;
+	font-size: 14px;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.filter-select:focus {
+	outline: none;
+	border-color: #a8d5a1;
+}
+
+/* 결과 컨텐츠 */
+.content {
+	padding: 20px 30px;
+	max-width: 1400px;
+	margin: 0 auto;
+}
+
+/* 결과 리스트 (그리드형) */
+.results-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+	gap: 20px;
+	margin-bottom: 40px;
 }
 
 /* 모임 카드 */
@@ -387,6 +510,29 @@ body {
 			</a>
 		</div>
 	</div>
+	
+	<!-- 검색창 -->
+	
+	<%
+		// 검색어 받기
+		String keyword = request.getParameter("keyword");
+		if (keyword == null) keyword = "";
+		keyword = keyword.trim();
+		
+		// 필터 받기
+		String category = request.getParameter("category");
+		String status = request.getParameter("status");
+		String sort = request.getParameter("sort");
+		
+		if (category == null) category = "all";
+		if (status == null) status = "all";
+		if (sort == null) sort = "recent";
+		
+		// 검색 결과 개수 (실제로는 DB에서 조회)
+		int resultCount = keyword.isEmpty() ? 0 : 15;
+	%>
+	
+	<c:import url="../../search.jsp"></c:import>	
 	
 		<!-- 스터디 모임 -->
 		<div class="category-section">
