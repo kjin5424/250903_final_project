@@ -13,11 +13,11 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <script type="text/javascript"
 	src="http://code.jquery.com/jquery.min.js"></script>
-<script src="<%=cp%>/groupview/challenge.js"></script>
+<script src="<%=cp%>/group/challenge/challenge.js"></script>
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap">
 <!-- 폰트는 제거 가능. -->
-<link rel="stylesheet" href="<%=cp%>/groupview/challenge.css">
+<link rel="stylesheet" href="<%=cp%>/group_room/challenge/challenge.css">
 </head>
 <body class="p-6">
 

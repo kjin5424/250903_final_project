@@ -452,8 +452,8 @@ body {
 <body>
 	<!-- 여기에 상단바 import -->
 	<div id="topMenu">
-		<%-- <c:import url="${cp }/menubar/UserMenuBar.jsp"></c:import> --%>
-		<jsp:include page="../menubar/TopMenuBar.jsp" />
+		<%-- <c:import url="${cp }/common/TopMenuBar.jsp"></c:import> --%>
+		<jsp:include page="/common/TopMenuBar.jsp" />
 	</div>
 	
 
@@ -532,7 +532,7 @@ body {
 		int resultCount = keyword.isEmpty() ? 0 : 15;
 	%>
 	
-	<c:import url="../../search.jsp"></c:import>	
+	<c:import url="/common/search.jsp"></c:import>	
 	
 		<!-- 스터디 모임 -->
 		<div class="category-section">
@@ -1036,7 +1036,7 @@ body {
 	</div>
 	
 	<!-- 여기에 하단바 import -->
-	<jsp:include page="../menubar/UnderMenuBar.jsp"></jsp:include>
+	<jsp:include page="/common/UnderMenuBar.jsp"></jsp:include>
 		
 </body>
 </html>

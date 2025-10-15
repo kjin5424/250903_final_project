@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>투표 프로토타입</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="<%=cp%>/groupview/votelist.css" />
+<link rel="stylesheet" href="<%=cp%>/group_room/vote/votelist.css" />
 </head>
 <body>
 	<!-- 투표 리스트(진행중 + 종료된) -->
