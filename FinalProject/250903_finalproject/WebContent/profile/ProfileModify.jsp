@@ -747,7 +747,7 @@ body {
 <body>
 	<!-- 상단바 -->
 	<div id="topMenu">
-		<jsp:include page="../menubar/TopMenuBar.jsp" />
+		<jsp:include page="/common/TopMenuBar.jsp" />
 	</div>
 	
 	<%
@@ -1135,7 +1135,7 @@ body {
 </div>
 
 <!-- 하단바 -->
-<jsp:include page="../menubar/UnderMenuBar.jsp"></jsp:include>
+<jsp:include page="/common/UnderMenuBar.jsp"></jsp:include>
 
 <script>
 	// 비밀번호 확인

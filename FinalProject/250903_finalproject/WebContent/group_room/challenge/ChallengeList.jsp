@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>도전 과제 리스트</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="<%=cp%>/groupview/challengelist.css" />
+<link rel="stylesheet" href="<%=cp%>/group_room/challenge/challengelist.css" />
 </head>
 <body>
 	<div class="container">
