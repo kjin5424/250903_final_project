@@ -1,0 +1,746 @@
+/**
+ * ============================================
+ * 공통 기본 스타일 (common.css)
+ * ============================================
+ * CSS Reset, 기본 타이포그래피, 레이아웃 구조를 정의합니다.
+ * variables.css 파일이 먼저 로드되어야 합니다.
+ * 
+ * 포함 내용:
+ * - CSS Reset
+ * - 기본 HTML 요소 스타일
+ * - Wrapper 구조 (Outer + Inner)
+ * - 레이아웃 헬퍼
+ * - 스크롤바 커스터마이징
+ * - 유틸리티 클래스
+ */
+
+
+/* ============================================
+   CSS Reset
+   ============================================ */
+
+/**
+ * 모든 요소의 기본 마진, 패딩 제거
+ * box-sizing을 border-box로 설정
+ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+
+/* ============================================
+   기본 HTML 요소 스타일
+   ============================================ */
+
+/**
+ * Body 스타일
+ * - 연두~보라 그라디언트 배경 (Outer Wrapper)
+ * - 기본 폰트 설정
+ */
+body {
+    font-family: 'Segoe UI', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+    background: var(--gradient-main);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: var(--padding-xl) var(--padding-lg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/**
+ * HTML5 요소들 블록 레벨로 설정
+ */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, main, menu, nav, section {
+    display: block;
+}
+
+/**
+ * 리스트 기본 스타일 제거
+ */
+ul, ol {
+    list-style: none;
+}
+
+/**
+ * 링크 기본 스타일
+ */
+a {
+    color: inherit;
+    text-decoration: none;
+    transition: var(--transition-base);
+}
+
+a:hover {
+    opacity: 0.8;
+}
+
+/**
+ * 버튼 기본 스타일 초기화
+ */
+button {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/**
+ * 입력 요소 기본 스타일
+ */
+input, textarea, select {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+/**
+ * 이미지 반응형 설정
+ */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/**
+ * 테이블 기본 스타일
+ */
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+
+/* ============================================
+   타이포그래피
+   ============================================ */
+
+/**
+ * 제목 스타일
+ */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--text-primary);
+    margin-bottom: var(--margin-md);
+}
+
+h1 {
+    font-size: var(--font-size-h1);
+}
+
+h2 {
+    font-size: var(--font-size-h2);
+}
+
+h3 {
+    font-size: var(--font-size-h3);
+}
+
+h4 {
+    font-size: var(--font-size-h4);
+}
+
+/**
+ * 본문 텍스트
+ */
+p {
+    margin-bottom: var(--margin-md);
+    line-height: 1.6;
+}
+
+/**
+ * 강조 텍스트
+ */
+strong, b {
+    font-weight: 700;
+}
+
+em, i {
+    font-style: italic;
+}
+
+/**
+ * 작은 텍스트
+ */
+small {
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+}
+
+
+/* ============================================
+   Wrapper 구조
+   ============================================ */
+
+/**
+ * Inner Wrapper (연회색 배경 영역)
+ * - 전체 컨텐츠를 감싸는 내부 래퍼
+ * - 연회색(#F8F8F8) 배경
+ * - 큰 둥근 모서리
+ * - TopMenuBar와 UnderMenuBar는 이 영역 밖에 위치
+ */
+.inner-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: var(--off-white);
+    border-radius: var(--radius-xl);
+    padding: var(--padding-xxl) var(--padding-xl);
+    box-shadow: var(--shadow-wrapper);
+}
+
+/**
+ * Content 영역
+ * - Inner Wrapper 내부의 실제 컨텐츠 영역
+ */
+.content {
+    max-width: 100%;
+}
+
+/**
+ * Container - 컨텐츠 최대 너비 제한
+ * 필요한 경우 사용
+ */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--padding-lg);
+}
+
+.container-sm {
+    max-width: 800px;
+}
+
+.container-lg {
+    max-width: 1400px;
+}
+
+.container-fluid {
+    max-width: 100%;
+    padding: 0;
+}
+
+
+/* ============================================
+   레이아웃 헬퍼
+   ============================================ */
+
+/**
+ * Section - 컨텐츠 섹션
+ */
+.section {
+    margin-bottom: var(--margin-xxl);
+}
+
+.section-sm {
+    margin-bottom: var(--margin-xl);
+}
+
+.section-lg {
+    margin-bottom: 60px;
+}
+
+/**
+ * Section Header - 섹션 제목 영역
+ */
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-md);
+    margin-bottom: var(--margin-lg);
+    padding: 0 var(--padding-sm);
+}
+
+.section-title {
+    font-size: var(--font-size-h2);
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.section-count {
+    background: var(--white);
+    color: var(--text-primary);
+    padding: 6px 18px;
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    box-shadow: var(--shadow-button);
+}
+
+
+/* ============================================
+   Grid & Flexbox 레이아웃
+   ============================================ */
+
+/**
+ * Flexbox 유틸리티
+ */
+.flex {
+    display: flex;
+}
+
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+/**
+ * Grid 유틸리티
+ */
+.grid {
+    display: grid;
+    gap: var(--gap-lg);
+}
+
+.grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+/* 반응형 Grid */
+@media (max-width: 1024px) {
+    .grid-4 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .grid-3, .grid-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .grid-2, .grid-3, .grid-4 {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* ============================================
+   스크롤바 커스터마이징
+   ============================================ */
+
+/**
+ * 전역 스크롤바 스타일 (WebKit 브라우저)
+ */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+    border-radius: var(--radius-sm);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: var(--radius-sm);
+    transition: background var(--transition-base);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover);
+}
+
+/**
+ * 가로 스크롤 컨테이너
+ * - 마우스 휠로 가로 스크롤 가능
+ */
+.scroll-container {
+    display: flex;
+    gap: var(--gap-lg);
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: var(--padding-lg);
+    scroll-behavior: smooth;
+}
+
+.scroll-container::-webkit-scrollbar {
+    height: 12px;
+}
+
+.scroll-container::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+    border-radius: var(--radius-sm);
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: var(--radius-sm);
+}
+
+.scroll-container::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover);
+}
+
+
+/* ============================================
+   유틸리티 클래스
+   ============================================ */
+
+/**
+ * 간격 유틸리티
+ */
+
+/* Margin */
+.m-0 { margin: 0; }
+.mt-0 { margin-top: 0; }
+.mb-0 { margin-bottom: 0; }
+.ml-0 { margin-left: 0; }
+.mr-0 { margin-right: 0; }
+
+.m-sm { margin: var(--margin-sm); }
+.mt-sm { margin-top: var(--margin-sm); }
+.mb-sm { margin-bottom: var(--margin-sm); }
+.ml-sm { margin-left: var(--margin-sm); }
+.mr-sm { margin-right: var(--margin-sm); }
+
+.m-md { margin: var(--margin-md); }
+.mt-md { margin-top: var(--margin-md); }
+.mb-md { margin-bottom: var(--margin-md); }
+.ml-md { margin-left: var(--margin-md); }
+.mr-md { margin-right: var(--margin-md); }
+
+.m-lg { margin: var(--margin-lg); }
+.mt-lg { margin-top: var(--margin-lg); }
+.mb-lg { margin-bottom: var(--margin-lg); }
+.ml-lg { margin-left: var(--margin-lg); }
+.mr-lg { margin-right: var(--margin-lg); }
+
+/* Padding */
+.p-0 { padding: 0; }
+.pt-0 { padding-top: 0; }
+.pb-0 { padding-bottom: 0; }
+.pl-0 { padding-left: 0; }
+.pr-0 { padding-right: 0; }
+
+.p-sm { padding: var(--padding-sm); }
+.pt-sm { padding-top: var(--padding-sm); }
+.pb-sm { padding-bottom: var(--padding-sm); }
+.pl-sm { padding-left: var(--padding-sm); }
+.pr-sm { padding-right: var(--padding-sm); }
+
+.p-md { padding: var(--padding-md); }
+.pt-md { padding-top: var(--padding-md); }
+.pb-md { padding-bottom: var(--padding-md); }
+.pl-md { padding-left: var(--padding-md); }
+.pr-md { padding-right: var(--padding-md); }
+
+.p-lg { padding: var(--padding-lg); }
+.pt-lg { padding-top: var(--padding-lg); }
+.pb-lg { padding-bottom: var(--padding-lg); }
+.pl-lg { padding-left: var(--padding-lg); }
+.pr-lg { padding-right: var(--padding-lg); }
+
+/**
+ * 텍스트 정렬
+ */
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+
+/**
+ * 텍스트 색상
+ */
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-tertiary { color: var(--text-tertiary); }
+.text-white { color: var(--white); }
+
+/**
+ * 폰트 굵기
+ */
+.font-normal { font-weight: 400; }
+.font-medium { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.font-bold { font-weight: 700; }
+
+/**
+ * 폰트 크기
+ */
+.text-xs { font-size: var(--font-size-xs); }
+.text-sm { font-size: var(--font-size-sm); }
+.text-base { font-size: var(--font-size-base); }
+.text-lg { font-size: 18px; }
+.text-xl { font-size: 20px; }
+
+/**
+ * 배경 색상
+ */
+.bg-white { background: var(--white); }
+.bg-gray { background: var(--gray-light); }
+.bg-primary { background: var(--primary); }
+.bg-secondary { background: var(--secondary); }
+.bg-accent { background: var(--accent); }
+
+/**
+ * Border Radius
+ */
+.rounded-sm { border-radius: var(--radius-sm); }
+.rounded-md { border-radius: var(--radius-md); }
+.rounded-lg { border-radius: var(--radius-lg); }
+.rounded-xl { border-radius: var(--radius-xl); }
+.rounded-full { border-radius: var(--radius-full); }
+
+/**
+ * 그림자
+ */
+.shadow-sm { box-shadow: var(--shadow-sm); }
+.shadow-md { box-shadow: var(--shadow-md); }
+.shadow-lg { box-shadow: var(--shadow-lg); }
+.shadow-none { box-shadow: none; }
+
+/**
+ * 너비 & 높이
+ */
+.w-full { width: 100%; }
+.h-full { height: 100%; }
+.w-auto { width: auto; }
+.h-auto { height: auto; }
+
+/**
+ * Display
+ */
+.block { display: block; }
+.inline-block { display: inline-block; }
+.inline { display: inline; }
+.hidden { display: none; }
+
+/**
+ * Overflow
+ */
+.overflow-hidden { overflow: hidden; }
+.overflow-auto { overflow: auto; }
+.overflow-scroll { overflow: scroll; }
+
+/**
+ * Position
+ */
+.relative { position: relative; }
+.absolute { position: absolute; }
+.fixed { position: fixed; }
+.sticky { position: sticky; }
+
+/**
+ * Cursor
+ */
+.cursor-pointer { cursor: pointer; }
+.cursor-default { cursor: default; }
+.cursor-not-allowed { cursor: not-allowed; }
+
+/**
+ * 텍스트 ellipsis
+ */
+.truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+
+/* ============================================
+   반응형 유틸리티
+   ============================================ */
+
+/**
+ * 반응형 표시/숨김
+ */
+
+/* 모바일 (768px 이하) */
+@media (max-width: 768px) {
+    .hide-mobile {
+        display: none !important;
+    }
+}
+
+/* 태블릿 이상 (769px 이상) */
+@media (min-width: 769px) {
+    .show-mobile {
+        display: none !important;
+    }
+}
+
+/* 데스크탑 (1024px 이상) */
+@media (min-width: 1024px) {
+    .hide-desktop {
+        display: none !important;
+    }
+}
+
+
+/* ============================================
+   반응형 Wrapper & Layout
+   ============================================ */
+
+/**
+ * 태블릿 (1024px 이하)
+ */
+@media (max-width: 1024px) {
+    .inner-wrapper {
+        padding: var(--padding-xl) var(--padding-lg);
+    }
+}
+
+/**
+ * 모바일 (768px 이하)
+ */
+@media (max-width: 768px) {
+    body {
+        padding: var(--padding-lg) var(--padding-sm);
+    }
+
+    .inner-wrapper {
+        padding: var(--padding-lg) var(--padding-md);
+        border-radius: var(--radius-lg);
+    }
+
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .section-title {
+        font-size: 24px;
+    }
+}
+
+/**
+ * 작은 모바일 (480px 이하)
+ */
+@media (max-width: 480px) {
+    .inner-wrapper {
+        padding: var(--padding-lg) var(--padding-md);
+    }
+
+    .section-title {
+        font-size: 20px;
+    }
+}
+
+
+/* ============================================
+   접근성 (Accessibility)
+   ============================================ */
+
+/**
+ * 스크린 리더 전용 텍스트
+ * 화면에는 보이지 않지만 스크린 리더에서는 읽힘
+ */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/**
+ * 포커스 표시 (키보드 탐색)
+ */
+*:focus-visible {
+    outline: 2px solid var(--secondary);
+    outline-offset: 2px;
+}
+
+button:focus-visible,
+a:focus-visible {
+    outline: 2px solid var(--secondary);
+    outline-offset: 2px;
+}
+
+
+/* ============================================
+   애니메이션
+   ============================================ */
+
+/**
+ * 페이드인 애니메이션
+ */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.fade-in {
+    animation: fadeIn var(--transition-base);
+}
+
+/**
+ * 슬라이드업 애니메이션
+ */
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.slide-up {
+    animation: slideUp var(--transition-base);
+}

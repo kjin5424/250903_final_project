@@ -1,0 +1,79 @@
+@charset "UTF-8";
+
+body 
+{
+	font-family: 'Arial', sans-serif;
+	background-color: #f9fafb;
+}
+
+.container
+{
+	max-width: 800px;
+	margin: 50px auto;
+	padding: 20px;
+	background-color: #ffffff;
+	border-radius: 8px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header
+{
+	font-size: 1.5rem;
+	font-weight: bold;
+	margin-bottom: 20px;
+	text-align: center;
+}
+
+.table
+{
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.table th, .table td
+{
+	padding: 12px;
+	border-bottom: 1px solid #e5e7eb;
+	text-align: left;
+}
+
+.table th
+{
+	font-weight: bold;
+}
+
+.pagination
+{
+	display: flex;
+	justify-content: center;
+	margin-top: 20px;
+}
+
+.pagination span
+{
+	margin: 0 5px;
+	cursor: pointer;
+	color: #3b82f6;
+}
+
+.write-button
+{
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 20px;
+}
+
+.write-button button
+{
+	background-color: #3b82f6;
+	color: white;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.write-button button:hover
+{
+	background-color: #2563eb;
+}
