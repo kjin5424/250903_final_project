@@ -3,15 +3,10 @@
 .top-menu-bar {
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(10px);
-    padding: 16px 24px;
+    padding: 12px 20px;
     border-radius: var(--radius-lg);
     margin-bottom: 20px;
-    margin: 20px auto; /* 좌우 중앙 정렬 */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    max-width: 1400px;
-    height: 70px;
-    position: relative; /* 필요시 중앙 배치 안정화 */
-    
 }
 
 .navbar {
@@ -27,7 +22,6 @@
     align-items: center;
     gap: 6px;
     flex: 1;
-    font-size: 16px;
 }
 
 .nav-right {
@@ -47,12 +41,11 @@
     align-items: center;
     gap: 8px;
     font-weight: 700;
-    font-size: 18px;
+    font-size: 16px;
     cursor: pointer;
     transition: var(--transition-base);
     text-decoration: none;
-    /* border: 2px solid transparent; */
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    border: 2px solid transparent;
 }
 
 .logo-tab:hover {
@@ -69,22 +62,21 @@
     background: rgba(255, 255, 255, 0.15);
     color: var(--white);
     padding: 0 20px;
-    height: 42px;
+    height: 38px;
     border-radius: var(--radius-md);
     cursor: pointer;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
     transition: var(--transition-base);
     display: flex;
     align-items: center;
     text-decoration: none;
     white-space: nowrap;
-    /* border: 2px solid transparent; */
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    border: 2px solid transparent;
 }
 
 .nav-tab:hover:not(.active) {
-    background: var(--off-white);
+    background: rgba(255, 255, 255, 0.25);
     transform: translateY(-2px);
 }
 
@@ -115,21 +107,15 @@
 }
 
 .user-btn:hover {
-    background: var(--off-white);
+    background: rgba(255, 255, 255, 0.35);
     border-color: rgba(255, 255, 255, 0.5);
     transform: translateY(-2px);
 }
 
 .user-btn.primary {
-	/* 
     background: var(--white);
     color: var(--text-primary);
     border-color: var(--white);
-     */
-    background: rgba(255, 255, 255, 0.15);
-    color: var(--white);
-    /* border: 2px solid transparent; */
-    border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
 .user-btn.primary:hover {

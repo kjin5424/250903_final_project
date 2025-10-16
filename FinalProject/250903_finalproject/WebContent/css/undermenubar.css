@@ -4,10 +4,8 @@
     backdrop-filter: blur(10px);
     padding: 12px 20px;
     border-radius: var(--radius-lg);
-    margin: 20px auto 0 auto; /* 중앙 정렬 */
     margin-top: 20px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    max-width: 1400px; 
 }
 
 .footer-nav {
@@ -38,7 +36,7 @@
 }
 
 .footer-tab:hover {
-    background: var(--off-white);
+    background: rgba(255, 255, 255, 0.3);
     border-color: rgba(255, 255, 255, 0.4);
     transform: translateY(-3px);
 }

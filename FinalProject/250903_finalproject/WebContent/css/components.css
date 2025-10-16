@@ -594,13 +594,13 @@
  */
 .lock-icon {
     position: absolute;
-    top: 8px;
-    left: 8px;
-    /* background: rgba(255, 255, 255, 0.9); */
+    top: 12px;
+    left: 12px;
+    background: rgba(255, 255, 255, 0.9);
     padding: 8px 10px;
     border-radius: var(--radius-sm);
-    font-size: var(--icon-size-md);
-    /* box-shadow: var(--shadow-sm); */
+    font-size: var(--icon-size-sm);
+    box-shadow: var(--shadow-sm);
 }
 
 
