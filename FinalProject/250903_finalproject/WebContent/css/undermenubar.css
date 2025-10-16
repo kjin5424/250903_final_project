@@ -12,7 +12,7 @@
 
 .footer-nav {
     display: flex;
-    align-items: center;
+    align-items: center; 
     justify-content: center;
     gap: 12px;
     max-width: 1400px;

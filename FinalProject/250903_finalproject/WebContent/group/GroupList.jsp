@@ -15,7 +15,7 @@
 <!-- JavaScript -->
 <script>
 	document.addEventListener('DOMContentLoaded', () => 
-	{
+	{ 
 	    // 즐겨찾기 버튼 토글
 	    document.querySelectorAll('.favorite-btn').forEach(btn => 
 	    {
@@ -112,7 +112,7 @@
             </div>
             
             <!-- 검색 섹션 (선택사항) -->
-            <c:import url="/common/search.jsp"></c:import>
+            <c:import url="/common/Search.jsp"></c:import>
             
             <!-- IT 카테고리 섹션 -->
             <div class="section category-section">

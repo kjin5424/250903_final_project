@@ -19,7 +19,6 @@
 }
 body {
 	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-	background: #f5f7fa;
 }
 
 /* 검색 결과 헤더 */
