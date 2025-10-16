@@ -112,7 +112,7 @@
             </div>
             
             <!-- 검색 섹션 (선택사항) -->
-            <c:import url="/common/Search.jsp"></c:import>
+            <jsp:include page="/common/Search.jsp" />
             
             <!-- IT 카테고리 섹션 -->
             <div class="section category-section">
