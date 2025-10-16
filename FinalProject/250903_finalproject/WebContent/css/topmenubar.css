@@ -1,12 +1,19 @@
 /* topmenubar.css */
 
 .top-menu-bar {
-    background: rgba(255, 255, 255, 0.15);
+    /* background: rgba(255, 255, 255, 0.15); */
+    /* background: #C4BFF5; */
+    background: var(--off-white);
     backdrop-filter: blur(10px);
-    padding: 12px 20px;
+    padding: 16px 24px;
     border-radius: var(--radius-lg);
     margin-bottom: 20px;
+    margin: 20px auto; /* 좌우 중앙 정렬 */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 1400px;
+    height: 70px;
+    position: relative; /* 필요시 중앙 배치 안정화 */
+     
 }
 
 .navbar {
@@ -22,6 +29,7 @@
     align-items: center;
     gap: 6px;
     flex: 1;
+    font-size: 16px;
 }
 
 .nav-right {
@@ -33,7 +41,7 @@
 /* 로고 */
 .logo-tab {
     background: rgba(255, 255, 255, 0.25);
-    color: var(--white);
+    color:  --text-primary;
     padding: 0 20px;
     height: 40px;
     border-radius: var(--radius-md);
@@ -41,11 +49,12 @@
     align-items: center;
     gap: 8px;
     font-weight: 700;
-    font-size: 16px;
+    font-size: 18px;
     cursor: pointer;
     transition: var(--transition-base);
     text-decoration: none;
-    border: 2px solid transparent;
+    /* border: 2px solid transparent; */
+    border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
 .logo-tab:hover {
@@ -60,23 +69,24 @@
 /* 메뉴 탭 */
 .nav-tab {
     background: rgba(255, 255, 255, 0.15);
-    color: var(--white);
+    color: --text-primary;
     padding: 0 20px;
-    height: 38px;
+    height: 42px;
     border-radius: var(--radius-md);
     cursor: pointer;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
     transition: var(--transition-base);
     display: flex;
     align-items: center;
     text-decoration: none;
     white-space: nowrap;
-    border: 2px solid transparent;
+    /* border: 2px solid transparent; */
+    border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
 .nav-tab:hover:not(.active) {
-    background: rgba(255, 255, 255, 0.25);
+    background: var(--off-white);
     transform: translateY(-2px);
 }
 
@@ -91,7 +101,7 @@
 /* 로그인/프로필 버튼 */
 .user-btn {
     background: rgba(255, 255, 255, 0.25);
-    color: var(--white);
+    color: --text-primary;
     border: 2px solid rgba(255, 255, 255, 0.3);
     padding: 8px 16px;
     border-radius: var(--radius-md);
@@ -107,15 +117,21 @@
 }
 
 .user-btn:hover {
-    background: rgba(255, 255, 255, 0.35);
+    background: var(--off-white);
     border-color: rgba(255, 255, 255, 0.5);
     transform: translateY(-2px);
 }
 
 .user-btn.primary {
+	/* 
     background: var(--white);
     color: var(--text-primary);
     border-color: var(--white);
+     */
+    background: rgba(255, 255, 255, 0.15);
+    color: --text-primary;
+    /* border: 2px solid transparent; */
+    border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
 .user-btn.primary:hover {
