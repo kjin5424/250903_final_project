@@ -1,7 +1,9 @@
 /* topmenubar.css */
 
 .top-menu-bar {
-    background: rgba(255, 255, 255, 0.15);
+    /* background: rgba(255, 255, 255, 0.15); */
+    /* background: #C4BFF5; */
+    background: var(--off-white);
     backdrop-filter: blur(10px);
     padding: 16px 24px;
     border-radius: var(--radius-lg);
@@ -39,7 +41,7 @@
 /* 로고 */
 .logo-tab {
     background: rgba(255, 255, 255, 0.25);
-    color: var(--white);
+    color:  --text-primary;
     padding: 0 20px;
     height: 40px;
     border-radius: var(--radius-md);
@@ -67,7 +69,7 @@
 /* 메뉴 탭 */
 .nav-tab {
     background: rgba(255, 255, 255, 0.15);
-    color: var(--white);
+    color: --text-primary;
     padding: 0 20px;
     height: 42px;
     border-radius: var(--radius-md);
@@ -99,7 +101,7 @@
 /* 로그인/프로필 버튼 */
 .user-btn {
     background: rgba(255, 255, 255, 0.25);
-    color: var(--white);
+    color: --text-primary;
     border: 2px solid rgba(255, 255, 255, 0.3);
     padding: 8px 16px;
     border-radius: var(--radius-md);
@@ -127,7 +129,7 @@
     border-color: var(--white);
      */
     background: rgba(255, 255, 255, 0.15);
-    color: var(--white);
+    color: --text-primary;
     /* border: 2px solid transparent; */
     border: 2px solid rgba(255, 255, 255, 0.3);
 }
