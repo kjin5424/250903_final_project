@@ -1,0 +1,20 @@
+@charset "UTF-8";
+
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #f9fafb;
+    color: #333;
+}
+
+.checkbox:checked {
+    background-color: #10b981;
+    border-color: #10b981;
+}
+
+.toggle-button {
+    cursor: pointer;
+}
+
+button {
+    transition: background-color 0.2s ease;
+}

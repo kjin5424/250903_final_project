@@ -1,0 +1,925 @@
+/**
+ * ============================================
+ * 관리자 페이지 전용 스타일 (manager.css)
+ * ============================================
+ * 관리자 페이지에서 사용되는 특수 컴포넌트들을 정의합니다.
+ * variables.css, common.css, components.css가 먼저 로드되어야 합니다.
+ * 
+ * 포함된 컴포넌트:
+ * - 대시보드 (Dashboard)
+ * - 통계 카드 (Statistics Cards)
+ * - 테이블 (Tables)
+ * - 필터/검색 (Filters/Search)
+ * - 액션 버튼 (Action Buttons)
+ * - 상세 정보 패널 (Detail Panel)
+ * - 상태 뱃지 (Status Badges)
+ */
+
+
+/* ============================================
+   관리자 헤더 (Admin Header)
+   ============================================ */
+
+/**
+ * 관리자 페이지 상단 헤더
+ * - 페이지 제목 및 주요 정보 표시
+ */
+.admin-header {
+    background: linear-gradient(135deg, var(--secondary-dark) 0%, var(--secondary) 100%);
+    padding: var(--padding-lg) var(--padding-xl);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--margin-lg);
+    box-shadow: var(--shadow-md);
+    color: var(--white);
+}
+
+.admin-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-title {
+    font-size: var(--font-size-h2);
+    font-weight: 700;
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    gap: var(--gap-sm);
+}
+
+.admin-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-xs);
+    font-size: var(--font-size-sm);
+    color: rgba(255, 255, 255, 0.8);
+    margin-top: var(--margin-xs);
+}
+
+.admin-breadcrumb-separator {
+    opacity: 0.6;
+}
+
+
+/* ============================================
+   대시보드 통계 카드 (Dashboard Stats)
+   ============================================ */
+
+/**
+ * 대시보드 통계 그리드
+ */
+.dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--gap-lg);
+    margin-bottom: var(--margin-xl);
+}
+
+/**
+ * 통계 카드
+ */
+.stat-box {
+    background: var(--white);
+    padding: var(--padding-lg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-base);
+    border-left: 4px solid var(--gray-light);
+}
+
+.stat-box:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+.stat-box.primary {
+    border-left-color: var(--primary);
+}
+
+.stat-box.secondary {
+    border-left-color: var(--secondary);
+}
+
+.stat-box.accent {
+    border-left-color: var(--accent);
+}
+
+.stat-box-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--margin-md);
+}
+
+.stat-box-title {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.stat-box-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.stat-box-icon.primary {
+    background: rgba(200, 212, 86, 0.15);
+}
+
+.stat-box-icon.secondary {
+    background: rgba(196, 191, 245, 0.15);
+}
+
+.stat-box-icon.accent {
+    background: rgba(226, 86, 104, 0.15);
+}
+
+.stat-box-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: var(--margin-xs);
+}
+
+.stat-box-change {
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.stat-box-change.positive {
+    color: var(--primary-dark);
+}
+
+.stat-box-change.negative {
+    color: var(--accent);
+}
+
+
+/* ============================================
+   필터 & 검색 섹션
+   ============================================ */
+
+/**
+ * 필터 바
+ */
+.filter-bar {
+    background: var(--white);
+    padding: var(--padding-lg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: var(--margin-lg);
+}
+
+.filter-row {
+    display: flex;
+    gap: var(--gap-md);
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-xs);
+    flex: 1;
+    min-width: 200px;
+}
+
+.filter-label {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.filter-input,
+.filter-select {
+    padding: var(--padding-sm) var(--padding-md);
+    border: 2px solid var(--gray-light);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-base);
+    color: var(--text-primary);
+    background: var(--white);
+    transition: var(--transition-base);
+}
+
+.filter-input:focus,
+.filter-select:focus {
+    outline: none;
+    border-color: var(--secondary);
+}
+
+.filter-actions {
+    display: flex;
+    gap: var(--gap-sm);
+    margin-top: auto;
+}
+
+/**
+ * 검색 바
+ */
+.search-section {
+    background: var(--white);
+    padding: var(--padding-lg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: var(--margin-lg);
+}
+
+.search-box {
+    display: flex;
+    gap: var(--gap-sm);
+}
+
+.search-input {
+    flex: 1;
+    padding: var(--padding-sm) var(--padding-lg);
+    border: 2px solid var(--gray-light);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-base);
+    background: var(--off-white);
+    transition: var(--transition-base);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--secondary);
+    background: var(--white);
+}
+
+.search-btn {
+    padding: var(--padding-sm) var(--padding-xl);
+    background: var(--secondary);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-base);
+}
+
+.search-btn:hover {
+    background: var(--secondary-dark);
+}
+
+
+/* ============================================
+   관리자 테이블 (Admin Tables)
+   ============================================ */
+
+/**
+ * 테이블 컨테이너
+ */
+.table-container {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.table-header {
+    padding: var(--padding-lg);
+    border-bottom: 2px solid var(--off-white);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.table-title {
+    font-size: var(--font-size-h4);
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.table-actions {
+    display: flex;
+    gap: var(--gap-sm);
+}
+
+/**
+ * 테이블
+ */
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-table thead {
+    background: var(--off-white);
+}
+
+.admin-table th {
+    padding: var(--padding-md);
+    text-align: left;
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    color: var(--text-primary);
+    border-bottom: 2px solid var(--gray-light);
+    white-space: nowrap;
+}
+
+.admin-table th.sortable {
+    cursor: pointer;
+    user-select: none;
+    transition: var(--transition-base);
+}
+
+.admin-table th.sortable:hover {
+    background: var(--gray-light);
+}
+
+.admin-table td {
+    padding: var(--padding-md);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--off-white);
+}
+
+.admin-table tbody tr {
+    transition: var(--transition-base);
+}
+
+.admin-table tbody tr:hover {
+    background: var(--off-white);
+}
+
+.admin-table tbody tr.selected {
+    background: rgba(196, 191, 245, 0.1);
+}
+
+/**
+ * 테이블 셀 정렬
+ */
+.table-cell-center {
+    text-align: center;
+}
+
+.table-cell-right {
+    text-align: right;
+}
+
+/**
+ * 테이블 체크박스
+ */
+.table-checkbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--secondary);
+}
+
+/**
+ * 테이블 링크
+ */
+.table-link {
+    color: var(--secondary-dark);
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--transition-base);
+}
+
+.table-link:hover {
+    color: var(--secondary);
+    text-decoration: underline;
+}
+
+/**
+ * 테이블 페이지네이션
+ */
+.table-pagination {
+    padding: var(--padding-lg);
+    border-top: 2px solid var(--off-white);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pagination-info {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+}
+
+.pagination-buttons {
+    display: flex;
+    gap: var(--gap-xs);
+}
+
+.pagination-btn {
+    padding: var(--padding-xs) var(--padding-sm);
+    background: var(--white);
+    border: 2px solid var(--gray-light);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-sm);
+    cursor: pointer;
+    transition: var(--transition-base);
+}
+
+.pagination-btn:hover:not(:disabled) {
+    background: var(--secondary-light);
+    border-color: var(--secondary);
+}
+
+.pagination-btn.active {
+    background: var(--secondary);
+    color: var(--white);
+    border-color: var(--secondary);
+    font-weight: 600;
+}
+
+.pagination-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+
+/* ============================================
+   상태 뱃지 (Status Badges)
+   ============================================ */
+
+/**
+ * 관리자용 상태 뱃지
+ */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* 모임 상태 */
+.status-badge.active {
+    background: rgba(200, 212, 86, 0.15);
+    color: var(--primary-dark);
+}
+
+.status-badge.inactive {
+    background: rgba(208, 208, 208, 0.15);
+    color: var(--gray-dark);
+}
+
+.status-badge.pending {
+    background: rgba(255, 193, 7, 0.15);
+    color: #F57C00;
+}
+
+.status-badge.rejected {
+    background: rgba(226, 86, 104, 0.15);
+    color: var(--accent);
+}
+
+.status-badge.approved {
+    background: rgba(76, 175, 80, 0.15);
+    color: #2E7D32;
+}
+
+/* 신고 상태 */
+.status-badge.reported {
+    background: rgba(226, 86, 104, 0.15);
+    color: var(--accent);
+}
+
+.status-badge.reviewing {
+    background: rgba(255, 193, 7, 0.15);
+    color: #F57C00;
+}
+
+.status-badge.resolved {
+    background: rgba(158, 158, 158, 0.15);
+    color: var(--gray-dark);
+}
+
+
+/* ============================================
+   액션 버튼 그룹
+   ============================================ */
+
+/**
+ * 테이블 내 액션 버튼
+ */
+.action-buttons {
+    display: flex;
+    gap: var(--gap-xs);
+}
+
+.action-btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-base);
+    white-space: nowrap;
+}
+
+.action-btn-view {
+    background: var(--secondary-light);
+    color: var(--secondary-dark);
+}
+
+.action-btn-view:hover {
+    background: var(--secondary);
+    color: var(--white);
+}
+
+.action-btn-edit {
+    background: rgba(255, 193, 7, 0.15);
+    color: #F57C00;
+}
+
+.action-btn-edit:hover {
+    background: #FFA726;
+    color: var(--white);
+}
+
+.action-btn-delete {
+    background: rgba(226, 86, 104, 0.15);
+    color: var(--accent);
+}
+
+.action-btn-delete:hover {
+    background: var(--accent);
+    color: var(--white);
+}
+
+.action-btn-approve {
+    background: rgba(76, 175, 80, 0.15);
+    color: #2E7D32;
+}
+
+.action-btn-approve:hover {
+    background: #4CAF50;
+    color: var(--white);
+}
+
+
+/* ============================================
+   상세 정보 패널 (Detail Panel)
+   ============================================ */
+
+/**
+ * 상세 정보 카드
+ */
+.detail-panel {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.detail-header {
+    padding: var(--padding-lg);
+    background: var(--off-white);
+    border-bottom: 2px solid var(--gray-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.detail-title {
+    font-size: var(--font-size-h4);
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.detail-body {
+    padding: var(--padding-lg);
+}
+
+/**
+ * 정보 그리드
+ */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--gap-lg);
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-xs);
+}
+
+.info-label {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.info-value {
+    font-size: var(--font-size-base);
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/**
+ * 정보 리스트 (세로 형태)
+ */
+.info-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-md);
+}
+
+.info-row {
+    display: flex;
+    padding: var(--padding-md);
+    background: var(--off-white);
+    border-radius: var(--radius-md);
+}
+
+.info-row-label {
+    min-width: 140px;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.info-row-value {
+    flex: 1;
+    font-size: var(--font-size-sm);
+    color: var(--text-primary);
+}
+
+
+/* ============================================
+   콘텐츠 박스 (Content Box)
+   ============================================ */
+
+/**
+ * 내용 표시 박스
+ */
+.content-box {
+    background: var(--off-white);
+    padding: var(--padding-lg);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--gray-light);
+    line-height: 1.6;
+    min-height: 100px;
+    font-size: var(--font-size-sm);
+    color: var(--text-primary);
+}
+
+.content-box.highlight {
+    background: rgba(255, 243, 224, 1);
+    border-left: 4px solid #FFA726;
+}
+
+.content-box.warning {
+    background: rgba(255, 235, 238, 1);
+    border-left: 4px solid var(--accent);
+}
+
+
+/* ============================================
+   처리 폼 (Process Form)
+   ============================================ */
+
+/**
+ * 관리자 처리/판단 폼
+ */
+.process-form {
+    background: var(--white);
+    padding: var(--padding-lg);
+    border-radius: var(--radius-lg);
+    border: 2px solid var(--secondary-light);
+}
+
+.process-form-section {
+    margin-bottom: var(--margin-lg);
+}
+
+.process-form-section:last-child {
+    margin-bottom: 0;
+}
+
+.process-form-title {
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: var(--margin-md);
+}
+
+/**
+ * 라디오/체크박스 그룹
+ */
+.radio-group,
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-sm);
+}
+
+.radio-item,
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    padding: var(--padding-md);
+    border: 2px solid var(--gray-light);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition-base);
+}
+
+.radio-item:hover,
+.checkbox-item:hover {
+    background: var(--off-white);
+}
+
+.radio-item input[type="radio"],
+.checkbox-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-right: var(--margin-sm);
+    cursor: pointer;
+    accent-color: var(--secondary);
+}
+
+.radio-item label,
+.checkbox-item label {
+    cursor: pointer;
+    flex: 1;
+    font-size: var(--font-size-sm);
+    color: var(--text-primary);
+}
+
+.radio-desc,
+.checkbox-desc {
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
+
+/* ============================================
+   빈 상태 (Empty State - 관리자용)
+   ============================================ */
+
+/**
+ * 데이터가 없을 때
+ */
+.admin-empty-state {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: var(--padding-xxl);
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+.admin-empty-icon {
+    font-size: 64px;
+    margin-bottom: var(--margin-lg);
+    opacity: 0.4;
+}
+
+.admin-empty-title {
+    font-size: var(--font-size-h4);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: var(--margin-sm);
+}
+
+.admin-empty-description {
+    font-size: var(--font-size-base);
+    color: var(--text-secondary);
+}
+
+
+/* ============================================
+   차트 컨테이너 (Chart Container)
+   ============================================ */
+
+/**
+ * 차트/그래프 영역
+ */
+.chart-container {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: var(--padding-lg);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: var(--margin-lg);
+}
+
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--margin-lg);
+}
+
+.chart-title {
+    font-size: var(--font-size-h4);
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.chart-body {
+    min-height: 300px;
+}
+
+
+/* ============================================
+   반응형 (관리자 페이지)
+   ============================================ */
+
+@media (max-width: 1024px) {
+    .dashboard-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .filter-row {
+        flex-direction: column;
+    }
+    
+    .filter-group {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .admin-header {
+        padding: var(--padding-md) var(--padding-lg);
+    }
+    
+    .admin-title {
+        font-size: 20px;
+    }
+    
+    .dashboard-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .stat-box-value {
+        font-size: 28px;
+    }
+    
+    .table-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--gap-md);
+    }
+    
+    /* 모바일에서 테이블 스크롤 */
+    .table-container {
+        overflow-x: auto;
+    }
+    
+    .admin-table {
+        min-width: 800px;
+    }
+    
+    .table-pagination {
+        flex-direction: column;
+        gap: var(--gap-md);
+    }
+    
+    .action-buttons {
+        flex-wrap: wrap;
+    }
+    
+    .info-row {
+        flex-direction: column;
+        gap: var(--gap-xs);
+    }
+    
+    .info-row-label {
+        min-width: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .search-box {
+        flex-direction: column;
+    }
+    
+    .search-btn {
+        width: 100%;
+    }
+    
+    .filter-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .filter-actions .btn {
+        width: 100%;
+    }
+}

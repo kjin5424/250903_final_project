@@ -1,0 +1,823 @@
+/**
+ * ============================================
+ * 모임방 페이지 전용 스타일 (group-room.css)
+ * ============================================
+ * 모임방 내부에서 사용되는 특수 컴포넌트들을 정의합니다.
+ * variables.css, common.css, components.css가 먼저 로드되어야 합니다.
+ * 
+ * 포함된 컴포넌트:
+ * - 모임 헤더 (Group Header)
+ * - 공지사항 (Notice)
+ * - 일정/투표 카드 (Schedule/Vote Cards)
+ * - 채팅 (Chat)
+ * - 멤버 리스트 (Member List)
+ * - 도전과제 (Challenge)
+ * - 통계 (Statistics)
+ */
+
+
+/* ============================================
+   모임 헤더 (Group Header)
+   ============================================ */
+
+/**
+ * 모임방 상단 헤더
+ * - 모임 정보 표시 (제목, 레벨, 멤버 수 등)
+ * - 배경은 그라디언트 또는 단색
+ */
+.group-header {
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+    color: var(--white);
+    padding: var(--padding-xl);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--margin-lg);
+    box-shadow: var(--shadow-md);
+}
+
+.group-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--margin-lg);
+}
+
+.group-title-area {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-md);
+}
+
+.group-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--white);
+}
+
+.group-level {
+    background: rgba(255, 255, 255, 0.25);
+    padding: 6px 16px;
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+}
+
+.group-actions {
+    display: flex;
+    gap: var(--gap-sm);
+}
+
+.group-action-btn {
+    padding: var(--padding-sm) var(--padding-lg);
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--white);
+    border: 2px solid var(--white);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-base);
+}
+
+.group-action-btn:hover {
+    background: var(--white);
+    color: var(--primary-dark);
+}
+
+/**
+ * 모임 통계 카드
+ */
+.group-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--gap-lg);
+    margin-top: var(--margin-lg);
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.15);
+    padding: var(--padding-lg);
+    border-radius: var(--radius-md);
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: var(--margin-xs);
+}
+
+.stat-label {
+    font-size: var(--font-size-xs);
+    opacity: 0.9;
+}
+
+
+/* ============================================
+   공지사항 (Notice)
+   ============================================ */
+
+/**
+ * 공지사항 섹션
+ */
+.notice-section {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: var(--padding-lg);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: var(--margin-lg);
+}
+
+.notice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--margin-md);
+    padding-bottom: var(--padding-md);
+    border-bottom: 2px solid var(--off-white);
+}
+
+.notice-title {
+    font-size: var(--font-size-h3);
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: var(--gap-sm);
+}
+
+.notice-more {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-base);
+}
+
+.notice-more:hover {
+    color: var(--primary-dark);
+}
+
+/**
+ * 공지사항 리스트
+ */
+.notice-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-md);
+}
+
+.notice-item {
+    padding: var(--padding-md);
+    background: var(--off-white);
+    border-radius: var(--radius-md);
+    border-left: 4px solid var(--primary);
+    transition: var(--transition-base);
+    cursor: pointer;
+}
+
+.notice-item:hover {
+    background: var(--gray-light);
+    transform: translateX(4px);
+}
+
+.notice-item.important {
+    border-left-color: var(--accent);
+    background: rgba(226, 86, 104, 0.05);
+}
+
+.notice-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--margin-xs);
+}
+
+.notice-item-title {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.notice-item-date {
+    font-size: var(--font-size-xs);
+    color: var(--text-tertiary);
+}
+
+.notice-item-content {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+
+/* ============================================
+   일정 카드 (Schedule Card)
+   ============================================ */
+
+/**
+ * 일정 카드
+ * - 다가오는 모임 일정 표시
+ */
+.schedule-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: var(--padding-lg);
+    box-shadow: var(--shadow-sm);
+    border-left: 4px solid var(--secondary);
+}
+
+.schedule-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--margin-md);
+}
+
+.schedule-date {
+    font-size: var(--font-size-h3);
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.schedule-day {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+}
+
+.schedule-status {
+    padding: 6px 14px;
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+}
+
+.schedule-status.upcoming {
+    background: rgba(200, 212, 86, 0.2);
+    color: var(--primary-dark);
+}
+
+.schedule-status.today {
+    background: rgba(226, 86, 104, 0.2);
+    color: var(--accent);
+}
+
+.schedule-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-sm);
+}
+
+.schedule-info-item {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-sm);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+}
+
+
+/* ============================================
+   투표 카드 (Vote Card)
+   ============================================ */
+
+/**
+ * 투표 카드
+ */
+.vote-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: var(--padding-lg);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: var(--margin-lg);
+}
+
+.vote-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--margin-md);
+}
+
+.vote-title {
+    font-size: var(--font-size-h4);
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.vote-deadline {
+    font-size: var(--font-size-xs);
+    color: var(--accent);
+    font-weight: 600;
+}
+
+/**
+ * 투표 옵션
+ */
+.vote-options {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-md);
+    margin-bottom: var(--margin-lg);
+}
+
+.vote-option {
+    padding: var(--padding-md);
+    background: var(--off-white);
+    border: 2px solid var(--gray-light);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition-base);
+    position: relative;
+    overflow: hidden;
+}
+
+.vote-option:hover {
+    border-color: var(--secondary);
+    background: var(--white);
+}
+
+.vote-option.selected {
+    border-color: var(--secondary);
+    background: rgba(196, 191, 245, 0.1);
+}
+
+.vote-option-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+.vote-option-text {
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.vote-option-count {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+/* 투표 진행 바 */
+.vote-option-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: linear-gradient(90deg, var(--secondary-light), var(--secondary));
+    opacity: 0.3;
+    transition: width 0.5s ease;
+}
+
+/**
+ * 투표 입력 폼
+ */
+.vote-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-md);
+}
+
+.vote-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-xs);
+}
+
+.vote-input-label {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+
+/* ============================================
+   채팅 (Chat)
+   ============================================ */
+
+/**
+ * 채팅 컨테이너
+ */
+.chat-container {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: var(--padding-lg);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    height: 600px;
+}
+
+/**
+ * 채팅 메시지 리스트
+ */
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--padding-md);
+    margin-bottom: var(--margin-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-md);
+}
+
+.chat-message {
+    display: flex;
+    gap: var(--gap-sm);
+    max-width: 70%;
+}
+
+.chat-message.own {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+}
+
+.chat-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--gradient-card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.chat-message-content {
+    flex: 1;
+}
+
+.chat-message-header {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-xs);
+    margin-bottom: var(--margin-xs);
+}
+
+.chat-username {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.chat-time {
+    font-size: var(--font-size-xs);
+    color: var(--text-tertiary);
+}
+
+.chat-message-bubble {
+    padding: var(--padding-sm) var(--padding-md);
+    background: var(--off-white);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    color: var(--text-primary);
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+
+.chat-message.own .chat-message-bubble {
+    background: var(--secondary-light);
+}
+
+/**
+ * 채팅 입력 영역
+ */
+.chat-input-area {
+    display: flex;
+    gap: var(--gap-sm);
+    padding-top: var(--padding-md);
+    border-top: 2px solid var(--off-white);
+}
+
+.chat-input {
+    flex: 1;
+    padding: var(--padding-sm) var(--padding-md);
+    border: 2px solid var(--gray-light);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-base);
+    background: var(--white);
+    transition: var(--transition-base);
+}
+
+.chat-input:focus {
+    outline: none;
+    border-color: var(--secondary);
+}
+
+.chat-send-btn {
+    padding: var(--padding-sm) var(--padding-lg);
+    background: var(--secondary);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-base);
+}
+
+.chat-send-btn:hover {
+    background: var(--secondary-dark);
+}
+
+
+/* ============================================
+   멤버 리스트 (Member List)
+   ============================================ */
+
+/**
+ * 멤버 리스트 섹션
+ */
+.member-section {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: var(--padding-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.member-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-sm);
+}
+
+.member-item {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-md);
+    padding: var(--padding-md);
+    background: var(--off-white);
+    border-radius: var(--radius-md);
+    transition: var(--transition-base);
+}
+
+.member-item:hover {
+    background: var(--gray-light);
+}
+
+.member-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--gradient-card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.member-info {
+    flex: 1;
+}
+
+.member-name {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+}
+
+.member-role {
+    font-size: var(--font-size-xs);
+    color: var(--text-secondary);
+}
+
+.member-role.leader {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.member-status {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--gray);
+}
+
+.member-status.online {
+    background: var(--primary);
+    box-shadow: 0 0 8px rgba(200, 212, 86, 0.5);
+}
+
+
+/* ============================================
+   도전과제 (Challenge)
+   ============================================ */
+
+/**
+ * 도전과제 카드
+ */
+.challenge-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: var(--padding-lg);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: var(--margin-lg);
+}
+
+.challenge-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--margin-md);
+}
+
+.challenge-title {
+    font-size: var(--font-size-h4);
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.challenge-progress-text {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+/**
+ * 도전과제 진행 바
+ */
+.challenge-progress-bar {
+    width: 100%;
+    height: 12px;
+    background: var(--gray-light);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    margin-bottom: var(--margin-md);
+}
+
+.challenge-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--primary-light));
+    border-radius: var(--radius-full);
+    transition: width 0.5s ease;
+}
+
+/**
+ * 도전과제 일자별 테이블
+ */
+.challenge-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: var(--margin-md);
+}
+
+.challenge-table th {
+    padding: var(--padding-sm);
+    background: var(--off-white);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--text-primary);
+    text-align: left;
+    border-bottom: 2px solid var(--gray-light);
+}
+
+.challenge-table td {
+    padding: var(--padding-md) var(--padding-sm);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--off-white);
+}
+
+.challenge-table tr:hover {
+    background: var(--off-white);
+}
+
+.challenge-checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: var(--primary);
+}
+
+
+/* ============================================
+   활동 피드 (Activity Feed)
+   ============================================ */
+
+/**
+ * 활동 피드 섹션
+ */
+.activity-feed {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    padding: var(--padding-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-md);
+}
+
+.activity-item {
+    display: flex;
+    gap: var(--gap-md);
+    padding: var(--padding-md);
+    border-left: 3px solid var(--gray-light);
+    transition: var(--transition-base);
+}
+
+.activity-item:hover {
+    background: var(--off-white);
+    border-left-color: var(--secondary);
+}
+
+.activity-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--secondary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.activity-content {
+    flex: 1;
+}
+
+.activity-text {
+    font-size: var(--font-size-sm);
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.activity-time {
+    font-size: var(--font-size-xs);
+    color: var(--text-tertiary);
+}
+
+
+/* ============================================
+   반응형 (모임방)
+   ============================================ */
+
+@media (max-width: 1024px) {
+    .group-title {
+        font-size: 28px;
+    }
+    
+    .group-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .group-header {
+        padding: var(--padding-lg);
+    }
+    
+    .group-header-top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--gap-md);
+    }
+    
+    .group-title {
+        font-size: 24px;
+    }
+    
+    .group-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .chat-container {
+        height: 500px;
+    }
+    
+    .chat-message {
+        max-width: 85%;
+    }
+    
+    .member-item {
+        padding: var(--padding-sm);
+    }
+}
+
+@media (max-width: 480px) {
+    .group-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .stat-value {
+        font-size: 24px;
+    }
+    
+    .chat-container {
+        height: 400px;
+    }
+    
+    .vote-option-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--gap-xs);
+    }
+}
