@@ -7,20 +7,54 @@
 %>
 <!DOCTYPE html>
 <html lang="ko">
+<!-- CSS 파일 로드 (순서 중요!) -->
+<link rel="stylesheet" href="<%=cp%>/css/variables.css">
+<link rel="stylesheet" href="<%=cp%>/css/common.css">
+<link rel="stylesheet" href="<%=cp%>/css/components.css">
+
+<!-- JavaScript -->
+<script>
+	document.addEventListener('DOMContentLoaded', () => 
+	{
+	    // 즐겨찾기 버튼 토글
+	    document.querySelectorAll('.favorite-btn').forEach(btn => 
+	    {
+	        btn.addEventListener('click', (e) => {
+	            e.stopPropagation();
+	            btn.classList.toggle('active');
+	            btn.classList.toggle('inactive');
+	        });
+	    });
+	    
+		 // 마우스 휠로 가로 스크롤 제어
+	    document.querySelectorAll('.meetings-container').forEach(container => 
+	    {
+	    	const minItemsForScroll = 3; // 3개 초과 시만 가로 스크롤 적용
+	        const itemCount = container.children.length;
+	    	
+	        container.addEventListener('wheel', (e) => {
+	            // 기본 세로 스크롤 방지
+	            e.preventDefault();
+	            
+	            // 휠 내림(deltaY > 0) -> 오른쪽으로 스크롤
+	            // 휠 올림(deltaY < 0) -> 왼쪽으로 스크롤
+	            container.scrollLeft += e.deltaY;
+	        });
+	    });
+	});
+</script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>모임 목록 - 공모자들</title>
     
-    <!-- CSS 파일 로드 (순서 중요!) -->
-    <link rel="stylesheet" href="<%=cp%>/css/variables.css">
-    <link rel="stylesheet" href="<%=cp%>/css/common.css">
-    <link rel="stylesheet" href="<%=cp%>/css/components.css">
 </head>
 <body>
     <!-- 상단바 (그라디언트 영역) -->
     <jsp:include page="/common/TopMenuBar.jsp" />
     
+     <!-- Outer Wrapper (그라디언트 영역) -->
+    <div class="outerwrapper">
     <!-- Inner Wrapper (연회색 영역) -->
     <div class="inner-wrapper">
         <div class="content">
@@ -504,28 +538,9 @@
             
         </div>
     </div>
+    </div>
     
     <!-- 하단바 (그라디언트 영역) -->
     <jsp:include page="/common/UnderMenuBar.jsp" />
-    
-    <!-- JavaScript -->
-    <script>
-        // 즐겨찾기 버튼 토글
-        document.querySelectorAll('.favorite-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                btn.classList.toggle('active');
-                btn.classList.toggle('inactive');
-            });
-        });
-        
-        // 가로 스크롤 제어 (마우스 휠)
-        document.querySelectorAll('.scroll-container').forEach(container => {
-            container.addEventListener('wheel', (e) => {
-                e.preventDefault();
-                container.scrollLeft += e.deltaY;
-            });
-        });
-    </script>
 </body>
 </html>
