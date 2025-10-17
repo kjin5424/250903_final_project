@@ -1,762 +1,343 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>공모자들 - 마이페이지</title>
+    <title>공모자들 - 캘린더 일정표</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f7fa;
-        }
-        .navbar {
-            background: #a8d5a1;
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            height: 48px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            gap: 4px;
-        }
-        .nav-left {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            flex: 1;
-        }
-        .nav-right {
-            display: flex;
-            align-items: center;
-            margin-left: auto;
-        }
-        .logo-tab {
-            background: #8bc683;
-            color: white;
-            padding: 0 20px;
-            height: 36px;
-            border-radius: 8px 8px 0 0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: bold;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        .tab {
-            background: #8bc683;
-            color: white;
-            border: none;
-            padding: 0 24px;
-            height: 36px;
-            border-radius: 8px 8px 0 0;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-        }
-        .tab.active {
-            background: #f5f7fa;
-            color: #2d5a29;
-            height: 40px;
-        }
-        .profile-btn {
-            background: #2d5a29;
-            color: white;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 30px auto;
-            padding: 0 20px;
-            display: grid;
-            grid-template-columns: 300px 1fr;
-            gap: 20px;
-        }
-
-        .sidebar {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            height: fit-content;
-            position: sticky;
-            top: 80px;
-        }
-        .profile-section {
-            text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 30px;
-            border-bottom: 2px solid #f0f0f0;
-        }
-        .profile-avatar {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: #8bc683;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
-            margin: 0 auto 15px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-        .profile-name {
-            font-size: 20px;
-            font-weight: bold;
-            color: #2d5a29;
-            margin-bottom: 5px;
-        }
-        .profile-email {
-            font-size: 13px;
-            color: #999;
-        }
-        .profile-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        .stat-box {
-            text-align: center;
-            padding: 15px;
-            background: #f8faf8;
-            border-radius: 8px;
-        }
-        .stat-value {
-            font-size: 24px;
-            font-weight: bold;
-            color: #2d5a29;
-        }
-        .stat-label {
-            font-size: 12px;
-            color: #666;
-            margin-top: 5px;
-        }
-
-        .menu-section {
-            margin-bottom: 25px;
-        }
-        .menu-title {
-            font-size: 13px;
-            color: #999;
-            font-weight: 600;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-        }
-        .menu-item {
-            padding: 12px 15px;
-            margin-bottom: 5px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #666;
-            text-decoration: none;
-        }
-        .menu-item:hover {
-            background: #f0f8f0;
-            color: #2d5a29;
-        }
-        .menu-item.active {
-            background: #e8f5e9;
-            color: #2d5a29;
-            font-weight: 600;
-        }
-        .menu-badge {
-            margin-left: auto;
-            background: #ff6b6b;
-            color: white;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .main-content {
-            background: white;
-            border-radius: 12px;
-            padding: 40px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            min-height: 600px;
-        }
-        .page-title {
-            font-size: 28px;
-            color: #2d5a29;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-        .page-subtitle {
-            color: #666;
-            margin-bottom: 30px;
-        }
-
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-        }
-
-        .group-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-        .group-card {
-            background: #f8faf8;
-            border-radius: 12px;
-            padding: 20px;
-            transition: all 0.3s;
-            border: 2px solid transparent;
-            cursor: pointer;
-            position: relative;
-        }
-        .group-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-            border-color: #8bc683;
-        }
-        .group-badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-        .badge-owner {
-            background: #ffd54f;
-            color: #f57c00;
-        }
-        .badge-member {
-            background: #e3f2fd;
-            color: #1565c0;
-        }
-        .group-image {
-            width: 100%;
-            height: 150px;
-            border-radius: 8px;
-            object-fit: cover;
-            background: #e0e0e0;
-            margin-bottom: 15px;
-        }
-        .group-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 8px;
-        }
-        .group-meta {
-            font-size: 13px;
-            color: #999;
-            margin-bottom: 5px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .group-actions {
-            display: flex;
-            gap: 8px;
-            margin-top: 15px;
-        }
-        .btn-small {
-            padding: 8px 15px;
-            border: none;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            flex: 1;
-        }
-        .btn-primary-small {
-            background: #4CAF50;
-            color: white;
-        }
-        .btn-primary-small:hover {
-            background: #45a049;
-        }
-        .btn-outline-small {
-            background: white;
-            color: #666;
-            border: 1px solid #ddd;
-        }
-        .btn-outline-small:hover {
-            background: #f5f7fa;
-        }
-        .btn-danger-small {
-            background: #f44336;
-            color: white;
-        }
-
-        /* 캘린더 스타일 */
-        .calendar-container {
-            margin-top: 20px;
-        }
-        .calendar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding: 20px;
-            background: #f8faf8;
-            border-radius: 12px;
-        }
-        .calendar-nav {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-        .calendar-nav button {
-            padding: 10px 20px;
-            background: white;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-        .calendar-nav button:hover {
-            background: #8bc683;
-            color: white;
-            border-color: #8bc683;
-        }
-        .calendar-current {
-            font-size: 22px;
-            font-weight: bold;
-            color: #2d5a29;
-        }
-        .calendar-legend {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-        }
-        .legend-color {
-            width: 16px;
-            height: 16px;
-            border-radius: 4px;
-        }
-        .legend-meeting {
-            background: #4CAF50;
-        }
-        .legend-challenge {
-            background: #ff9800;
-        }
-        .legend-vote {
-            background: #2196f3;
-        }
-
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 2px;
-            background: #e0e0e0;
-            border-radius: 12px;
-            overflow: hidden;
-        }
-        .calendar-day-header {
-            background: #2d5a29;
-            color: white;
-            padding: 15px;
-            text-align: center;
-            font-weight: 600;
-            font-size: 14px;
-        }
-        .calendar-day-header.sunday {
-            color: #ff6b6b;
-        }
-        .calendar-day-header.saturday {
-            color: #64b5f6;
-        }
-        .calendar-cell {
-            background: white;
-            padding: 10px;
-            min-height: 120px;
-            position: relative;
-            transition: all 0.3s;
-        }
-        .calendar-cell:hover {
-            background: #f8faf8;
-        }
-        .calendar-cell.other-month {
-            background: #fafafa;
-            opacity: 0.5;
-        }
-        .calendar-cell.today {
-            background: #e8f5e9;
-            border: 2px solid #4CAF50;
-        }
-        .calendar-date {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-        .calendar-cell.sunday .calendar-date {
-            color: #ff6b6b;
-        }
-        .calendar-cell.saturday .calendar-date {
-            color: #2196f3;
-        }
-        .calendar-events {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-        }
-        .calendar-event {
-            padding: 4px 6px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .calendar-event:hover {
-            transform: scale(1.05);
-            z-index: 10;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-        .event-meeting {
-            background: #4CAF50;
-            color: white;
-        }
-        .event-challenge {
-            background: #ff9800;
-            color: white;
-        }
-        .event-vote {
-            background: #2196f3;
-            color: white;
-        }
-        .event-more {
-            color: #999;
-            font-size: 10px;
-            margin-top: 2px;
-            text-align: center;
-        }
-
-        .schedule-list {
-            margin-top: 30px;
-        }
-        .schedule-date-group {
-            margin-bottom: 25px;
-        }
-        .schedule-date-header {
-            font-size: 16px;
-            font-weight: 600;
-            color: #2d5a29;
-            margin-bottom: 10px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #e0e0e0;
+        .calendar-day {
+            min-height: 100px;
         }
         .schedule-item {
-            display: flex;
-            gap: 15px;
-            padding: 15px;
-            background: #f8faf8;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            transition: all 0.3s;
+            font-size: 0.75rem;
             cursor: pointer;
+            transition: all 0.2s;
         }
         .schedule-item:hover {
-            background: #e8f5e9;
-            transform: translateX(5px);
+            transform: translateX(2px);
         }
-        .schedule-time {
-            font-weight: 600;
-            color: #2d5a29;
-            min-width: 80px;
+        .progress-bar {
+            height: 4px;
+            background-color: #e5e7eb;
+            border-radius: 9999px;
+            overflow: hidden;
         }
-        .schedule-content {
-            flex: 1;
+        .progress-fill {
+            height: 100%;
+            transition: width 0.3s;
         }
-        .schedule-title {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 5px;
-        }
-        .schedule-group {
-            font-size: 13px;
-            color: #999;
-        }
-        .schedule-type {
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #999;
-        }
-        .empty-state-icon {
-            font-size: 60px;
-            margin-bottom: 15px;
-        }
-
-        @media (max-width: 1024px) {
-            .container {
-                grid-template-columns: 1fr;
-            }
-            .sidebar {
-                position: relative;
-                top: 0;
-            }
-            .calendar-grid {
-                gap: 1px;
-            }
-            .calendar-cell {
-                min-height: 80px;
-                padding: 5px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .main-content {
-                padding: 25px 20px;
-            }
-            .group-grid {
-                grid-template-columns: 1fr;
-            }
-            .calendar-header {
-                flex-direction: column;
-                gap: 15px;
-            }
-            .calendar-day-header {
-                padding: 10px 5px;
-                font-size: 12px;
-            }
-            .calendar-cell {
-                min-height: 60px;
-                padding: 3px;
-            }
-            .calendar-date {
-                font-size: 12px;
-            }
-            .calendar-event {
-                font-size: 9px;
-                padding: 2px 4px;
-            }
+        .today-label {
+            font-size: 0.65rem;
+            font-weight: bold;
+            color: white;
+            background-color: #3b82f6;
+            padding: 1px 4px;
+            border-radius: 9999px;
+            margin-left: 4px;
         }
     </style>
-    
-    <!-- 용량 너무 커서 서버가 안 돼서 잦바스크립트 하일 따로 만들어서 불러오는 형식으로 했슴다 -->
 </head>
+<body class="bg-gray-50">
+    <div class="min-h-screen p-4">
+        <div class="max-w-7xl mx-auto">
+            <!-- 헤더 -->
+            <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                <div class="flex items-center justify-between mb-6">
+                    <h1 class="text-2xl font-bold text-gray-800 flex items-center gap-2">
+                        <svg class="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        일정 캘린더
+                    </h1>
+                </div>
 
-<!-- 상단바 -->
-<body>
-    <nav class="navbar">
-        <div class="nav-left">
-            <div class="logo-tab">
-                <span>로고 들어갈 자리</span>
+                <!-- 모임 선택 필터 -->
+                <div class="flex gap-2 flex-wrap">
+                    <button onclick="filterGroup('all')" 
+                            id="filter-all" 
+                            data-color="bg-gray-500"
+                            class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-all bg-gray-500 text-white">
+                        전체 모임
+                    </button>
+                    <button onclick="filterGroup('group1')" 
+                            id="filter-group1" 
+                            data-color="bg-blue-500"
+                            class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-all bg-gray-100 text-gray-600 hover:bg-gray-200">
+                        IT 스터디
+                    </button>
+                    <button onclick="filterGroup('group2')" 
+                            id="filter-group2" 
+                            data-color="bg-green-500"
+                            class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-all bg-gray-100 text-gray-600 hover:bg-gray-200">
+                        영어회화 모임
+                    </button>
+                    <button onclick="filterGroup('group3')" 
+                            id="filter-group3" 
+                            data-color="bg-purple-500"
+                            class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-all bg-gray-100 text-gray-600 hover:bg-gray-200">
+                        독서 토론방
+                    </button>
+                </div>
             </div>
-            <a href="?page=notice" class="tab">공지사항</a>
-            <a href="?page=groups" class="tab">모임구경</a>
-            <a href="?page=creategroup" class="tab">모임 개설</a>
-            <a href="?page=mygroups" class="tab">내 모임</a>
+
+            <!-- 캘린더 -->
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <!-- 월 네비게이션 -->
+                <div class="flex items-center justify-between mb-6">
+                    <button onclick="changeMonth(-1)" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                        </svg>
+                    </button>
+                    <h2 id="current-month" class="text-xl font-bold text-gray-800"></h2>
+                    <button onclick="changeMonth(1)" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- 요일 헤더 -->
+                <div class="grid grid-cols-7 gap-2 mb-2">
+                    <div class="text-center font-semibold py-2 text-red-600">일</div>
+                    <div class="text-center font-semibold py-2 text-gray-700">월</div>
+                    <div class="text-center font-semibold py-2 text-gray-700">화</div>
+                    <div class="text-center font-semibold py-2 text-gray-700">수</div>
+                    <div class="text-center font-semibold py-2 text-gray-700">목</div>
+                    <div class="text-center font-semibold py-2 text-gray-700">금</div>
+                    <div class="text-center font-semibold py-2 text-blue-600">토</div>
+                </div>
+
+                <!-- 날짜 그리드 -->
+                <div id="calendar-grid" class="grid grid-cols-7 gap-2"></div>
+            </div>
+
+            <!-- 범례 -->
+            <div class="bg-white rounded-lg shadow-sm p-6 mt-6">
+                <h3 class="font-semibold text-gray-800 mb-4">일정 안내</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                        <span class="text-sm text-gray-700">성사된 모임 일정</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span class="text-sm text-gray-700">참여중인 도전 과제</span>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="nav-right">
-            <a href="mypage.jsp" class="profile-btn active">
-                <span>👤</span>
-                <span>마이페이지</span>
-            </a>
-        </div>
-    </nav>
-
-    <div class="container">
-        <aside class="sidebar">
-            <div class="profile-section">
-                <div class="profile-avatar">👤</div>
-                <div class="profile-name">스터디러버</div>
-                <div class="profile-email">study@example.com</div>
-                <div class="profile-stats">
-                    <div class="stat-box">
-                        <div class="stat-value">3</div>
-                        <div class="stat-label">참여 모임</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-value">1</div>
-                        <div class="stat-label">운영 모임</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="menu-section">
-                <div class="menu-title">모임 관리</div>
-                <a class="menu-item active" onclick="showTab('my-groups')">
-                    <span>📚</span>
-                    <span>내 모임</span>
-                </a>
-                <a class="menu-item" onclick="showTab('calendar')">
-                    <span>📅</span>
-                    <span>내 일정</span>
-                </a>
-            </div>
-        </aside>
-
-        <main class="main-content">
-            <!-- 내 모임 탭 -->
-            <div id="my-groups" class="tab-content active">
-                <h1 class="page-title">📚 내 모임</h1>
-                <p class="page-subtitle">현재 참여 중이거나 운영 중인 모임입니다</p>
-
-                <h3 style="margin-top: 30px; margin-bottom: 15px; color: #666;">운영 중인 모임 (1)</h3>
-                <div class="group-grid">
-                    <div class="group-card" onclick="viewGroup(1)">
-                        <span class="group-badge badge-owner">👑 모임장</span>
-                        <img src="https://via.placeholder.com/300x150" alt="모임 이미지" class="group-image">
-                        <div class="group-title">알고리즘 정복 스터디</div>
-                        <div class="group-meta">
-                            <span>👥</span>
-                            <span>7/10명</span>
-                        </div>
-                        <div class="group-meta">
-                            <span>📍</span>
-                            <span>강남동 • 온라인/오프라인</span>
-                        </div>
-                        <div class="group-meta">
-                            <span>📊</span>
-                            <span>평균 출석률 85%</span>
-                        </div>
-                        <div class="group-actions">
-                            <button class="btn-small btn-primary-small" onclick="event.stopPropagation(); location.href='group_edit.jsp'">⚙️ 관리</button>
-                            <button class="btn-small btn-outline-small" onclick="event.stopPropagation(); viewGroup(1)">👀 보기</button>
-                        </div>
-                    </div>
-                </div>
-
-                <h3 style="margin-top: 40px; margin-bottom: 15px; color: #666;">참여 중인 모임 (2)</h3>
-                <div class="group-grid">
-                    <div class="group-card" onclick="viewGroup(2)">
-                        <span class="group-badge badge-member">참여 중</span>
-                        <img src="https://via.placeholder.com/300x150" alt="모임 이미지" class="group-image">
-                        <div class="group-title">영어 회화 스터디</div>
-                        <div class="group-meta">
-                            <span>👥</span>
-                            <span>5/7명</span>
-                        </div>
-                        <div class="group-meta">
-                            <span>📍</span>
-                            <span>온라인</span>
-                        </div>
-                        <div class="group-meta">
-                            <span>📊</span>
-                            <span>나의 출석률 92%</span>
-                        </div>
-                        <div class="group-actions">
-                            <button class="btn-small btn-primary-small" onclick="event.stopPropagation(); viewGroup(2)">참여하기</button>
-                            <button class="btn-small btn-danger-small" onclick="event.stopPropagation(); leaveGroup(2)">탈퇴</button>
-                        </div>
-                    </div>
-
-                    <div class="group-card" onclick="viewGroup(3)">
-                        <span class="group-badge badge-member">참여 중</span>
-                        <img src="https://via.placeholder.com/300x150" alt="모임 이미지" class="group-image">
-                        <div class="group-title">자바 스프링 부트 스터디</div>
-                        <div class="group-meta">
-                            <span>👥</span>
-                            <span>8/10명</span>
-                        </div>
-                        <div class="group-meta">
-                            <span>📍</span>
-                            <span>역삼동 • 오프라인</span>
-                        </div>
-                        <div class="group-meta">
-                            <span>📊</span>
-                            <span>나의 출석률 78%</span>
-                        </div>
-                        <div class="group-actions">
-                            <button class="btn-small btn-primary-small" onclick="event.stopPropagation(); viewGroup(3)">참여하기</button>
-                            <button class="btn-small btn-danger-small" onclick="event.stopPropagation(); leaveGroup(3)">탈퇴</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 캘린더 탭 -->
-            <div id="calendar" class="tab-content">
-                <h1 class="page-title">📅 내 일정</h1>
-                <p class="page-subtitle">참여 중인 모임의 일정이 자동으로 표시됩니다</p>
-
-                <div class="calendar-container">
-                    <div class="calendar-header">
-                        <div class="calendar-nav">
-                            <button onclick="changeMonth(-1)">◀ 이전</button>
-                            <div class="calendar-current" id="currentMonth">2024년 10월</div>
-                            <button onclick="changeMonth(1)">다음 ▶</button>
-                            <button onclick="goToToday()">오늘</button>
-                        </div>
-                        <div class="calendar-legend">
-                            <div class="legend-item">
-                                <div class="legend-color legend-meeting"></div>
-                                <span>정기 모임</span>
-                            </div>
-                            <div class="legend-item">
-                                <div class="legend-color legend-challenge"></div>
-                                <span>도전 과제</span>
-                            </div>
-                            <div class="legend-item">
-                                <div class="legend-color legend-vote"></div>
-                                <span>투표</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="calendar-grid" id="calendarGrid">
-                        <!-- JavaScript로 동적 생성 -->
-                        
-                    </div>
-                </div>
-
-                <div class="schedule-list">
-                    <h2 style="font-size: 20px; color: #2d5a29; margin-bottom: 20px;">📋 상세 일정</h2>
-                    <div id="scheduleList">
-                        <!-- JavaScript로 동적 생성 -->
-                    </div>
-                </div>
-            </div>
-        </main>
     </div>
+
+    <!-- 일정 상세 모달 -->
+    <div id="schedule-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" onclick="closeModal(event)">
+        <div class="bg-white rounded-lg shadow-xl p-6 max-w-md w-full mx-4" onclick="event.stopPropagation()">
+            <div class="flex justify-between items-start mb-4">
+                <h3 id="modal-title" class="text-xl font-bold text-gray-800"></h3>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <div id="modal-content" class="space-y-3"></div>
+        </div>
+    </div>
+
+    <script>
+        const schedules = [
+            {
+                id: 1, groupId: 'group1', groupName: 'IT 스터디', type: 'meeting',
+                date: new Date(2025, 9, 5), title: '정기 모임', time: '19:00 - 21:00',
+                location: '강남구 역삼동', mode: 'offline', participants: 5, color: 'bg-blue-500'
+            },
+            {
+                id: 2, groupId: 'group2', groupName: '영어회화 모임', type: 'meeting',
+                date: new Date(2025, 9, 12), title: '정기 모임', time: '18:00 - 20:00',
+                location: 'Zoom', mode: 'online', participants: 7, color: 'bg-green-500'
+            },
+            {
+                id: 3, groupId: 'group1', groupName: 'IT 스터디', type: 'challenge',
+                date: new Date(2025, 9, 1), endDate: new Date(2025, 9, 7),
+                title: '일주일 코딩 챌린지', description: '매일 1시간 코딩하기',
+                progress: 85, color: 'bg-blue-500'
+            },
+            {
+                id: 4, groupId: 'group3', groupName: '독서 토론방', type: 'meeting',
+                date: new Date(2025, 9, 19), title: '정기 모임', time: '14:00 - 16:00',
+                location: '서초구 서초동', mode: 'offline', participants: 4, color: 'bg-purple-500'
+            },
+            {
+                id: 5, groupId: 'group2', groupName: '영어회화 모임', type: 'challenge',
+                date: new Date(2025, 9, 10), endDate: new Date(2025, 10, 10),
+                title: '한달 영어 말하기', description: '매일 30분 영어로 대화하기',
+                progress: 60, color: 'bg-green-500'
+            },
+            {
+                id: 6, groupId: 'group1', groupName: 'IT 스터디', type: 'meeting',
+                date: new Date(2025, 9, 26), title: '비정기 모임', time: '15:00 - 18:00',
+                location: 'Google Meet', mode: 'online', participants: 6, color: 'bg-blue-500'
+            }
+        ];
+
+        let currentDate = new Date();
+        let selectedGroup = 'all';
+
+        function getDaysInMonth(date) {
+            const year = date.getFullYear();
+            const month = date.getMonth();
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            const startingDayOfWeek = firstDay.getDay();
+            return { daysInMonth, startingDayOfWeek, year, month };
+        }
+
+        function getSchedulesForDate(date) {
+            return schedules.filter(schedule => {
+                if (selectedGroup !== 'all' && schedule.groupId !== selectedGroup) return false;
+                if (schedule.type === 'meeting') {
+                    return schedule.date.toDateString() === date.toDateString();
+                } else if (schedule.type === 'challenge') {
+                    return date >= schedule.date && date <= schedule.endDate;
+                }
+                return false;
+            });
+        }
+
+        function renderCalendar() {
+            const { daysInMonth, startingDayOfWeek, year, month } = getDaysInMonth(currentDate);
+            const grid = document.getElementById('calendar-grid');
+            const monthDisplay = document.getElementById('current-month');
+            monthDisplay.textContent = year + '년 ' + (month + 1) + '월';
+            grid.innerHTML = '';
+
+            for (let i = 0; i < startingDayOfWeek; i++) {
+                const emptyDiv = document.createElement('div');
+                emptyDiv.className = 'aspect-square';
+                grid.appendChild(emptyDiv);
+            }
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const date = new Date(year, month, day);
+                const daySchedules = getSchedulesForDate(date);
+                const isToday = date.toDateString() === new Date().toDateString();
+                const dayOfWeek = date.getDay();
+
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'border rounded-lg p-2 calendar-day ' + 
+                    (isToday ? 'bg-blue-100 border-blue-500 shadow-md' : 'bg-white border-gray-200');
+
+                const dayNumber = document.createElement('div');
+                dayNumber.className = 'text-sm font-semibold mb-1 ' + 
+                    (isToday ? 'text-blue-700 flex items-center' : 
+                     dayOfWeek === 0 ? 'text-red-600' : 
+                     dayOfWeek === 6 ? 'text-blue-600' : 'text-gray-700');
+                dayNumber.textContent = day;
+                if (isToday) {
+                    const todayLabel = document.createElement('span');
+                    todayLabel.textContent = '오늘';
+                    todayLabel.className = 'today-label';
+                    dayNumber.appendChild(todayLabel);
+                }
+                dayDiv.appendChild(dayNumber);
+
+                const scheduleContainer = document.createElement('div');
+                scheduleContainer.className = 'space-y-1';
+
+                daySchedules.forEach(schedule => {
+                    const scheduleDiv = document.createElement('div');
+                    scheduleDiv.className = 'schedule-item p-1 rounded bg-opacity-10 border-l-2 ' + 
+                        schedule.color + ' border-' + schedule.color.split('-')[1] + '-500';
+                    scheduleDiv.onclick = () => showScheduleDetail(schedule);
+
+                    const titleRow = document.createElement('div');
+                    titleRow.className = 'flex items-center gap-1';
+                    const icon = schedule.type === 'meeting' ? 
+                        '<svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>' :
+                        '<svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>';
+                    titleRow.innerHTML = icon + '<span class="truncate font-medium">' + schedule.title + '</span>';
+                    scheduleDiv.appendChild(titleRow);
+
+                    if (schedule.type === 'meeting' && schedule.time) {
+                        const timeRow = document.createElement('div');
+                        timeRow.className = 'flex items-center gap-1 mt-1 text-gray-600';
+                        timeRow.innerHTML = '<svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><span class="truncate text-xs">' + schedule.time + '</span>';
+                        scheduleDiv.appendChild(timeRow);
+                    }
+
+                    if (schedule.type === 'challenge' && schedule.progress) {
+                        const progressDiv = document.createElement('div');
+                        progressDiv.className = 'mt-1 progress-bar';
+                        progressDiv.innerHTML = '<div class="progress-fill ' + schedule.color + '" style="width: ' + schedule.progress + '%"></div>';
+                        scheduleDiv.appendChild(progressDiv);
+                    }
+
+                    scheduleContainer.appendChild(scheduleDiv);
+                });
+
+                dayDiv.appendChild(scheduleContainer);
+                grid.appendChild(dayDiv);
+            }
+        }
+
+        function changeMonth(offset) {
+            currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + offset, 1);
+            renderCalendar();
+        }
+
+        function filterGroup(groupId) {
+            selectedGroup = groupId;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.className = 'filter-btn px-4 py-2 rounded-full text-sm font-medium transition-all bg-gray-100 text-gray-600 hover:bg-gray-200';
+            });
+            const activeBtn = document.getElementById('filter-' + groupId);
+            if (activeBtn) {
+                const colorClass = activeBtn.getAttribute('data-color') || 'bg-blue-500';
+                activeBtn.className = 'filter-btn px-4 py-2 rounded-full text-sm font-medium transition-all ' + colorClass + ' text-white';
+            }
+            renderCalendar();
+        }
+
+        function showScheduleDetail(schedule) {
+            const modal = document.getElementById('schedule-modal');
+            const title = document.getElementById('modal-title');
+            const content = document.getElementById('modal-content');
+            title.textContent = schedule.title;
+            let html = '<div class="text-sm text-gray-600 mb-2">' + schedule.groupName + '</div>';
+            if (schedule.type === 'meeting') {
+                html += '<div class="flex items-center gap-2 mb-2"><svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><span>' + schedule.time + '</span></div>';
+                html += '<div class="flex items-center gap-2 mb-2"><svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg><span>' + schedule.location + ' (' + (schedule.mode === 'online' ? '온라인' : '오프라인') + ')</span></div>';
+                html += '<div class="flex items-center gap-2"><svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg><span>참가 인원: ' + schedule.participants + '명</span></div>';
+            } else {
+                const startDate = schedule.date.toLocaleDateString('ko-KR');
+                const endDate = schedule.endDate.toLocaleDateString('ko-KR');
+                html += '<div class="mb-2"><strong>기간:</strong> ' + startDate + ' ~ ' + endDate + '</div>';
+                html += '<div class="mb-2"><strong>설명:</strong> ' + schedule.description + '</div>';
+                html += '<div class="mb-2"><strong>달성률:</strong> ' + schedule.progress + '%</div>';
+                html += '<div class="progress-bar"><div class="progress-fill ' + schedule.color + '" style="width: ' + schedule.progress + '%"></div></div>';
+            }
+            content.innerHTML = html;
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal(event) {
+            if (!event || event.target.id === 'schedule-modal') {
+                document.getElementById('schedule-modal').classList.add('hidden');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            renderCalendar();
+        });
+    </script>
 </body>
 </html>
