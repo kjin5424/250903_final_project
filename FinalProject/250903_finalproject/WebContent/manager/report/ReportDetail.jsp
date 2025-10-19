@@ -476,13 +476,13 @@ body {
 		String typeTitle = "";
 		String typeIcon = "";
 		if ("member".equals(reportType)) {
-			typeTitle = "회원신고";
+			typeTitle = "회원";
 			typeIcon = "👤";
 		} else if ("meeting".equals(reportType)) {
-			typeTitle = "모임신고";
+			typeTitle = "모임";
 			typeIcon = "📚";
 		} else {
-			typeTitle = "콘텐츠신고";
+			typeTitle = "콘텐츠";
 			typeIcon = "📝";
 		}
 	%>
@@ -564,20 +564,6 @@ body {
 					<h3 class="content-section-title">📋 신고 사유</h3>
 					<div class="content-text">
 						<%= reason %>
-					</div>
-				</div>
-				
-				<!-- 신고 대상 내용 -->
-				<div class="content-section">
-					<h3 class="content-section-title">🎯 신고 대상 상세 내용</h3>
-					<div class="target-preview">
-						<div class="target-preview-title">
-							<span>⚠️</span>
-							<span>신고된 내용</span>
-						</div>
-						<div class="target-preview-content">
-							<%= targetContent %>
-						</div>
 					</div>
 				</div>
 				
