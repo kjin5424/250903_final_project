@@ -9,216 +9,298 @@
     <meta charset="UTF-8">
     <title>관리자 회원 상세</title>
     <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #E9D9FF;
-            padding: 40px 30px;
-        }
+/* ================================================
+   관리자 페이지 공통 스타일 적용형 (회원 상세용)
+   ================================================ */
 
-        .header {
-            background-color: #BFFCC6;
-            padding: 20px;
-            border-radius: 15px;
-            font-size: 24px;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
+:root {
+    --color-primary: #BFFCC6;
+    --color-primary-dark: #2E7D32;
+    --color-primary-lighter: #E9FBEF;
+    --color-secondary: #E6D6FF;
+    --color-secondary-dark: #6B4FB6;
+    --color-secondary-lighter: #F4EFFF;
+    --color-accent: #FFB3BA;
+    --color-accent-dark: #E65100;
+    --color-text-primary: #333;
+    --color-text-secondary: #666;
+    --color-border: #ddd;
+    --color-border-light: #eee;
+    --color-white: #fff;
+    --radius-md: 8px;
+    --radius-lg: 16px;
+    --radius-full: 999px;
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 12px;
+    --spacing-lg: 20px;
+    --spacing-xl: 32px;
+    --transition-base: 0.2s ease;
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
 
-        .container {
-            background-color: #fff;
-            padding: 25px;
-            border-radius: 20px;
-            max-width: 1400px;
-            margin: 0 auto;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-        }
+/* 기본 세팅 */
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background-color: var(--color-secondary-lighter);
+    padding: var(--spacing-xl) var(--spacing-lg);
+    color: var(--color-text-primary);
+}
 
-        /* 회원 기본 정보 */
-        .member-info {
-            background-color: #F5F5F5;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
+/* 페이지 헤더 */
+.header {
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    font-size: 28px;
+    font-weight: 800;
+    text-align: center;
+    color: var(--color-text-primary);
+    box-shadow: var(--shadow-md);
+    margin-bottom: var(--spacing-xl);
+}
 
-        .member-info-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-        }
+/* 컨테이너 */
+.container {
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: var(--spacing-xl);
+    max-width: 1400px;
+    margin: 0 auto;
+}
 
-        .info-item {
-            display: flex;
-            align-items: center;
-        }
+/* ===============================
+   회원 기본 정보 영역
+   =============================== */
+.member-info {
+    background: var(--color-primary-lighter);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--spacing-xl);
+    box-shadow: var(--shadow-sm);
+}
 
-        .info-label {
-            font-weight: bold;
-            margin-right: 10px;
-            min-width: 120px;
-        }
+.member-info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-md);
+}
 
-        .profile-section {
-            grid-column: 1 / -1;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            padding: 10px;
-            background-color: #fff;
-            border-radius: 8px;
-        }
+.profile-section {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+    background: var(--color-white);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+}
 
-        .profile-img {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background-color: #E6D6FF;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-        }
+.profile-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--color-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+}
 
-        /* 탭 메뉴 */
-        .tab-menu {
-            display: flex;
-            gap: 5px;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #E6D6FF;
-        }
+.info-item {
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+}
 
-        .tab-button {
-            padding: 12px 24px;
-            background-color: transparent;
-            border: none;
-            border-bottom: 3px solid transparent;
-            cursor: pointer;
-            font-size: 15px;
-            font-weight: bold;
-            transition: all 0.3s;
-        }
+.info-label {
+    font-weight: 700;
+    color: var(--color-text-secondary);
+    margin-right: var(--spacing-sm);
+    min-width: 100px;
+}
 
-        .tab-button:hover {
-            background-color: #F0E8FF;
-        }
+/* ===============================
+   탭 메뉴
+   =============================== */
+.tab-menu {
+    display: flex;
+    gap: var(--spacing-sm);
+    border-bottom: 2px solid var(--color-secondary);
+    margin-bottom: var(--spacing-md);
+}
 
-        .tab-button.active {
-            border-bottom-color: #BFFCC6;
-            background-color: #F0E8FF;
-        }
+.tab-button {
+    padding: 12px 20px;
+    font-weight: 700;
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
 
-        /* 탭 컨텐츠 */
-        .tab-content {
-            display: none;
-        }
+.tab-button:hover {
+    background: var(--color-secondary-lighter);
+}
 
-        .tab-content.active {
-            display: block;
-        }
+.tab-button.active {
+    border-bottom-color: var(--color-primary);
+    background: var(--color-secondary-lighter);
+    color: var(--color-primary-dark);
+}
 
-        /* 테이블 공통 스타일 */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
+/* 탭 내용 */
+.tab-content {
+    display: none;
+    animation: fadeIn 0.2s ease;
+}
 
-        th, td {
-            padding: 12px;
-            text-align: center;
-            border-bottom: 1px solid #eee;
-        }
+.tab-content.active {
+    display: block;
+}
 
-        th {
-            background-color: #BFFCC6;
-            font-weight: bold;
-        }
+/* ===============================
+   테이블 공통
+   =============================== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: var(--spacing-md);
+    font-size: 14px;
+}
 
-        tbody tr:nth-child(odd) {
-            background-color: #E6D6FF;
-        }
+th, td {
+    padding: var(--spacing-md);
+    text-align: center;
+    border-bottom: 1px solid var(--color-border-light);
+}
 
-        tbody tr:nth-child(even) {
-            background-color: #F0E8FF;
-        }
+th {
+    background: var(--color-primary-lighter);
+    font-weight: 700;
+    color: var(--color-primary-dark);
+}
 
-        tbody tr:hover {
-            background-color: #D5C5EE;
-            cursor: pointer;
-        }
+tbody tr:hover {
+    background: var(--color-secondary-lighter);
+    cursor: pointer;
+}
 
-        /* 버튼 */
-        .action-buttons {
-            margin-top: 20px;
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-        }
+/* ===============================
+   상태 배지
+   =============================== */
+.status-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: var(--radius-full);
+    font-size: 12px;
+    font-weight: 700;
+}
 
-        .button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 14px;
-        }
+.status-pending {
+    background: #fff3e0;
+    color: #f57c00;
+}
 
-        .btn-suspend {
-            background-color: #FFB3BA;
-        }
+.status-completed {
+    background: var(--color-primary-lighter);
+    color: var(--color-primary-dark);
+}
 
-        .btn-withdraw {
-            background-color: #FFDFBA;
-        }
+.status-rejected {
+    background: #ffebee;
+    color: #c62828;
+}
 
-        .btn-back {
-            background-color: #BFFCC6;
-        }
+/* ===============================
+   버튼 영역
+   =============================== */
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+}
 
-        .button:hover {
-            opacity: 0.8;
-        }
+.button {
+    padding: 10px 24px;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    font-size: 14px;
+}
 
-        /* 상태 표시 */
-        .status-badge {
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: bold;
-        }
+.btn-suspend {
+    background: var(--color-accent);
+    color: white;
+}
 
-        .status-pending {
-            background-color: #FFF4E6;
-            color: #E65100;
-        }
+.btn-withdraw {
+    background: #FFDFBA;
+    color: #444;
+}
 
-        .status-completed {
-            background-color: #E8F5E9;
-            color: #2E7D32;
-        }
+.btn-back {
+    background: var(--color-primary);
+    color: #222;
+}
 
-        .status-rejected {
-            background-color: #FFEBEE;
-            color: #C62828;
-        }
+.button:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+    opacity: 0.9;
+}
 
-        /* 링크 스타일 */
-        .link-text {
-            color: #1976D2;
-            text-decoration: none;
-        }
+/* 링크 스타일 */
+.link-text {
+    color: var(--color-secondary-dark);
+    text-decoration: none;
+}
 
-        .link-text:hover {
-            text-decoration: underline;
-        }
+.link-text:hover {
+    text-decoration: underline;
+}
+
+/* 애니메이션 */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* 반응형 */
+@media (max-width: 1024px) {
+    .member-info-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .member-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .tab-menu {
+        flex-wrap: wrap;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .button {
+        width: 100%;
+    }
+}
     </style>
 </head>
 <body>
-    <div class="header">회원 상세 정보</div>
+    <div class="header">관리자 회원 상세 정보</div>
     <div class="container">
         <!-- 회원 기본 정보 -->
         <div class="member-info">
@@ -280,7 +362,6 @@
                         <th>활동기간</th>
                         <th>역할</th>
                         <th>탈퇴사유</th>
-                        <th>상세보기</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -289,21 +370,18 @@
                         <td>2024-01-20 ~ 현재</td>
                         <td>모임장</td>
                         <td>-</td>
-                        <td><a href="memberMeetingPosts.jsp?userId=user001&meetingId=M001" class="link-text">작성글 보기</a></td>
                     </tr>
                     <tr>
                         <td>웹 개발 모임</td>
                         <td>2024-02-01 ~ 2024-08-15</td>
                         <td>모임원</td>
                         <td>개인 사정</td>
-                        <td><a href="memberMeetingPosts.jsp?userId=user001&meetingId=M002" class="link-text">작성글 보기</a></td>
                     </tr>
                     <tr>
                         <td>알고리즘 연구회</td>
                         <td>2024-03-10 ~ 현재</td>
                         <td>모임원</td>
                         <td>-</td>
-                        <td><a href="memberMeetingPosts.jsp?userId=user001&meetingId=M003" class="link-text">작성글 보기</a></td>
                     </tr>
                 </tbody>
             </table>

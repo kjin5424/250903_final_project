@@ -7,12 +7,11 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>관리자 문의 상세</title>
+    <title>나의 문의/답변 이력</title>
     <style>
         /* ================================================
-           마이페이지 스타일 기반
-           ================================================ */
-
+           마이페이지 스타일
+        ================================================ */
         :root {
             --max-width: 1200px;
             --spacing-xs: 4px;
@@ -33,7 +32,6 @@
             --color-primary: #4f46e5;
             --color-primary-dark: #3730a3;
             --color-primary-lighter: #c7d2fe;
-            --color-secondary-lighter: #dbeafe;
             --color-accent: #f43f5e;
             --color-text-primary: #111827;
             --color-text-secondary: #6b7280;
@@ -110,15 +108,6 @@
             color: var(--color-text-primary);
         }
 
-        .user-link {
-            color: var(--color-primary);
-            text-decoration: none;
-        }
-
-        .user-link:hover {
-            text-decoration: underline;
-        }
-
         .status-badge {
             display: inline-block;
             padding: 2px 8px;
@@ -130,17 +119,6 @@
 
         .status-answered {
             background: var(--color-accent);
-        }
-
-        .form-group {
-            margin-top: var(--spacing-lg);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-label {
-            font-weight: 600;
-            margin-bottom: var(--spacing-sm);
         }
 
         .inquiry-content {
@@ -176,48 +154,15 @@
             white-space: pre-wrap;
         }
 
-        /* 답변 작성 */
-        .answer-form textarea {
-            width: 100%;
-            min-height: 120px;
-            padding: var(--spacing-md);
-            border-radius: var(--radius-md);
-            border: 1px solid var(--color-border-light);
-            resize: vertical;
-            font-size: 15px;
-            font-family: inherit;
-        }
-
-        .button-group {
-            margin-top: var(--spacing-md);
-            display: flex;
-            gap: var(--spacing-md);
-        }
-
-        .button {
-            padding: 10px 24px;
-            border: none;
-            border-radius: var(--radius-md);
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all var(--transition-base);
-            text-decoration: none;
-        }
-
-        .btn-submit {
-            background: var(--color-primary);
-            color: white;
-        }
-
-        .btn-submit:hover {
-            background: var(--color-primary-dark);
-            transform: translateY(-2px);
-        }
-
         .btn-back {
+            display: inline-block;
+            margin-top: var(--spacing-md);
+            padding: 10px 24px;
             background: var(--color-border-light);
             color: var(--color-text-primary);
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            text-decoration: none;
         }
 
         .btn-back:hover {
@@ -234,15 +179,14 @@
                 font-size: 20px;
             }
         }
-
     </style>
 </head>
 <body>
-    <div class="header">관리자 문의 상세 정보</div>
+    <div class="header">문의 내역</div>
     <div class="container">
         <!-- 회원 문의 이력 -->
         <div class="section">
-            <div class="section-title">회원 문의 이력</div>
+            <div class="section-title">문의 내역</div>
             <div class="inquiry-info">
                 <div class="info-item">
                     <span class="info-label">문의번호:</span>
@@ -251,10 +195,6 @@
                 <div class="info-item">
                     <span class="info-label">문의 유형:</span>
                     <span class="inquiry-type">결제/환불</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-label">접수자:</span>
-                    <a href="memberDetail.jsp?id=user004" class="user-link">user004 (김영희)</a>
                 </div>
                 <div class="info-item">
                     <span class="info-label">접수 일자:</span>
@@ -293,7 +233,7 @@
 
         <!-- 관리자 답변 이력 -->
         <div class="section">
-            <div class="section-title">관리자 답변 이력</div>
+            <div class="section-title">답변 내역</div>
             <div class="answer-list">
                 <div class="answer-item">
                     <div class="answer-header">
@@ -329,36 +269,7 @@
             </div>
         </div>
 
-        <!-- 답변 작성 -->
-        <div class="section">
-            <div class="section-title">답변 작성</div>
-            <div class="answer-form">
-                <div class="form-group">
-                    <label class="form-label">답변 내용</label>
-                    <textarea id="answerContent" placeholder="답변 내용을 입력하세요.&#10;&#10;※ 회원에게는 관리자 닉네임, 작성 일자, 답변 내용이 전달됩니다."></textarea>
-                </div>
-
-                <div class="button-group">
-                    <button class="button btn-submit" onclick="submitAnswer()">답변 등록</button>
-                    <button class="button btn-back" onclick="history.back()">목록으로</button>
-                </div>
-            </div>
-        </div>
+        <a href="myInquiries.jsp" class="btn-back">목록으로 돌아가기</a>
     </div>
-
-    <script>
-        function submitAnswer() {
-            var content = document.getElementById('answerContent').value.trim();
-            if(content === '') {
-                alert('답변 내용을 입력해주세요.');
-                return;
-            }
-            if(confirm('답변을 등록하시겠습니까?\n\n답변은 회원에게 즉시 전달됩니다.')) {
-                console.log('답변 내용:', content);
-                alert('답변이 등록되었습니다.');
-                location.reload();
-            }
-        }
-    </script>
 </body>
 </html>
