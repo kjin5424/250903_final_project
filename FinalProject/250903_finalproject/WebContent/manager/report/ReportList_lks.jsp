@@ -524,7 +524,6 @@ body {
 						<td>
 							<div class="action-buttons">
 								<button class="btn-action btn-view" onclick="viewReport(12, 'member')">상세보기</button>
-								<button class="btn-action btn-process" onclick="processReport(12)">처리하기</button>
 							</div>
 						</td>
 					</tr>
@@ -539,7 +538,6 @@ body {
 						<td>
 							<div class="action-buttons">
 								<button class="btn-action btn-view" onclick="viewReport(11, 'member')">상세보기</button>
-								<button class="btn-action btn-process" onclick="processReport(11)">처리하기</button>
 							</div>
 						</td>
 					</tr>
@@ -568,7 +566,6 @@ body {
 						<td>
 							<div class="action-buttons">
 								<button class="btn-action btn-view" onclick="viewReport(9, 'member')">상세보기</button>
-								<button class="btn-action btn-process" onclick="processReport(9)">처리하기</button>
 							</div>
 						</td>
 					</tr>
@@ -583,7 +580,6 @@ body {
 						<td>
 							<div class="action-buttons">
 								<button class="btn-action btn-view" onclick="viewReport(8, 'member')">상세보기</button>
-								<button class="btn-action btn-process" onclick="processReport(8)">처리하기</button>
 							</div>
 						</td>
 					</tr>
@@ -619,7 +615,6 @@ body {
 						<td>
 							<div class="action-buttons">
 								<button class="btn-action btn-view" onclick="viewReport(5, 'meeting')">상세보기</button>
-								<button class="btn-action btn-process" onclick="processReport(5)">처리하기</button>
 							</div>
 						</td>
 					</tr>
@@ -634,7 +629,6 @@ body {
 						<td>
 							<div class="action-buttons">
 								<button class="btn-action btn-view" onclick="viewReport(4, 'meeting')">상세보기</button>
-								<button class="btn-action btn-process" onclick="processReport(4)">처리하기</button>
 							</div>
 						</td>
 					</tr>
@@ -684,7 +678,6 @@ body {
 						<td>
 							<div class="action-buttons">
 								<button class="btn-action btn-view" onclick="viewReport(8, 'content')">상세보기</button>
-								<button class="btn-action btn-process" onclick="processReport(8)">처리하기</button>
 							</div>
 						</td>
 					</tr>
@@ -699,7 +692,6 @@ body {
 						<td>
 							<div class="action-buttons">
 								<button class="btn-action btn-view" onclick="viewReport(7, 'content')">상세보기</button>
-								<button class="btn-action btn-process" onclick="processReport(7)">처리하기</button>
 							</div>
 						</td>
 					</tr>
@@ -714,7 +706,6 @@ body {
 						<td>
 							<div class="action-buttons">
 								<button class="btn-action btn-view" onclick="viewReport(6, 'content')">상세보기</button>
-								<button class="btn-action btn-process" onclick="processReport(6)">처리하기</button>
 							</div>
 						</td>
 					</tr>
