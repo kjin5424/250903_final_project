@@ -1,7 +1,10 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
-<!-- 모임 활동 내역 확인 화면 생성-->
-<!-- 마이페이지 화면 생성 -->
-<%@ page language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<% 
+	request.setCharacterEncoding("UTF-8");
+	String cp = request.getContextPath();
+	request.setAttribute("cp", cp); 
+%>
 
 <!DOCTYPE html>
 
@@ -9,1121 +12,645 @@
 
 <head>
 
-    <meta charset="UTF-8">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>공모자들 - 마이페이지</title>
-
-    <style>
-
-        * {
-
-            margin: 0;
-
-            padding: 0;
-
-            box-sizing: border-box;
-
-        }
-
-        body {
-
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-
-            background: #f5f7fa;
-
-        }
-
-        .navbar {
-
-            background: #a8d5a1;
-
-            display: flex;
-
-            align-items: center;
-
-            padding: 0 20px;
-
-            height: 48px;
-
-            position: sticky;
-
-            top: 0;
-
-            z-index: 1000;
-
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-            gap: 4px;
-
-        }
-
-        .nav-left {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 4px;
-
-            flex: 1;
-
-        }
-
-        .nav-right {
-
-            display: flex;
-
-            align-items: center;
-
-            margin-left: auto;
-
-        }
-
-        .logo-tab {
-
-            background: #8bc683;
-
-            color: white;
-
-            padding: 0 20px;
-
-            height: 36px;
-
-            border-radius: 8px 8px 0 0;
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 8px;
-
-            font-weight: bold;
-
-            font-size: 16px;
-
-            cursor: pointer;
-
-        }
-
-        .tab {
-
-            background: #8bc683;
-
-            color: white;
-
-            border: none;
-
-            padding: 0 24px;
-
-            height: 36px;
-
-            border-radius: 8px 8px 0 0;
-
-            cursor: pointer;
-
-            font-size: 14px;
-
-            font-weight: 500;
-
-            transition: all 0.2s ease;
-
-            text-decoration: none;
-
-            display: flex;
-
-            align-items: center;
-
-        }
-
-        .tab.active {
-
-            background: #f5f7fa;
-
-            color: #2d5a29;
-
-            height: 40px;
-
-        }
-
-        .profile-btn {
-
-            background: #2d5a29;
-
-            color: white;
-
-            border: none;
-
-            padding: 8px 20px;
-
-            border-radius: 6px;
-
-            cursor: pointer;
-
-            font-size: 14px;
-
-            font-weight: 500;
-
-            text-decoration: none;
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 6px;
-
-        }
-
-
-
-        /* 메인 컨테이너 */
-
-        .container {
-
-            max-width: 1400px;
-
-            margin: 30px auto;
-
-            padding: 0 20px;
-
-            display: grid;
-
-            grid-template-columns: 300px 1fr;
-
-            gap: 20px;
-
-        }
-
-
-
-        /* 사이드바 */
-
-        .sidebar {
-
-            background: white;
-
-            border-radius: 12px;
-
-            padding: 30px;
-
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-
-            height: fit-content;
-
-            position: sticky;
-
-            top: 80px;
-
-        }
-
-        .profile-section {
-
-            text-align: center;
-
-            margin-bottom: 30px;
-
-            padding-bottom: 30px;
-
-            border-bottom: 2px solid #f0f0f0;
-
-        }
-
-        .profile-avatar {
-
-            width: 100px;
-
-            height: 100px;
-
-            border-radius: 50%;
-
-            background: #8bc683;
-
-            color: white;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            font-size: 40px;
-
-            margin: 0 auto 15px;
-
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-
-        }
-
-        .profile-name {
-
-            font-size: 20px;
-
-            font-weight: bold;
-
-            color: #2d5a29;
-
-            margin-bottom: 5px;
-
-        }
-
-        .profile-email {
-
-            font-size: 13px;
-
-            color: #999;
-
-        }
-
-        .profile-stats {
-
-            display: grid;
-
-            grid-template-columns: 1fr 1fr;
-
-            gap: 15px;
-
-            margin-top: 20px;
-
-        }
-
-        .stat-box {
-
-            text-align: center;
-
-            padding: 15px;
-
-            background: #f8faf8;
-
-            border-radius: 8px;
-
-        }
-
-        .stat-value {
-
-            font-size: 24px;
-
-            font-weight: bold;
-
-            color: #2d5a29;
-
-        }
-
-        .stat-label {
-
-            font-size: 12px;
-
-            color: #666;
-
-            margin-top: 5px;
-
-        }
-
-
-
-        .menu-section {
-
-            margin-bottom: 25px;
-
-        }
-
-        .menu-title {
-
-            font-size: 13px;
-
-            color: #999;
-
-            font-weight: 600;
-
-            margin-bottom: 10px;
-
-            text-transform: uppercase;
-
-        }
-
-        .menu-item {
-
-            padding: 12px 15px;
-
-            margin-bottom: 5px;
-
-            border-radius: 8px;
-
-            cursor: pointer;
-
-            transition: all 0.3s;
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 10px;
-
-            color: #666;
-
-            text-decoration: none;
-
-        }
-
-        .menu-item:hover {
-
-            background: #f0f8f0;
-
-            color: #2d5a29;
-
-        }
-
-        .menu-item.active {
-
-            background: #e8f5e9;
-
-            color: #2d5a29;
-
-            font-weight: 600;
-
-        }
-
-        .menu-badge {
-
-            margin-left: auto;
-
-            background: #ff6b6b;
-
-            color: white;
-
-            padding: 2px 8px;
-
-            border-radius: 12px;
-
-            font-size: 11px;
-
-            font-weight: 600;
-
-        }
-
-
-
-        /* 메인 컨텐츠 */
-
-        .main-content {
-
-            background: white;
-
-            border-radius: 12px;
-
-            padding: 40px;
-
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-
-            min-height: 600px;
-
-        }
-
-        .page-title {
-
-            font-size: 28px;
-
-            color: #2d5a29;
-
-            margin-bottom: 10px;
-
-            font-weight: bold;
-
-        }
-
-        .page-subtitle {
-
-            color: #666;
-
-            margin-bottom: 30px;
-
-        }
-
-
-
-        /* 탭 컨텐츠 */
-
-        .tab-content {
-
-            display: none;
-
-        }
-
-        .tab-content.active {
-
-            display: block;
-
-        }
-
-
-
-        /* 모임 카드 */
-
-        .group-grid {
-
-            display: grid;
-
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-
-            gap: 20px;
-
-            margin-top: 20px;
-
-        }
-
-        .group-card {
-
-            background: #f8faf8;
-
-            border-radius: 12px;
-
-            padding: 20px;
-
-            transition: all 0.3s;
-
-            border: 2px solid transparent;
-
-            cursor: pointer;
-
-            position: relative;
-
-        }
-
-        .group-card:hover {
-
-            transform: translateY(-4px);
-
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-
-            border-color: #8bc683;
-
-        }
-
-        .group-badge {
-
-            position: absolute;
-
-            top: 15px;
-
-            right: 15px;
-
-            padding: 5px 10px;
-
-            border-radius: 15px;
-
-            font-size: 11px;
-
-            font-weight: 600;
-
-        }
-
-        .badge-owner {
-
-            background: #ffd54f;
-
-            color: #f57c00;
-
-        }
-
-        .badge-member {
-
-            background: #e3f2fd;
-
-            color: #1565c0;
-
-        }
-
-        .badge-pending {
-
-            background: #fff3e0;
-
-            color: #e65100;
-
-        }
-
-        .badge-waiting {
-
-            background: #fce4ec;
-
-            color: #c2185b;
-
-        }
-
-        .group-image {
-
-            width: 100%;
-
-            height: 150px;
-
-            border-radius: 8px;
-
-            object-fit: cover;
-
-            background: #e0e0e0;
-
-            margin-bottom: 15px;
-
-        }
-
-        .group-title {
-
-            font-size: 18px;
-
-            font-weight: 600;
-
-            color: #333;
-
-            margin-bottom: 8px;
-
-        }
-
-        .group-meta {
-
-            font-size: 13px;
-
-            color: #999;
-
-            margin-bottom: 5px;
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 5px;
-
-        }
-
-        .group-actions {
-
-            display: flex;
-
-            gap: 8px;
-
-            margin-top: 15px;
-
-        }
-
-        .btn-small {
-
-            padding: 8px 15px;
-
-            border: none;
-
-            border-radius: 6px;
-
-            font-size: 13px;
-
-            font-weight: 600;
-
-            cursor: pointer;
-
-            transition: all 0.3s;
-
-            flex: 1;
-
-        }
-
-        .btn-primary-small {
-
-            background: #4CAF50;
-
-            color: white;
-
-        }
-
-        .btn-primary-small:hover {
-
-            background: #45a049;
-
-        }
-
-        .btn-outline-small {
-
-            background: white;
-
-            color: #666;
-
-            border: 1px solid #ddd;
-
-        }
-
-        .btn-outline-small:hover {
-
-            background: #f5f7fa;
-
-        }
-
-        .btn-danger-small {
-
-            background: #f44336;
-
-            color: white;
-
-        }
-
-        .btn-danger-small:hover {
-
-            background: #d32f2f;
-
-        }
-
-
-
-        /* 알림 목록 */
-
-        .notification-list {
-
-            margin-top: 20px;
-
-        }
-
-        .notification-item {
-
-            padding: 20px;
-
-            border-bottom: 1px solid #f0f0f0;
-
-            display: flex;
-
-            gap: 15px;
-
-            transition: background 0.3s;
-
-        }
-
-        .notification-item:hover {
-
-            background: #f8faf8;
-
-        }
-
-        .notification-item.unread {
-
-            background: #e8f5e9;
-
-        }
-
-        .notification-icon {
-
-            width: 40px;
-
-            height: 40px;
-
-            border-radius: 50%;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            font-size: 20px;
-
-            flex-shrink: 0;
-
-        }
-
-        .notification-icon.notice {
-
-            background: #e3f2fd;
-
-        }
-
-        .notification-icon.vote {
-
-            background: #fff3e0;
-
-        }
-
-        .notification-icon.comment {
-
-            background: #f3e5f5;
-
-        }
-
-        .notification-content {
-
-            flex: 1;
-
-        }
-
-        .notification-title {
-
-            font-size: 15px;
-
-            font-weight: 600;
-
-            color: #333;
-
-            margin-bottom: 5px;
-
-        }
-
-        .notification-message {
-
-            font-size: 14px;
-
-            color: #666;
-
-            line-height: 1.5;
-
-        }
-
-        .notification-time {
-
-            font-size: 12px;
-
-            color: #999;
-
-            margin-top: 5px;
-
-        }
-
-
-
-        /* 즐겨찾기 */
-
-        .favorite-item {
-
-            display: flex;
-
-            align-items: center;
-
-            padding: 15px;
-
-            border: 2px solid #f0f0f0;
-
-            border-radius: 8px;
-
-            margin-bottom: 10px;
-
-            transition: all 0.3s;
-
-        }
-
-        .favorite-item:hover {
-
-            border-color: #8bc683;
-
-            background: #f8faf8;
-
-        }
-
-        .favorite-icon {
-
-            font-size: 24px;
-
-            margin-right: 15px;
-
-        }
-
-        .favorite-info {
-
-            flex: 1;
-
-        }
-
-        .favorite-name {
-
-            font-size: 16px;
-
-            font-weight: 600;
-
-            color: #333;
-
-        }
-
-        .favorite-status {
-
-            font-size: 13px;
-
-            color: #666;
-
-            margin-top: 3px;
-
-        }
-
-        .favorite-actions {
-
-            display: flex;
-
-            gap: 8px;
-
-        }
-
-
-
-        /* 프로필 설정 폼 */
-
-        .settings-section {
-
-            margin-bottom: 30px;
-
-            padding-bottom: 30px;
-
-            border-bottom: 2px solid #f0f0f0;
-
-        }
-
-        .settings-section:last-child {
-
-            border-bottom: none;
-
-        }
-
-        .section-title {
-
-            font-size: 18px;
-
-            color: #2d5a29;
-
-            margin-bottom: 20px;
-
-            font-weight: 600;
-
-        }
-
-        .form-group {
-
-            margin-bottom: 20px;
-
-        }
-
-        .form-label {
-
-            display: block;
-
-            font-size: 14px;
-
-            font-weight: 600;
-
-            color: #333;
-
-            margin-bottom: 8px;
-
-        }
-
-        .form-input {
-
-            width: 100%;
-
-            padding: 12px;
-
-            border: 2px solid #e0e0e0;
-
-            border-radius: 8px;
-
-            font-size: 14px;
-
-            transition: all 0.3s;
-
-        }
-
-        .form-input:focus {
-
-            outline: none;
-
-            border-color: #8bc683;
-
-            box-shadow: 0 0 0 3px rgba(139, 198, 131, 0.1);
-
-        }
-
-        .form-input:disabled {
-
-            background: #f5f7fa;
-
-            cursor: not-allowed;
-
-        }
-
-        .toggle-switch {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 10px;
-
-            margin-bottom: 15px;
-
-        }
-
-        .switch {
-
-            position: relative;
-
-            width: 50px;
-
-            height: 26px;
-
-        }
-
-        .switch input {
-
-            opacity: 0;
-
-            width: 0;
-
-            height: 0;
-
-        }
-
-        .slider {
-
-            position: absolute;
-
-            cursor: pointer;
-
-            top: 0;
-
-            left: 0;
-
-            right: 0;
-
-            bottom: 0;
-
-            background-color: #ccc;
-
-            transition: .4s;
-
-            border-radius: 26px;
-
-        }
-
-        .slider:before {
-
-            position: absolute;
-
-            content: "";
-
-            height: 20px;
-
-            width: 20px;
-
-            left: 3px;
-
-            bottom: 3px;
-
-            background-color: white;
-
-            transition: .4s;
-
-            border-radius: 50%;
-
-        }
-
-        input:checked + .slider {
-
-            background-color: #4CAF50;
-
-        }
-
-        input:checked + .slider:before {
-
-            transform: translateX(24px);
-
-        }
-
-        .btn-save {
-
-            padding: 12px 30px;
-
-            background: #4CAF50;
-
-            color: white;
-
-            border: none;
-
-            border-radius: 8px;
-
-            font-size: 15px;
-
-            font-weight: 600;
-
-            cursor: pointer;
-
-            transition: all 0.3s;
-
-        }
-
-        .btn-save:hover {
-
-            background: #45a049;
-
-            transform: translateY(-2px);
-
-            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
-
-        }
-
-
-
-        .empty-state {
-
-            text-align: center;
-
-            padding: 60px 20px;
-
-            color: #999;
-
-        }
-
-        .empty-state-icon {
-
-            font-size: 60px;
-
-            margin-bottom: 15px;
-
-        }
-
-        .empty-state-text {
-
-            font-size: 16px;
-
-        }
-
-
-
-        @media (max-width: 1024px) {
-
-            .container {
-
-                grid-template-columns: 1fr;
-
-            }
-
-            .sidebar {
-
-                position: relative;
-
-                top: 0;
-
-            }
-
-        }
-
-
-
-        @media (max-width: 768px) {
-
-            .main-content {
-
-                padding: 25px 20px;
-
-            }
-
-            .group-grid {
-
-                grid-template-columns: 1fr;
-
-            }
-
-        }
-
-    </style>
-
-    <script>
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>공모자들 - 마이페이지</title>
+
+<style>
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	background: #f5f7fa;
+}
+
+.navbar {
+	background: #a8d5a1;
+	display: flex;
+	align-items: center;
+	padding: 0 20px;
+	height: 48px;
+	position: sticky;
+	top: 0;
+	z-index: 1000;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	gap: 4px;
+}
+
+.nav-left {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	flex: 1;
+}
+
+.nav-right {
+	display: flex;
+	align-items: center;
+	margin-left: auto;
+}
+
+.logo-tab {
+	background: #8bc683;
+	color: white;
+	padding: 0 20px;
+	height: 36px;
+	border-radius: 8px 8px 0 0;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-weight: bold;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+.tab {
+	background: #8bc683;
+	color: white;
+	border: none;
+	padding: 0 24px;
+	height: 36px;
+	border-radius: 8px 8px 0 0;
+	cursor: pointer;
+	font-size: 14px;
+	font-weight: 500;
+	transition: all 0.2s ease;
+	text-decoration: none;
+	display: flex;
+	align-items: center;
+}
+
+.tab.active {
+	background: #f5f7fa;
+	color: #2d5a29;
+	height: 40px;
+}
+
+.profile-btn {
+	background: #2d5a29;
+	color: white;
+	border: none;
+	padding: 8px 20px;
+	border-radius: 6px;
+	cursor: pointer;
+	font-size: 14px;
+	font-weight: 500;
+	text-decoration: none;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+/* 메인 컨테이너 */
+.container {
+	max-width: 1400px;
+	margin: 30px auto;
+	padding: 0 20px;
+	display: grid;
+	grid-template-columns: 300px 1fr;
+	gap: 20px;
+}
+
+/* 사이드바 */
+.sidebar {
+	background: white;
+	border-radius: 12px;
+	padding: 30px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+	height: fit-content;
+	position: sticky;
+	top: 80px;
+}
+
+.profile-section {
+	text-align: center;
+	margin-bottom: 30px;
+	padding-bottom: 30px;
+	border-bottom: 2px solid #f0f0f0;
+}
+
+.profile-avatar {
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	background: #8bc683;
+	color: white;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 40px;
+	margin: 0 auto 15px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.profile-name {
+	font-size: 20px;
+	font-weight: bold;
+	color: #2d5a29;
+	margin-bottom: 5px;
+}
+
+.profile-email {
+	font-size: 13px;
+	color: #999;
+}
+
+.profile-stats {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 15px;
+	margin-top: 20px;
+}
+
+.stat-box {
+	text-align: center;
+	padding: 15px;
+	background: #f8faf8;
+	border-radius: 8px;
+}
+
+.stat-value {
+	font-size: 24px;
+	font-weight: bold;
+	color: #2d5a29;
+}
+
+.stat-label {
+	font-size: 12px;
+	color: #666;
+	margin-top: 5px;
+}
+
+.menu-section {
+	margin-bottom: 25px;
+}
+
+.menu-title {
+	font-size: 13px;
+	color: #999;
+	font-weight: 600;
+	margin-bottom: 10px;
+	text-transform: uppercase;
+}
+
+.menu-item {
+	padding: 12px 15px;
+	margin-bottom: 5px;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: all 0.3s;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	color: #666;
+	text-decoration: none;
+}
+
+.menu-item:hover {
+	background: #f0f8f0;
+	color: #2d5a29;
+}
+
+.menu-item.active {
+	background: #e8f5e9;
+	color: #2d5a29;
+	font-weight: 600;
+}
+
+.menu-badge {
+	margin-left: auto;
+	background: #ff6b6b;
+	color: white;
+	padding: 2px 8px;
+	border-radius: 12px;
+	font-size: 11px;
+	font-weight: 600;
+}
+
+/* 메인 컨텐츠 */
+.main-content {
+	background: white;
+	border-radius: 12px;
+	padding: 40px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+	min-height: 600px;
+}
+
+.page-title {
+	font-size: 28px;
+	color: #2d5a29;
+	margin-bottom: 10px;
+	font-weight: bold;
+}
+
+.page-subtitle {
+	color: #666;
+	margin-bottom: 30px;
+}
+
+/* 탭 컨텐츠 */
+.tab-content {
+	display: none;
+}
+
+.tab-content.active {
+	display: block;
+}
+
+/* 모임 카드 */
+.group-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	gap: 20px;
+	margin-top: 20px;
+}
+
+.group-card {
+	background: #f8faf8;
+	border-radius: 12px;
+	padding: 20px;
+	transition: all 0.3s;
+	border: 2px solid transparent;
+	cursor: pointer;
+	position: relative;
+}
+
+.group-card:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+	border-color: #8bc683;
+}
+
+.group-badge {
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	padding: 5px 10px;
+	border-radius: 15px;
+	font-size: 11px;
+	font-weight: 600;
+}
+
+.badge-owner {
+	background: #ffd54f;
+	color: #f57c00;
+}
+
+.badge-member {
+	background: #e3f2fd;
+	color: #1565c0;
+}
+
+.badge-pending {
+	background: #fff3e0;
+	color: #e65100;
+}
+
+.badge-waiting {
+	background: #fce4ec;
+	color: #c2185b;
+}
+
+.group-image {
+	width: 100%;
+	height: 150px;
+	border-radius: 8px;
+	object-fit: cover;
+	background: #e0e0e0;
+	margin-bottom: 15px;
+}
+
+.group-title {
+	font-size: 18px;
+	font-weight: 600;
+	color: #333;
+	margin-bottom: 8px;
+}
+
+.group-meta {
+	font-size: 13px;
+	color: #999;
+	margin-bottom: 5px;
+	display: flex;
+	align-items: center;
+	gap: 5px;
+}
+
+.group-actions {
+	display: flex;
+	gap: 8px;
+	margin-top: 15px;
+}
+
+.btn-small {
+	padding: 8px 15px;
+	border: none;
+	border-radius: 6px;
+	font-size: 13px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s;
+	flex: 1;
+}
+
+.btn-primary-small {
+	background: #4CAF50;
+	color: white;
+}
+
+.btn-primary-small:hover {
+	background: #45a049;
+}
+
+.btn-outline-small {
+	background: white;
+	color: #666;
+	border: 1px solid #ddd;
+}
+
+.btn-outline-small:hover {
+	background: #f5f7fa;
+}
+
+.btn-danger-small {
+	background: #f44336;
+	color: white;
+}
+
+.btn-danger-small:hover {
+	background: #d32f2f;
+}
+
+/* 알림 목록 */
+.notification-list {
+	margin-top: 20px;
+}
+
+.notification-item {
+	padding: 20px;
+	border-bottom: 1px solid #f0f0f0;
+	display: flex;
+	gap: 15px;
+	transition: background 0.3s;
+}
+
+.notification-item:hover {
+	background: #f8faf8;
+}
+
+.notification-item.unread {
+	background: #e8f5e9;
+}
+
+.notification-icon {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 20px;
+	flex-shrink: 0;
+}
+
+.notification-icon.notice {
+	background: #e3f2fd;
+}
+
+.notification-icon.vote {
+	background: #fff3e0;
+}
+
+.notification-icon.comment {
+	background: #f3e5f5;
+}
+
+.notification-content {
+	flex: 1;
+}
+
+.notification-title {
+	font-size: 15px;
+	font-weight: 600;
+	color: #333;
+	margin-bottom: 5px;
+}
+
+.notification-message {
+	font-size: 14px;
+	color: #666;
+	line-height: 1.5;
+}
+
+.notification-time {
+	font-size: 12px;
+	color: #999;
+	margin-top: 5px;
+}
+
+/* 즐겨찾기 */
+.favorite-item {
+	display: flex;
+	align-items: center;
+	padding: 15px;
+	border: 2px solid #f0f0f0;
+	border-radius: 8px;
+	margin-bottom: 10px;
+	transition: all 0.3s;
+}
+
+.favorite-item:hover {
+	border-color: #8bc683;
+	background: #f8faf8;
+}
+
+.favorite-icon {
+	font-size: 24px;
+	margin-right: 15px;
+}
+
+.favorite-info {
+	flex: 1;
+}
+
+.favorite-name {
+	font-size: 16px;
+	font-weight: 600;
+	color: #333;
+}
+
+.favorite-status {
+	font-size: 13px;
+	color: #666;
+	margin-top: 3px;
+}
+
+.favorite-actions {
+	display: flex;
+	gap: 8px;
+}
+
+/* 프로필 설정 폼 */
+.settings-section {
+	margin-bottom: 30px;
+	padding-bottom: 30px;
+	border-bottom: 2px solid #f0f0f0;
+}
+
+.settings-section:last-child {
+	border-bottom: none;
+}
+
+.section-title {
+	font-size: 18px;
+	color: #2d5a29;
+	margin-bottom: 20px;
+	font-weight: 600;
+}
+
+.form-group {
+	margin-bottom: 20px;
+}
+
+.form-label {
+	display: block;
+	font-size: 14px;
+	font-weight: 600;
+	color: #333;
+	margin-bottom: 8px;
+}
+
+.form-input {
+	width: 100%;
+	padding: 12px;
+	border: 2px solid #e0e0e0;
+	border-radius: 8px;
+	font-size: 14px;
+	transition: all 0.3s;
+}
+
+.form-input:focus {
+	outline: none;
+	border-color: #8bc683;
+	box-shadow: 0 0 0 3px rgba(139, 198, 131, 0.1);
+}
+
+.form-input:disabled {
+	background: #f5f7fa;
+	cursor: not-allowed;
+}
+
+.toggle-switch {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 15px;
+}
+
+.switch {
+	position: relative;
+	width: 50px;
+	height: 26px;
+}
+
+.switch input {
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+
+.slider {
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #ccc;
+	transition: .4s;
+	border-radius: 26px;
+}
+
+.slider:before {
+	position: absolute;
+	content: "";
+	height: 20px;
+	width: 20px;
+	left: 3px;
+	bottom: 3px;
+	background-color: white;
+	transition: .4s;
+	border-radius: 50%;
+}
+
+input:checked+.slider {
+	background-color: #4CAF50;
+}
+
+input:checked+.slider:before {
+	transform: translateX(24px);
+}
+
+.btn-save {
+	padding: 12px 30px;
+	background: #4CAF50;
+	color: white;
+	border: none;
+	border-radius: 8px;
+	font-size: 15px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s;
+}
+
+.btn-save:hover {
+	background: #45a049;
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.empty-state {
+	text-align: center;
+	padding: 60px 20px;
+	color: #999;
+}
+
+.empty-state-icon {
+	font-size: 60px;
+	margin-bottom: 15px;
+}
+
+.empty-state-text {
+	font-size: 16px;
+}
+
+@media ( max-width : 1024px) {
+	.container {
+		grid-template-columns: 1fr;
+	}
+	.sidebar {
+		position: relative;
+		top: 0;
+	}
+}
+
+@media ( max-width : 768px) {
+	.main-content {
+		padding: 25px 20px;
+	}
+	.group-grid {
+		grid-template-columns: 1fr;
+	}
+}
+</style>
+
+<script>
 
         function showTab(tabId) {
 
@@ -1147,7 +674,23 @@
 
             document.getElementById(tabId).classList.add('active');
 
-            event.target.classList.add('active');
+
+
+            // 사이드바 메뉴들 중 같은 data-target을 가진 요소를 active로 설정 (있으면)
+
+            const menuToActivate = document.querySelector(`.menu-item[data-target="${tabId}"]`);
+
+            if (menuToActivate) menuToActivate.classList.add('active');
+
+
+
+            // 오른쪽 상단 탭 스타일이 필요한 경우 (페이지 상단 nav의 .tab들도 포함)
+
+            const topTabs = document.querySelectorAll('.tab');
+
+            topTabs.forEach(t => t.classList.remove('active'));
+
+            // (상단 nav 링크는 href 쿼리로 처리되는 경우가 있어 직접 활성화는 따로 하지 않음)
 
         }
 
@@ -1213,432 +756,1141 @@
 
         }
 
+        // ✅ 프로필 이미지 변경 미리보기 기능
+
+        function previewProfileImage(event) {
+
+            const file = event.target.files[0];
+
+            if (file) {
+
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+
+                    document.getElementById('profileImage').src = e.target.result;
+
+                };
+
+                reader.readAsDataURL(file);
+
+            }
+
+        }
+
     </script>
 
 </head>
 
 <body>
 
-    <nav class="navbar">
+	<nav class="navbar">
 
-        <div class="nav-left">
+		<div class="nav-left">
 
-            <div class="logo-tab">
+			<div class="logo-tab">
 
-                <span>로고 들어갈 자리</span>
+				<span>로고 들어갈 자리</span>
 
-            </div>
+			</div>
 
-            <a href="?page=notice" class="tab">공지사항</a>
+			<a href="?page=notice" class="tab">공지사항</a> <a href="?page=groups"
+				class="tab">모임구경</a> <a href="?page=creategroup" class="tab">모임
+				개설</a> <a href="?page=mygroups" class="tab">내 모임</a>
 
-            <a href="?page=groups" class="tab">모임구경</a>
+		</div>
 
-            <a href="?page=creategroup" class="tab">모임 개설</a>
+		<div class="nav-right">
 
-            <a href="?page=mygroups" class="tab">내 모임</a>
+			<a href="mypage.jsp" class="profile-btn active"> <span>👤</span>
 
-        </div>
+				<span>마이페이지</span>
 
-        <div class="nav-right">
+			</a>
 
-            <a href="mypage.jsp" class="profile-btn active">
+		</div>
 
-                <span>👤</span>
-
-                <span>마이페이지</span>
-
-            </a>
-
-        </div>
-
-    </nav>
+	</nav>
 
 
 
-    <div class="container">
+	<div class="container">
 
-        <!-- 사이드바 -->
+		<!-- 사이드바 -->
 
-        <aside class="sidebar">
+		<aside class="sidebar">
 
-            <div class="profile-section">
+			<div class="profile-section">
 
-                <div class="profile-avatar">👤</div>
+				<div class="profile-avatar">👤</div>
 
-                <div class="profile-name">스터디러버</div>
+				<div class="profile-name">스터디러버</div>
 
-                <div class="profile-email">study@example.com</div>
+				<div class="profile-email">study@example.com</div>
 
-                <div class="profile-stats">
+				<div class="profile-stats">
 
-                    <div class="stat-box">
+					<div class="stat-box">
 
-                        <div class="stat-value">3</div>
+						<div class="stat-value">3</div>
 
-                        <div class="stat-label">참여 모임</div>
+						<div class="stat-label">참여 모임</div>
+
+					</div>
+
+					<div class="stat-box">
+
+						<div class="stat-value">1</div>
+
+						<div class="stat-label">운영 모임</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+
+
+			<div class="menu-section">
+
+				<div class="menu-title">모임 관리</div>
+
+				<a class="menu-item" data-target="my-groups"
+					onclick="showTab('my-groups')"> <span>📚</span> <span>내
+						모임</span>
+
+				</a> <a class="menu-item" data-target="pending-groups"
+					onclick="showTab('pending-groups')"> <span>⏳</span> <span>신청
+						중인 모임</span> <span class="menu-badge">2</span>
+
+				</a> <a class="menu-item" data-target="past-groups"
+					onclick="showTab('past-groups')"> <span>📜</span> <span>이전
+						모임</span>
+
+				</a>
+
+			</div>
+
+
+
+			<div class="menu-section">
+
+				<div class="menu-title">활동</div>
+
+				<a class="menu-item" data-target="notifications"
+					onclick="showTab('notifications')"> <span>🔔</span> <span>알림</span>
+
+					<span class="menu-badge">5</span>
+
+				</a> <a class="menu-item" data-target="favorites"
+					onclick="showTab('favorites')"> <span>⭐</span> <span>즐겨찾기</span>
+
+				</a> <a class="menu-item" data-target="calendar"
+					onclick="showTab('calendar')"> <span>📅</span> <span>내
+						일정</span>
+
+				</a>
+
+			</div>
+
+
+
+			<div class="menu-section">
+
+				<div class="menu-title">설정</div>
+
+				<a class="menu-item" data-target="profile-settings"
+					onclick="showTab('profile-settings')"> <span>⚙️</span> <span>프로필
+						설정</span>
+
+				</a> <a class="menu-item" data-target="notification-settings"
+					onclick="showTab('notification-settings')"> <span>🔕</span> <span>알림
+						설정</span>
+
+				</a>
+
+			</div>
+
+		</aside>
+
+
+
+		<!-- 메인 컨텐츠 -->
+
+		<main class="main-content">
+
+			<!-- 내 모임 탭 -->
+
+			<div id="my-groups" class="tab-content">
+
+				<h1 class="page-title">📚 내 모임</h1>
+
+				<p class="page-subtitle">현재 참여 중이거나 운영 중인 모임입니다</p>
+
+
+
+				<h3 style="margin-top: 30px; margin-bottom: 15px; color: #666;">운영
+					중인 모임 (1)</h3>
+
+				<div class="group-grid">
+
+					<div class="group-card" onclick="viewGroup(1)">
+
+						<span class="group-badge badge-owner">👑 모임장</span> <img
+							src="https://via.placeholder.com/300x150" alt="모임 이미지"
+							class="group-image">
+
+						<div class="group-title">알고리즘 정복 스터디</div>
+
+						<div class="group-meta">
+
+							<span>👥</span> <span>7/10명</span>
+
+						</div>
+
+						<div class="group-meta">
+
+							<span>📍</span> <span>강남동 • 온라인/오프라인</span>
+
+						</div>
+
+						<div class="group-meta">
+
+							<span>📊</span> <span>평균 출석률 85%</span>
+
+						</div>
+
+						<div class="group-actions">
+
+							<button class="btn-small btn-primary-small"
+								onclick="event.stopPropagation(); location.href='group_edit.jsp'">⚙️
+								관리</button>
+
+							<button class="btn-small btn-outline-small"
+								onclick="event.stopPropagation(); viewGroup(1)">👀 보기</button>
+
+						</div>
+
+					</div>
+
+				</div>
+
+
+
+				<h3 style="margin-top: 40px; margin-bottom: 15px; color: #666;">참여
+					중인 모임 (2)</h3>
+
+				<div class="group-grid">
+
+					<div class="group-card" onclick="viewGroup(2)">
+
+						<span class="group-badge badge-member">참여 중</span> <img
+							src="https://via.placeholder.com/300x150" alt="모임 이미지"
+							class="group-image">
+
+						<div class="group-title">영어 회화 스터디</div>
+
+						<div class="group-meta">
+
+							<span>👥</span> <span>5/7명</span>
+
+						</div>
+
+						<div class="group-meta">
+
+							<span>📍</span> <span>온라인</span>
+
+						</div>
+
+						<div class="group-meta">
+
+							<span>📊</span> <span>나의 출석률 92%</span>
+
+						</div>
+
+						<div class="group-actions">
+
+							<button class="btn-small btn-primary-small"
+								onclick="event.stopPropagation(); viewGroup(2)">참여하기</button>
+
+							<button class="btn-small btn-danger-small"
+								onclick="event.stopPropagation(); leaveGroup(2)">탈퇴</button>
+
+						</div>
+
+					</div>
+
+
+
+					<div class="group-card" onclick="viewGroup(3)">
+
+						<span class="group-badge badge-member">참여 중</span> <img
+							src="https://via.placeholder.com/300x150" alt="모임 이미지"
+							class="group-image">
+
+						<div class="group-title">자바 스프링 부트 스터디</div>
+
+						<div class="group-meta">
+
+							<span>👥</span> <span>8/10명</span>
+
+						</div>
+
+						<div class="group-meta">
+
+							<span>📍</span> <span>역삼동 • 오프라인</span>
+
+						</div>
+
+						<div class="group-meta">
+
+							<span>📊</span> <span>나의 출석률 78%</span>
+
+						</div>
+
+						<div class="group-actions">
+
+							<button class="btn-small btn-primary-small"
+								onclick="event.stopPropagation(); viewGroup(3)">참여하기</button>
+
+							<button class="btn-small btn-danger-small"
+								onclick="event.stopPropagation(); leaveGroup(3)">탈퇴</button>
+
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+
+
+			<!-- 신청 중인 모임 탭 -->
+
+			<div id="pending-groups" class="tab-content">
+
+				<h1 class="page-title">⏳ 신청 중인 모임</h1>
+
+				<p class="page-subtitle">참여 신청 중이거나 개설 대기 중인 모임입니다</p>
+
+
+
+				<h3 style="margin-top: 30px; margin-bottom: 15px; color: #666;">참여
+					신청 중 (2)</h3>
+
+				<div class="group-grid">
+
+					<div class="group-card">
+
+						<span class="group-badge badge-pending">승인 대기</span> <img
+							src="https://via.placeholder.com/300x150" alt="모임 이미지"
+							class="group-image">
+
+						<div class="group-title">토익 900+ 목표반</div>
+
+						<div class="group-meta">
+
+							<span>📅</span> <span>신청일: 2024-10-08</span>
+
+						</div>
+
+						<div class="group-meta">
+
+							<span>👥</span> <span>6/10명</span>
+
+						</div>
+
+						<div class="group-actions">
+
+							<button class="btn-small btn-outline-small"
+								onclick="viewGroup(4)">상세보기</button>
+
+							<button class="btn-small btn-danger-small"
+								onclick="cancelApplication(4)">신청 취소</button>
+
+						</div>
+
+					</div>
+
+
+
+					<div class="group-card">
+
+						<span class="group-badge badge-pending">승인 대기</span> <img
+							src="https://via.placeholder.com/300x150" alt="모임 이미지"
+							class="group-image">
+
+						<div class="group-title">프론트엔드 개발 스터디</div>
+
+						<div class="group-meta">
+
+							<span>📅</span> <span>신청일: 2024-10-09</span>
+
+						</div>
+
+						<div class="group-meta">
+
+							<span>👥</span> <span>4/7명</span>
+
+						</div>
+
+						<div class="group-actions">
+
+							<button class="btn-small btn-outline-small"
+								onclick="viewGroup(5)">상세보기</button>
+
+							<button class="btn-small btn-danger-small"
+								onclick="cancelApplication(5)">신청 취소</button>
+
+						</div>
+
+					</div>
+
+				</div>
+
+
+
+				<h3 style="margin-top: 40px; margin-bottom: 15px; color: #666;">개설
+					대기 중 (1)</h3>
+
+				<div class="group-grid">
+
+					<div class="group-card">
+
+						<span class="group-badge badge-waiting">개설 신청중</span> <img
+							src="https://via.placeholder.com/300x150" alt="모임 이미지"
+							class="group-image">
+
+						<div class="group-title">초보자를 위한 파이썬 입문</div>
+
+						<div class="group-meta">
+
+							<span>📍</span> <span>신촌동 • 오프라인</span>
+
+						</div>
+
+						<div class="group-meta">
+
+							<span>📅</span> <span>신청일: 2024-10-07</span>
+
+						</div>
+
+						<div class="group-actions">
+
+							<button class="btn-small btn-outline-small"
+								onclick="viewGroup(6)">상세보기</button>
+
+							<button class="btn-small btn-danger-small"
+								onclick="cancelApplication(6)">신청 취소</button>
+
+						</div>
+
+					</div>
+
+				</div>
+
+
+
+				<div style="margin-top: 30px; color: #666;">
+
+					<strong>참고:</strong> 신청/개설 대기 모임은 승인 여부에 따라 목록에서 자동으로 이동됩니다. 필요 시
+					'신청 취소' 버튼으로 신청을 철회할 수 있습니다.
+
+				</div>
+
+			</div>
+
+
+
+			<!-- 이전 모임 탭 -->
+
+			<div id="past-groups" class="tab-content">
+
+				<h1 class="page-title">📜 이전 모임</h1>
+
+				<p class="page-subtitle">종료되었거나 과거 기록으로 남긴 모임입니다</p>
+
+
+
+				<div class="group-grid" style="margin-top: 20px;">
+
+					<div class="group-card">
+
+						<img src="https://via.placeholder.com/300x150" alt="모임 이미지"
+							class="group-image">
+
+						<div class="group-title">중급 자바 스터디 (종료)</div>
+
+						<div class="group-meta">
+
+							<span>📅</span> <span>기간: 2024-06-01 ~ 2024-09-30</span>
+
+						</div>
+
+						<div class="group-meta">
+
+							<span>📊</span> <span>최종 출석률 82%</span>
+
+						</div>
+
+						<div class="group-actions">
+
+							<button class="btn-small btn-outline-small"
+								onclick="viewGroup(7)">기록 보기</button>
+
+
+
+						</div>
+
+					</div>
+
+
+
+					<div class="group-card">
+
+						<img src="https://via.placeholder.com/300x150" alt="모임 이미지"
+							class="group-image">
+
+						<div class="group-title">토익 스터디 (종료)</div>
+
+						<div class="group-meta">
+
+							<span>📅</span> <span>기간: 2023-11-01 ~ 2024-02-28</span>
+
+						</div>
+
+						<div class="group-meta">
+
+							<span>📊</span> <span>평균 점수 상승 80점</span>
+
+						</div>
+
+						<div class="group-actions">
+
+							<button class="btn-small btn-outline-small"
+								onclick="viewGroup(8)">기록 보기</button>
+
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+
+
+			<!-- 알림 탭 -->
+
+			<div id="notifications" class="tab-content">
+
+				<h1 class="page-title">🔔 알림</h1>
+
+				<p class="page-subtitle">최근 활동 알림을 확인하세요</p>
+
+
+
+				<div class="notification-list">
+
+					<div class="notification-item unread">
+
+						<div class="notification-icon notice">🔔</div>
+
+						<div class="notification-content">
+
+							<div class="notification-title">새로운 모임 승인 알림</div>
+
+							<div class="notification-message">'초보자를 위한 파이썬 입문' 모임이
+								승인되었습니다. 활동을 시작해보세요!</div>
+
+							<div class="notification-time">2024-10-10 09:12</div>
+
+						</div>
+
+					</div>
+
+
+
+					<div class="notification-item">
+
+						<div class="notification-icon comment">💬</div>
+
+						<div class="notification-content">
+
+							<div class="notification-title">댓글 알림</div>
+
+							<div class="notification-message">영어 회화 스터디 게시물에 새로운 댓글이
+								달렸습니다.</div>
+
+							<div class="notification-time">2024-10-09 18:30</div>
+
+						</div>
+
+					</div>
+
+
+
+					<div class="notification-item">
+
+						<div class="notification-icon vote">🗳️</div>
+
+						<div class="notification-content">
+
+							<div class="notification-title">투표 참여 요청</div>
+
+							<div class="notification-message">다음 모임 일정 투표에 참여해주세요. 미참가
+								시 자동 탈퇴 기준을 확인하세요.</div>
+
+							<div class="notification-time">2024-10-08 12:05</div>
+
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+
+
+			<!-- 즐겨찾기 탭 -->
+
+			<div id="favorites" class="tab-content">
+
+				<h1 class="page-title">⭐ 즐겨찾기</h1>
+
+				<p class="page-subtitle">관심 있는 모임을 모아보세요</p>
+
+
+
+				<div style="margin-top: 20px;">
+
+					<div class="favorite-item">
+
+						<div class="favorite-icon">📚</div>
+
+						<div class="favorite-info">
+
+							<div class="favorite-name">알고리즘 스터디</div>
+
+							<div class="favorite-status">운영중 • 7/10명</div>
+
+						</div>
+
+						<div class="favorite-actions">
+
+							<button class="btn-small btn-primary-small"
+								onclick="viewGroup(1)">참여하기</button>
+
+							<button class="btn-small btn-outline-small"
+								onclick="removeFavorite(1)">삭제</button>
+
+						</div>
+
+					</div>
+
+
+
+					<div class="favorite-item">
+
+						<div class="favorite-icon">🧪</div>
+
+						<div class="favorite-info">
+
+							<div class="favorite-name">데이터 사이언스 스터디</div>
+
+							<div class="favorite-status">모집중 • 3/10명</div>
+
+						</div>
+
+						<div class="favorite-actions">
+
+							<button class="btn-small btn-primary-small"
+								onclick="viewGroup(9)">참여하기</button>
+
+							<button class="btn-small btn-outline-small"
+								onclick="removeFavorite(9)">삭제</button>
+
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+
+
+			<!-- 내 일정 탭 -->
+
+			<div id="calendar" class="tab-content">
+
+				<h1 class="page-title">📅 내 일정</h1>
+
+				<p class="page-subtitle">모임 일정과 개인 일정을 관리하세요</p>
+
+
+
+				<!-- 간단 달력 + 일정 목록 (CSS는 원본 유지) -->
+
+				<div style="margin-top: 20px;">
+
+					<div style="display: flex; gap: 20px; flex-wrap: wrap;">
+
+						<div style="flex: 1; min-width: 300px;">
+
+							<div
+								style="background: #f8faf8; border-radius: 12px; padding: 16px;">
+
+								<h3 style="margin-bottom: 10px;">이번 달 일정</h3>
+
+								<div id="mini-calendar"
+									style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px;">
+
+									<!-- 자바스크립트로 채웁니다 -->
+
+								</div>
+
+								<div style="margin-top: 12px; font-size: 13px; color: #666;">
+
+									날짜를 클릭하면 아래 '일정 추가'에 선택됩니다.</div>
+
+							</div>
+
+						</div>
+
+
+
+						<div style="flex: 1; min-width: 320px;">
+
+							<div
+								style="background: #f8faf8; border-radius: 12px; padding: 16px;">
+
+								<h3 style="margin-bottom: 10px;">일정 추가</h3>
+
+								<div style="display: flex; gap: 8px; margin-bottom: 8px;">
+
+									<!-- <input id="cal-date" type="text" placeholder="YYYY-MM-DD" class="form-input" style="flex:0 0 140px;">
+
+                                    <input id="cal-text" type="text" placeholder="일정 입력" class="form-input" style="flex:1;"> -->
+
+									<!--  <button class="btn-small btn-primary-small" onclick="addCalendarEventFromForm()">추가</button> -->
+
+								</div>
+
+								<div id="events-list" style="margin-top: 8px;">
+
+									<!-- 일정 목록 표시 -->
+
+								</div>
+
+							</div>
+
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+
+
+			<!-- 프로필 설정 탭 -->
+
+			<div id="profile-settings" class="tab-content">
+
+				<h1 class="page-title">⚙️ 프로필 설정</h1>
+
+				<p class="page-subtitle">프로필을 편집하고 개인정보를 관리하세요</p>
+
+
+
+				<div class="settings-section">
+
+					<div class="section-title">프로필 정보</div>
+
+
+
+					<p class="page-subtitle">프로필 정보 수정 및 사진 변경이 가능합니다</p>
+
+
+
+					<form action="uploadProfile.jsp" method="post"
+						enctype="multipart/form-data">
+
+						<div style="margin-bottom: 10px;">
+
+							<label for="profileImageInput">프로필 사진 변경:</label> <input
+								type="file" id="profileImageInput" name="profileImage"
+								accept="image/*" onchange="previewProfileImage(event)">
+
+						</div>
+
+
+
+						<div class="form-group">
+
+							<label class="form-label">이름</label> <input class="form-input"
+								type="text" value="스터디러버">
+
+						</div>
+
+						<div class="form-group">
+
+							<label class="form-label">이메일</label> <input class="form-input"
+								type="email" value="study@example.com">
+
+						</div>
+
+						<div class="form-group">
+
+							<label class="form-label">소개</label>
+
+							<textarea class="form-input" rows="4">안녕하세요! 함께 공부할 사람을 찾고 있어요.</textarea>
+
+						</div>
+
+						<button class="btn-save" onclick="saveProfile()">저장하기</button>
+				</div>
+
+
+
+				<!--   <div class="settings-section">
+
+                    <div class="section-title">계정 설정</div>
+
+                    <div class="form-group toggle-switch">
+
+                        <label>프로필 공개 여부</label>
+
+                        <label class="switch">
+
+                            <input type="checkbox" checked>
+
+                            <span class="slider"></span>
+
+                        </label>
 
                     </div>
 
-                    <div class="stat-box">
+                    <div class="form-group">
 
-                        <div class="stat-value">1</div>
+                        <label class="form-label">비밀번호 변경</label>
 
-                        <div class="stat-label">운영 모임</div>
+                        <input class="form-input" type="password" placeholder="새 비밀번호">
 
                     </div>
 
                 </div>
 
-            </div>
+            </div> -->
 
 
 
-            <div class="menu-section">
+				<!-- 알림 설정 탭 -->
 
-                <div class="menu-title">모임 관리</div>
+				<!-- 알림 설정 탭 -->
 
-                <a class="menu-item active" onclick="showTab('my-groups')">
+				<div id="notification-settings" class="tab-content">
 
-                    <span>📚</span>
+					<h1 class="page-title">🔕 알림 설정</h1>
 
-                    <span>내 모임</span>
+					<p class="page-subtitle">알림 수신 여부 및 방법을 설정하세요</p>
 
-                </a>
 
-                <a class="menu-item" onclick="showTab('pending-groups')">
 
-                    <span>⏳</span>
+					<div class="settings-section">
 
-                    <span>신청 중인 모임</span>
+						<div class="section-title">모임 알림</div>
 
-                    <span class="menu-badge">2</span>
+						<div class="toggle-switch">
 
-                </a>
+							<label class="form-label">모임 승인 알림</label> <label class="switch">
 
-                <a class="menu-item" onclick="showTab('past-groups')">
+								<input type="checkbox" checked> <span class="slider"></span>
 
-                    <span>📜</span>
+							</label>
 
-                    <span>이전 모임</span>
+						</div>
 
-                </a>
+						<div class="toggle-switch">
 
-            </div>
+							<label class="form-label">모임 댓글 알림</label> <label class="switch">
 
+								<input type="checkbox"> <span class="slider"></span>
 
+							</label>
 
-            <div class="menu-section">
+						</div>
 
-                <div class="menu-title">활동</div>
+					</div>
 
-                <a class="menu-item" onclick="showTab('notifications')">
 
-                    <span>🔔</span>
 
-                    <span>알림</span>
+					<div class="settings-section">
 
-                    <span class="menu-badge">5</span>
+						<div class="section-title">개인 알림</div>
 
-                </a>
+						<div class="toggle-switch">
 
-                <a class="menu-item" onclick="showTab('favorites')">
+							<label class="form-label">이메일 알림</label> <label class="switch">
 
-                    <span>⭐</span>
+								<input type="checkbox" checked> <span class="slider"></span>
 
-                    <span>즐겨찾기</span>
+							</label>
 
-                </a>
+						</div>
 
-                <a class="menu-item" onclick="showTab('calendar')">
+						<div class="toggle-switch">
 
-                    <span>📅</span>
+							<label class="form-label">푸시 알림</label> <label class="switch">
 
-                    <span>내 일정</span>
+								<input type="checkbox"> <span class="slider"></span>
 
-                </a>
+							</label>
 
-            </div>
+						</div>
 
+					</div>
 
 
-            <div class="menu-section">
 
-                <div class="menu-title">설정</div>
+					<button class="btn-save" onclick="alert('설정이 저장되었습니다!')">저장</button>
 
-                <a class="menu-item" onclick="showTab('profile-settings')">
+				</div>
+		</main>
 
-                    <span>⚙️</span>
+	</div>
 
-                    <span>프로필 설정</span>
 
-                </a>
 
-                <a class="menu-item" onclick="showTab('notification-settings')">
+	<!-- 추가 스크립트: 달력(간단) 동작 -->
 
-                    <span>🔕</span>
+	<script>
 
-                    <span>알림 설정</span>
+        // 간단한 달력/일정 기억용 객체 (페이지 리로드 시 초기화됨)
 
-                </a>
+        const calEvents = {};
 
-            </div>
 
-        </aside>
 
+        // mini-calendar 렌더링 (이번 달 기준)
 
+        function renderMiniCalendar() {
 
-        <!-- 메인 컨텐츠 -->
+            const container = document.getElementById('mini-calendar');
 
-        <main class="main-content">
+            if (!container) return;
 
-            <!-- 내 모임 탭 -->
+            container.innerHTML = '';
 
-            <div id="my-groups" class="tab-content active">
+            const today = new Date();
 
-                <h1 class="page-title">📚 내 모임</h1>
+            const year = today.getFullYear();
 
-                <p class="page-subtitle">현재 참여 중이거나 운영 중인 모임입니다</p>
+            const month = today.getMonth(); // 0-based
 
+            const firstDay = new Date(year, month, 1).getDay();
 
+            const lastDate = new Date(year, month + 1, 0).getDate();
 
-                <h3 style="margin-top: 30px; margin-bottom: 15px; color: #666;">운영 중인 모임 (1)</h3>
 
-                <div class="group-grid">
 
-                    <div class="group-card" onclick="viewGroup(1)">
+            // 빈칸
 
-                        <span class="group-badge badge-owner">👑 모임장</span>
+            for (let i=0;i<firstDay;i++){
 
-                        <img src="https://via.placeholder.com/300x150" alt="모임 이미지" class="group-image">
+                const empty = document.createElement('div');
 
-                        <div class="group-title">알고리즘 정복 스터디</div>
+                empty.style.minHeight = '36px';
 
-                        <div class="group-meta">
+                empty.style.background = '#fff';
 
-                            <span>👥</span>
+                container.appendChild(empty);
 
-                            <span>7/10명</span>
+            }
 
-                        </div>
 
-                        <div class="group-meta">
 
-                            <span>📍</span>
+            for (let d=1; d<=lastDate; d++){
 
-                            <span>강남동 • 온라인/오프라인</span>
+                const box = document.createElement('div');
 
-                        </div>
+                box.style.minHeight = '36px';
 
-                        <div class="group-meta">
+                box.style.padding = '6px';
 
-                            <span>📊</span>
+                box.style.borderRadius = '6px';
 
-                            <span>평균 출석률 85%</span>
+                box.style.background = '#fff';
 
-                        </div>
+                box.style.boxSizing = 'border-box';
 
-                        <div class="group-actions">
+                box.style.cursor = 'pointer';
 
-                            <button class="btn-small btn-primary-small" onclick="event.stopPropagation(); location.href='group_edit.jsp'">⚙️ 관리</button>
+                box.textContent = d;
 
-                            <button class="btn-small btn-outline-small" onclick="event.stopPropagation(); viewGroup(1)">👀 보기</button>
+                const full = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
 
-                        </div>
+                if (calEvents[full]) {
 
-                    </div>
+                    const ev = document.createElement('div');
 
-                </div>
+                    ev.style.marginTop = '6px';
 
+                    ev.style.fontSize = '12px';
 
+                    ev.style.color = '#2d5a29';
 
-                <h3 style="margin-top: 40px; margin-bottom: 15px; color: #666;">참여 중인 모임 (2)</h3>
+                    ev.textContent = calEvents[full];
 
-                <div class="group-grid">
+                    box.appendChild(ev);
 
-                    <div class="group-card" onclick="viewGroup(2)">
+                }
 
-                        <span class="group-badge badge-member">참여 중</span>
+                box.onclick = () => {
 
-                        <img src="https://via.placeholder.com/300x150" alt="모임 이미지" class="group-image">
+                    document.getElementById('cal-date').value = full;
 
-                        <div class="group-title">영어 회화 스터디</div>
+                    scrollToEventsList();
 
-                        <div class="group-meta">
+                };
 
-                            <span>👥</span>
+                container.appendChild(box);
 
-                            <span>5/7명</span>
+            }
 
-                        </div>
+        }
 
-                        <div class="group-meta">
 
-                            <span>📍</span>
 
-                            <span>온라인</span>
+        function scrollToEventsList() {
 
-                        </div>
+            const el = document.getElementById('events-list');
 
-                        <div class="group-meta">
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-                            <span>📊</span>
+        }
 
-                            <span>나의 출석률 92%</span>
 
-                        </div>
 
-                        <div class="group-actions">
+        function addCalendarEventFromForm() {
 
-                            <button class="btn-small btn-primary-small" onclick="event.stopPropagation(); viewGroup(2)">참여하기</button>
+            const date = document.getElementById('cal-date').value.trim();
 
-                            <button class="btn-small btn-danger-small" onclick="event.stopPropagation(); leaveGroup(2)">탈퇴</button>
+            const text = document.getElementById('cal-text').value.trim();
 
-                        </div>
+            if (!date || !text) {
 
-                    </div>
+                alert('날짜와 일정을 입력하세요.');
 
+                return;
 
+            }
 
-                    <div class="group-card" onclick="viewGroup(3)">
+            calEvents[date] = text;
 
-                        <span class="group-badge badge-member">참여 중</span>
+            document.getElementById('cal-text').value = '';
 
-                        <img src="https://via.placeholder.com/300x150" alt="모임 이미지" class="group-image">
+            renderMiniCalendar();
 
-                        <div class="group-title">자바 스프링 부트 스터디</div>
+            renderEventsList();
 
-                        <div class="group-meta">
+            alert('일정이 추가되었습니다.');
 
-                            <span>👥</span>
+        }
 
-                            <span>8/10명</span>
 
-                        </div>
 
-                        <div class="group-meta">
+        function renderEventsList() {
 
-                            <span>📍</span>
+            const list = document.getElementById('events-list');
 
-                            <span>역삼동 • 오프라인</span>
+            if (!list) return;
 
-                        </div>
+            list.innerHTML = '';
 
-                        <div class="group-meta">
+            const keys = Object.keys(calEvents).sort();
 
-                            <span>📊</span>
+            if (keys.length === 0) {
 
-                            <span>나의 출석률 78%</span>
+                list.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📭</div><div class="empty-state-text">등록된 일정이 없습니다.</div></div>';
 
-                        </div>
+                return;
 
-                        <div class="group-actions">
+            }
 
-                            <button class="btn-small btn-primary-small" onclick="event.stopPropagation(); viewGroup(3)">참여하기</button>
+            keys.forEach(k => {
 
-                            <button class="btn-small btn-danger-small" onclick="event.stopPropagation(); leaveGroup(3)">탈퇴</button>
+                const wrap = document.createElement('div');
 
-                        </div>
+                wrap.style.display = 'flex';
 
-                    </div>
+                wrap.style.justifyContent = 'space-between';
 
-                </div>
+                wrap.style.alignItems = 'center';
 
-            </div>
+                wrap.style.padding = '8px 0';
 
+                wrap.style.borderBottom = '1px solid #eee';
 
 
-            <!-- 신청 중인 모임 탭 -->
 
-            <div id="pending-groups" class="tab-content">
+                const left = document.createElement('div');
 
-                <h1 class="page-title">⏳ 신청 중인 모임</h1>
+                left.innerHTML = `<strong style="color:#2d5a29">${k}</strong><div style="color:#666">${calEvents[k]}</div>`;
 
-                <p class="page-subtitle">참여 신청 중이거나 개설 대기 중인 모임입니다</p>
+                const right = document.createElement('div');
 
 
 
-                <h3 style="margin-top: 30px; margin-bottom: 15px; color: #666;">참여 신청 중 (2)</h3>
+                const delBtn = document.createElement('button');
 
-                <div class="group-grid">
+                delBtn.className = 'btn-small btn-danger-small';
 
-                    <div class="group-card">
+                delBtn.textContent = '삭제';
 
-                        <span class="group-badge badge-pending">승인 대기</span>
+                delBtn.onclick = () => {
 
-                        <img src="https://via.placeholder.com/300x150" alt="모임 이미지" class="group-image">
+                    if (confirm('일정을 삭제하시겠습니까?')) {
 
-                        <div class="group-title">토익 900+ 목표반</div>
+                        delete calEvents[k];
 
-                        <div class="group-meta">
+                        renderMiniCalendar();
 
-                            <span>📅</span>
+                        renderEventsList();
 
-                            <span>신청일: 2024-10-08</span>
+                    }
 
-                        </div>
+                };
 
-                        <div class="group-meta">
+                right.appendChild(delBtn);
 
-                            <span>👥</span>
 
-                            <span>6/10명</span>
 
-                        </div>
+                wrap.appendChild(left);
 
-                        <div class="group-actions">
+                wrap.appendChild(right);
 
-                            <button class="btn-small btn-outline-small" onclick="viewGroup(4)">상세보기</button>
+                list.appendChild(wrap);
 
-                            <button class="btn-small btn-danger-small" onclick="cancelApplication(4)">신청 취소</button>
+            });
 
-                        </div>
+        }
 
-                    </div>
 
 
+        // 초기 렌더
 
-                    <div class="group-card">
+        renderMiniCalendar();
 
-                        <span class="group-badge badge-pending">승인 대기</span>
+        renderEventsList();
 
-                        <img src="https://via.placeholder.com/300x150" alt="모임 이미지" class="group-image">
+    </script>
 
-                        <div class="group-title">프론트엔드 개발 스터디</div>
+</body>
 
-                        <div class="group-meta">
-
-                            <span>📅</span>
-
-                            <span>신청일: 2024-10-09</span>
-
-                        </div>
-
-                        <div class="group-meta">
-
-                            <span>👥</span>
-
-                            <span>4/7명</span>
-
-                        </div>
-
-                        <div class="group-actions">
-
-                            <button class="btn-small btn-outline-small" onclick="viewGroup(5)">상세보기</button>
-
-                            <button class="btn-small btn-danger-small" onclick="cancelApplication(5)">신청 취소</button>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-
-                <h3 style="margin-top: 40px; margin-bottom: 15px; color: #666;">개설 대기 중 (1)</h3>
-
-                <div class="group-grid">
-
-                    <div class="group-card">
-
-                        <span class="group-badge badge-waiting">개설 신청중</span>
+</html>

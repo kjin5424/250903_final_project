@@ -1,7 +1,8 @@
-
 <%@ page contentType="text/html; charset=UTF-8" %>
-<!-- 모임 모집글 작성 화면 생성 -->
+
 <%@ page language="java" %>
+
+
 
 <!DOCTYPE html>
 
@@ -75,7 +76,15 @@
 
         textarea { resize: vertical; }
 
-        .form-section { margin-top: 20px; border-top: 1px solid #ddd; padding-top: 20px; }
+        .form-section { 
+
+            margin-top: 20px; 
+
+            border-top: 1px solid #ddd; 
+
+            padding-top: 20px; 
+
+        }
 
         .btn-submit {
 
@@ -97,7 +106,11 @@
 
         }
 
-        .btn-submit:hover { background-color: #45a049; }
+        .btn-submit:hover { 
+
+            background-color: #45a049; 
+
+        }
 
         .inline-group {
 
@@ -111,7 +124,15 @@
 
         }
 
-        .tip { font-size: 12px; color: #666; margin-top: 3px; }
+        .tip { 
+
+            font-size: 12px; 
+
+            color: #666; 
+
+            margin-top: 3px; 
+
+        }
 
         #regionList {
 
@@ -159,8 +180,6 @@
 
         }
 
-        /* 👇 이미지 미리보기 스타일 */
-
         #preview {
 
             display: none;
@@ -177,11 +196,217 @@
 
         }
 
+        
+
+        /* 가입 질문 관련 스타일 */
+
+        .question-container {
+
+            margin-top: 15px;
+
+        }
+
+        .question-item {
+
+            background: #f9f9f9;
+
+            padding: 15px;
+
+            border-radius: 8px;
+
+            margin-bottom: 10px;
+
+            border: 1px solid #e0e0e0;
+
+            position: relative;
+
+        }
+
+        .question-item input[type="text"] {
+
+            width: calc(100% - 100px);
+
+            display: inline-block;
+
+        }
+
+        .question-number {
+
+            display: inline-block;
+
+            background: #4CAF50;
+
+            color: white;
+
+            padding: 4px 10px;
+
+            border-radius: 4px;
+
+            font-size: 12px;
+
+            font-weight: bold;
+
+            margin-right: 10px;
+
+        }
+
+        .btn-remove-question {
+
+            background: #f44336;
+
+            color: white;
+
+            border: none;
+
+            padding: 6px 12px;
+
+            border-radius: 4px;
+
+            cursor: pointer;
+
+            font-size: 12px;
+
+            margin-left: 10px;
+
+        }
+
+        .btn-remove-question:hover {
+
+            background: #d32f2f;
+
+        }
+
+        .btn-add-question {
+
+            background: #2196F3;
+
+            color: white;
+
+            border: none;
+
+            padding: 8px 16px;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+
+            font-size: 14px;
+
+            margin-top: 10px;
+
+        }
+
+        .btn-add-question:hover {
+
+            background: #1976D2;
+
+        }
+
+        .question-input-wrapper {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+        }
+
     </style>
 
 
 
     <script>
+
+        let questionCount = 0;
+
+
+
+        // 질문 추가 함수
+
+        function addQuestion() {
+
+            questionCount++;
+
+            const container = document.getElementById('questionContainer');
+
+            
+
+            const questionDiv = document.createElement('div');
+
+            questionDiv.className = 'question-item';
+
+            questionDiv.id = 'question_' + questionCount;
+
+            
+
+            questionDiv.innerHTML = `
+
+                <div class="question-input-wrapper">
+
+                    <span class="question-number">질문 ${questionCount}</span>
+
+                    <input type="text" 
+
+                           name="join_question_${questionCount}" 
+
+                           placeholder="예: 이 모임에 참여하려는 이유는 무엇인가요?"
+
+                           required>
+
+                    <button type="button" class="btn-remove-question" onclick="removeQuestion(${questionCount})">삭제</button>
+
+                </div>
+
+            `;
+
+            
+
+            container.appendChild(questionDiv);
+
+        }
+
+
+
+        // 질문 삭제 함수
+
+        function removeQuestion(id) {
+
+            const element = document.getElementById('question_' + id);
+
+            if (element) {
+
+                element.remove();
+
+                updateQuestionNumbers();
+
+            }
+
+        }
+
+
+
+        // 질문 번호 업데이트
+
+        function updateQuestionNumbers() {
+
+            const questions = document.querySelectorAll('.question-item');
+
+            questions.forEach((q, index) => {
+
+                const numberSpan = q.querySelector('.question-number');
+
+                if (numberSpan) {
+
+                    numberSpan.textContent = '질문 ' + (index + 1);
+
+                }
+
+            });
+
+        }
+
+
 
         // 온라인/오프라인 선택 시 지역 입력 활성화/비활성화
 
@@ -257,7 +482,7 @@
 
 
 
-        // 👇 이미지 미리보기 함수
+        // 이미지 미리보기 함수
 
         function previewImage(event) {
 
@@ -291,7 +516,7 @@
 
 
 
-        // ✅ 비밀번호 일치 검사
+        // 비밀번호 일치 검사
 
         function validatePassword() {
 
@@ -333,6 +558,178 @@
 
         }
 
+        function saveDraft() {
+
+            const form = document.querySelector("form");
+
+            const formData = new FormData(form);
+
+            const draft = {};
+
+
+
+            // 모든 입력 필드 저장
+
+            formData.forEach((value, key) => {
+
+                draft[key] = value;
+
+            });
+
+
+
+            // 질문들 따로 저장
+
+            const questions = [];
+
+            document.querySelectorAll('.question-item input[type="text"]').forEach(q => {
+
+                questions.push(q.value);
+
+            });
+
+            draft["questions"] = questions;
+
+
+
+            localStorage.setItem("groupDraft", JSON.stringify(draft));
+
+            alert("입력한 내용이 임시저장되었습니다 👸");
+
+        }
+
+
+
+        // 저장된 데이터 불러오기
+
+        function loadDraft() {
+
+            const draftData = localStorage.getItem("groupDraft");
+
+            if (!draftData) return;
+
+
+
+            const draft = JSON.parse(draftData);
+
+
+
+            // 각 필드 값 복원
+
+            for (const key in draft) {
+
+                const el = document.querySelector(`[name="${key}"]`);
+
+                if (el) {
+
+                    if (el.type === "radio" || el.type === "checkbox") {
+
+                        document.querySelectorAll(`[name="${key}"]`).forEach(input => {
+
+                            input.checked = input.value === draft[key];
+
+                        });
+
+                    } else {
+
+                        el.value = draft[key];
+
+                    }
+
+                }
+
+            }
+
+
+
+            // 질문 복원
+
+            if (draft.questions && draft.questions.length > 0) {
+
+                draft.questions.forEach(q => {
+
+                    addQuestion();
+
+                    const inputs = document.querySelectorAll('.question-item input[type="text"]');
+
+                    inputs[inputs.length - 1].value = q;
+
+                });
+
+            }
+
+        }
+
+
+
+        // 제출 시 임시 데이터 삭제
+
+        function clearDraft() {
+
+            localStorage.removeItem("groupDraft");
+
+        }
+
+
+
+        // 기존 onsubmit에 clearDraft 연결
+
+        function validatePassword() {
+
+            const privacy = document.getElementById("privacy").value;
+
+            if (privacy === "private") {
+
+                const pw1 = document.getElementById("password").value;
+
+                const pw2 = document.getElementById("passwordConfirm").value;
+
+
+
+                if (!pw1 || !pw2) {
+
+                    alert("비밀번호를 모두 입력해주세요.");
+
+                    return false;
+
+                }
+
+                if (pw1 !== pw2) {
+
+                    alert("비밀번호가 일치하지 않습니다. 다시 입력해주세요.");
+
+                    document.getElementById("password").value = "";
+
+                    document.getElementById("passwordConfirm").value = "";
+
+                    document.getElementById("password").focus();
+
+                    return false;
+
+                }
+
+            }
+
+            clearDraft(); // ✅ 제출 시 임시 데이터 삭제
+
+            return true;
+
+        }
+
+
+
+        // 페이지 로드시 자동 복원
+
+        window.onload = function() {
+
+            toggleRegion();
+
+            togglePassword();
+
+            loadDraft(); // ✅ 임시 저장 불러오기
+
+        }
+
 
 
         window.onload = function() {
@@ -349,56 +746,6 @@
 
 
 
-<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=YOUR_APP_KEY&libraries=services"></script>
-
-<script>
-
-var ps = new kakao.maps.services.Places();
-
-function searchRegionAPI() {
-
-    var keyword = document.getElementById("region").value;
-
-    if(!keyword) return;
-
-    ps.keywordSearch(keyword, function(data, status) {
-
-        var list = document.getElementById("regionList");
-
-        list.innerHTML = '';
-
-        if(status === kakao.maps.services.Status.OK) {
-
-            data.forEach(place => {
-
-                var li = document.createElement("li");
-
-                li.textContent = place.address_name;
-
-                li.onclick = () => {
-
-                    document.getElementById("region").value = place.address_name;
-
-                    list.style.display = 'none';
-
-                };
-
-                list.appendChild(li);
-
-            });
-
-            list.style.display = data.length ? 'block' : 'none';
-
-        }
-
-    });
-
-}
-
-</script>
-
-
-
 <body>
 
     <div class="container">
@@ -406,8 +753,6 @@ function searchRegionAPI() {
         <h1>공모자들 - 모임 개설</h1>
 
 
-
-        <!-- ✅ 비밀번호 확인 검사를 위해 onsubmit 추가 -->
 
         <form action="#" method="post" enctype="multipart/form-data" onsubmit="return validatePassword()">
 
@@ -417,7 +762,7 @@ function searchRegionAPI() {
 
                 <label for="title">모임 이름</label>
 
-                <input type="text" id="title" name="title" placeholder="모임 이름을 입력하세요" >
+                <input type="text" id="title" name="title" placeholder="모임 이름을 입력하세요" required>
 
                 <div class="tip">모임 이름은 중복 가능하며, 간결하고 기억하기 쉽게 작성하세요.</div>
 
@@ -523,11 +868,13 @@ function searchRegionAPI() {
 
                 </select>
 
-
+<!-- 
 
                 <label>인원 수</label>
 
                 <input type="text" name="member_limit" value="5" readonly>
+
+                <div class="tip">초기 인원은 5명으로 고정됩니다. 레벨이 올라가면 인원 수를 늘릴 수 있습니다.</div> -->
 
 
 
@@ -537,7 +884,7 @@ function searchRegionAPI() {
 
                     <option value="none" selected>제한 없음</option>
 
-                    <option value="male">동일 성별만</option>
+                    <option value="same">동일 성별만</option>
 
                 </select>
 
@@ -561,15 +908,23 @@ function searchRegionAPI() {
 
 
 
-                <label>가입 질문 작성</label>
+                <label>가입 질문 작성 (선택사항)</label>
 
-                <textarea name="join_question" rows="3"></textarea>
+                <div class="tip">가입 신청자가 답변해야 할 질문을 작성하세요. 여러 개 추가할 수 있습니다.</div>
+
+                <div id="questionContainer" class="question-container">
+
+                    <!-- 질문들이 동적으로 추가됩니다 -->
+
+                </div>
+
+                <button type="button" class="btn-add-question" onclick="addQuestion()">➕ 질문 추가</button>
 
 
 
                 <label>모임 내 주의사항/규칙</label>
 
-                <textarea name="rules" rows="3"></textarea>
+                <textarea name="rules" rows="3" placeholder="모임원들이 지켜야 할 규칙이나 주의사항을 작성하세요"></textarea>
 
 
 
@@ -607,8 +962,6 @@ function searchRegionAPI() {
 
                     <input type="password" id="password" name="password" placeholder="비밀번호 입력">
 
-                    <!-- ✅ 비밀번호 재입력 추가 -->
-
                     <label for="passwordConfirm">비밀번호 확인</label>
 
                     <input type="password" id="passwordConfirm" name="passwordConfirm" placeholder="비밀번호 다시 입력">
@@ -629,11 +982,25 @@ function searchRegionAPI() {
 
                 </select>
 
+
+
+                <label>상세 내용</label>
+
+                <textarea name="description" rows="5" placeholder="모임에 대한 자세한 설명을 작성하세요"></textarea>
+
             </div>
 
 
 
-            <button type="submit" class="btn-submit">모임 개설</button>
+            
+
+            <!-- ✅ [1] 임시저장 버튼 추가 -->
+
+			<button type="button" class="btn-submit" style="background-color:#2196F3;" onclick="saveDraft()">임시저장</button>
+
+			<button type="submit" class="btn-submit">모임 개설</button>
+
+            
 
         </form>
 
