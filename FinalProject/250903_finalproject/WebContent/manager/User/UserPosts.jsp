@@ -7,202 +7,347 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>회원 모임 작성글 목록</title>
+    <title>회원 모임 게시글 목록</title>
     <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #E9D9FF;
-            padding: 40px 30px;
-        }
+/* ================================================
+   관리자 페이지 공통 스타일 적용형 (회원 상세용)
+   ================================================ */
 
-        .header {
-            background-color: #BFFCC6;
-            padding: 20px;
-            border-radius: 15px;
-            font-size: 24px;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
+:root {
+    --color-primary: #BFFCC6;
+    --color-primary-dark: #2E7D32;
+    --color-primary-lighter: #E9FBEF;
+    --color-secondary: #E6D6FF;
+    --color-secondary-dark: #6B4FB6;
+    --color-secondary-lighter: #F4EFFF;
+    --color-accent: #FFB3BA;
+    --color-accent-dark: #E65100;
+    --color-text-primary: #333;
+    --color-text-secondary: #666;
+    --color-border: #ddd;
+    --color-border-light: #eee;
+    --color-white: #fff;
+    --radius-md: 8px;
+    --radius-lg: 16px;
+    --radius-full: 999px;
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 12px;
+    --spacing-lg: 20px;
+    --spacing-xl: 32px;
+    --transition-base: 0.2s ease;
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
 
-        .container {
-            background-color: #fff;
-            padding: 25px;
-            border-radius: 20px;
-            max-width: 1400px;
-            margin: 0 auto;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-        }
+/* 기본 세팅 */
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background-color: var(--color-secondary-lighter);
+    padding: var(--spacing-xl) var(--spacing-lg);
+    color: var(--color-text-primary);
+}
 
-        /* 정보 헤더 */
-        .info-header {
-            background-color: #F5F5F5;
-            padding: 15px 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+/* 페이지 헤더 */
+.header {
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    font-size: 28px;
+    font-weight: 800;
+    text-align: center;
+    color: var(--color-text-primary);
+    box-shadow: var(--shadow-md);
+    margin-bottom: var(--spacing-xl);
+}
 
-        .info-header-left {
-            display: flex;
-            gap: 30px;
-        }
+/* 컨테이너 */
+.container {
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: var(--spacing-xl);
+    max-width: 1400px;
+    margin: 0 auto;
+}
 
-        .info-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+/* ===============================
+   회원 기본 정보 영역
+   =============================== */
+.member-info {
+    background: var(--color-primary-lighter);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--spacing-xl);
+    box-shadow: var(--shadow-sm);
+}
 
-        .info-label {
-            font-weight: bold;
-            color: #666;
-        }
+.member-info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-md);
+}
 
-        .info-value {
-            color: #333;
-            font-weight: 600;
-        }
+.profile-section {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+    background: var(--color-white);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+}
 
-        /* 액션 바 */
-        .action-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
+.profile-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--color-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+}
 
-        .select-info {
-            font-size: 14px;
-            color: #666;
-        }
+.info-item {
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+}
 
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-        }
+.info-label {
+    font-weight: 700;
+    color: var(--color-text-secondary);
+    margin-right: var(--spacing-sm);
+    min-width: 100px;
+}
 
-        .button {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 14px;
-        }
+/* ===============================
+   탭 메뉴
+   =============================== */
+.tab-menu {
+    display: flex;
+    gap: var(--spacing-sm);
+    border-bottom: 2px solid var(--color-secondary);
+    margin-bottom: var(--spacing-md);
+}
 
-        .btn-delete {
-            background-color: #FFB3BA;
-            color: #333;
-        }
+.tab-button {
+    padding: 12px 20px;
+    font-weight: 700;
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
 
-        .btn-back {
-            background-color: #BFFCC6;
-            color: #333;
-        }
+.tab-button:hover {
+    background: var(--color-secondary-lighter);
+}
 
-        .button:hover {
-            opacity: 0.8;
-        }
+.tab-button.active {
+    border-bottom-color: var(--color-primary);
+    background: var(--color-secondary-lighter);
+    color: var(--color-primary-dark);
+}
 
-        .button:disabled {
-            background-color: #ddd;
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
+/* 탭 내용 */
+.tab-content {
+    display: none;
+    animation: fadeIn 0.2s ease;
+}
 
-        /* 테이블 */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
+.tab-content.active {
+    display: block;
+}
 
-        th, td {
-            padding: 12px;
-            text-align: center;
-            border-bottom: 1px solid #eee;
-        }
+/* ===============================
+   테이블 공통
+   =============================== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: var(--spacing-md);
+    font-size: 14px;
+}
 
-        th {
-            background-color: #BFFCC6;
-            font-weight: bold;
-            color: #333;
-        }
+th, td {
+    padding: var(--spacing-md);
+    text-align: center;
+    border-bottom: 1px solid var(--color-border-light);
+}
 
-        tbody tr:nth-child(odd) {
-            background-color: #E6D6FF;
-        }
+th {
+    background: var(--color-primary-lighter);
+    font-weight: 700;
+    color: var(--color-primary-dark);
+}
 
-        tbody tr:nth-child(even) {
-            background-color: #F0E8FF;
-        }
+tbody tr:hover {
+    background: var(--color-secondary-lighter);
+    cursor: pointer;
+}
 
-        tbody tr:hover {
-            background-color: #D5C5EE;
-        }
+/* ===============================
+   상태 배지
+   =============================== */
+.status-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: var(--radius-full);
+    font-size: 12px;
+    font-weight: 700;
+}
 
-        /* 체크박스 */
-        .checkbox-cell {
-            width: 50px;
-        }
+.status-pending {
+    background: #fff3e0;
+    color: #f57c00;
+}
 
-        input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-        }
+.status-completed {
+    background: var(--color-primary-lighter);
+    color: var(--color-primary-dark);
+}
 
-        /* 제목 열 */
-        .title-cell {
-            text-align: left;
-            max-width: 400px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+.status-rejected {
+    background: #ffebee;
+    color: #c62828;
+}
 
-        .title-link {
-            color: #333;
-            text-decoration: none;
-        }
+/* ===============================
+   버튼 영역
+   =============================== */
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+}
 
-        .title-link:hover {
-            color: #1976D2;
-            text-decoration: underline;
-        }
+.button {
+    padding: 10px 24px;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    font-size: 14px;
+}
 
-        /* 결과 카운트 */
-        .result-count {
-            margin-bottom: 15px;
-            font-size: 14px;
-            color: #666;
-        }
+.btn-suspend {
+    background: var(--color-accent);
+    color: white;
+}
 
-        .count-number {
-            color: #1976D2;
-            font-weight: bold;
-        }
+.btn-withdraw {
+    background: #FFDFBA;
+    color: #444;
+}
 
-        /* 빈 상태 */
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #999;
-        }
+.btn-back {
+    background: var(--color-primary);
+    color: #222;
+}
 
-        .empty-state-icon {
-            font-size: 48px;
-            margin-bottom: 15px;
-        }
+.button:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+    opacity: 0.9;
+}
+
+/* 링크 스타일 */
+.link-text {
+    color: var(--color-secondary-dark);
+    text-decoration: none;
+}
+
+.link-text:hover {
+    text-decoration: underline;
+}
+
+/* 애니메이션 */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* 반응형 */
+@media (max-width: 1024px) {
+    .member-info-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .member-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .tab-menu {
+        flex-wrap: wrap;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .button {
+        width: 100%;
+    }
+}
+
+.info-header {
+    background-color: #F5F5F5;
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.info-header-left {
+    display: flex;
+    gap: 30px;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.info-label {
+    font-weight: bold;
+    color: #666;
+}
+
+.info-value {
+    color: #333;
+    font-weight: 600;
+}
+
+.result-count {
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: #666;
+}
+
+.count-number {
+    color: #1976D2;
+    font-weight: bold;
+}
+
+.select-info {
+    font-size: 14px;
+    color: #666;
+}
     </style>
 </head>
 <body>
-    <div class="header">회원 모임 작성글 목록</div>
+    <div class="header">회원 모임 게시글 목록</div>
     <div class="container">
         <!-- 정보 헤더 -->
         <div class="info-header">
@@ -232,10 +377,7 @@
             <div class="select-info">
                 <span id="selectedCount">0</span>개 선택됨
             </div>
-            <div class="action-buttons">
-                <button class="button btn-delete" id="deleteBtn" onclick="deleteSelected()" disabled>선택 삭제</button>
-                <button class="button btn-back" onclick="history.back()">이전으로</button>
-            </div>
+
         </div>
 
         <!-- 작성글 테이블 -->

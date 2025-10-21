@@ -359,7 +359,8 @@
     <div class="container">
 
         <a href="?page=groups" class="back-btn">← 모임 목록으로</a>
-
+		
+		 
 
 
         <!-- 모임 헤더 -->
@@ -411,6 +412,9 @@
                     <button class="btn btn-primary" onclick="joinGroup()">✅ 가입 신청하기</button>
 
                     <button class="btn btn-favorite" onclick="toggleFavorite()">☆ 즐겨찾기</button>
+                    
+                    <!-- 모임 홈으로 이동 버튼 추가 -->
+    				<button class="btn btn-outline" onclick="home()">🏠 모임 홈으로 이동</button>
 
                 </div>
 
@@ -428,9 +432,7 @@
 
                 <button class="tab-button active" onclick="switchTab('intro')">📝 모임 소개</button>
 
-                <button class="tab-button" onclick="switchTab('members')">👥 모임원 (7명)</button>
-
-                <button class="tab-button" onclick="switchTab('posts')">📋 게시글 미리보기</button>
+               
 
             </div>
 
@@ -442,7 +444,7 @@
 
                     <h3>모임 소개</h3>
 
-                    <p>이 스터디는 알고리즘 문제를 단계별로 정복하기 위한 모임입니다.
+                    <p>이 스터디는 알고리즘 문제를 단계별로 정복하기 위q한 모임입니다.
 
 주 3회 온라인으로 진행하며, 서로 코드 리뷰와 문제 풀이를 함께 합니다.</p>
 
@@ -457,6 +459,25 @@
                         <div class="info-box"><div class="info-box-title">기간</div><div class="info-box-value">3개월</div></div>
 
                     </div>
+                    
+                      <h3 style="margin-top:30px;">모임원 한 줄 소개</h3>
+       			 <div class="member-preview" style="display:flex; gap:15px; flex-wrap:wrap; margin-top:10px;">
+            	<div class="member-card" style="flex:0 0 120px; padding:10px; text-align:center;">
+                <div class="member-avatar" style="width:50px; height:50px; font-size:18px;">코</div>
+                <div class="member-name" style="font-size:14px; font-weight:600;">코딩마스터</div>
+                <div class="member-intro" style="font-size:12px; color:#666;">알고리즘과 코딩 교육 전문가</div>
+           		 </div>
+            	<div class="member-card" style="flex:0 0 120px; padding:10px; text-align:center;">
+                <div class="member-avatar" style="width:50px; height:50px; font-size:18px;">민</div>
+                <div class="member-name" style="font-size:14px; font-weight:600;">민수</div>
+                <div class="member-intro" style="font-size:12px; color:#666;">문제를 같이 풀며 성장</div>
+            	</div>
+           		 <div class="member-card" style="flex:0 0 120px; padding:10px; text-align:center;">
+                <div class="member-avatar" style="width:50px; height:50px; font-size:18px;">지</div>
+                <div class="member-name" style="font-size:14px; font-weight:600;">지연</div>
+                <div class="member-intro" style="font-size:12px; color:#666;">매주 성실하게 참여</div>
+           		 </div>
+        </div>
 
                 </div>
 
@@ -509,6 +530,7 @@
             </div>
 
         </div>
+        
 
     </div>
 
