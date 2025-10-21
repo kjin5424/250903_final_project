@@ -532,7 +532,20 @@
             .group-stats {
                 grid-template-columns: repeat(2, 1fr);
             }
-        }
+            
+            .group-dates {
+		    margin-top: 15px;
+		    padding: 10px 15px;
+		    background-color: #f8f9fa;
+		    border-radius: 10px;
+		    font-size: 14px;
+		    color: #333;
+		    line-height: 1.6;
+		}
+		.group-dates p {
+		    margin: 3px 0;
+		}
+		        }
     </style>
     <script>
         function goToBoard() {
@@ -592,19 +605,32 @@
         </div>
     </nav>
 
-    <div class="container">
+    <   <div class="container">
         <!-- 모임 헤더 -->
         <div class="group-header">
             <div class="group-header-top">
                 <div class="group-title-area">
                     <h1 class="group-title">알고리즘 정복 스터디</h1>
-                    <span class="group-level">Lv.3</span>
+                    <button class="group-level" onclick="goToLevel()" title="레벨 현황을 자세히 확인할 수 있어요">Lv.3</button>
                 </div>
                 <div class="group-actions">
                     <button class="btn-header" onclick="goToBoard()">📋 게시판</button>
+                    <button class="btn-header" onclick="viewChallenge()">🏆 도전과제</button>
                     <button class="btn-header" onclick="goToMembers()">👥 모임원</button>
-                    <button class="btn-header" onclick="goToLevel()">🎚 레벨</button>
+                    <button class="btn-header" onclick="goToMessages()">✉️ 쪽지</button>
                     <button class="btn-header" onclick="goToManage()">⚙️ 관리</button>
+                </div>
+            </div>
+            <div class="group-dates">
+                <div class="date-item">
+                    <span class="date-icon">🎉</span>
+                    <span class="date-label">모임 시작일:</span>
+                    <span class="date-value">2024년 8월 15일</span>
+                </div>
+                <div class="date-item">
+                    <span class="date-icon">👋</span>
+                    <span class="date-label">내 가입일:</span>	
+                    <span class="date-value">2024년 9월 1일</span>
                 </div>
             </div>
             <div class="group-stats">
@@ -654,6 +680,7 @@
                 <div class="vote-section">
                     <div class="section-header">
                         <h2 class="section-title">🗳️ 진행중인 투표</h2>
+                        <button class="btn-more" onclick="goToBoard()">더보기 →</button>
                     </div>
                     <div class="vote-card">
                         <div class="vote-header">
@@ -740,6 +767,7 @@
                 <div class="challenge-section">
                     <div class="section-header">
                         <h2 class="section-title">🏆 진행중인 도전과제</h2>
+                        <button class="btn-more" onclick="goToBoard()">더보기 →</button>
                     </div>
                     <div class="challenge-card">
                         <div class="challenge-title">일주일 알고리즘 챌린지</div>
@@ -761,6 +789,7 @@
                 <div class="notification-panel">
                     <div class="section-header">
                         <h2 class="section-title">🔔 알림</h2>
+                        <button class="btn-more" onclick="goToBoard()">더보기 →</button>
                     </div>
                     <div class="notification-item">
                         <div class="notification-icon icon-notice">📢</div>
@@ -797,6 +826,7 @@
                     <button class="btn-edit-intro" onclick="editIntro()">수정하기</button>
                 </div>
             </div>
+            
         </div>
     </div>
 </body>
