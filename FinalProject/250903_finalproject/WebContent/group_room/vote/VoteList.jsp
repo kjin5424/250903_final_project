@@ -13,9 +13,15 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="<%=cp%>/group_room/vote/votelist.css" />
 </head>
+<<<<<<< HEAD:FinalProject/250903_finalproject/WebContent/group_room/vote/VoteList.jsp
 <body>
 	<!-- 투표 리스트(진행중 + 종료된) -->
 	<!-- 투표는 추가 페이지 없이 컨트롤러로 해결 -->
+=======
+<body>
+<!-- 투표 리스트(진행중 + 종료된) -->
+<!-- 투표는 추가 페이지 없이 컨트롤러로 해결 -->
+>>>>>>> parent of 4bbb22e (히히):FinalProject/250903_finalproject/WebContent/groupview/VoteList.jsp
 
 	<!-- 상단 메뉴바 -->
 	<header class="top-bar">
