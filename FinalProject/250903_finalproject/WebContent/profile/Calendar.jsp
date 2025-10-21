@@ -21,7 +21,7 @@
             transform: translateX(2px);
         }
         .progress-bar {
-            height: 4px;
+            height: 4px;	
             background-color: #e5e7eb;
             border-radius: 9999px;
             overflow: hidden;
@@ -86,6 +86,7 @@
 
             <!-- 캘린더 -->
             <div class="bg-white rounded-lg shadow-sm p-6">
+            
                 <!-- 월 네비게이션 -->
                 <div class="flex items-center justify-between mb-6">
                     <button onclick="changeMonth(-1)" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
@@ -338,6 +339,60 @@
         document.addEventListener('DOMContentLoaded', function() {
             renderCalendar();
         });
+        function showScheduleDetail(schedule) {
+            const modal = document.getElementById('schedule-modal');
+            const title = document.getElementById('modal-title');
+            const content = document.getElementById('modal-content');
+            title.textContent = schedule.title;
+            let html = '<div class="text-sm text-gray-600 mb-2">' + schedule.groupName + '</div>';
+
+            if (schedule.type === 'meeting') {
+                html += '<div class="flex items-center gap-2 mb-2"><svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><span>' + schedule.time + '</span></div>';
+                html += '<div class="flex items-center gap-2 mb-2"><svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg><span>' + schedule.location + ' (' + (schedule.mode === 'online' ? '온라인' : '오프라인') + ')</span></div>';
+                html += '<div class="flex items-center gap-2 mb-2"><svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg><span>참가 인원: ' + schedule.participants + '명</span></div>';
+
+                // ✅ [추가됨] 모임 홈 이동 버튼
+                html += `
+                    <div class="mt-4 flex justify-end">
+                        <button onclick="goToGroupHome('${schedule.groupId}')"
+                            class="bg-blue-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-600 transition-colors">
+                            모임 홈으로 이동
+                        </button>
+                    </div>`;
+            } 
+            else if (schedule.type === 'challenge') {
+                const startDate = schedule.date.toLocaleDateString('ko-KR');
+                const endDate = schedule.endDate.toLocaleDateString('ko-KR');
+                html += '<div class="mb-2"><strong>기간:</strong> ' + startDate + ' ~ ' + endDate + '</div>';
+                html += '<div class="mb-2"><strong>설명:</strong> ' + schedule.description + '</div>';
+                html += '<div class="mb-2"><strong>달성률:</strong> ' + schedule.progress + '%</div>';
+                html += '<div class="progress-bar"><div class="progress-fill ' + schedule.color + '" style="width: ' + schedule.progress + '%"></div></div>';
+
+                // ✅ [추가됨] 도전 과제 하러 가기 버튼
+                html += `
+                    <div class="mt-4 flex justify-end">
+                        <button onclick="goToChallenge('${schedule.id}')"
+                            class="bg-green-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-green-600 transition-colors">
+                            도전 과제 하러 가기
+                        </button>
+                    </div>`;
+            }
+
+            content.innerHTML = html;
+            modal.classList.remove('hidden');
+        }
+        
+        function goToGroupHome(groupId) {
+            // 실제 구현 시: window.location.href = `/groupHome.jsp?groupId=${groupId}`;
+            alert(groupId + " 모임 홈으로 이동합니다!");
+        }
+
+        function goToChallenge(challengeId) {
+            // 실제 구현 시: window.location.href = `/challengeView.jsp?id=${challengeId}`;
+            alert("도전 과제 페이지로 이동합니다! (ID: " + challengeId + ")");
+        }
+
+
     </script>
 </body>
 </html>
