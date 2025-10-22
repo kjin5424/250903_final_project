@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%
     request.setCharacterEncoding("UTF-8");
-   String cp = request.getContextPath();
+    String cp = request.getContextPath();
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -12,12 +12,12 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #E9D9FF;
+            background-color: #FFFFFF; 
             padding: 40px 30px;
         }
 
         .header {
-            background-color: #BFFCC6;
+            background-color: #FFFFFF; 
             padding: 20px;
             border-radius: 15px;
             font-size: 24px;
@@ -49,7 +49,7 @@
             font-weight: bold;
             margin-bottom: 15px;
             padding-bottom: 10px;
-            border-bottom: 2px solid #BFFCC6;
+            border-bottom: 2px solid #BFFCC6; /* 연두로 통일 */
             color: #333;
         }
 
@@ -220,12 +220,13 @@
         }
 
         .btn-back {
-            background-color: #E6D6FF;
+            background-color: #FFFFFF; /* 연보라 제거 -> 흰색 */
+            border: 1px solid #ccc;
             color: #333;
         }
 
         .btn-back:hover {
-            background-color: #D5C5EE;
+            background-color: #F5F5F5;
         }
 
         /* 뱃지 */
@@ -243,8 +244,8 @@
         }
 
         .type-content {
-            background-color: #F3E5F5;
-            color: #6A1B9A;
+            background-color: #E1F5FE; /* 연보라 제거 -> 연한 블루 */
+            color: #1565C0;
         }
 
         .type-meeting {
@@ -466,7 +467,6 @@
                     <textarea id="adminComment" placeholder="관리자 판단 사유를 입력하세요.&#10;&#10;※ 신청자에게 전달될 내용입니다.&#10;&#10;예시 (승인):&#10;확인 결과 해당 게시글은 모임 활동과 관련된 정보 공유 목적으로 판단되어 블라인드를 해제합니다.&#10;다만, 앞으로는 제목 작성 시 오해의 소지가 없도록 주의해 주시기 바랍니다.&#10;&#10;예시 (반려):&#10;해당 게시글은 특정 플랫폼의 이름과 링크를 반복적으로 노출하고 있어 홍보성 게시글로 판단됩니다.&#10;따라서 소명을 인정하기 어려우며, 블라인드 처리를 유지합니다."></textarea>
                 </div>
 
-                <!-- 승인 시 추가 옵션 (컨텐츠 신고의 경우) -->
                 <div class="option-group" id="approveOptions" style="display: none;">
                     <div class="option-title">승인 시 추가 처리 (선택)</div>
                     <div style="padding: 10px; background-color: #F5F5F5; border-radius: 8px;">
@@ -487,7 +487,6 @@
     </div>
 
     <script>
-        // 라디오 버튼 선택 시 승인 옵션 표시
         document.querySelectorAll('input[name="decision"]').forEach(function(radio) {
             radio.addEventListener('change', function() {
                 var approveOptions = document.getElementById('approveOptions');
@@ -530,7 +529,6 @@
             message += '\n신청자에게 처리 결과가 전송됩니다.';
             
             if(confirm(message)) {
-                // 실제로는 서버에 처리 요청을 보내야 합니다
                 console.log('소명 처리:', {
                     decision: decision.value,
                     adminComment: adminComment,
