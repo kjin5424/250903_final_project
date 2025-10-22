@@ -1,0 +1,72 @@
+@charset "UTF-8";
+/* layout.css - 공통 */
+body {
+	font-family: 'Noto Sans KR', sans-serif;
+	background-color: #f9fafb;
+	color: #333;
+	margin: 0;
+}
+
+.topmenubar {
+	width: 100%;
+	background-color: #fff;
+	box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+	position: sticky; /* 필요 시 fixed로 변경 */
+	top: 0;
+	z-index: 1000;
+}
+
+.container {
+	display: flex;
+	justify-content: center;
+	max-width: 1400px;
+	margin: 20px auto;
+	padding: 20px;
+	gap: 16px;
+	background-color: #f9fafb;
+}
+
+.sidebar {
+	width: 300px;
+	height: 400px;
+	background-color: #1f2937;
+	color: #fff;
+	padding: 24px;
+	border-radius: 8px;
+	box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.sidebar h2 {
+	font-size: 1.25rem;
+	font-weight: bold;
+	margin-bottom: 1rem;
+}
+
+.sidebar ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.sidebar li {
+	margin-bottom: 0.75rem;
+}
+
+.sidebar a {
+	color: #fff;
+	text-decoration: none;
+	transition: color 0.2s;
+}
+
+.sidebar a:hover {
+	color: #facc15; /* 노란색 강조 */
+}
+
+.main {
+	flex: 1;
+	min-width: 0;
+	background-color: #fff;
+	padding: 24px;
+	border-radius: 8px;
+	box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
