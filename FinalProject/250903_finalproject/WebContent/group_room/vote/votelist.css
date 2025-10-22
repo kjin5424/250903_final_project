@@ -1,143 +1,232 @@
 @charset "UTF-8";
 
+/* -------------------------------
+   전체 기본 스타일
+--------------------------------*/
 body {
-  background-color: #f9fafb;
-  font-family: 'Arial', sans-serif;
-  margin: 0;
+  background-color: #f8fafc;
+  font-family: 'Noto Sans KR', sans-serif;
+  color: #1e293b;
 }
 
-/* 상단 메뉴바 */
-.top-bar {
-  background-color: #2563eb;
-  color: white;
-  padding: 12px 20px;
+/* -------------------------------
+   카드 공통 스타일
+--------------------------------*/
+.card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+}
+
+/* -------------------------------
+   카드 헤더
+--------------------------------*/
+.card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 2px solid #f1f5f9;
+  padding-bottom: 0.6rem;
+  margin-bottom: 0.8rem;
 }
 
-.top-nav a {
-  margin-left: 12px;
-  color: white;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.top-nav a:hover {
-  text-decoration: underline;
-}
-
-/* 전체 레이아웃 */
-.layout {
-  display: flex;
-  min-height: calc(100vh - 100px); /* 상단 + 하단 제외 영역 */
-}
-
-/* 좌측 메뉴바 */
-.side-bar {
-  width: 200px;
-  background-color: #f1f5f9;
-  border-right: 1px solid #e2e8f0;
-  padding: 16px;
-}
-
-.side-bar ul {
-  list-style: none;
-  padding: 0;
-}
-
-.side-bar li {
-  margin-bottom: 12px;
-}
-
-.side-bar a {
-  color: #1e293b;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.side-bar a:hover {
+.card-header .title {
+  font-size: 1.1rem;
+  font-weight: 700;
   color: #2563eb;
 }
 
-/* 본문 */
-.content-area {
-  flex: 1;
-  padding: 20px;
+.card-header .date-range {
+  font-size: 0.9rem;
+  color: #64748b;
+  background-color: #f1f5f9;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
 }
 
-/* 카드 */
-.card {
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 16px;
-  background-color: #ffffff;
+/* -------------------------------
+   메타 정보
+--------------------------------*/
+.meta {
+  font-size: 0.9rem;
+  color: #475569;
+  margin-bottom: 0.4rem;
+}
+
+.meta span {
+  font-weight: 500;
+}
+
+/* -------------------------------
+   진행률 바
+--------------------------------*/
+.progress-section {
+  margin-top: 0.8rem;
+}
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #334155;
+  margin-bottom: 0.3rem;
 }
 
 .progress-bar {
-  height: 8px;
-  border-radius: 4px;
+  position: relative;
+  height: 10px;
+  background-color: #e2e8f0;
+  border-radius: 5px;
+  overflow: hidden;
 }
 
-/* 페이지네이션 */
-.pagination {
+.progress-bar::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.4s ease;
+}
+
+.progress-bar.blue::after {
+  background: linear-gradient(90deg, #3b82f6, #60a5fa);
+  width: var(--progress-width, 0%);
+}
+
+.progress-bar.gray::after {
+  background: linear-gradient(90deg, #9ca3af, #d1d5db);
+  width: var(--progress-width, 0%);
+}
+
+/* -------------------------------
+   버튼 그룹
+--------------------------------*/
+.button-group {
   display: flex;
-  justify-content: center;
-  margin-top: 16px;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+.button-group button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: background-color 0.25s, transform 0.15s;
+}
+
+#delete-btn {
+	background-color: #ef4444;
+	color: #fff;
+}
+
+#delete-btn:hover {
+	
+}
+
+#edit-btn {
+  background-color: #facc15;
+  color: #1e293b;
+}
+
+#edit-btn:hover {
+  background-color: #eab308;
+  transform: scale(1.03);
+}
+
+#submit-btn {
+  background-color: #2563eb;
+  color: #fff;
+}
+
+#submit-btn:hover {
+  background-color: #1d4ed8;
+  transform: scale(1.03);
+}
+
+/* -------------------------------
+   페이지네이션
+--------------------------------*/
+.pagination {
+  text-align: center;
+  margin-top: 2rem;
 }
 
 .pagination a {
-  margin: 0 4px;
-  color: #1f2937;
+  display: inline-block;
+  margin: 0 0.3rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: 8px;
   text-decoration: none;
+  font-size: 0.9rem;
+  color: #475569;
+  background-color: #f1f5f9;
+  transition: all 0.2s ease;
 }
 
 .pagination a:hover {
-  text-decoration: underline;
-}
-
-/* 하단 메뉴바 */
-.bottom-bar {
-  background-color: #f1f5f9;
-  text-align: center;
-  padding: 12px;
-  border-top: 1px solid #e2e8f0;
-  font-size: 0.9rem;
-  color: #475569;
-}
-
-.card .button-group {
-  display: flex;
-  gap: 8px; /* 버튼 간 간격 */
-}
-
-.card button {
-  flex: 1;
-  padding: 10px 0;
-  border: none;
-  border-radius: 6px;
-  color: white;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-/* 제출 버튼 */
-.card #submit-btn {
-  background-color: #2563eb; 
-}
-
-.card #submit-btn:hover {
-  background-color: #1d4ed8; /* blue-700 */
-}
-
-/* 수정 버튼 (기본 숨김) */
-.card #edit-btn {
   background-color: #2563eb;
-  /*display: none; *//* 기본 숨김 */
+  color: white;
+  transform: translateY(-2px);
 }
 
-.card #edit-btn:hover {
-  background-color: #1d4ed8;
+/* -------------------------------
+   반응형 디자인
+--------------------------------*/
+@media (max-width: 768px) {
+  .card {
+    padding: 1.2rem;
+  }
+
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3rem;
+  }
+
+  .button-group {
+    justify-content: center;
+  }
+}
+
+/* -------------------------------
+   투표 작성 버튼
+--------------------------------*/
+.create-vote-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin: 1.5rem 0;
+}
+
+.create-vote-btn {
+  background-color: #10b981;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
+  transition: background-color 0.25s, transform 0.15s, box-shadow 0.25s;
+}
+
+.create-vote-btn:hover {
+  background-color: #059669;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(16, 185, 129, 0.25);
 }
