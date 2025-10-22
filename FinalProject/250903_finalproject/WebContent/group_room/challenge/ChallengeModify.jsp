@@ -8,57 +8,99 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Challenge Form</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="<%=cp%>/group_room/challenge/challengecreate.css">
+<title>도전 과제 리스트</title>
+<link rel="stylesheet" href="topsidecontent.css" />
+<link rel="stylesheet" href="createchallenge.css" />
 </head>
+
 <body>
+	<div class="topmenubar">
+		<c:import url="/common/TopMenuBar.jsp"></c:import>
+	</div>
+
 	<div class="container">
-		<div class="input-field">
-			<label for="title" class="block text-gray-700">제목</label> <input
-				type="text" id="title" value="기존 제목"
-				class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+		<div class="sidebar">
+			<c:import url="SideBar.jsp"></c:import>
 		</div>
 
-		<div class="input-field">
-			<label for="week1" class="block text-gray-700">1주차</label> <input
-				type="text" id="week1" value="기존 1주차 내용"
-				class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+		<div class="main">
+			<div class="input-field">
+				<label for="title">제목</label> <input type="text" id="title"
+					value="기존 제목">
+			</div>
+
+			<div class="input-field">
+				<label for="startdate"></label> <input type="date" id="date" value="2025-10-10">
+			</div>
+
+			<div class="radio-group">
+				<label><input type="radio" name="challenge" value="daily">
+					일일 도전과제(7일)</label>
+				<label><input type="radio" name="challenge"	value="weekly">
+					주간 도전과제(5주)</label>
+			</div>
+
+			<div class="input-day">
+				<div class="input-field">
+					<label for="week1">1일차</label> <input type="text" id="day1"
+						placeholder="내용을 입력하세요">
+				</div>
+				<div class="input-field">
+					<label for="week1">2일차</label> <input type="text" id="day2"
+						placeholder="내용을 입력하세요">
+				</div>
+				<div class="input-field">
+					<label for="week1">3일차</label> <input type="text" id="day3"
+						placeholder="내용을 입력하세요">
+				</div>
+				<div class="input-field">
+					<label for="week1">4일차</label> <input type="text" id="day4"
+						placeholder="내용을 입력하세요">
+				</div>
+				<div class="input-field">
+					<label for="week1">5일차</label> <input type="text" id="day5"
+						placeholder="내용을 입력하세요">
+				</div>
+				<div class="input-field">
+					<label for="week1">6일차</label> <input type="text" id="day6"
+						placeholder="내용을 입력하세요">
+				</div>
+				<div class="input-field">
+					<label for="week1">7일차</label> <input type="text" id="day7"
+						placeholder="내용을 입력하세요">
+				</div>
+			</div>
+
+			<div class="input-week">
+				<div class="input-field">
+					<label for="week1">1주차</label> <input type="text" id="week1"
+						placeholder="내용을 입력하세요">
+				</div>
+				<div class="input-field">
+					<label for="week2">2주차</label> <input type="text" id="week2"
+						placeholder="내용을 입력하세요">
+				</div>
+				<div class="input-field">
+					<label for="week3">3주차</label> <input type="text" id="week3"
+						placeholder="내용을 입력하세요">
+				</div>
+				<div class="input-field">
+					<label for="week4">4주차</label> <input type="text" id="week4"
+						placeholder="내용을 입력하세요">
+				</div>
+				<div class="input-field">
+					<label for="week5">5주차</label> <input type="text" id="week5"
+						placeholder="내용을 입력하세요">
+				</div>
+			</div>
+
+			<div class="button-group">
+				<button class="btn-reset">다시 작성</button>
+				<button class="btn-submit">등록 하기</button>
+			</div>
+
 		</div>
 
-		<div class="input-field">
-			<label for="week2" class="block text-gray-700">2주차</label> <input
-				type="text" id="week2" value="기존 2주차 내용"
-				class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-		</div>
-
-		<div class="input-field">
-			<label for="week3" class="block text-gray-700">3주차</label> <input
-				type="text" id="week3" value="기존 3주차 내용"
-				class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-		</div>
-
-		<div class="input-field">
-			<label for="week4" class="block text-gray-700">4주차</label> <input
-				type="text" id="week4" value="기존 4주차 내용"
-				class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-		</div>
-
-		<div class="input-field">
-			<label for="week5" class="block text-gray-700">5주차</label> <input
-				type="text" id="week5" value="기존 5주차 내용"
-				class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-		</div>
-
-		<div class="button-group">
-			<button
-				class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300">다시
-				작성</button>
-			<button
-				class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">수정
-				하기</button>
-		</div>
 	</div>
 </body>
 </html>
