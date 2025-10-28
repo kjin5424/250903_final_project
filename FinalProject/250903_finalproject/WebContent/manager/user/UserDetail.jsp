@@ -3,6 +3,7 @@
     request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
 %>
+<!-- 유저의 탈퇴 사유를 관리자가 변경할 수 있어야 함 -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>

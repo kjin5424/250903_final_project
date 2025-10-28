@@ -8,153 +8,178 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>도전 과제</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script type="text/javascript"
-	src="http://code.jquery.com/jquery.min.js"></script>
-<script src="<%=cp%>/group/challenge/challenge.js"></script>
-<link rel="stylesheet"
-	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap">
-<!-- 폰트는 제거 가능. -->
-<link rel="stylesheet" href="<%=cp%>/group_room/challenge/challenge.css">
+<link
+	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap"
+	rel="stylesheet">
+<link rel="stylesheet" href="challengedetail.css" />
+<link rel="stylesheet" href="topsidecontent.css" />
 </head>
-<body class="p-6">
 
-	<div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md">
-		<h1 class="text-2xl font-bold">도전 과제 제목</h1>
-		<div class="flex space-x-2">
-			<button
-				class="bg-yellow-400 text-white px-3 py-1 rounded hover:bg-yellow-500">수정</button>
-			<button
-				class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">삭제</button>
-			<button
-				class="bg-gray-500 text-white px-3 py-1 rounded hover:bg-gray-600">신고</button>
+<body>
+	<!-- 상단 메뉴바 -->
+	<div class="topmenubar">
+		<c:import url="/common/TopMenuBar.jsp"></c:import>
+	</div>
+	
+	<!-- 메인 컨텐츠 -->
+	<div class="container">
+		<!-- 사이드바 -->
+		<div class="sidebar">
+			<c:import url="/group_room/challenge/SideBar.jsp"></c:import>
 		</div>
 
-		<h2 class="text-lg font-semibold mb-2">도전 과제 수행 가능 일자</h2>
-		<table class="w-full mb-6 border-collapse">
-			<thead>
-				<tr class="bg-gray-100">
-					<th class="border p-2">일차</th>
-					<th class="border p-2">내용</th>
-					<th class="border p-2">확인</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td class="border p-2">1일차</td>
-					<td class="border p-2">영단어 외우기</td>
-					<td class="border p-2 text-center"><input type="checkbox"
-						class="checkbox" checked></td>
-				</tr>
-				<tr>
-					<td class="border p-2">2일차</td>
-					<td class="border p-2">영단어 외우기</td>
-					<td class="border p-2 text-center"><input type="checkbox"
-						class="checkbox" checked></td>
-				</tr>
-				<tr>
-					<td class="border p-2">3일차</td>
-					<td class="border p-2">영단어 외우기</td>
-					<td class="border p-2 text-center"><input type="checkbox"
-						class="checkbox" checked></td>
-				</tr>
-				<tr>
-					<td class="border p-2">4일차</td>
-					<td class="border p-2">영단어 외우기</td>
-					<td class="border p-2 text-center"><input type="checkbox"
-						class="checkbox"></td>
-				</tr>
-				<tr>
-					<td class="border p-2">5일차</td>
-					<td class="border p-2">영단어 외우기</td>
-					<td class="border p-2 text-center"><input type="checkbox"
-						class="checkbox"></td>
-				</tr>
-				<tr>
-					<td class="border p-2">6일차</td>
-					<td class="border p-2">외운 영단어 복기</td>
-					<td class="border p-2 text-center"><input type="checkbox"
-						class="checkbox"></td>
-				</tr>
-				<tr>
-					<td class="border p-2">7일차</td>
-					<td class="border p-2">영어 책 읽기(30p이상)</td>
-					<td class="border p-2 text-center"><input type="checkbox"
-						class="checkbox"></td>
-				</tr>
-			</tbody>
-		</table>
+		<!-- 본문 -->
+		<div class="main">
+			<h1 style="font-size: 1.5rem; font-weight: bold;">도전 과제 제목</h1>
 
-		<div class="mb-6">
-			<p>참가자 : 8 명</p>
-			<p>달성자 : 5 명</p>
-			<p>달성률 : 62.5 %</p>
-		</div>
+			<div class="btn-group">
+				<a href="ChallengeModify.jsp">
+				<button class="btn-yellow">수정</button></a>
+				<button class="btn-red">삭제</button>
+				<button class="btn-gray">신고</button>
+			</div>
 
-		<!-- 참가자 리스트 토글 텍스트 -->
-		<h2 id="participantTitle"
-			class="text-lg font-bold cursor-pointer mb-2">참가자 리스트 ▼(펼치기)</h2>
+			<h2
+				style="font-size: 1.125rem; font-weight: 600; margin-top: 24px; margin-bottom: 8px;">
+				도전 과제 시작 날짜(yy-mm-dd)</h2>
+			<table>
+				<thead>
+					<tr>
+						<th>일차</th>
+						<th>내용</th>
+						<th>확인</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>1일차(yy-mm-dd)</td>
+						<td>영단어 외우기</td>
+						<td style="text-align: center;"><input type="checkbox"
+							class="checkbox" checked></td>
+					</tr>
+					<tr>
+						<td>2일차(yy-mm-dd+1)</td>
+						<td>영단어 외우기</td>
+						<td style="text-align: center;"><input type="checkbox"
+							class="checkbox" checked></td>
+					</tr>
+					<tr>
+						<td>3일차(yy-mm-dd+2)</td>
+						<td>영단어 외우기</td>
+						<td style="text-align: center;"><input type="checkbox"
+							class="checkbox" checked></td>
+					</tr>
+					<tr>
+						<td>4일차(yy-mm-dd+3)</td>
+						<td>영단어 외우기</td>
+						<td style="text-align: center;"><input type="checkbox"
+							class="checkbox"></td>
+					</tr>
+					<tr>
+						<td>5일차(yy-mm-dd+4)</td>
+						<td>영단어 외우기</td>
+						<td style="text-align: center;"><input type="checkbox"
+							class="checkbox"></td>
+					</tr>
+					<tr>
+						<td>6일차(yy-mm-dd+5)</td>
+						<td>외운 영단어 복기</td>
+						<td style="text-align: center;"><input type="checkbox"
+							class="checkbox"></td>
+					</tr>
+					<tr>
+						<td>7일차(yy-mm-dd+6)</td>
+						<td>영어 책 읽기(30p이상)</td>
+						<td style="text-align: center;"><input type="checkbox"
+							class="checkbox"></td>
+					</tr>
+				</tbody>
+			</table>
 
-		<!-- 참가자 리스트 테이블 (초기 숨김 상태) -->
-		<table id="participantTable"
-			class="min-w-full border-collapse border border-gray-300 hidden mb-6">
-			<thead>
-				<tr class="bg-gray-100">
-					<th class="border border-gray-300 px-4 py-2">참가자</th>
-					<th class="border border-gray-300 px-4 py-2">달성여부</th>
-					<th class="border border-gray-300 px-4 py-2">달성일</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td class="border border-gray-300 px-4 py-2 font-bold">userA</td>
-					<td class="border border-gray-300 px-4 py-2">달성</td>
-					<td class="border border-gray-300 px-4 py-2">yy-mm-dd</td>
-				</tr>
-				<tr>
-					<td class="border border-gray-300 px-4 py-2 font-bold">userB</td>
-					<td class="border border-gray-300 px-4 py-2">달성</td>
-					<td class="border border-gray-300 px-4 py-2">yy-mm-dd</td>
-				</tr>
-				<tr>
-					<td class="border border-gray-300 px-4 py-2 font-bold">userC</td>
-					<td class="border border-gray-300 px-4 py-2">미달성</td>
-					<td class="border border-gray-300 px-4 py-2">-</td>
-				</tr>
-				<tr>
-					<td class="border border-gray-300 px-4 py-2 font-bold">userD</td>
-					<td class="border border-gray-300 px-4 py-2">달성</td>
-					<td class="border border-gray-300 px-4 py-2">yy-mm-dd</td>
-				</tr>
-			</tbody>
-		</table>
+			<div style="margin-bottom: 1.5rem;">
+				<p>참가자 : 8 명</p>
+				<p>달성자 : 5 명</p>
+				<p>달성률 : 62.5 %</p>
+			</div>
 
-		<!-- 댓글 입력 영역 -->
-		<div class="relative mb-4">
-			<textarea class="w-full p-2 border rounded" rows="3"
-				placeholder="인증 소감을 작성해보세요"></textarea>
-			<button
-				class="absolute bottom-2 right-2 bg-blue-500 text-white px-3 py-1 rounded">등록</button>
-		</div>
+			<h2 id="participantTitle" class="toggle-button">참가자 리스트 ▼(펼치기)</h2>
 
-		<div class="mb-4">
-			<p class="font-semibold">댓글 1개</p>
-			<div class="flex justify-between items-center border p-2 rounded">
-				<div>
-					<p class="font-bold">userB</p>
-					<p>
-						가뿐해요<br>여러분도 해보세요
-					</p>
-				</div>
-				<div class="flex items-center">
-					<p class="mr-2">yy-mm-dd</p>
-					<button class="bg-red-500 text-white px-2 py-1 rounded">신고</button>
+			<table id="participantTable" class="hidden">
+				<thead>
+					<tr>
+						<th>참가자</th>
+						<th>달성여부</th>
+						<th>달성일</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><strong>userA</strong></td>
+						<td>달성</td>
+						<td>yy-mm-dd</td>
+					</tr>
+					<tr>
+						<td><strong>userB</strong></td>
+						<td>달성</td>
+						<td>yy-mm-dd</td>
+					</tr>
+					<tr>
+						<td><strong>userC</strong></td>
+						<td>미달성</td>
+						<td>-</td>
+					</tr>
+					<tr>
+						<td><strong>userD</strong></td>
+						<td>달성</td>
+						<td>yy-mm-dd</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<!-- 인증(댓)글 작성 부분 -->
+			<div class="comment-box">
+				<textarea rows="3" placeholder="인증 소감을 작성해보세요"></textarea>
+				<div class="comment-actions">
+					<button class="btn-gray">이미지</button>
+					<button class="btn-blue">등록</button>
 				</div>
 			</div>
+
+			<!-- 인증(댓)글 부분 -->
+			<div class="comment-section">
+				<p class="comment-count">댓글 2개</p>
+
+				<div class="comment-list">
+					<div class="comment-item">
+						<div class="left">
+							<p class="username">userB</p>
+							<p class="content">
+								가뿐해요<br>여러분도 해보세요
+							</p>
+						</div>
+						<div class="right">
+							<p class="date">yy-mm-dd</p>
+							<button class="btn-red">삭제</button>
+							<button class="btn-red">신고</button>
+						</div>
+					</div>
+
+					<div class="comment-item">
+						<div class="left">
+							<p class="username">userC</p>
+							<p class="content">힘들었지만 뿌듯해요!</p>
+						</div>
+						<div class="right">
+							<p class="date">yy-mm-dd</p>
+							<button class="btn-red">삭제</button>
+							<button class="btn-red">신고</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
 		</div>
 	</div>
-
 </body>
 </html>
