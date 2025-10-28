@@ -396,5 +396,3 @@ body {
 			document.location.href="${cp}/group_room/MesseageWrite.jsp";	
 		}
 	</script>
-</body>
-</html>
