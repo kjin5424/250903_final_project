@@ -81,6 +81,7 @@
                             class="filter-btn px-4 py-2 rounded-full text-sm font-medium transition-all bg-gray-100 text-gray-600 hover:bg-gray-200">
                         독서 토론방
                     </button>
+              	
                 </div>
             </div>
 

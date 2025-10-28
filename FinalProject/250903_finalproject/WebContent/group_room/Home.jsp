@@ -616,6 +616,7 @@
                 <div class="group-actions">
                     <button class="btn-header" onclick="goToBoard()">📋 게시판</button>
                     <button class="btn-header" onclick="viewChallenge()">🏆 도전과제</button>
+                    <button class="btn-header" onclick="viewChallenge()">🕰 히스토리</button>
                     <button class="btn-header" onclick="goToMembers()">👥 모임원</button>
                     <button class="btn-header" onclick="goToMessages()">✉️ 쪽지</button>
                     <button class="btn-header" onclick="goToManage()">⚙️ 관리</button>
@@ -754,7 +755,7 @@
                     <div class="post-preview" onclick="viewPost(6)">
                         <div>
                             <span class="post-category-badge badge-free">자유</span>
-                            <span class="post-preview-title">오늘 스터디 너무 재밌었어요!</span>
+                            <span class="post-preview-title">오늘 스터디 너무 재미없었어요!</span>
                         </div>
                         <div class="post-preview-meta">자바마스터 · 2024-10-10</div>
                     </div>

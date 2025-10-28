@@ -104,7 +104,7 @@
                 <div class="member-avatar">하</div>
                 <div class="member-name">하준</div>
                 <div class="member-role">모임원</div>
-                <div class="member-intro">CS 공부에 관심이 많습니다.</div>
+                <div class="member-intro">CS 공부에 자신이 있습니다.</div>
             </div>
         </div>
     </div>
