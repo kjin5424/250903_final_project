@@ -1,6 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<!-- 모임 활동 내역 확인 화면 생성-->
-<!-- 마이페이지 화면 생성 -->
+
 <%@ page language="java" %>
 
 <!DOCTYPE html>
@@ -1147,7 +1146,23 @@
 
             document.getElementById(tabId).classList.add('active');
 
-            event.target.classList.add('active');
+
+
+            // 사이드바 메뉴들 중 같은 data-target을 가진 요소를 active로 설정 (있으면)
+
+            const menuToActivate = document.querySelector(`.menu-item[data-target="${tabId}"]`);
+
+            if (menuToActivate) menuToActivate.classList.add('active');
+
+
+
+            // 오른쪽 상단 탭 스타일이 필요한 경우 (페이지 상단 nav의 .tab들도 포함)
+
+            const topTabs = document.querySelectorAll('.tab');
+
+            topTabs.forEach(t => t.classList.remove('active'));
+
+            // (상단 nav 링크는 href 쿼리로 처리되는 경우가 있어 직접 활성화는 따로 하지 않음)
 
         }
 
@@ -1210,6 +1225,28 @@
         window.onload = function() {
 
             showTab('my-groups');
+
+        }
+
+        // ✅ 프로필 이미지 변경 미리보기 기능
+
+        function previewProfileImage(event) {
+
+            const file = event.target.files[0];
+
+            if (file) {
+
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+
+                    document.getElementById('profileImage').src = e.target.result;
+
+                };
+
+                reader.readAsDataURL(file);
+
+            }
 
         }
 
@@ -1297,7 +1334,7 @@
 
                 <div class="menu-title">모임 관리</div>
 
-                <a class="menu-item active" onclick="showTab('my-groups')">
+                <a class="menu-item" data-target="my-groups" onclick="showTab('my-groups')">
 
                     <span>📚</span>
 
@@ -1305,7 +1342,7 @@
 
                 </a>
 
-                <a class="menu-item" onclick="showTab('pending-groups')">
+                <a class="menu-item" data-target="pending-groups" onclick="showTab('pending-groups')">
 
                     <span>⏳</span>
 
@@ -1315,7 +1352,7 @@
 
                 </a>
 
-                <a class="menu-item" onclick="showTab('past-groups')">
+                <a class="menu-item" data-target="past-groups" onclick="showTab('past-groups')">
 
                     <span>📜</span>
 
@@ -1331,7 +1368,7 @@
 
                 <div class="menu-title">활동</div>
 
-                <a class="menu-item" onclick="showTab('notifications')">
+                <a class="menu-item" data-target="notifications" onclick="showTab('notifications')">
 
                     <span>🔔</span>
 
@@ -1341,7 +1378,7 @@
 
                 </a>
 
-                <a class="menu-item" onclick="showTab('favorites')">
+                <a class="menu-item" data-target="favorites" onclick="showTab('favorites')">
 
                     <span>⭐</span>
 
@@ -1349,7 +1386,7 @@
 
                 </a>
 
-                <a class="menu-item" onclick="showTab('calendar')">
+                <a class="menu-item" data-target="calendar" onclick="showTab('calendar')">
 
                     <span>📅</span>
 
@@ -1365,7 +1402,7 @@
 
                 <div class="menu-title">설정</div>
 
-                <a class="menu-item" onclick="showTab('profile-settings')">
+                <a class="menu-item" data-target="profile-settings" onclick="showTab('profile-settings')">
 
                     <span>⚙️</span>
 
@@ -1373,7 +1410,7 @@
 
                 </a>
 
-                <a class="menu-item" onclick="showTab('notification-settings')">
+                <a class="menu-item" data-target="notification-settings" onclick="showTab('notification-settings')">
 
                     <span>🔕</span>
 
@@ -1393,7 +1430,7 @@
 
             <!-- 내 모임 탭 -->
 
-            <div id="my-groups" class="tab-content active">
+            <div id="my-groups" class="tab-content">
 
                 <h1 class="page-title">📚 내 모임</h1>
 
@@ -1642,3 +1679,755 @@
                     <div class="group-card">
 
                         <span class="group-badge badge-waiting">개설 신청중</span>
+
+                        <img src="https://via.placeholder.com/300x150" alt="모임 이미지" class="group-image">
+
+                        <div class="group-title">초보자를 위한 파이썬 입문</div>
+
+                        <div class="group-meta">
+
+                            <span>📍</span>
+
+                            <span>신촌동 • 오프라인</span>
+
+                        </div>
+
+                        <div class="group-meta">
+
+                            <span>📅</span>
+
+                            <span>신청일: 2024-10-07</span>
+
+                        </div>
+
+                        <div class="group-actions">
+
+                            <button class="btn-small btn-outline-small" onclick="viewGroup(6)">상세보기</button>
+
+                            <button class="btn-small btn-danger-small" onclick="cancelApplication(6)">신청 취소</button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div style="margin-top:30px; color:#666;">
+
+                    <strong>참고:</strong> 신청/개설 대기 모임은 승인 여부에 따라 목록에서 자동으로 이동됩니다. 필요 시 '신청 취소' 버튼으로 신청을 철회할 수 있습니다.
+
+                </div>
+
+            </div>
+
+
+
+            <!-- 이전 모임 탭 -->
+
+            <div id="past-groups" class="tab-content">
+
+                <h1 class="page-title">📜 이전 모임</h1>
+
+                <p class="page-subtitle">종료되었거나 과거 기록으로 남긴 모임입니다</p>
+
+
+
+                <div class="group-grid" style="margin-top:20px;">
+
+                    <div class="group-card">
+
+                        <img src="https://via.placeholder.com/300x150" alt="모임 이미지" class="group-image">
+
+                        <div class="group-title">중급 자바 스터디 (종료)</div>
+
+                        <div class="group-meta">
+
+                            <span>📅</span>
+
+                            <span>기간: 2024-06-01 ~ 2024-09-30</span>
+
+                        </div>
+
+                        <div class="group-meta">
+
+                            <span>📊</span>
+
+                            <span>최종 출석률 82%</span>
+
+                        </div>
+
+                        <div class="group-actions">
+
+                            <button class="btn-small btn-outline-small" onclick="viewGroup(7)">기록 보기</button>
+
+                            
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="group-card">
+
+                        <img src="https://via.placeholder.com/300x150" alt="모임 이미지" class="group-image">
+
+                        <div class="group-title">토익 스터디 (종료)</div>
+
+                        <div class="group-meta">
+
+                            <span>📅</span>
+
+                            <span>기간: 2023-11-01 ~ 2024-02-28</span>
+
+                        </div>
+
+                        <div class="group-meta">
+
+                            <span>📊</span>
+
+                            <span>평균 점수 상승 80점</span>
+
+                        </div>
+
+                        <div class="group-actions">
+
+                            <button class="btn-small btn-outline-small" onclick="viewGroup(8)">기록 보기</button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- 알림 탭 -->
+
+            <div id="notifications" class="tab-content">
+
+                <h1 class="page-title">🔔 알림</h1>
+
+                <p class="page-subtitle">최근 활동 알림을 확인하세요</p>
+
+
+
+                <div class="notification-list">
+
+                    <div class="notification-item unread">
+
+                        <div class="notification-icon notice">🔔</div>
+
+                        <div class="notification-content">
+
+                            <div class="notification-title">새로운 모임 승인 알림</div>
+
+                            <div class="notification-message">'초보자를 위한 파이썬 입문' 모임이 승인되었습니다. 활동을 시작해보세요!</div>
+
+                            <div class="notification-time">2024-10-10 09:12</div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="notification-item">
+
+                        <div class="notification-icon comment">💬</div>
+
+                        <div class="notification-content">
+
+                            <div class="notification-title">댓글 알림</div>
+
+                            <div class="notification-message">영어 회화 스터디 게시물에 새로운 댓글이 달렸습니다.</div>
+
+                            <div class="notification-time">2024-10-09 18:30</div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="notification-item">
+
+                        <div class="notification-icon vote">🗳️</div>
+
+                        <div class="notification-content">
+
+                            <div class="notification-title">투표 참여 요청</div>
+
+                            <div class="notification-message">다음 모임 일정 투표에 참여해주세요. 미참가 시 자동 탈퇴 기준을 확인하세요.</div>
+
+                            <div class="notification-time">2024-10-08 12:05</div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- 즐겨찾기 탭 -->
+
+            <div id="favorites" class="tab-content">
+
+                <h1 class="page-title">⭐ 즐겨찾기</h1>
+
+                <p class="page-subtitle">관심 있는 모임을 모아보세요</p>
+
+
+
+                <div style="margin-top:20px;">
+
+                    <div class="favorite-item">
+
+                        <div class="favorite-icon">📚</div>
+
+                        <div class="favorite-info">
+
+                            <div class="favorite-name">알고리즘 스터디</div>
+
+                            <div class="favorite-status">운영중 • 7/10명</div>
+
+                        </div>
+
+                        <div class="favorite-actions">
+
+                            <button class="btn-small btn-primary-small" onclick="viewGroup(1)">참여하기</button>
+
+                            <button class="btn-small btn-outline-small" onclick="removeFavorite(1)">삭제</button>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="favorite-item">
+
+                        <div class="favorite-icon">🧪</div>
+
+                        <div class="favorite-info">
+
+                            <div class="favorite-name">데이터 사이언스 스터디</div>
+
+                            <div class="favorite-status">모집중 • 3/10명</div>
+
+                        </div>
+
+                        <div class="favorite-actions">
+
+                            <button class="btn-small btn-primary-small" onclick="viewGroup(9)">참여하기</button>
+
+                            <button class="btn-small btn-outline-small" onclick="removeFavorite(9)">삭제</button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- 내 일정 탭 -->
+
+            <div id="calendar" class="tab-content">
+
+                <h1 class="page-title">📅 내 일정</h1>
+
+                <p class="page-subtitle">모임 일정과 개인 일정을 관리하세요</p>
+
+				
+
+                <!-- 간단 달력 + 일정 목록 (CSS는 원본 유지) -->
+
+                <div style="margin-top:20px;">
+
+                    <div style="display:flex; gap:20px; flex-wrap:wrap;">
+
+                        <div style="flex:1; min-width:300px;">
+
+                            <div style="background:#f8faf8; border-radius:12px; padding:16px;">
+
+                                <h3 style="margin-bottom:10px;">이번 달 일정</h3>
+
+                                <div id="mini-calendar" style="display:grid; grid-template-columns: repeat(7, 1fr); gap:6px;">
+
+                                    <!-- 자바스크립트로 채웁니다 -->
+
+                                </div>
+
+                                <div style="margin-top:12px; font-size:13px; color:#666;">
+
+                                    날짜를 클릭하면 아래 '일정 추가'에 선택됩니다.
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div style="flex:1; min-width:320px;">
+
+                            <div style="background:#f8faf8; border-radius:12px; padding:16px;">
+
+                                <h3 style="margin-bottom:10px;">일정 추가</h3>
+
+                                <div style="display:flex; gap:8px; margin-bottom:8px;">
+
+                                    <!-- <input id="cal-date" type="text" placeholder="YYYY-MM-DD" class="form-input" style="flex:0 0 140px;">
+
+                                    <input id="cal-text" type="text" placeholder="일정 입력" class="form-input" style="flex:1;"> -->
+
+                                   <!--  <button class="btn-small btn-primary-small" onclick="addCalendarEventFromForm()">추가</button> -->
+
+                                </div>
+
+                                <div id="events-list" style="margin-top:8px;">
+
+                                    <!-- 일정 목록 표시 -->
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- 프로필 설정 탭 -->
+
+            <div id="profile-settings" class="tab-content">
+
+                <h1 class="page-title">⚙️ 프로필 설정</h1>
+
+                <p class="page-subtitle">프로필을 편집하고 개인정보를 관리하세요</p>
+
+
+
+                <div class="settings-section">
+
+                    <div class="section-title">프로필 정보</div>
+
+                    
+
+                <p class="page-subtitle">프로필 정보 수정 및 사진 변경이 가능합니다</p>
+
+
+
+                <form action="uploadProfile.jsp" method="post" enctype="multipart/form-data">
+
+                    <div style="margin-bottom:10px;">
+
+                        <label for="profileImageInput">프로필 사진 변경:</label>
+
+                        <input type="file" id="profileImageInput" name="profileImage" accept="image/*" onchange="previewProfileImage(event)">
+
+                    </div>
+
+                    
+
+                    <div class="form-group">
+
+                        <label class="form-label">이름</label>
+
+                        <input class="form-input" type="text" value="스터디러버">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label class="form-label">이메일</label>
+
+                        <input class="form-input" type="email" value="study@example.com">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label class="form-label">소개</label>
+
+                        <textarea class="form-input" rows="4">안녕하세요! 함께 공부할 사람을 찾고 있어요.</textarea>
+
+                    </div>
+
+                    <button class="btn-save" onclick="saveProfile()">저장하기</button>
+
+                </div>
+
+
+
+              <!--   <div class="settings-section">
+
+                    <div class="section-title">계정 설정</div>
+
+                    <div class="form-group toggle-switch">
+
+                        <label>프로필 공개 여부</label>
+
+                        <label class="switch">
+
+                            <input type="checkbox" checked>
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label class="form-label">비밀번호 변경</label>
+
+                        <input class="form-input" type="password" placeholder="새 비밀번호">
+
+                    </div>
+
+                </div>
+
+            </div> -->
+
+
+
+            <!-- 알림 설정 탭 -->
+
+            <!-- 알림 설정 탭 -->
+
+<div id="notification-settings" class="tab-content">
+
+    <h1 class="page-title">🔕 알림 설정</h1>
+
+    <p class="page-subtitle">알림 수신 여부 및 방법을 설정하세요</p>
+
+
+
+    <div class="settings-section">
+
+        <div class="section-title">모임 알림</div>
+
+        <div class="toggle-switch">
+
+            <label class="form-label">모임 승인 알림</label>
+
+            <label class="switch">
+
+                <input type="checkbox" checked>
+
+                <span class="slider"></span>
+
+            </label>
+
+        </div>
+
+        <div class="toggle-switch">
+
+            <label class="form-label">모임 댓글 알림</label>
+
+            <label class="switch">
+
+                <input type="checkbox">
+
+                <span class="slider"></span>
+
+            </label>
+
+        </div>
+
+		    </div>
+
+		
+
+		    <div class="settings-section">
+
+		        <div class="section-title">개인 알림</div>
+
+		        <div class="toggle-switch">
+
+		            <label class="form-label">이메일 알림</label>
+
+		            <label class="switch">
+
+		                <input type="checkbox" checked>
+
+		                <span class="slider"></span>
+
+		            </label>
+
+		        </div>
+
+		        <div class="toggle-switch">
+
+		            <label class="form-label">푸시 알림</label>
+
+		            <label class="switch">
+
+		                <input type="checkbox">
+
+		                <span class="slider"></span>
+
+		            </label>
+
+		        </div>
+
+		    </div>
+
+		
+
+		    <button class="btn-save" onclick="alert('설정이 저장되었습니다!')">저장</button>
+
+		</div>
+
+
+
+        </main>
+
+    </div>
+
+
+
+    <!-- 추가 스크립트: 달력(간단) 동작 -->
+
+    <script>
+
+        // 간단한 달력/일정 기억용 객체 (페이지 리로드 시 초기화됨)
+
+        const calEvents = {};
+
+
+
+        // mini-calendar 렌더링 (이번 달 기준)
+
+        function renderMiniCalendar() {
+
+            const container = document.getElementById('mini-calendar');
+
+            if (!container) return;
+
+            container.innerHTML = '';
+
+            const today = new Date();
+
+            const year = today.getFullYear();
+
+            const month = today.getMonth(); // 0-based
+
+            const firstDay = new Date(year, month, 1).getDay();
+
+            const lastDate = new Date(year, month + 1, 0).getDate();
+
+
+
+            // 빈칸
+
+            for (let i=0;i<firstDay;i++){
+
+                const empty = document.createElement('div');
+
+                empty.style.minHeight = '36px';
+
+                empty.style.background = '#fff';
+
+                container.appendChild(empty);
+
+            }
+
+
+
+            for (let d=1; d<=lastDate; d++){
+
+                const box = document.createElement('div');
+
+                box.style.minHeight = '36px';
+
+                box.style.padding = '6px';
+
+                box.style.borderRadius = '6px';
+
+                box.style.background = '#fff';
+
+                box.style.boxSizing = 'border-box';
+
+                box.style.cursor = 'pointer';
+
+                box.textContent = d;
+
+                const full = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+
+                if (calEvents[full]) {
+
+                    const ev = document.createElement('div');
+
+                    ev.style.marginTop = '6px';
+
+                    ev.style.fontSize = '12px';
+
+                    ev.style.color = '#2d5a29';
+
+                    ev.textContent = calEvents[full];
+
+                    box.appendChild(ev);
+
+                }
+
+                box.onclick = () => {
+
+                    document.getElementById('cal-date').value = full;
+
+                    scrollToEventsList();
+
+                };
+
+                container.appendChild(box);
+
+            }
+
+        }
+
+
+
+        function scrollToEventsList() {
+
+            const el = document.getElementById('events-list');
+
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+        }
+
+
+
+        function addCalendarEventFromForm() {
+
+            const date = document.getElementById('cal-date').value.trim();
+
+            const text = document.getElementById('cal-text').value.trim();
+
+            if (!date || !text) {
+
+                alert('날짜와 일정을 입력하세요.');
+
+                return;
+
+            }
+
+            calEvents[date] = text;
+
+            document.getElementById('cal-text').value = '';
+
+            renderMiniCalendar();
+
+            renderEventsList();
+
+            alert('일정이 추가되었습니다.');
+
+        }
+
+
+
+        function renderEventsList() {
+
+            const list = document.getElementById('events-list');
+
+            if (!list) return;
+
+            list.innerHTML = '';
+
+            const keys = Object.keys(calEvents).sort();
+
+            if (keys.length === 0) {
+
+                list.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📭</div><div class="empty-state-text">등록된 일정이 없습니다.</div></div>';
+
+                return;
+
+            }
+
+            keys.forEach(k => {
+
+                const wrap = document.createElement('div');
+
+                wrap.style.display = 'flex';
+
+                wrap.style.justifyContent = 'space-between';
+
+                wrap.style.alignItems = 'center';
+
+                wrap.style.padding = '8px 0';
+
+                wrap.style.borderBottom = '1px solid #eee';
+
+
+
+                const left = document.createElement('div');
+
+                left.innerHTML = `<strong style="color:#2d5a29">${k}</strong><div style="color:#666">${calEvents[k]}</div>`;
+
+                const right = document.createElement('div');
+
+
+
+                const delBtn = document.createElement('button');
+
+                delBtn.className = 'btn-small btn-danger-small';
+
+                delBtn.textContent = '삭제';
+
+                delBtn.onclick = () => {
+
+                    if (confirm('일정을 삭제하시겠습니까?')) {
+
+                        delete calEvents[k];
+
+                        renderMiniCalendar();
+
+                        renderEventsList();
+
+                    }
+
+                };
+
+                right.appendChild(delBtn);
+
+
+
+                wrap.appendChild(left);
+
+                wrap.appendChild(right);
+
+                list.appendChild(wrap);
+
+            });
+
+        }
+
+
+
+        // 초기 렌더
+
+        renderMiniCalendar();
+
+        renderEventsList();
+
+    </script>
+
+</body>
+
+</html>
