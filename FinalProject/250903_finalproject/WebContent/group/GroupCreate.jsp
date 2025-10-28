@@ -1,6 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page language="java" %>
 
+<!-- 한 줄 자기소개서 일단 무조건 필수라 신청서에서 뺏어요 -->
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -447,11 +449,11 @@
 
             <!-- 추가 정보 -->
             <div class="form-section">
-                <label>한줄 자기소개서 필수 여부</label>
+               <!--  <label>한줄 자기소개서 필수 여부</label>
                 <select name="intro_required">
                     <option value="yes" selected>예</option>
                     <option value="no">아니오</option>
-                </select>
+                </select> -->
 
                 <label>가입 질문 작성 (선택사항)</label>
                 <div class="tip">가입 신청자가 답변해야 할 질문을 작성하세요. 여러 개 추가할 수 있습니다.</div>
