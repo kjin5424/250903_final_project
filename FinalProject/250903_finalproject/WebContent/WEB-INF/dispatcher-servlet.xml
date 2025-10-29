@@ -14,14 +14,20 @@
 	<bean id="localDataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
 		<property name="driverClass" value="oracle.jdbc.driver.OracleDriver"></property>
 		<property name="url" value="jdbc:oracle:thin:@211.238.142.163:1521:xe"></property>
-		<property name="username" value="scott"></property>
-		<property name="password" value="tiger"></property>
+		<property name="username" value="ckj"></property>
+		<property name="password" value="java006$"></property>
 	</bean>
-	<bean id="remoteDataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
-		<property name="driverClass" value="oracle.jdbc.driver.OracleDriver"></property>
-		<property name="url" value="jdbc:oracle:thin:@211.238.142.170:1521:xe"></property>
-		<property name="username" value="scott"></property>
-		<property name="password" value="tiger"></property>
+	
+	<context:component-scan base-package="com.test.mybatis"/>
+	
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="localDataSource"></property>
+		<property name="mapperLocations" value="classpath:com/test/mybatis/mapper/*.xml"></property>
 	</bean>
-
+	
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory"></constructor-arg>
+	</bean>
+	
+	
 </beans>
