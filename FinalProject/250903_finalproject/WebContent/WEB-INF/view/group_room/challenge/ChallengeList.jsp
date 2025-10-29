@@ -15,7 +15,7 @@
 <body>
 	<!-- 상단 메뉴바 -->
 	<div class="topmenubar">
-		<c:import url="/common/TopMenuBar.jsp"></c:import>
+		<c:import url="WEB-INF/common/TopMenuBar.jsp"/>
 	</div>
 
 	<div class="container">

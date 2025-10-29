@@ -18,7 +18,6 @@
 		<li><a href="#">게시글</a>
 		<li><a href="<%=cp %>/group_room/challenge/ChallengeList.jsp">도전 과제</a></li>
 		<li><a href="<%=cp %>/group_room/vote/VoteList.jsp">투표 리스트</a></li>
-		<li><a href="<%=cp %>/group_room/vote/RegularVoteList.jsp">정기 투표 설정</a></li>
 		<li><a href="#">내 정보</a></li>
 		<li><a href="#">설정</a></li>
 	</ul>

@@ -12,21 +12,21 @@
 <link
 	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap"
 	rel="stylesheet">
-<link rel="stylesheet" href="challengedetail.css" />
-<link rel="stylesheet" href="topsidecontent.css" />
+<link rel="stylesheet" href="<%=cp %>/WEB-INF/view/group_room/challenge/challengedetail.css" />
+<link rel="stylesheet" href="<%=cp %>/WEB-INF/view/group_room/challenge/topsidecontent.css" />
 </head>
 
 <body>
 	<!-- 상단 메뉴바 -->
 	<div class="topmenubar">
-		<c:import url="/common/TopMenuBar.jsp"></c:import>
+		<c:import url="/WEB-INF/view/common/TopMenuBar.jsp"></c:import>
 	</div>
 	
 	<!-- 메인 컨텐츠 -->
 	<div class="container">
 		<!-- 사이드바 -->
 		<div class="sidebar">
-			<c:import url="/group_room/challenge/SideBar.jsp"></c:import>
+			<c:import url="/WEB-INF/view/group_room/challenge/SideBar.jsp"></c:import>
 		</div>
 
 		<!-- 본문 -->

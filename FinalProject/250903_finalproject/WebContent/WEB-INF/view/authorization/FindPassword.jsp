@@ -435,9 +435,9 @@ px
 				</div>
 
 				<div class="form-group">
-					<label class="form-label" for="userEmail">비밀번호</label>
+					<label class="form-label" for="userEmail">이메일</label>
 					<div class="form-input-wrapper">
-						<input type="password" id="userEmail" name="userEmail"
+						<input type="email" id="userEmail" name="userEmail"
 							class="form-input" placeholder="가입시 등록한 이메일을 입력하세요"
 							autocomplete="userEmail" required> <span
 							class="input-icon">@</span>
@@ -446,9 +446,9 @@ px
 
 				<div class="form-options">
 					<div class="find-links">
-						<a href="FindUserId.jsp" class="find-link">아이디 찾기</a>
+						<a href="findidpage.do" class="find-link">아이디 찾기</a>
 						 <span class="divider">|</span> 
-						 <a href="UserLogin.jsp" class="find-link">로그인</a>
+						 <a href="loginpage.do" class="find-link">로그인</a>
 					</div>
 				</div>
 
@@ -456,7 +456,7 @@ px
 			</form>
 
 			<div class="signup-section">
-				아직 회원이 아니신가요? <a href="signup.jsp" class="signup-link">회원가입</a>
+				아직 회원이 아니신가요? <a href="signuppage.do" class="signup-link">회원가입</a>
 			</div>
 		</div>
 	</div>
