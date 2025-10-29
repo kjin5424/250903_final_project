@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%
 	String cp = request.getContextPath();
 %>
@@ -51,20 +52,24 @@ keyframes bounce { 0%, 100% {
 transform
 
 
+
+
 :
 
+
  
+
 
 translateY
 
 
+
+
 (-10
 px
+
+
 );
-
-
-	
-
 }
 }
 .logo-title {
@@ -340,38 +345,48 @@ keyframes shake { 0%, 100% {
 transform
 
 
+
+
 :
 
+
  
+
 
 translateX
 
 
+
+
 (-10
 px
+
+
 );
-
- 
-
 }
 75%
 {
 transform
 
 
+
+
 :
 
+
  
+
 
 translateX
 
 
+
+
 (10
 px
+
+
 );
-
- 
-
 }
 }
 
@@ -397,16 +412,16 @@ px
 <body>
 	<%
 		// 에러 메시지 파라미터 받기
-		String error = request.getParameter("error");
-		String errorMessage = "";
+	String error = request.getParameter("error");
+	String errorMessage = "";
 
-		if ("invalid".equals(error)) {
-			errorMessage = "아이디 또는 비밀번호가 올바르지 않습니다.";
-		} else if ("required".equals(error)) {
-			errorMessage = "아이디와 비밀번호를 모두 입력해주세요.";
-		} else if ("session".equals(error)) {
-			errorMessage = "세션이 만료되었습니다. 다시 로그인해주세요.";
-		}
+	if ("invalid".equals(error)) {
+		errorMessage = "아이디 또는 비밀번호가 올바르지 않습니다.";
+	} else if ("required".equals(error)) {
+		errorMessage = "아이디와 비밀번호를 모두 입력해주세요.";
+	} else if ("session".equals(error)) {
+		errorMessage = "세션이 만료되었습니다. 다시 로그인해주세요.";
+	}
 	%>
 
 	<div class="login-container">
@@ -425,7 +440,7 @@ px
 				<span class="error-close" onclick="closeErrorMessage()">×</span>
 			</div>
 
-			<form action="UserMain.jsp" id="loginForm"
+			<form action="login.do" id="loginForm"
 				onsubmit="return validateLogin(event)">
 				<div class="form-group">
 					<label class="form-label" for="userId">아이디</label>
@@ -452,8 +467,8 @@ px
 						<span class="checkbox-label">로그인 상태 유지</span>
 					</label>
 					<div class="find-links">
-						<a href="FindUserId.jsp" class="find-link">아이디 찾기</a> <span
-							class="divider">|</span> <a href="FindUserPassword.jsp"
+						<a href="findidpage.do" class="find-link">아이디 찾기</a> <span
+							class="divider">|</span> <a href="findpwpage.do"
 							class="find-link">비밀번호 찾기</a>
 					</div>
 				</div>
@@ -482,86 +497,73 @@ px
 			 -->
 
 			<div class="signup-section">
-				아직 회원이 아니신가요? <a href="<%=cp %>/user/signup/UserSignUp.jsp" class="signup-link">회원가입</a>
+				아직 회원이 아니신가요? <a href="signuppage.do" class="signup-link">회원가입</a>
 			</div>
 		</div>
 	</div>
 
 	<script>
 		// 로그인 폼 유효성 검사
-		function validateLogin(event) {
-			if (event) {
-				event.preventDefault();
-			}
-
+		function validateLogin(event)
+		{
 			const userId = document.getElementById('userId').value.trim();
 			const password = document.getElementById('password').value.trim();
 			const errorMsg = document.querySelector('.error-message');
 
-			if (userId == "" || password == "") {
+			if (userId == "" || password == "")
+			{
 				showError('아이디와 비밀번호를 모두 입력해주세요.');
 				return false;
 			}
 
-			if (userId.length < 4) {
+			if (userId.length < 4)
+			{
 				showError('아이디는 4자 이상이어야 합니다.');
 				return false;
 			}
 
-			if (password.length < 6) {
+			if (password.length < 6)
+			{
 				showError('비밀번호는 6자 이상이어야 합니다.');
 				return false;
 			}
 
-			// 실제로는 서버로 로그인 요청
-			processLogin(userId, password);
-
-			return false;
+			return true;
 		}
 
 		// 에러 메시지 표시
-		function showError(message) {
+		function showError(message)
+		{
 			const errorMsg = document.querySelector('.error-message');
 			const errorText = document.querySelector('.error-text');
-			
+
 			errorText.textContent = '⚠️ ' + message;
 			errorMsg.classList.add('show');
 		}
 
 		// 에러 메시지 제거
-		function closeErrorMessage() {
+		function closeErrorMessage()
+		{
 			const errorMsg = document.querySelector('.error-message');
 			errorMsg.classList.remove('show');
 		}
 
-		// 로그인 처리
-		function processLogin(userId, password) {
-			// 실제로는 서버로 데이터 전송
-			console.log('로그인 시도:', userId);
-
-			// 일반 사용자 로그인
-			if (userId === 'user' && password === 'user123') {
-				alert('로그인되었습니다!');
-				window.location.href = '../mainPage/Main.jsp';
-				return;
-			}
-
-			// 로그인 실패
-			showError('아이디 또는 비밀번호가 올바르지 않습니다.');
-		}
 
 		// Enter 키 처리
 		document.getElementById('password').addEventListener(
 				'keypress',
-				function(e) {
-					if (e.key === 'Enter') {
+				function(e)
+				{
+					if (e.key === 'Enter')
+					{
 						document.getElementById('loginForm').dispatchEvent(
 								new Event('submit'));
 					}
 				});
 
 		// 페이지 로드시 아이디 입력란에 포커스
-		window.addEventListener('load', function() {
+		window.addEventListener('load', function()
+		{
 			document.getElementById('userId').focus();
 		});
 	</script>

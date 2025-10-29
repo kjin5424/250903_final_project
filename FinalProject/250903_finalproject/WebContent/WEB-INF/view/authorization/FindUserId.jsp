@@ -367,8 +367,8 @@ px
 
 				<div class="form-options">
 					<div class="find-links">
-						<a href="UserLogin.jsp" class="find-link">로그인</a> <span
-							class="divider">|</span> <a href="FindUserPassword.jsp"
+						<a href="loginpage.do" class="find-link">로그인</a> <span
+							class="divider">|</span> <a href="findpwpage.do"
 							class="find-link">비밀번호 찾기</a>
 					</div>
 				</div>
@@ -377,7 +377,7 @@ px
 			</form>
 
 			<div class="signup-section">
-				아직 회원이 아니신가요? <a href="signup.jsp" class="signup-link">회원가입</a>
+				아직 회원이 아니신가요? <a href="signuppage.do" class="signup-link">회원가입</a>
 			</div>
 		</div>
 	</div>

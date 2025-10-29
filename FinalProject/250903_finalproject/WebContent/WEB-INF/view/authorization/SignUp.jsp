@@ -579,7 +579,7 @@ body {
 			
 			<div class="login-link-section">
 				이미 계정이 있으신가요?
-				<a href="<%=cp %>/user/login/UserLogin.jsp" class="login-link">로그인</a>
+				<a href="loginpage.do" class="login-link">로그인</a>
 			</div>
 		</div>
 	</div>
