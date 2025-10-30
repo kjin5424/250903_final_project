@@ -101,3 +101,6 @@ thead {
 	gap: 8px;
 }
 
+#participantTable {
+	display: none;
+}

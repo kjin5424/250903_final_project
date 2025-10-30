@@ -84,7 +84,7 @@ public class LoginController
 	@RequestMapping("/start.do")
 	public String mainPage(Model model)
 	{
-		return "/WEB-INF/view/group/GroupList.jsp";
+		return "/WEB-INF/view/group_room/challenge/CreateChallenge.jsp";
 	}
 
 }
