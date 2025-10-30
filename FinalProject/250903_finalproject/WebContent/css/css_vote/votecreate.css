@@ -66,23 +66,23 @@
 	transition: background-color 0.2s, transform 0.1s;
 }
 
-/* '다시 작성' 버튼 */
-.button-group button:first-child {
+/* '돌아가기' 버튼 */
+.button-group .btn-back {
 	background-color: #e5e7eb;
 	color: #374151;
 }
 
-.button-group button:first-child:hover {
+.button-group .btn-back:hover {
 	background-color: #d1d5db;
 }
 
 /* '등록 하기' 버튼 */
-.button-group button:last-child {
+.button-group .btn-submit {
 	background-color: #2563eb;
 	color: white;
 }
 
-.button-group button:last-child:hover {
+.button-group .btn-submit:hover {
 	background-color: #1d4ed8;
 	transform: translateY(-1px);
 }

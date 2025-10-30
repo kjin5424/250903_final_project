@@ -3,8 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	request.setCharacterEncoding("UTF-8");
-String cp = request.getContextPath();
-request.setAttribute("cp", cp);
+	String cp = request.getContextPath();
+	request.setAttribute("cp", cp);
 %>
 <!DOCTYPE html>
 <html lang="ko">

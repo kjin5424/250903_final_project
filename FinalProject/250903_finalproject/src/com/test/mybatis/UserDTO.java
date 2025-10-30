@@ -2,10 +2,13 @@ package com.test.mybatis;
 
 public class UserDTO
 {
+	// USER_INFO 테이블 속성
 	private String userId, password, nickName
 	, ssn1, ssn2, email, address, zipCode, savePath;
-
 	
+	// 추가 속성
+	private String userCode;
+
 	public String getUserId()
 	{
 		return userId;
@@ -94,6 +97,16 @@ public class UserDTO
 	public void setSavePath(String savePath)
 	{
 		this.savePath = savePath;
+	}
+
+	public String getUserCode()
+	{
+		return userCode;
+	}
+
+	public void setUserCode(String userCode)
+	{
+		this.userCode = userCode;
 	}
 
 }

@@ -9,8 +9,8 @@
 <head>
 <meta charset="UTF-8">
 <title>도전 과제 리스트</title>
-<link rel="stylesheet" href="<%=cp %>/css_temp/challengelist.css" />
-<link rel="stylesheet" href="<%=cp %>/css_temp/topsidecontent.css" />
+<link rel="stylesheet" href="<%=cp %>/css/topsidecontent.css" />
+<link rel="stylesheet" href="<%=cp %>/css/css_challenge/challengelist.css" />
 </head>
 <body>
 	<!-- 상단 메뉴바 -->
@@ -21,7 +21,7 @@
 	<div class="container">
 		<!-- 사이드바 -->
 		<div class="sidebar">
-			<c:import url="SideBar.jsp"></c:import>
+			<c:import url="/WEB-INF/view/group_room/SideBar.jsp"></c:import>
 		</div>
 
 
