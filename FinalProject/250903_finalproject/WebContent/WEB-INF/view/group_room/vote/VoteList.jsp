@@ -9,19 +9,19 @@
 <head>
 <meta charset="UTF-8" />
 <title>투표 리스트(정기+비정기)</title>
-<link rel="stylesheet" href="<%=cp%>/group_room/challenge/topsidecontent.css" />
-<link rel="stylesheet" href="votelist.css" />
+<link rel="stylesheet" href="<%=cp%>/css_temp/topsidecontent.css" />
+<link rel="stylesheet" href="<%=cp %>/css_temp/votelist.css" />
 </head>
 <body>
 	<!-- 상단 메뉴바 -->
 	<div class="topmenubar">
-		<c:import url="/common/TopMenuBar.jsp"></c:import>
+		<c:import url="/WEB-INF/view/common/TopMenuBar.jsp"></c:import>
 	</div>
 
 	<!-- 좌측 메뉴바 + 본문 -->
 	<div class="container">
 		<div class="sidebar">
-			<c:import url="/group_room/challenge/SideBar.jsp"></c:import>
+			<c:import url="/WEB-INF/view/group_room/challenge/SideBar.jsp"></c:import>
 		</div>
 
 		<div class="main">

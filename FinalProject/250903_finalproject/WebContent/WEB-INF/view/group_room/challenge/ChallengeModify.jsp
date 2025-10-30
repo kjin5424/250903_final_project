@@ -9,13 +9,13 @@
 <head>
 <meta charset="UTF-8">
 <title>도전 과제 리스트</title>
-<link rel="stylesheet" href="topsidecontent.css" />
-<link rel="stylesheet" href="createchallenge.css" />
+<link rel="stylesheet" href="<%=cp %>/css_temp/topsidecontent.css" />
+<link rel="stylesheet" href="<%=cp %>/css_temp/createchallenge.css" />
 </head>
 
 <body>
 	<div class="topmenubar">
-		<c:import url="/common/TopMenuBar.jsp"></c:import>
+		<c:import url="/WEB-INF/view/common/TopMenuBar.jsp"></c:import>
 	</div>
 
 	<div class="container">

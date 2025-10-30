@@ -9,19 +9,19 @@
 <head>
 <meta charset="UTF-8">
 <title>도전과제 작성 화면</title>
-<link rel="stylesheet" href="createchallenge.css" />
-<link rel="stylesheet" href="topsidecontent.css">
+<link rel="stylesheet" href="<%=cp %>/css_temp/createchallenge.css" />
+<link rel="stylesheet" href="<%=cp %>/css_temp/topsidecontent.css">
 <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
-<script type="text/javascript" src="CreateChallenge.js"></script>
+<script type="text/javascript" src="<%=cp %>/js_temp/CreateChallenge.js"></script>
 </head>
 <body>
 	<div class="topmenubar">
-		<c:import url="/common/TopMenuBar.jsp"></c:import>
+		<c:import url="/WEB-INF/view/common/TopMenuBar.jsp"></c:import>
 	</div>
 
 	<div class="container">
 		<div class="sidebar">
-			<c:import url="SideBar.jsp"></c:import>
+			<c:import url="/WEB-INF/view/group_room/challenge/SideBar.jsp"></c:import>
 		</div>
 
 		<div class="main">

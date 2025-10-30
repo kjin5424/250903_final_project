@@ -12,8 +12,10 @@
 <link
 	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap"
 	rel="stylesheet">
-<link rel="stylesheet" href="<%=cp %>/WEB-INF/view/group_room/challenge/challengedetail.css" />
-<link rel="stylesheet" href="<%=cp %>/WEB-INF/view/group_room/challenge/topsidecontent.css" />
+<link rel="stylesheet" href="<%=cp %>/css_temp/challengedetail.css" />
+<link rel="stylesheet" href="<%=cp %>/css_temp/topsidecontent.css" />
+<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+<script type="text/javascript" src="<%=cp %>/js_temp/ChallengeDetail.js"></script>
 </head>
 
 <body>
