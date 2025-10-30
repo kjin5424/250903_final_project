@@ -264,10 +264,6 @@
                     <span class="info-label">답변 상태:</span>
                     <span class="status-badge status-answered">답변완료</span>
                 </div>
-                <div class="info-item">
-                    <span class="info-label">답변 수:</span>
-                    <span class="answer-count">2건</span>
-                </div>
             </div>
 
             <div class="form-group">
