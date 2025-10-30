@@ -391,8 +391,6 @@ tbody tr:hover {
                     <th>게시판 이름</th>
                     <th>제목</th>
                     <th>작성일자</th>
-                    <th>조회수</th>
-                    <th>댓글수</th>
                 </tr>
             </thead>
             <tbody id="postTableBody">
@@ -406,8 +404,6 @@ tbody tr:hover {
                         <a href="#" class="title-link">Java 스터디 2주차 후기 공유합니다</a>
                     </td>
                     <td>2024-02-05</td>
-                    <td>156</td>
-                    <td>12</td>
                 </tr>
                 <tr>
                     <td class="checkbox-cell">
@@ -419,8 +415,6 @@ tbody tr:hover {
                         <a href="#" class="title-link">Optional 사용법 질문드립니다</a>
                     </td>
                     <td>2024-02-10</td>
-                    <td>89</td>
-                    <td>8</td>
                 </tr>
                 <tr>
                     <td class="checkbox-cell">
@@ -432,8 +426,6 @@ tbody tr:hover {
                         <a href="#" class="title-link">Spring Boot 입문 자료 공유</a>
                     </td>
                     <td>2024-03-15</td>
-                    <td>234</td>
-                    <td>25</td>
                 </tr>
                 <tr>
                     <td class="checkbox-cell">
@@ -445,8 +437,6 @@ tbody tr:hover {
                         <a href="#" class="title-link">이번주 스터디 일정 변경 공지</a>
                     </td>
                     <td>2024-04-20</td>
-                    <td>178</td>
-                    <td>15</td>
                 </tr>
                 <tr>
                     <td class="checkbox-cell">
@@ -458,8 +448,6 @@ tbody tr:hover {
                         <a href="#" class="title-link">Stream API 성능 최적화 방법 궁금합니다</a>
                     </td>
                     <td>2024-05-12</td>
-                    <td>145</td>
-                    <td>18</td>
                 </tr>
             </tbody>
         </table>

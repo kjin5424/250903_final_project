@@ -307,7 +307,6 @@
                         <th>접수자 아이디</th>
                         <th>접수 일자</th>
                         <th>답변 상태</th>
-                        <th>답변 수</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -318,7 +317,6 @@
                         <td><a href="memberDetail.jsp?id=user006" onclick="event.stopPropagation()">user006</a></td>
                         <td>2024-09-25</td>
                         <td><span class="status-badge status-answered">답변완료</span></td>
-                        <td>3</td>
                     </tr>
                     <tr onclick="location.href='inquiryDetail.jsp?id=INQ002'">
                         <td>INQ002</td>
@@ -327,7 +325,6 @@
                         <td><a href="memberDetail.jsp?id=user007" onclick="event.stopPropagation()">user007</a></td>
                         <td>2024-09-20</td>
                         <td><span class="status-badge status-pending">답변대기</span></td>
-                        <td>0</td>
                     </tr>
                     <tr onclick="location.href='inquiryDetail.jsp?id=INQ001'">
                         <td>INQ001</td>
@@ -336,7 +333,6 @@
                         <td><a href="memberDetail.jsp?id=user008" onclick="event.stopPropagation()">user008</a></td>
                         <td>2024-09-15</td>
                         <td><span class="status-badge status-answered">답변완료</span></td>
-                        <td>1</td>
                     </tr>
                 </tbody>
             </table>

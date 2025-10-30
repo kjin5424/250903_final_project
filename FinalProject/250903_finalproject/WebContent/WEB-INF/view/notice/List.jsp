@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
-	String pageNum = request.getParameter("NoticeListPage");
-	if(pageNum == null) pageNum = "1";
+    String pageNum = request.getParameter("NoticeListPage");
+    if(pageNum == null) pageNum = "1";
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -37,19 +37,6 @@ body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:
 .page-btn:disabled { cursor: not-allowed; opacity: 0.4; }
 
 a { text-decoration: none; color: inherit; }
-
-/* 반응형 */
-@media (max-width: 1024px) {
-	.notice-table { font-size: 14px; }
-	.notice-table th, .notice-table td { padding: 12px 8px; }
-	.notice-title { max-width: 250px; }
-}
-@media (max-width: 768px) {
-	.container { padding: 0 10px; }
-	.page-title { font-size: 24px; }
-	.table-container { overflow-x: auto; }
-	.notice-table { min-width: 700px; }
-}
 </style>
 </head>
 <body>
@@ -65,12 +52,11 @@ a { text-decoration: none; color: inherit; }
 					<th style="width: 80px;">번호</th>
 					<th style="width: 120px;">작성자</th>
 					<th>제목</th>
-					<th style="width: 100px;">조회수</th>
 					<th style="width: 120px;">게시일</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr onclick="location.href='ManagerNoticeOpen.jsp?noticeNum=23'">
+				<tr onclick="location.href='Detail.jsp?noticeNum=23'">
 					<td class="notice-number">23</td>
 					<td class="author">관리자</td>
 					<td>
@@ -79,10 +65,9 @@ a { text-decoration: none; color: inherit; }
 							<span>2025년 새해 맞이 서비스 업데이트 안내</span>
 						</div>
 					</td>
-					<td class="views">1,523</td>
 					<td class="date">2025-01-05</td>
 				</tr>
-				<tr onclick="location.href='ManagerNoticeOpen.jsp?noticeNum=22'">
+				<tr onclick="location.href='Detail.jsp?noticeNum=22'">
 					<td class="notice-number">22</td>
 					<td class="author">관리자</td>
 					<td>
@@ -91,10 +76,9 @@ a { text-decoration: none; color: inherit; }
 							<span>개인정보 처리방침 변경 안내</span>
 						</div>
 					</td>
-					<td class="views">987</td>
 					<td class="date">2025-01-03</td>
 				</tr>
-				<tr onclick="location.href='ManagerNoticeOpen.jsp?noticeNum=21'">
+				<tr onclick="location.href='Detail.jsp?noticeNum=21'">
 					<td class="notice-number">21</td>
 					<td class="author">관리자</td>
 					<td>
@@ -103,42 +87,39 @@ a { text-decoration: none; color: inherit; }
 							<span>서버 점검 일정 안내 (1월 15일)</span>
 						</div>
 					</td>
-					<td class="views">756</td>
 					<td class="date">2025-01-02</td>
 				</tr>
-				<tr onclick="location.href='ManagerNoticeOpen.jsp?noticeNum=20'">
+				<tr onclick="location.href='Detail.jsp?noticeNum=20'">
 					<td class="notice-number">20</td>
 					<td class="author">운영팀</td>
 					<td class="notice-title">모임 카테고리 추가 안내</td>
-					<td class="views">432</td>
 					<td class="date">2024-12-28</td>
 				</tr>
-				<tr onclick="location.href='ManagerNoticeOpen.jsp?noticeNum=19'">
+				<tr onclick="location.href='Detail.jsp?noticeNum=19'">
 					<td class="notice-number">19</td>
 					<td class="author">관리자</td>
 					<td class="notice-title">연말연시 고객센터 운영 시간 안내</td>
-					<td class="views">612</td>
 					<td class="date">2024-12-25</td>
 				</tr>
-				<tr onclick="location.href='ManagerNoticeOpen.jsp?noticeNum=18'">
+				<tr onclick="location.href='Detail.jsp?noticeNum=18'">
 					<td class="notice-number">18</td>
 					<td class="author">운영팀</td>
 					<td class="notice-title">신규 기능 업데이트 - 모임 일정 동기화</td>
-					<td class="views">891</td>
 					<td class="date">2024-12-20</td>
 				</tr>
-				<!-- 나머지 게시물도 동일 구조로 유지 -->
 			</tbody>
 		</table>
 	</div>
-
-	<div class="pagination">
-		<button class="page-btn" disabled>◀</button>
-		<button class="page-btn active">1</button>
-		<a href="ManagerNoticeList.jsp?NoticeListPage=2" class="page-btn">2</a>
-		<a href="ManagerNoticeList.jsp?NoticeListPage=3" class="page-btn">3</a>
-		<button class="page-btn">▶</button>
-	</div>
 </div>
+
+    <div class="pagination">
+        <button class="page-btn" disabled>◀</button>
+        <button class="page-btn active">1</button>
+        <a href="List.jsp?NoticeListPage=2" class="page-btn">2</a>
+        <a href="List.jsp?NoticeListPage=3" class="page-btn">3</a>
+        <button class="page-btn">▶</button>
+    </div>
+</div>
+
 </body>
 </html>

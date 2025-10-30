@@ -342,6 +342,14 @@ a
 	}
 }
 </style>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelector(".create-btn").addEventListener("click", function(e) {
+    e.preventDefault(); // a 태그의 기본 이동 막기
+    location.href = "noticewrite.do";
+  });
+});
+</script>
 </head>
 <body>
 	<%
@@ -373,10 +381,6 @@ a
 				<span class="stat-label">상단 고정</span>
 				<span class="stat-value">3</span>
 			</div>
-			<div class="stat-item">
-				<span class="stat-label">오늘 조회수</span>
-				<span class="stat-value">1,847</span>
-			</div>
 		</div>
 		
 		<div class="table-container">
@@ -404,13 +408,6 @@ a
 								<span class="sort-icon">▼</span>
 							</div>
 						</th>
-						<th style="width: 100px;">
-							<div class="sort-header <%= "views".equals(sortBy) ? "active " + sortOrder : "" %>" 
-							     onclick="sortTable('views')">
-								<span>조회수</span>
-								<span class="sort-icon">▼</span>
-							</div>
-						</th>
 						<th style="width: 120px;">
 							<div class="sort-header <%= "date".equals(sortBy) ? "active " + sortOrder : "" %>" 
 							     onclick="sortTable('date')">
@@ -431,7 +428,6 @@ a
 								<span>2025년 새해 맞이 서비스 업데이트 안내</span>
 							</div>
 						</td>
-						<td class="views">1,523</td>
 						<td class="date">2025-01-05</td>
 						<td>
 							<div class="action-buttons">
@@ -449,7 +445,6 @@ a
 								<span>개인정보 처리방침 변경 안내</span>
 							</div>
 						</td>
-						<td class="views">987</td>
 						<td class="date">2025-01-03</td>
 						<td>
 							<div class="action-buttons">
@@ -467,7 +462,6 @@ a
 								<span>서버 점검 일정 안내 (1월 15일)</span>
 							</div>
 						</td>
-						<td class="views">756</td>
 						<td class="date">2025-01-02</td>
 						<td>
 							<div class="action-buttons">
@@ -480,7 +474,6 @@ a
 						<td class="notice-number">20</td>
 						<td class="author">운영팀</td>
 						<td class="notice-title">모임 카테고리 추가 안내</td>
-						<td class="views">432</td>
 						<td class="date">2024-12-28</td>
 						<td>
 							<div class="action-buttons">
@@ -493,7 +486,6 @@ a
 						<td class="notice-number">19</td>
 						<td class="author">관리자</td>
 						<td class="notice-title">연말연시 고객센터 운영 시간 안내</td>
-						<td class="views">612</td>
 						<td class="date">2024-12-25</td>
 						<td>
 							<div class="action-buttons">
@@ -506,7 +498,6 @@ a
 						<td class="notice-number">18</td>
 						<td class="author">운영팀</td>
 						<td class="notice-title">신규 기능 업데이트 - 모임 일정 동기화</td>
-						<td class="views">891</td>
 						<td class="date">2024-12-20</td>
 						<td>
 							<div class="action-buttons">
@@ -519,7 +510,6 @@ a
 						<td class="notice-number">17</td>
 						<td class="author">관리자</td>
 						<td class="notice-title">부적절한 콘텐츠 신고 기능 강화</td>
-						<td class="views">523</td>
 						<td class="date">2024-12-15</td>
 						<td>
 							<div class="action-buttons">
@@ -532,7 +522,6 @@ a
 						<td class="notice-number">16</td>
 						<td class="author">운영팀</td>
 						<td class="notice-title">모임 후기 작성 이벤트 진행</td>
-						<td class="views">1,234</td>
 						<td class="date">2024-12-10</td>
 						<td>
 							<div class="action-buttons">
@@ -545,7 +534,6 @@ a
 						<td class="notice-number">15</td>
 						<td class="author">관리자</td>
 						<td class="notice-title">이용약관 개정 안내</td>
-						<td class="views">678</td>
 						<td class="date">2024-12-05</td>
 						<td>
 							<div class="action-buttons">
@@ -559,7 +547,6 @@ a
 						
 						<td class="author">운영팀</td>
 						<td class="notice-title">모바일 앱 출시 예정 안내</td>
-						<td class="views">2,156</td>
 						<td class="date">2024-12-01</td>
 						
 						<td>

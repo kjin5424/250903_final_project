@@ -746,10 +746,10 @@ body {
 </head>
 <body>
 	<!-- 상단바 -->
-	<div id="topMenu">
+	<%-- <div id="topMenu">
 		<jsp:include page="/common/TopMenuBar.jsp" />
 	</div>
-	
+	 --%>
 	<%
 		// 세션에서 사용자 정보 가져오기
 		String userId = "user123"; // 실제로는 session.getAttribute()
@@ -1134,9 +1134,9 @@ body {
 	</div>
 </div>
 
-<!-- 하단바 -->
+<%-- <!-- 하단바 -->
 <jsp:include page="/common/UnderMenuBar.jsp"></jsp:include>
-
+ --%>
 <script>
 	// 비밀번호 확인
 	function verifyPassword() {
