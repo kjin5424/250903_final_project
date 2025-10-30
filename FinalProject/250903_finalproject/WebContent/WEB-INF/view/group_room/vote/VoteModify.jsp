@@ -12,8 +12,8 @@ String cp = request.getContextPath();
 <link
 	href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
 	rel="stylesheet">
-<link rel="stylesheet" href="<%=cp%>/css_temp/topsidecontent.css" />
-<link rel="stylesheet" href="<%=cp%>/css_temp/votecreate.css">
+<link rel="stylesheet" href="<%=cp%>/css/topsidecontent.css" />
+<link rel="stylesheet" href="<%=cp%>/css/css_vote/votecreate.css">
 </head>
 <body>
 	<!-- 상단 메뉴바 -->
@@ -24,7 +24,7 @@ String cp = request.getContextPath();
 	<!-- 좌측 메뉴바 + 본문 -->
 	<div class="container">
 		<div class="sidebar">
-			<c:import url="/WEB-INF/view/group_room/challenge/SideBar.jsp"></c:import>
+			<c:import url="/WEB-INF/view/group_room/SideBar.jsp"></c:import>
 		</div>
 
 		<div class="main">
@@ -46,9 +46,9 @@ String cp = request.getContextPath();
 					name="location" value="서울 마포구...">
 			</div>
 			<div class="button-group">
+				<button type="button" class="btn-submit">수정 하기</button>
 				<a href="VoteList.jsp">
-				<button type="button">돌아가기</button></a>
-				<button type="button">수정 하기</button>
+				<button type="button" class="btn-back">돌아가기</button></a>
 			</div>
 		</div>
 	</div>

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class LoginController
@@ -19,72 +20,61 @@ public class LoginController
 	private SqlSession sqlSession;
 
 	// 페이지 전환용 컨트롤러
-	@RequestMapping("/loginpage.do")
+	@RequestMapping(value="/loginpage.do", method=RequestMethod.GET)
 	public String loginPage()
 	{
 		return "/WEB-INF/view/authorization/Login.jsp";
 	}
 
-	@RequestMapping("/findidpage.do")
+	@RequestMapping(value="/findidpage.do")
 	public String findIdPage()
 	{
 		return "/WEB-INF/view/authorization/FindUserId.jsp";
 	}
 
-	@RequestMapping("/findpwpage.do")
+	@RequestMapping(value="/findpwpage.do")
 	public String findPwPage()
 	{
 		return "/WEB-INF/view/authorization/FindPassword.jsp";
 	}
 
-	@RequestMapping("/signuppage.do")
+	@RequestMapping(value="/signuppage.do")
 	public String signUpPage()
 	{
 		return "/WEB-INF/view/authorization/SignUp.jsp";
 	}
-
+	
+	
 	// 로그인 기능
-	@RequestMapping(value="/login.do")
-	public String login(HttpSession session, UserDTO user)
+	@RequestMapping(value="/login.do", method=RequestMethod.POST)
+	public String login(HttpSession session, Model model, UserDTO user)
 	{
 		ILoginDAO dao = sqlSession.getMapper(ILoginDAO.class);
-		String userCode = "";
-		userCode = dao.loginProcess(user);
+		UserDTO findUser = dao.loginProcess(user);
 
 		// userCode.equals("")하게 되면
 		// null.equals("")이렇게 돼서 NullPointerException 발생.
-		if (!user.getUserId().equals(dao.findId(user)))
+		if (findUser == null)
 		{
-			System.out.println("아이디 없음");
-			return "redirect:/loginpage.do";
-		}
-		else if ("".equals(userCode) || userCode == null)
-		{
-			System.out.println("비밀번호 틀림");
+			model.addAttribute("error", true);			
 			return "redirect:/loginpage.do";
 		}
 		else
 		{
-			System.out.println("신원 확인\nuserCode : " + userCode);
-			session.setAttribute("userCode", userCode);
+			System.out.println("신원 확인\nuserCode : " + findUser.getUserCode());
+			session.setAttribute("user", findUser);
 		}
 		
-		return "/WEB-INF/view/group/GroupList.jsp";
+		return "redirect:start.do";
 	}
 	
-	@RequestMapping("/logout.do")
+	// 로그아웃
+	@RequestMapping(value="/logout.do")
 	public String logOut(HttpSession session)
 	{
-		session.removeAttribute("userCode");
+		session.removeAttribute("user");
 		
 		return "redirect:/start.do";
-	}
-
-	// 메인 페이지 구동용 여기서는 안 써도 될듯함..
-	@RequestMapping("/start.do")
-	public String mainPage(Model model)
-	{
-		return "/WEB-INF/view/group_room/challenge/CreateChallenge.jsp";
 	}
 
 }

@@ -9,10 +9,27 @@
 <head>
 <meta charset="UTF-8">
 <title>도전과제 작성 화면</title>
-<link rel="stylesheet" href="<%=cp %>/css_temp/createchallenge.css" />
-<link rel="stylesheet" href="<%=cp %>/css_temp/topsidecontent.css">
+<link rel="stylesheet" href="<%=cp %>/css/css_challenge/challengecreate.css" />
+<link rel="stylesheet" href="<%=cp %>/css/topsidecontent.css">
 <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
-<script type="text/javascript" src="<%=cp %>/js_temp/CreateChallenge.js"></script>
+<script type="text/javascript">
+$(function()
+{
+	$(".radio-group input[type='radio']").change(function()
+	{
+		if ($(this).val()=="daily")
+		{
+			$(".input-week").css("display", "none")
+			$(".input-day").css("display", "block");
+		}
+		else if ($(this).val()=="weekly")
+		{
+			$(".input-day").css("display", "none");
+			$(".input-week").css("display", "block");
+		}
+	});
+});
+</script>
 </head>
 <body>
 	<div class="topmenubar">
@@ -21,7 +38,7 @@
 
 	<div class="container">
 		<div class="sidebar">
-			<c:import url="/WEB-INF/view/group_room/challenge/SideBar.jsp"></c:import>
+			<c:import url="/WEB-INF/view/group_room/SideBar.jsp"></c:import>
 		</div>
 
 		<div class="main">
@@ -96,8 +113,9 @@
 			</div>
 
 			<div class="button-group">
-				<button class="btn-reset">다시 작성</button>
 				<button class="btn-submit">등록 하기</button>
+				<a href="ChallengeList.jsp">
+				<button class="btn-reset">돌아가기</button></a>
 			</div>
 
 		</div>

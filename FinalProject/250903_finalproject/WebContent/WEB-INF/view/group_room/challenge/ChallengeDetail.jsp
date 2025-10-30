@@ -12,10 +12,26 @@
 <link
 	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap"
 	rel="stylesheet">
-<link rel="stylesheet" href="<%=cp %>/css_temp/challengedetail.css" />
-<link rel="stylesheet" href="<%=cp %>/css_temp/topsidecontent.css" />
+<link rel="stylesheet" href="<%=cp %>/css/topsidecontent.css" />
+<link rel="stylesheet" href="<%=cp %>/css/css_challenge/challengedetail.css" />
 <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
-<script type="text/javascript" src="<%=cp %>/js_temp/ChallengeDetail.js"></script>
+<script type="text/javascript">
+$(function()
+{
+    $('#participantTitle').on('click', function() {
+        const $table = $('#participantTable');
+        $table.toggleClass('hidden');
+
+        if ($table.hasClass('hidden')) {
+            $(this).text('참가자 리스트 ▼(펼치기)');
+            $table.css("display", "none");
+        } else {
+            $(this).text('참가자 리스트 ▲(접기)');
+            $table.css("display", "block");
+        }
+    });
+});
+</script>
 </head>
 
 <body>
@@ -28,7 +44,7 @@
 	<div class="container">
 		<!-- 사이드바 -->
 		<div class="sidebar">
-			<c:import url="/WEB-INF/view/group_room/challenge/SideBar.jsp"></c:import>
+			<c:import url="/WEB-INF/view/group_room/SideBar.jsp"></c:import>
 		</div>
 
 		<!-- 본문 -->

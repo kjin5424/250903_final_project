@@ -1,3 +1,4 @@
+<%@page import="com.test.mybatis.UserDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
@@ -36,29 +37,34 @@
 		</div>
 
 		<div class="nav-right">
-			<!-- 로그인 버튼 -->
 			<%
-            	String userCode = (String)session.getAttribute("userCode");
-            	if ("".equals(userCode) || userCode==null)
-            	{
+			UserDTO user = (UserDTO)session.getAttribute("user");
+           	if (user == null)
+           	{
             %>
+				<!-- 로그인 버튼 -->
 				<a href="loginpage.do" class="user-btn">
 				<span>🔐</span> <span>로그인</span> </a>
+				<!-- 프로필 버튼 -->
+				<a href="<%=cp%>/user/Profile/MyProfile.jsp" class="user-btn primary">
+					<span>👤</span> <span>프로필</span>
+				</a>
 			<%
-            	}
-            	else
-            	{
+           	}
+           	else
+           	{
             %>
+				<!-- 로그인 버튼 -->
 				<a href="logout.do" class="user-btn">
 				<span>🔐</span> <span>로그아웃</span>	</a>
+				<!-- 프로필 버튼 -->
+				<a href="<%=cp%>/user/Profile/MyProfile.jsp" class="user-btn primary">
+					<span>👤</span> <span>${user.nickName }님</span>
+				</a>
 			<%
-            	}
+           	}
 			%>
 
-			<!-- 프로필 버튼 -->
-			<a href="<%=cp%>/user/Profile/MyProfile.jsp" class="user-btn primary">
-				<span>👤</span> <span>프로필</span>
-			</a>
 		</div>
 	</nav>
 </div>

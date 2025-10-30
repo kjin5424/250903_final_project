@@ -3,6 +3,10 @@
 <%
 	String cp = request.getContextPath();
 %>
+<%
+	// 에러 메시지 파라미터 받기
+	String error = request.getParameter("error");
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -410,19 +414,6 @@ px
 </style>
 </head>
 <body>
-	<%
-		// 에러 메시지 파라미터 받기
-	String error = request.getParameter("error");
-	String errorMessage = "";
-
-	if ("invalid".equals(error)) {
-		errorMessage = "아이디 또는 비밀번호가 올바르지 않습니다.";
-	} else if ("required".equals(error)) {
-		errorMessage = "아이디와 비밀번호를 모두 입력해주세요.";
-	} else if ("session".equals(error)) {
-		errorMessage = "세션이 만료되었습니다. 다시 로그인해주세요.";
-	}
-	%>
 
 	<div class="login-container">
 		<div class="logo-section">
@@ -434,13 +425,12 @@ px
 		<div class="login-box">
 			<h2 class="login-title">로그인</h2>
 
-			<div
-				class='error-message <%=(error != null && !errorMessage.isEmpty()) ? "show" : ""%>'>
-				<span class="error-text"><%=(error != null && !errorMessage.isEmpty()) ? "⚠️ " + errorMessage : ""%></span>
+			<div class='error-message <%=(error != null ? "show" : "")%>'>
+				<span class="error-text"><%=(error != null) ? " 아이디 혹은 비밀번호가 잘못됐습니다." : ""%></span>
 				<span class="error-close" onclick="closeErrorMessage()">×</span>
 			</div>
 
-			<form action="login.do" id="loginForm"
+			<form action="login.do" id="loginForm" method="post"
 				onsubmit="return validateLogin(event)">
 				<div class="form-group">
 					<label class="form-label" for="userId">아이디</label>
@@ -475,26 +465,6 @@ px
 
 				<button type="submit" class="btn-login">로그인</button>
 			</form>
-
-			<!-- 네이버, 카카오, 구글 로그인 버튼들 
-			<div class="social-login">
-				<div class="social-login-title">간편 로그인</div>
-				<div class="social-buttons">
-					<button class="btn-social btn-kakao" onclick="loginWithKakao()">
-						<span>💬</span>
-						<span>카카오</span>
-					</button>
-					<button class="btn-social btn-naver" onclick="loginWithNaver()">
-						<span style="font-weight: bold;">N</span>
-						<span>네이버</span>
-					</button>
-					<button class="btn-social btn-google" onclick="loginWithGoogle()">
-						<span>🌐</span>
-						<span>구글</span>
-					</button>
-				</div>
-			</div>
-			 -->
 
 			<div class="signup-section">
 				아직 회원이 아니신가요? <a href="signuppage.do" class="signup-link">회원가입</a>
@@ -531,16 +501,6 @@ px
 			return true;
 		}
 
-		// 에러 메시지 표시
-		function showError(message)
-		{
-			const errorMsg = document.querySelector('.error-message');
-			const errorText = document.querySelector('.error-text');
-
-			errorText.textContent = '⚠️ ' + message;
-			errorMsg.classList.add('show');
-		}
-
 		// 에러 메시지 제거
 		function closeErrorMessage()
 		{
@@ -548,18 +508,15 @@ px
 			errorMsg.classList.remove('show');
 		}
 
-
 		// Enter 키 처리
-		document.getElementById('password').addEventListener(
-				'keypress',
-				function(e)
-				{
-					if (e.key === 'Enter')
-					{
-						document.getElementById('loginForm').dispatchEvent(
-								new Event('submit'));
-					}
-				});
+		document.getElementById('password').addEventListener('keypress',function(e)
+		{
+			if (e.key === 'Enter')
+			{
+				document.getElementById('loginForm').dispatchEvent(
+						new Event('submit'));
+			}
+		});
 
 		// 페이지 로드시 아이디 입력란에 포커스
 		window.addEventListener('load', function()
