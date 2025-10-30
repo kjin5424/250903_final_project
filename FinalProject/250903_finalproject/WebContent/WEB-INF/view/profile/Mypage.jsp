@@ -1256,6 +1256,8 @@
 
 <body>
 
+
+<!-- 임시 사이드 바, 나중에 임포트 할 거 -->
     <nav class="navbar">
 
         <div class="nav-left">
@@ -1946,72 +1948,13 @@
 
                 <h1 class="page-title">📅 내 일정</h1>
 
-                <p class="page-subtitle">모임 일정과 개인 일정을 관리하세요</p>
-
+               
+				<!-- Calendar.jsp 가져옴 -->
+				 <jsp:include page="Calendar.jsp" />
+				
 				
 
-                <!-- 간단 달력 + 일정 목록 (CSS는 원본 유지) -->
-
-                <div style="margin-top:20px;">
-
-                    <div style="display:flex; gap:20px; flex-wrap:wrap;">
-
-                        <div style="flex:1; min-width:300px;">
-
-                            <div style="background:#f8faf8; border-radius:12px; padding:16px;">
-
-                                <h3 style="margin-bottom:10px;">이번 달 일정</h3>
-
-                                <div id="mini-calendar" style="display:grid; grid-template-columns: repeat(7, 1fr); gap:6px;">
-
-                                    <!-- 자바스크립트로 채웁니다 -->
-
-                                </div>
-
-                                <div style="margin-top:12px; font-size:13px; color:#666;">
-
-                                    날짜를 클릭하면 아래 '일정 추가'에 선택됩니다.
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-
-                        <div style="flex:1; min-width:320px;">
-
-                            <div style="background:#f8faf8; border-radius:12px; padding:16px;">
-
-                                <h3 style="margin-bottom:10px;">일정 추가</h3>
-
-                                <div style="display:flex; gap:8px; margin-bottom:8px;">
-
-                                    <!-- <input id="cal-date" type="text" placeholder="YYYY-MM-DD" class="form-input" style="flex:0 0 140px;">
-
-                                    <input id="cal-text" type="text" placeholder="일정 입력" class="form-input" style="flex:1;"> -->
-
-                                   <!--  <button class="btn-small btn-primary-small" onclick="addCalendarEventFromForm()">추가</button> -->
-
-                                </div>
-
-                                <div id="events-list" style="margin-top:8px;">
-
-                                    <!-- 일정 목록 표시 -->
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
+              
 
 
             <!-- 프로필 설정 탭 -->
@@ -2076,7 +2019,7 @@
 
 
 
-              <!--   <div class="settings-section">
+                <div class="settings-section">
 
                     <div class="section-title">계정 설정</div>
 
@@ -2104,7 +2047,7 @@
 
                 </div>
 
-            </div> -->
+            </div> 
 
 
 
@@ -2417,6 +2360,7 @@
             });
 
         }
+        
 
 
 

@@ -321,56 +321,6 @@
             cursor: not-allowed;
         }
 
-        /* 최근 게시글 */
-        .recent-posts {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            margin-bottom: 20px;
-        }
-        .post-preview {
-            padding: 15px;
-            border-bottom: 1px solid #f0f0f0;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .post-preview:hover {
-            background: #f8faf8;
-        }
-        .post-preview:last-child {
-            border-bottom: none;
-        }
-        .post-category-badge {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 600;
-            margin-right: 8px;
-        }
-        .badge-activity {
-            background: #4CAF50;
-            color: white;
-        }
-        .badge-question {
-            background: #2196f3;
-            color: white;
-        }
-        .badge-free {
-            background: #9c27b0;
-            color: white;
-        }
-        .post-preview-title {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 5px;
-        }
-        .post-preview-meta {
-            font-size: 12px;
-            color: #999;
-        }
-
         /* 도전 과제 */
         .challenge-section {
             background: white;
@@ -534,18 +484,18 @@
             }
             
             .group-dates {
-		    margin-top: 15px;
-		    padding: 10px 15px;
-		    background-color: #f8f9fa;
-		    border-radius: 10px;
-		    font-size: 14px;
-		    color: #333;
-		    line-height: 1.6;
-		}
-		.group-dates p {
-		    margin: 3px 0;
-		}
-		        }
+                margin-top: 15px;
+                padding: 10px 15px;
+                background-color: #f8f9fa;
+                border-radius: 10px;
+                font-size: 14px;
+                color: #333;
+                line-height: 1.6;
+            }
+            .group-dates p {
+                margin: 3px 0;
+            }
+        }
     </style>
     <script>
         function goToBoard() {
@@ -561,9 +511,9 @@
         }
         
         function goToLevel()
-		{
-			window.location.href = 'level.jsp';
-		}
+        {
+            window.location.href = 'level.jsp';
+        }
 
         function viewPost(postId) {
             window.location.href = 'board_detail.jsp?id=' + postId;
@@ -605,21 +555,22 @@
         </div>
     </nav>
 
-    <   <div class="container">
+    <div class="container">
         <!-- 모임 헤더 -->
         <div class="group-header">
             <div class="group-header-top">
                 <div class="group-title-area">
                     <h1 class="group-title">알고리즘 정복 스터디</h1>
-                    <button class="group-level" onclick="goToLevel()" title="레벨 현황을 자세히 확인할 수 있어요">Lv.3</button>
+                    <button class="group-level" onclick="location.href='level.do'" title="레벨 현황을 자세히 확인할 수 있어요">Lv.3</button>
                 </div>
                 <div class="group-actions">
-                    <button class="btn-header" onclick="goToBoard()">📋 게시판</button>
-                    <button class="btn-header" onclick="viewChallenge()">🏆 도전과제</button>
-                    <button class="btn-header" onclick="viewChallenge()">🕰 히스토리</button>
-                    <button class="btn-header" onclick="goToMembers()">👥 모임원</button>
-                    <button class="btn-header" onclick="goToMessages()">✉️ 쪽지</button>
-                    <button class="btn-header" onclick="goToManage()">⚙️ 관리</button>
+                    <button class="btn-header" onclick="location.href='postlist.do'">📋 게시판</button>
+                    <button class="btn-header" onclick="location.href='challengelist.do'">🏆 도전과제</button>
+                    <button class="btn-header" onclick="location.href='history.do'">🕰 히스토리</button>
+                    <button class="btn-header" onclick="location.href='memberlist.do'">👥 모임원</button>
+                    <button class="btn-header" onclick="location.href='messagelist.do'">✉️ 쪽지</button>
+                    <button class="btn-header" onclick="location.href='managelist.do'">⚙️ 관리</button>
+                    <button class="btn-header" onclick="location.href='reportgroup.do'">🚨 </button>
                 </div>
             </div>
             <div class="group-dates">
@@ -630,7 +581,7 @@
                 </div>
                 <div class="date-item">
                     <span class="date-icon">👋</span>
-                    <span class="date-label">내 가입일:</span>	
+                    <span class="date-label">내 가입일:</span>    
                     <span class="date-value">2024년 9월 1일</span>
                 </div>
             </div>
@@ -661,7 +612,7 @@
                 <div class="notice-section">
                     <div class="section-header">
                         <h2 class="section-title">📢 공지사항</h2>
-                        <button class="btn-more" onclick="goToBoard()">더보기 →</button>
+                        <button class="btn-more" onclick="location.href='postlist.do'">더보기 →</button>
                     </div>
                     <div class="notice-item" onclick="viewPost(1)">
                         <div class="notice-title">📢 이번 주 스터디 일정 안내</div>
@@ -681,7 +632,7 @@
                 <div class="vote-section">
                     <div class="section-header">
                         <h2 class="section-title">🗳️ 진행중인 투표</h2>
-                        <button class="btn-more" onclick="goToBoard()">더보기 →</button>
+                        <button class="btn-more" onclick="location.href='votelist.do'">더보기 →</button>
                     </div>
                     <div class="vote-card">
                         <div class="vote-header">
@@ -731,35 +682,6 @@
                         <button class="btn-vote" disabled>투표 대기중</button>
                     </div>
                 </div>
-
-                <!-- 최근 게시글 -->
-                <div class="recent-posts">
-                    <div class="section-header">
-                        <h2 class="section-title">📝 최근 게시글</h2>
-                        <button class="btn-more" onclick="goToBoard()">더보기 →</button>
-                    </div>
-                    <div class="post-preview" onclick="viewPost(4)">
-                        <div>
-                            <span class="post-category-badge badge-activity">활동</span>
-                            <span class="post-preview-title">백준 1234번 풀이 공유합니다</span>
-                        </div>
-                        <div class="post-preview-meta">개발자지망생 · 2024-10-12</div>
-                    </div>
-                    <div class="post-preview" onclick="viewPost(5)">
-                        <div>
-                            <span class="post-category-badge badge-question">질문</span>
-                            <span class="post-preview-title">DP 문제 접근 방법 질문드립니다</span>
-                        </div>
-                        <div class="post-preview-meta">알고리즘초보 · 2024-10-11</div>
-                    </div>
-                    <div class="post-preview" onclick="viewPost(6)">
-                        <div>
-                            <span class="post-category-badge badge-free">자유</span>
-                            <span class="post-preview-title">오늘 스터디 너무 재미없었어요!</span>
-                        </div>
-                        <div class="post-preview-meta">자바마스터 · 2024-10-10</div>
-                    </div>
-                </div>
             </div>
 
             <!-- 오른쪽 컬럼 -->
@@ -768,7 +690,7 @@
                 <div class="challenge-section">
                     <div class="section-header">
                         <h2 class="section-title">🏆 진행중인 도전과제</h2>
-                        <button class="btn-more" onclick="goToBoard()">더보기 →</button>
+                        <button class="btn-more" onclick="location.href='challengelist.do'">더보기 →</button>
                     </div>
                     <div class="challenge-card">
                         <div class="challenge-title">일주일 알고리즘 챌린지</div>
@@ -790,7 +712,7 @@
                 <div class="notification-panel">
                     <div class="section-header">
                         <h2 class="section-title">🔔 알림</h2>
-                        <button class="btn-more" onclick="goToBoard()">더보기 →</button>
+                        <!-- <button class="btn-more" onclick="goToBoard()">더보기 →</button> -->
                     </div>
                     <div class="notification-item">
                         <div class="notification-icon icon-notice">📢</div>
@@ -827,7 +749,6 @@
                     <button class="btn-edit-intro" onclick="editIntro()">수정하기</button>
                 </div>
             </div>
-            
         </div>
     </div>
 </body>

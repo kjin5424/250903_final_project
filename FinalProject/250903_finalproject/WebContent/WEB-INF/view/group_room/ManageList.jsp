@@ -154,17 +154,6 @@
             color: #666;
             line-height: 1.6;
         }
-        .required-badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: #ff6b6b;
-            color: white;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 600;
-        }
         .permission-badge {
             display: inline-block;
             background: #e3f2fd;
@@ -296,10 +285,6 @@
             window.location.href = 'application_management.jsp';
         }
 
-        function goToChallengeManagement() {
-            window.location.href = 'challenge_management.jsp';
-        }
-
         function closeGroup() {
             if(confirm('정말 모임을 폐쇄하시겠습니까?\n모든 모임원이 탈퇴되며 복구할 수 없습니다.')) {
                 const reason = prompt('폐쇄 사유를 입력해주세요:');
@@ -336,7 +321,7 @@
                     </div>
                     <div class="group-name">알고리즘 정복 스터디</div>
                 </div>
-                <button class="btn-back" onclick="goBack()">← 모임 홈으로</button>
+                <button class="btn-back" onclick="location.href='home.do'">← 모임 홈으로</button>
             </div>
         </div>
 
@@ -371,11 +356,11 @@
             <div class="management-grid">
                 <div class="management-card" onclick="goToMemberManagement()">
                     <div class="card-icon">👥</div>
-                    <div class="card-title">모임원 관리</div>
+                    <div class="card-title">모임원 및 권한 관리</div>
                     <div class="card-description">
-                        모임원 목록 조회, 강제 퇴장, 출석률 확인, 권한 관리, 모임장 이양 등을 관리합니다.
+                        모임원 목록 조회, 권한 부여(부모임장/도우미), 강제 퇴장 등을 관리합니다.
                     </div>
-                    <span class="permission-badge">모임장 이상</span>
+                    <span class="permission-badge">모임장 전용</span>
                 </div>
 
                 <div class="management-card" onclick="goToApplicationManagement()">
@@ -394,22 +379,6 @@
                         모임원의 출석/결석을 체크하고 출석률을 관리합니다.
                     </div>
                     <span class="permission-badge">부모임장 이상</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- 활동 관리 -->
-        <div class="section">
-            <div class="section-title">📅 활동 관리</div>
-            <div class="section-divider"></div>
-            <div class="management-grid">
-                <div class="management-card" onclick="goToChallengeManagement()">
-                    <div class="card-icon">🏆</div>
-                    <div class="card-title">투표 관리</div>
-                    <div class="card-description">
-                       참가자들의 투표 현황을 보고 관리해보세요!
-                    </div>
-                    <span class="permission-badge">모임장 이상</span>
                 </div>
             </div>
         </div>

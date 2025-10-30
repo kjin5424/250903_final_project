@@ -355,7 +355,7 @@
                 // ✅ [추가됨] 모임 홈 이동 버튼
                 html += `
                     <div class="mt-4 flex justify-end">
-                        <button onclick="goToGroupHome('${schedule.groupId}')"
+                        <button onclick="window.location.href='<c:url value="/groupHome.do"/>?groupId=${schedule.groupId}'"
                             class="bg-blue-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-600 transition-colors">
                             모임 홈으로 이동
                         </button>
@@ -372,7 +372,7 @@
                 // ✅ [추가됨] 도전 과제 하러 가기 버튼
                 html += `
                     <div class="mt-4 flex justify-end">
-                        <button onclick="goToChallenge('${schedule.id}')"
+                        <button onclick="window.location.href='<c:url value="/challengeView.do"/>?id=${schedule.id}'"
                             class="bg-green-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-green-600 transition-colors">
                             도전 과제 하러 가기
                         </button>
