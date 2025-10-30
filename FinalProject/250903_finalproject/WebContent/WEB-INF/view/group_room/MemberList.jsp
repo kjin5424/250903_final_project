@@ -74,7 +74,7 @@
     </nav>
 
     <div class="container">
-        <a href="groupDetail.jsp" class="back-btn">← 모임 상세보기로</a>
+        <a href="groupDetail.jsp" class="back-btn" onclick="location.href='home.do'">← 모임 상세보기로</a>
         <h1 class="title">👥 알고리즘 정복 스터디 - 모임원 리스트</h1>
 
         <!-- 모임원 목록 -->
