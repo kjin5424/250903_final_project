@@ -373,7 +373,7 @@
 
         function validateForm() {
             const reportType = document.querySelector('input[name="reportType"]:checked');
-            const reportContent = document.getElementById('reportContent').value.trim();
+            e
 
             if (!reportType) {
                 alert('신고 유형을 선택해주세요.');
@@ -481,7 +481,7 @@
 
             <!-- 신고 유형 선택 -->
             <div class="form-section">
-                <label class="form-label">
+                <label class="form-label">	
                     신고 유형 <span class="required">*</span>
                 </label>
                 <div class="form-description">

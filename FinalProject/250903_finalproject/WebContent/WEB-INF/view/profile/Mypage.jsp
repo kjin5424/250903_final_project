@@ -1,6 +1,9 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
-
-<%@ page language="java" %>
+<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%
+	request.setCharacterEncoding("UTF-8");
+	String cp = request.getContextPath();
+%>
 
 <!DOCTYPE html>
 
@@ -1256,9 +1259,14 @@
 
 <body>
 
+	<!-- 상단 메뉴바 -->
+	<div class="topmenubar">
+		<c:import url="/WEB-INF/view/common/TopMenuBar.jsp"/>
+	</div>
+
 
 <!-- 임시 사이드 바, 나중에 임포트 할 거 -->
-    <nav class="navbar">
+   <!--  <nav class="navbar">
 
         <div class="nav-left">
 
@@ -1290,7 +1298,7 @@
 
         </div>
 
-    </nav>
+    </nav> -->
 
 
 
@@ -2145,232 +2153,6 @@
 
     </div>
 
-
-
-    <!-- 추가 스크립트: 달력(간단) 동작 -->
-
-    <script>
-
-        // 간단한 달력/일정 기억용 객체 (페이지 리로드 시 초기화됨)
-
-        const calEvents = {};
-
-
-
-        // mini-calendar 렌더링 (이번 달 기준)
-
-        function renderMiniCalendar() {
-
-            const container = document.getElementById('mini-calendar');
-
-            if (!container) return;
-
-            container.innerHTML = '';
-
-            const today = new Date();
-
-            const year = today.getFullYear();
-
-            const month = today.getMonth(); // 0-based
-
-            const firstDay = new Date(year, month, 1).getDay();
-
-            const lastDate = new Date(year, month + 1, 0).getDate();
-
-
-
-            // 빈칸
-
-            for (let i=0;i<firstDay;i++){
-
-                const empty = document.createElement('div');
-
-                empty.style.minHeight = '36px';
-
-                empty.style.background = '#fff';
-
-                container.appendChild(empty);
-
-            }
-
-
-
-            for (let d=1; d<=lastDate; d++){
-
-                const box = document.createElement('div');
-
-                box.style.minHeight = '36px';
-
-                box.style.padding = '6px';
-
-                box.style.borderRadius = '6px';
-
-                box.style.background = '#fff';
-
-                box.style.boxSizing = 'border-box';
-
-                box.style.cursor = 'pointer';
-
-                box.textContent = d;
-
-                const full = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-
-                if (calEvents[full]) {
-
-                    const ev = document.createElement('div');
-
-                    ev.style.marginTop = '6px';
-
-                    ev.style.fontSize = '12px';
-
-                    ev.style.color = '#2d5a29';
-
-                    ev.textContent = calEvents[full];
-
-                    box.appendChild(ev);
-
-                }
-
-                box.onclick = () => {
-
-                    document.getElementById('cal-date').value = full;
-
-                    scrollToEventsList();
-
-                };
-
-                container.appendChild(box);
-
-            }
-
-        }
-
-
-
-        function scrollToEventsList() {
-
-            const el = document.getElementById('events-list');
-
-            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-        }
-
-
-
-        function addCalendarEventFromForm() {
-
-            const date = document.getElementById('cal-date').value.trim();
-
-            const text = document.getElementById('cal-text').value.trim();
-
-            if (!date || !text) {
-
-                alert('날짜와 일정을 입력하세요.');
-
-                return;
-
-            }
-
-            calEvents[date] = text;
-
-            document.getElementById('cal-text').value = '';
-
-            renderMiniCalendar();
-
-            renderEventsList();
-
-            alert('일정이 추가되었습니다.');
-
-        }
-
-
-
-        function renderEventsList() {
-
-            const list = document.getElementById('events-list');
-
-            if (!list) return;
-
-            list.innerHTML = '';
-
-            const keys = Object.keys(calEvents).sort();
-
-            if (keys.length === 0) {
-
-                list.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📭</div><div class="empty-state-text">등록된 일정이 없습니다.</div></div>';
-
-                return;
-
-            }
-
-            keys.forEach(k => {
-
-                const wrap = document.createElement('div');
-
-                wrap.style.display = 'flex';
-
-                wrap.style.justifyContent = 'space-between';
-
-                wrap.style.alignItems = 'center';
-
-                wrap.style.padding = '8px 0';
-
-                wrap.style.borderBottom = '1px solid #eee';
-
-
-
-                const left = document.createElement('div');
-
-                left.innerHTML = `<strong style="color:#2d5a29">${k}</strong><div style="color:#666">${calEvents[k]}</div>`;
-
-                const right = document.createElement('div');
-
-
-
-                const delBtn = document.createElement('button');
-
-                delBtn.className = 'btn-small btn-danger-small';
-
-                delBtn.textContent = '삭제';
-
-                delBtn.onclick = () => {
-
-                    if (confirm('일정을 삭제하시겠습니까?')) {
-
-                        delete calEvents[k];
-
-                        renderMiniCalendar();
-
-                        renderEventsList();
-
-                    }
-
-                };
-
-                right.appendChild(delBtn);
-
-
-
-                wrap.appendChild(left);
-
-                wrap.appendChild(right);
-
-                list.appendChild(wrap);
-
-            });
-
-        }
-        
-
-
-
-        // 초기 렌더
-
-        renderMiniCalendar();
-
-        renderEventsList();
-
-    </script>
 
 </body>
 

@@ -1103,7 +1103,7 @@
 
                 <div class="board-actions">
 
-                    <button class="btn btn-primary" onclick="writePost()">
+                    <button class="btn btn-primary" onclick="location.href='writepost.do'">
 
                         ✏️ 글쓰기
 

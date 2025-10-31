@@ -458,7 +458,7 @@
 
         function editPost() {
             if (confirm('게시글을 수정하시겠습니까?')) {
-                window.location.href = '/editpost.do';
+                window.location.href = 'board_edit.jsp?id=1';
             }
         }
 
@@ -485,7 +485,10 @@
             // 댓글 목록 새로고침 (실제로는 동적으로 추가)
         }
 
-     
+        function editComment(commentId) {
+            alert('댓글 수정 기능 (준비중)');
+        }
+
         function deleteComment(commentId) {
             if (confirm('댓글을 삭제하시겠습니까?')) {
                 alert('댓글이 삭제되었습니다.');
@@ -703,54 +706,3 @@
     </div>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -958,9 +958,9 @@
 
                                 <div class="applicant-meta-item">
 
-                                    <span>🎂</span>
+                                    <!-- <span>🎂</span> -->
 
-                                    <span>20대</span>
+                                   <!--  <span>20대</span> -->
 
                                 </div>
 
@@ -970,7 +970,7 @@
 
                         <div class="applicant-actions">
 
-                            <button class="btn btn-profile" onclick="viewApplicantProfile(1)">상세 프로필</button>
+                            <button class="btn btn-profile" onclick="location.href='profileforgroupmanager.do'">상세 프로필</button>
 
                         </div>
 
@@ -1056,22 +1056,6 @@
 
                                 </div>
 
-                                <div class="qa-item">
-
-                                    <div class="question">Q2. 알고리즘 공부 경험이 있으신가요?</div>
-
-                                    <div class="answer">백준에서 실버 티어이고, 프로그래머스 레벨 2 문제까지 풀어봤습니다. 더 체계적으로 공부하고 싶습니다.</div>
-
-                                </div>
-
-                                <div class="qa-item">
-
-                                    <div class="question">Q3. 이 스터디를 통해 이루고 싶은 목표는 무엇인가요?</div>
-
-                                    <div class="answer">코딩테스트 실력을 늘려서 내년 상반기 취업을 목표로 하고 있습니다. 꾸준히 참여하겠습니다!</div>
-
-                                </div>
-
                             </div>
 
                         </div>
@@ -1138,9 +1122,9 @@
 
                                 <div class="applicant-meta-item">
 
-                                    <span>🎂</span>
+                                   <!--  <span>🎂</span> -->
 
-                                    <span>20대</span>
+                                  <!--   <span>20대</span> -->
 
                                 </div>
 
@@ -1150,7 +1134,7 @@
 
                         <div class="applicant-actions">
 
-                            <button class="btn btn-profile" onclick="viewApplicantProfile(2)">상세 프로필</button>
+                            <button class="btn btn-profile" onclick="location.href='profileforgroupmanager.do'">상세 프로필</button>
 
                         </div>
 
@@ -1218,21 +1202,6 @@
 
                                 </div>
 
-                                <div class="qa-item">
-
-                                    <div class="question">Q2. 알고리즘 공부 경험이 있으신가요?</div>
-
-                                    <div class="answer">학부 때 자료구조 수업을 들었고, 최근에 다시 공부를 시작했습니다. 백준 브론즈 티어입니다.</div>
-
-                                </div>
-
-                                <div class="qa-item">
-
-                                    <div class="question">Q3. 이 스터디를 통해 이루고 싶은 목표는 무엇인가요?</div>
-
-                                    <div class="answer">알고리즘적 사고력을 키워서 더 효율적인 코드를 작성하고 싶습니다.</div>
-
-                                </div>
 
                             </div>
 
@@ -1300,9 +1269,9 @@
 
                                 <div class="applicant-meta-item">
 
-                                    <span>🎂</span>
+                                    <!-- <span>🎂</span> -->
 
-                                    <span>20대</span>
+                                  <!--   <span>20대</span> -->
 
                                 </div>
 
@@ -1312,7 +1281,7 @@
 
                         <div class="applicant-actions">
 
-                            <button class="btn btn-profile" onclick="viewApplicantProfile(3)">상세 프로필</button>
+                            <button class="btn btn-profile" onclick="location.href='profileforgroupmanager.do'">상세 프로필</button>
 
                         </div>
 
@@ -1377,22 +1346,6 @@
                                     <div class="question">Q1. 어떤 프로그래밍 언어를 주로 사용하시나요?</div>
 
                                     <div class="answer">C++을 주로 사용합니다.</div>
-
-                                </div>
-
-                                <div class="qa-item">
-
-                                    <div class="question">Q2. 알고리즘 공부 경험이 있으신가요?</div>
-
-                                    <div class="answer">백준 골드 5 티어입니다. 꾸준히 공부하고 있습니다.</div>
-
-                                </div>
-
-                                <div class="qa-item">
-
-                                    <div class="question">Q3. 이 스터디를 통해 이루고 싶은 목표는 무엇인가요?</div>
-
-                                    <div class="answer">혼자 공부하다보니 지칠 때가 많아서 함께 공부할 동료를 찾고 있습니다.</div>
 
                                 </div>
 

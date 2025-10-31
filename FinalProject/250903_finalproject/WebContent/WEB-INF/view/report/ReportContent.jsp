@@ -312,31 +312,15 @@
         }
 
         function validateForm() {
-            const reportType = document.querySelector('input[name="reportType"]:checked');
-            const reportContent = document.getElementById('reportContent').value.trim();
+        	const reportType = document.querySelector('input[name="reportType"]:checked');
+           /*  const reportContent = document.getElementById('reportContent').value.trim(); */
 
             if (!reportType) {
                 alert('신고 유형을 선택해주세요.');
                 return false;
             }
 
-            if (!reportContent) {
-                alert('신고 사유를 입력해주세요.');
-                document.getElementById('reportContent').focus();
-                return false;
-            }
-
-            if (reportContent.length < 10) {
-                alert('신고 사유를 10자 이상 입력해주세요.');
-                document.getElementById('reportContent').focus();
-                return false;
-            }
-
-            if (reportContent.length > 1000) {
-                alert('신고 사유는 1000자를 초과할 수 없습니다.');
-                document.getElementById('reportContent').focus();
-                return false;
-            }
+           
 
             if (confirm('신고를 제출하시겠습니까?\n허위 신고는 제재 대상이 될 수 있습니다.')) {
                 return true;
@@ -377,7 +361,7 @@
         </div>
 
         <!-- 신고 폼 -->
-        <form class="report-form" onsubmit="return validateForm()" method="post" action="reportSubmit.action">
+        <form class="report-form" onsubmit="return validateForm()" method="get" action="reportafter.do">
             <!-- 경고 -->
             <div class="warning-box">
                 <div class="warning-title">
@@ -482,7 +466,7 @@
             <!-- 버튼 -->
             <div class="button-group">
                 <button type="button" class="btn-cancel" onclick="cancelReport()">취소</button>
-                <button type="submit" class="btn-submit" onclick="location.href='report.do">신고 제출</button>
+                <button type="submit" class="btn-submit">신고 제출</button>
             </div>
         </form>
     </div>

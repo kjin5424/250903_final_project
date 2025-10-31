@@ -103,17 +103,17 @@
                     <div class="page-title"><span>👥</span><span>모임원 관리</span></div>
                     <div class="group-name">알고리즘 정복 스터디</div>
                 </div>
-                <button class="btn-back" onclick="history.back()">← 뒤로 가기</button>
+                <button class="btn-back" onclick="location.href='managelist.do'">← 뒤로 가기</button>
             </div>
         </div>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+       <!--  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script type="text/javascript">
         
         	$(".btn-back").click(function() {
 				alert("모임 리스트 화면으로 이동합니다.");
 			});
         
-        </script>
+        </script> -->
 
         <div class="tab-menu">
             <div class="tab-item active" onclick="switchTab('members')">모임원 목록</div>
