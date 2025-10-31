@@ -1,4 +1,6 @@
-package com.test.mybatis;
+package com.test.mybatis.dao;
+
+import com.test.mybatis.dto.UserDTO;
 
 public interface ILoginDAO
 {

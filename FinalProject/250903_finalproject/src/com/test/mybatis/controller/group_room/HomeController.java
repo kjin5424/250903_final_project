@@ -1,4 +1,4 @@
-package com.test.mybatis;
+package com.test.mybatis.controller.group_room;
 
 import javax.servlet.http.HttpSession;
 

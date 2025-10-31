@@ -396,7 +396,7 @@ body {
 <body>
 	<!-- 상단바 -->
 	<div id="topMenu">
-		<jsp:include page="/common/TopMenuBar.jsp" />
+		<jsp:include page="<%=cp %>/common/TopMenuBar.jsp" />
 	</div>
 	
 	<%
@@ -698,7 +698,7 @@ body {
 	</div>
 	
 	<!-- 하단바 -->
-	<jsp:include page="/common/UnderMenuBar.jsp"></jsp:include>
+	<jsp:include page="<%=cp %>/common/UnderMenuBar.jsp"></jsp:include>
 	
 	<script>
 		// 필터 적용

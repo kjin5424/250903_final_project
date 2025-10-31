@@ -1,4 +1,4 @@
-package com.test.mybatis;
+package com.test.mybatis.controller.manager.main;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

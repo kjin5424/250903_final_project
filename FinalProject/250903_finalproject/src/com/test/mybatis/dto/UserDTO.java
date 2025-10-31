@@ -1,4 +1,4 @@
-package com.test.mybatis;
+package com.test.mybatis.dto;
 
 public class UserDTO
 {
