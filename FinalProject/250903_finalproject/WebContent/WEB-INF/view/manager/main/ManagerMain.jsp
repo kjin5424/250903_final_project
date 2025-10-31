@@ -217,8 +217,8 @@ body {
 		// 관리자 세션 체크 (예시)
 		// String adminId = (String) session.getAttribute("adminId");
 		// if (adminId == null) {
-		//     response.sendRedirect("login.jsp");
-		//     return;
+		//     response.sendRedirect("login.jsp");
+		//     return;
 		// }
 	%>
 	
@@ -234,8 +234,7 @@ body {
 	
 	<div class="admin-container">
 		<div class="menu-grid">
-			<!-- 회원관리 -->
-			<a href="admin_members.jsp" style="text-decoration: none;">
+			<a href="<%=cp %>/userlist.do" style="text-decoration: none;">
 				<div class="menu-card">
 					<span class="menu-icon">👥</span>
 					<h2 class="menu-title">회원관리</h2>
@@ -256,8 +255,7 @@ body {
 				</div>
 			</a>
 			
-			<!-- 신고처리 -->
-			<a href="<%=cp %>/manager/report/ReportList.jsp" style="text-decoration: none;">
+			<a href="<%=cp %>/reportlist_kmj.do" style="text-decoration: none;">
 				<div class="menu-card">
 					<span class="badge">12</span>
 					<span class="menu-icon">📋</span>
@@ -275,8 +273,7 @@ body {
 				</div>
 			</a>
 			
-			<!-- 문의처리 -->
-			<a href="<%=cp %>/manager/inquiry/InquiryList.jsp" style="text-decoration: none;">
+			<a href="<%=cp %>/inquirylist_kmj.do" style="text-decoration: none;">
 				<div class="menu-card">
 					<span class="badge">12</span>
 					<span class="menu-icon">📋</span>
@@ -294,8 +291,7 @@ body {
 				</div>
 			</a>
 			
-			<!-- 모임관리 -->
-			<a href="admin_meetings.jsp" style="text-decoration: none;">
+			<a href="<%=cp %>/grouplist.do" style="text-decoration: none;">
 				<div class="menu-card">
 					<span class="menu-icon">📚</span>
 					<h2 class="menu-title">모임관리</h2>
@@ -316,8 +312,7 @@ body {
 				</div>
 			</a>
 			
-			<!-- 공지사항 작성 -->
-			<a href="<%=cp %>/manager/notice/ManagerNoticeList.jsp" style="text-decoration: none;">
+			<a href="<%=cp %>/noticewrite.do" style="text-decoration: none;">
 				<div class="menu-card">
 					<span class="menu-icon">📢</span>
 					<h2 class="menu-title">공지사항 작성</h2>

@@ -497,11 +497,11 @@ body {
 			<div class="action-buttons">
 				<button class="btn btn-process" onclick="processReport('<%= reportId %>')">
 					<span>✓</span>
-					<span>처리완료</span>
+					<span>승인</span>
 				</button>
 				<button class="btn btn-reject" onclick="rejectReport('<%= reportId %>')">
 					<span>✕</span>
-					<span>신고반려</span>
+					<span>반려</span>
 				</button>
 			</div>
 			<% } %>
@@ -600,7 +600,7 @@ body {
 					신고 접수일: <%= reportDate %>
 				</div>
 				<div class="footer-buttons">
-					<a href="<%=cp %>/manager/report/ReportList.jsp?tab=<%= reportType %>" class="btn btn-list">
+					<a href="<%=cp %>/reportlist_kmj.do?tab=<%= reportType %>" class="btn btn-list">
 						<span>📋</span>
 						<span>목록으로</span>
 					</a>
@@ -612,7 +612,7 @@ body {
 	<script>
 		// 신고 처리
 		function processReport(id) {
-			const reason = prompt('처리 의견을 입력해주세요:');
+			const reason = prompt('승인 의견을 입력해주세요:');
 			if (reason === null) return;
 			
 			if (!reason.trim()) {
@@ -648,7 +648,7 @@ body {
 			if (confirm('이 신고를 반려하시겠습니까?\n\n사유: ' + reason)) {
 				// 실제로는 서버로 반려 요청
 				alert('신고가 반려되었습니다.');
-				window.location.href = 'admin_report_list.jsp?tab=<%= reportType %>';
+				window.location.href = '<%=cp %>/reportlist_kmj.do?tab=<%= reportType %>';
 			}
 		}
 		

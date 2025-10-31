@@ -10,18 +10,18 @@
     <title>관리자 회원 목록</title>
     <style>
 /* ================================================
-   관리자 페이지 공통 스타일 적용형 (회원 상세용)
+   관리자 페이지 공통 스타일 적용형 (회원 목록)
    ================================================ */
 
 :root {
-    --color-primary: #BFFCC6;
-    --color-primary-dark: #2E7D32;
-    --color-primary-lighter: #E9FBEF;
-    --color-secondary: #E6D6FF;
-    --color-secondary-dark: #6B4FB6;
+    --color-primary: #BFFCC6;       /* 메인 색상 (연한 민트/초록) */
+    --color-primary-dark: #2E7D32;  /* 메인 색상 어둡게 (진녹색) */
+    --color-primary-lighter: #E9FBEF; /* 메인 색상 밝게 */
+    --color-secondary: #E6D6FF;     /* 보조 색상 (연보라) */
+    --color-secondary-dark: #6B4FB6; /* 보조 색상 어둡게 */
     --color-secondary-lighter: #F4EFFF;
-    --color-accent: #FFB3BA;
-    --color-accent-dark: #E65100;
+    --color-accent: #FFB3BA;        /* 강조/경고 색상 (연빨강) */
+    --color-accent-dark: #C62828;
     --color-text-primary: #333;
     --color-text-secondary: #666;
     --color-border: #ddd;
@@ -43,20 +43,21 @@
 /* 기본 세팅 */
 body {
     margin: 0;
-    font-family: "Segoe UI", Arial, sans-serif;
-    background-color: var(--color-secondary-lighter);
+    font-family: "Segoe UI", 'Noto Sans KR', Arial, sans-serif;
+    background-color: var(--color-secondary-lighter); /* 연보라 배경 */
     padding: var(--spacing-xl) var(--spacing-lg);
     color: var(--color-text-primary);
 }
 
 /* 페이지 헤더 */
 .header {
+    background: var(--color-white); /* 배경 흰색으로 변경 */
     padding: var(--spacing-lg);
     border-radius: var(--radius-lg);
     font-size: 28px;
     font-weight: 800;
     text-align: center;
-    color: var(--color-text-primary);
+    color: var(--color-primary-dark); /* 진녹색 제목 */
     box-shadow: var(--shadow-md);
     margin-bottom: var(--spacing-xl);
 }
@@ -72,99 +73,80 @@ body {
 }
 
 /* ===============================
-   회원 기본 정보 영역
+   검색 필터 입력 영역
    =============================== */
-.member-info {
-    background: var(--color-primary-lighter);
-    padding: var(--spacing-lg);
-    border-radius: var(--radius-lg);
-    margin-bottom: var(--spacing-xl);
-    box-shadow: var(--shadow-sm);
-}
-
-.member-info-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+.search-filter {
+    display: flex;
+    align-items: center;
     gap: var(--spacing-md);
-}
-
-.profile-section {
-    grid-column: 1 / -1;
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-lg);
-    background: var(--color-white);
+    margin-bottom: var(--spacing-lg);
     padding: var(--spacing-md);
+    border: 1px solid var(--color-primary); /* 연한 초록색 테두리 */
+    background: var(--color-primary-lighter); /* 연한 초록색 배경 */
     border-radius: var(--radius-md);
-    box-shadow: var(--shadow-sm);
+    flex-wrap: wrap;
 }
 
-.profile-img {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background: var(--color-secondary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 32px;
-}
-
-.info-item {
-    display: flex;
-    align-items: center;
-    font-size: 15px;
-}
-
-.info-label {
+.search-filter label {
     font-weight: 700;
-    color: var(--color-text-secondary);
-    margin-right: var(--spacing-sm);
-    min-width: 100px;
-}
-
-/* ===============================
-   탭 메뉴
-   =============================== */
-.tab-menu {
-    display: flex;
-    gap: var(--spacing-sm);
-    border-bottom: 2px solid var(--color-secondary);
-    margin-bottom: var(--spacing-md);
-}
-
-.tab-button {
-    padding: 12px 20px;
-    font-weight: 700;
-    background: transparent;
-    border: none;
-    border-bottom: 3px solid transparent;
-    cursor: pointer;
-    transition: all var(--transition-base);
-}
-
-.tab-button:hover {
-    background: var(--color-secondary-lighter);
-}
-
-.tab-button.active {
-    border-bottom-color: var(--color-primary);
-    background: var(--color-secondary-lighter);
     color: var(--color-primary-dark);
 }
 
-/* 탭 내용 */
-.tab-content {
-    display: none;
-    animation: fadeIn 0.2s ease;
+.search-filter input[type="text"],
+.search-filter select {
+    width: 260px;
+    height: 40px;
+    padding: 0 10px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    transition: border-color 0.2s;
 }
 
-.tab-content.active {
-    display: block;
+.search-filter input[type="text"]:focus,
+.search-filter select:focus {
+    border-color: var(--color-secondary-dark); /* 포커스 시 보조색(보라) */
+    outline: none;
 }
+
+/* 검색 버튼 */
+.button {
+    padding: 10px 24px;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    font-size: 14px;
+    height: 40px;
+    /* 검색 버튼 스타일 */
+    background: var(--color-primary-dark); /* 진녹색 배경 */
+    color: white;
+}
+
+.button:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+    opacity: 0.9;
+    background: var(--color-secondary-dark); /* 호버 시 보조색(진보라) */
+}
+
+/* 검색 결과 수 */
+.result-count {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: var(--spacing-md);
+    padding-left: var(--spacing-sm);
+    color: var(--color-text-primary);
+}
+
+.result-count strong {
+    color: var(--color-primary-dark);
+}
+
 
 /* ===============================
-   테이블 공통
+   테이블 공통 (회원 상세용 스타일 재활용)
    =============================== */
 table {
     width: 100%;
@@ -180,9 +162,9 @@ th, td {
 }
 
 th {
-    background: var(--color-primary-lighter);
+    background: var(--color-secondary); /* 헤더 배경을 연보라로 변경 */
     font-weight: 700;
-    color: var(--color-primary-dark);
+    color: var(--color-secondary-dark); /* 글씨를 진보라로 변경 */
 }
 
 tbody tr:hover {
@@ -191,150 +173,57 @@ tbody tr:hover {
 }
 
 /* ===============================
-   상태 배지
+   상태 배지 (회원 목록 전용)
    =============================== */
-.status-badge {
+.status-active { /* 정상 */
     display: inline-block;
     padding: 6px 12px;
     border-radius: var(--radius-full);
     font-size: 12px;
     font-weight: 700;
+    background: var(--color-primary-lighter); /* 연한 초록 */
+    color: var(--color-primary-dark); /* 진녹색 */
 }
 
-.status-pending {
-    background: #fff3e0;
-    color: #f57c00;
-}
-
-.status-completed {
-    background: var(--color-primary-lighter);
-    color: var(--color-primary-dark);
-}
-
-.status-rejected {
-    background: #ffebee;
-    color: #c62828;
-}
-
-/* ===============================
-   버튼 영역
-   =============================== */
-.action-buttons {
-    display: flex;
-    justify-content: center;
-    gap: var(--spacing-md);
-    margin-top: var(--spacing-lg);
-}
-
-.button {
-    padding: 10px 24px;
-    border: none;
-    border-radius: var(--radius-md);
+.status-suspended { /* 정지 */
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: var(--radius-full);
+    font-size: 12px;
     font-weight: 700;
-    cursor: pointer;
-    transition: all var(--transition-base);
-    font-size: 14px;
-}
-
-.btn-suspend {
-    background: var(--color-accent);
-    color: white;
-}
-
-.btn-withdraw {
-    background: #FFDFBA;
-    color: #444;
-}
-
-.btn-back {
-    background: var(--color-primary);
-    color: #222;
-}
-
-.button:hover {
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-sm);
-    opacity: 0.9;
-}
-
-/* 링크 스타일 */
-.link-text {
-    color: var(--color-secondary-dark);
-    text-decoration: none;
-}
-
-.link-text:hover {
-    text-decoration: underline;
-}
-
-/* 애니메이션 */
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    background: var(--color-accent); /* 연한 빨강 */
+    color: var(--color-accent-dark); /* 진빨강 */
 }
 
 /* 반응형 */
-@media (max-width: 1024px) {
-    .member-info-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
 @media (max-width: 768px) {
-    .member-info-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .tab-menu {
-        flex-wrap: wrap;
-    }
-
-    .action-buttons {
+    .search-filter {
         flex-direction: column;
+        align-items: stretch;
     }
-
-    .button {
+    
+    .search-filter input[type="text"],
+    .search-filter select,
+    .search-filter .button {
         width: 100%;
     }
-}
 
-/* ===============================
-   검색 필터 입력 영역 크기 보정
-   =============================== */
-.search-filter {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-    margin-bottom: var(--spacing-lg);
-    flex-wrap: wrap; /* 화면 줄어들면 자동 줄바꿈 */
-}
-
-.search-filter label {
-    font-weight: 600;
-    color: var(--color-text-secondary);
-}
-
-.search-filter input[type="text"],
-.search-filter select {
-    width: 260px; /* 기존보다 넓게 */
-    height: 40px; /* 높이 통일 */
-    padding: 0 10px;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    font-size: 14px;
-    transition: border-color 0.2s;
-}
-
-.search-filter input[type="text"]:focus,
-.search-filter select:focus {
-    border-color: var(--color-primary-dark);
-    outline: none;
-}
-
-.search-filter .button {
-    height: 40px; /* 버튼 높이도 통일 */
-    padding: 0 20px;
-    font-size: 14px;
+    .container {
+        padding: var(--spacing-lg);
+    }
+    
+    table {
+        overflow-x: auto;
+        display: block;
+    }
+    
+    table thead, table tbody, table tr {
+        display: block;
+    }
+    
+    table tbody {
+        min-width: 800px; /* 모바일에서 테이블이 너무 작아지는 것 방지 */
+    }
 }
     </style>
 </head>
@@ -343,8 +232,9 @@ tbody tr:hover {
 	<div class="container">
 		<div class="search-filter">
 			<label>아이디</label> <input type="text" id="searchId"
-				placeholder="아이디 검색"> <label>활동 정지 여부</label> <select
-				id="statusFilter">
+				placeholder="아이디 검색"> 
+            <label>활동 정지 여부</label> 
+            <select id="statusFilter">
 				<option value="">전체</option>
 				<option value="N">정상</option>
 				<option value="Y">정지</option>
@@ -354,7 +244,7 @@ tbody tr:hover {
 		</div>
 
 		<div class="result-count">
-			검색 결과: <strong>총 3명</strong>
+			검색 결과: <strong>총 4명</strong>
 		</div>
 
 		<table>
@@ -382,7 +272,7 @@ tbody tr:hover {
 					<td>서울시 강남구</td>
 					<td>남</td>
 					<td>30대</td>
-					<td class="status-active">정상</td>
+					<td><span class="status-active">정상</span></td>
 					<td>2024-01-15</td>
 				</tr>
 				<tr onclick="location.href='memberDetail.jsp?id=user002'">
@@ -394,7 +284,7 @@ tbody tr:hover {
 					<td>서울시 마포구</td>
 					<td>여</td>
 					<td>20대</td>
-					<td class="status-active">정상</td>
+					<td><span class="status-active">정상</span></td>
 					<td>2024-02-20</td>
 				</tr>
 				<tr onclick="location.href='memberDetail.jsp?id=user003'">
@@ -406,7 +296,7 @@ tbody tr:hover {
 					<td>경기도 성남시</td>
 					<td>남</td>
 					<td>30대</td>
-					<td class="status-suspended">정지</td>
+					<td><span class="status-suspended">정지</span></td>
 					<td>2023-11-10</td>
 				</tr>
 				<tr onclick="location.href='memberDetail.jsp?id=user004'">
@@ -418,7 +308,7 @@ tbody tr:hover {
 					<td>인천시 남동구</td>
 					<td>남</td>
 					<td>30대</td>
-					<td class="status-suspended">정지</td>
+					<td><span class="status-suspended">정지</span></td>
 					<td>2023-01-10</td>
 				</tr>
 			</tbody>

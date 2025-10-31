@@ -439,7 +439,7 @@ body {
 			console.log('상단 고정:', isPinned);
 			
 			alert('공지사항이 성공적으로 게시되었습니다!');
-			window.location.href = 'admin_notice_list.jsp';
+			window.location.href = 'noticelist.do';
 		}
 		
 		// 작성 취소
@@ -449,10 +449,10 @@ body {
 			
 			if (title || content) {
 				if (confirm('작성 중인 내용이 있습니다. 정말 취소하시겠습니까?')) {
-					window.location.href = 'ManagerNoticeList.jsp';
+					window.location.href = 'noticelist.do';
 				}
 			} else {
-				window.location.href = 'ManagerNoticeList.jsp';
+				window.location.href = 'noticelist.do';
 			}
 		}
 		

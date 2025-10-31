@@ -17,6 +17,7 @@
     String schedule = "매주 토요일 14:00~17:00";
     String location = "서울 강남";
     String description = "맛있는 요리를 함께 배우고 공유하는 모임입니다.\n주 1회 오프라인 모임을 진행하며, 서로 레시피를 공유하고 시식회를 가집니다.";
+    String updatedDate = "2025-09-10";
 %>
 
 <!DOCTYPE html>
@@ -39,6 +40,7 @@ body { margin:0; font-family:"Segoe UI", Arial, sans-serif; background:#F4EFFF; 
 .btn-back { background:#BFFCC6; color:#222; }
 .btn-edit { background:#FFB3BA; color:#222; }
 .btn-delete { background:#E6D6FF; color:#222; }
+.btn-stop { background:#BFFCC6; color:#222; }
 .button:hover { opacity:0.9; transform:translateY(-1px); }
 @media (max-width:768px){ .detail-grid{ grid-template-columns:1fr; } .action-buttons{ flex-direction:column; } .button{ width:100%; } }
 </style>
@@ -80,6 +82,10 @@ body { margin:0; font-family:"Segoe UI", Arial, sans-serif; background:#F4EFFF; 
 
         <div class="detail-label">지역:</div>
         <div class="detail-value"><%= location %></div>
+        
+        <div class="detail-label">정보 수정일:</div>
+        <div class="detail-value"><b><%= updatedDate %></b></div>
+        
     </div>
 
     <div class="description-box">
@@ -91,6 +97,7 @@ body { margin:0; font-family:"Segoe UI", Arial, sans-serif; background:#F4EFFF; 
         <a href="adminMeetingList.jsp" class="button btn-back">🔙 목록으로</a>
         <a href="editMeeting.jsp?code=<%= meetingCode %>" class="button btn-edit">✏️ 수정</a>
         <a href="deleteMeeting.jsp?code=<%= meetingCode %>" class="button btn-delete">🗑 삭제</a>
+        <a href="deleteMeeting.jsp?code=<%= meetingCode %>" class="button btn-stop"> 활동정지</a>
     </div>
 
 </div>
