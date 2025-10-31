@@ -1,4 +1,4 @@
-<%@page import="com.test.mybatis.UserDTO"%>
+<%@page import="com.test.mybatis.dto.UserDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%

@@ -313,7 +313,7 @@ body {
 <body>
 	<!-- 상단바 -->
 	<div id="topMenu">
-		<jsp:include page="/common/TopMenuBar.jsp" />
+		<jsp:include page="<%=cp %>/common/TopMenuBar.jsp" />
 	</div>
 	
 	<div class="container">

@@ -1,4 +1,4 @@
-package com.test.mybatis;
+package com.test.mybatis.controller.manager.inquiry;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;

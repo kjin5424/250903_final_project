@@ -2,7 +2,7 @@
 	LoginController.java
 ==========================*/
 
-package com.test.mybatis;
+package com.test.mybatis.controller.authorization;
 
 import javax.servlet.http.HttpSession;
 
@@ -12,6 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.test.mybatis.dao.ILoginDAO;
+import com.test.mybatis.dto.UserDTO;
 
 @Controller
 public class LoginController
