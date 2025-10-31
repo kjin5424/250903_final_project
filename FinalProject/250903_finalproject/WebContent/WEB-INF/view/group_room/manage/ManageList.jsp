@@ -154,17 +154,6 @@
             color: #666;
             line-height: 1.6;
         }
-        .required-badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: #ff6b6b;
-            color: white;
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 600;
-        }
         .permission-badge {
             display: inline-block;
             background: #e3f2fd;
@@ -296,28 +285,6 @@
             window.location.href = 'application_management.jsp';
         }
 
-        function goToVoteManagement() {
-            window.location.href = 'vote_management.jsp';
-        }
-
-        function goToRoleManagement() {
-            window.location.href = 'role_management.jsp';
-        }
-
-        function goToChallengeManagement() {
-            window.location.href = 'challenge_management.jsp';
-        }
-
-        function goToPostManagement() {
-            window.location.href = 'post_management.jsp';
-        }
-
-        function transferLeader() {
-            if(confirm('모임장 권한을 이양하시겠습니까?\n이양 후에는 되돌릴 수 없습니다.')) {
-                window.location.href = 'transfer_leader.jsp';
-            }
-        }
-
         function closeGroup() {
             if(confirm('정말 모임을 폐쇄하시겠습니까?\n모든 모임원이 탈퇴되며 복구할 수 없습니다.')) {
                 const reason = prompt('폐쇄 사유를 입력해주세요:');
@@ -354,7 +321,7 @@
                     </div>
                     <div class="group-name">알고리즘 정복 스터디</div>
                 </div>
-                <button class="btn-back" onclick="goBack()">← 모임 홈으로</button>
+                <button class="btn-back" onclick="location.href='home.do'">← 뒤로 가기</button>
             </div>
         </div>
 
@@ -382,21 +349,21 @@
             </div>
         </div>
 
-        <!-- 모임원 관리 (모임장, 부모임장, 도우미) -->
+        <!-- 모임원 관리 -->
         <div class="section">
             <div class="section-title">👥 모임원 관리</div>
             <div class="section-divider"></div>
             <div class="management-grid">
-                <div class="management-card" onclick="goToMemberManagement()">
+                <div class="management-card" onclick="location.href='membermanage.do'">
                     <div class="card-icon">👥</div>
-                    <div class="card-title">모임원 관리</div>
+                    <div class="card-title">모임원 및 권한 관리</div>
                     <div class="card-description">
-                        모임원 목록 조회, 강제 퇴장, 출석률 확인 등 모임원을 관리합니다.
+                        모임원 목록 조회, 권한 부여(부모임장/도우미), 강제 퇴장 등을 관리합니다.
                     </div>
-                    <span class="permission-badge">모임장 이상</span>
+                    <span class="permission-badge">모임장 전용</span>
                 </div>
 
-                <div class="management-card" onclick="goToApplicationManagement()">
+                <div class="management-card" onclick="location.href='applicant.do'">
                     <div class="card-icon">📝</div>
                     <div class="card-title">가입 신청 관리</div>
                     <div class="card-description">
@@ -405,7 +372,7 @@
                     <span class="permission-badge">모임장 이상</span>
                 </div>
 
-                <div class="management-card" onclick="goToAttendanceManagement()">
+                <div class="management-card" onclick="location.href='attendance.do'">
                     <div class="card-icon">📋</div>
                     <div class="card-title">출석 관리</div>
                     <div class="card-description">
@@ -413,71 +380,19 @@
                     </div>
                     <span class="permission-badge">부모임장 이상</span>
                 </div>
-
-                <div class="management-card" onclick="goToRoleManagement()">
-                    <div class="card-icon">⭐</div>
-                    <div class="card-title">권한 관리</div>
-                    <div class="card-description">
-                        부모임장과 도우미를 지정하여 권한을 부여합니다.
-                    </div>
-                    <span class="permission-badge">모임장 전용</span>
-                </div>
             </div>
         </div>
 
-        <!-- 활동 관리 (도우미 이상) -->
-        <div class="section">
-            <div class="section-title">📅 활동 관리</div>
-            <div class="section-divider"></div>
-            <div class="management-grid">
-                <div class="management-card" onclick="goToVoteManagement()">
-                    <div class="card-icon">🗳️</div>
-                    <div class="card-title">투표 관리</div>
-                    <div class="card-description">
-                        정기/비정기 모임 투표를 생성하고 결과를 확인합니다.
-                    </div>
-                    <span class="permission-badge">도우미 이상</span>
-                </div>
-
-                <div class="management-card" onclick="goToChallengeManagement()">
-                    <div class="card-icon">🏆</div>
-                    <div class="card-title">도전과제 관리</div>
-                    <div class="card-description">
-                        도전과제를 생성하고 참가자의 달성률을 확인합니다.
-                    </div>
-                    <span class="permission-badge">모임장 이상</span>
-                </div>
-
-                <div class="management-card" onclick="goToPostManagement()">
-                    <div class="card-icon">📢</div>
-                    <div class="card-title">게시글 관리</div>
-                    <div class="card-description">
-                        부적절한 게시글과 댓글을 삭제하고 공지를 고정합니다.
-                    </div>
-                    <span class="permission-badge">도우미 이상</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- 모임 설정 (모임장 전용) -->
+        <!-- 모임 설정 -->
         <div class="section">
             <div class="section-title">⚙️ 모임 설정</div>
             <div class="section-divider"></div>
             <div class="management-grid">
-                <div class="management-card" onclick="goToGroupEdit()">
+                <div class="management-card" onclick="location.href='groupcreatemodify.do'">
                     <div class="card-icon">✏️</div>
                     <div class="card-title">모임 정보 수정</div>
                     <div class="card-description">
                         모임 이름, 설명, 규칙, 난이도 등 기본 정보를 수정합니다.
-                    </div>
-                    <span class="permission-badge">모임장 전용</span>
-                </div>
-
-                <div class="management-card" onclick="transferLeader()">
-                    <div class="card-icon">👑</div>
-                    <div class="card-title">모임장 이양</div>
-                    <div class="card-description">
-                        다른 모임원에게 모임장 권한을 이양합니다. (되돌릴 수 없음)
                     </div>
                     <span class="permission-badge">모임장 전용</span>
                 </div>

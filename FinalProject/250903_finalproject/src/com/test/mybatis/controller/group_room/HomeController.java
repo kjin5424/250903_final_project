@@ -55,7 +55,7 @@ public class HomeController
 	@RequestMapping(value="/managelist.do", method=RequestMethod.GET)
 	public String manageList(Model model)
 	{
-		return "/WEB-INF/view/group_room/ManageList.jsp";
+		return "/WEB-INF/view/group_room/manage/ManageList.jsp";
 	}
 	@RequestMapping(value="/votelist.do", method=RequestMethod.GET)
 	public String votelist(Model model)
@@ -73,9 +73,84 @@ public class HomeController
 	{
 		return "/WEB-INF/view/report/ReportGroup.jsp";
 	}
+	
+	@RequestMapping(value="/reportcontent.do", method=RequestMethod.GET)
+	public String reportContent(Model model)
+	{
+		return "/WEB-INF/view/report/ReportContent.jsp";
+	}
+	
 	@RequestMapping(value="/reportafter.do", method=RequestMethod.GET)
-	public String reportafter(Model model)
+	public String reportAfter(Model model)
 	{
 		return "/WEB-INF/view/report/ReportAfter.jsp";
 	}
+	
+	@RequestMapping(value="/membermanage.do", method=RequestMethod.GET)
+	public String memberManage(Model model)
+	{
+		return "/WEB-INF/view/group_room/manage/MemberManage.jsp";
+	}
+	
+	@RequestMapping(value="/applicant.do", method=RequestMethod.GET)
+	public String applicant(Model model)
+	{
+		return "/WEB-INF/view/group_room/manage/Applicant.jsp";
+	}
+	
+	@RequestMapping(value="/attendance.do", method=RequestMethod.GET)
+	public String attendance(Model model)
+	{
+		return "/WEB-INF/view/group_room/manage/Attendance.jsp";
+	}
+	
+	@RequestMapping(value="/writepost.do", method=RequestMethod.GET)
+	public String writePost(Model model)
+	{
+		return "/WEB-INF/view/group_room/board/WritePost.jsp";
+	}
+	
+	@RequestMapping(value="/postdetail.do", method=RequestMethod.GET)
+	public String announcement(Model model)
+	{
+		return "/WEB-INF/view/group_room/board/PostDetail.jsp";
+	}
+	
+	@RequestMapping(value="/editpost.do", method=RequestMethod.GET)
+	public String editPost(Model model)
+	{
+		return "/WEB-INF/view/group_room/board/EditPost.jsp";
+	}
+	
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

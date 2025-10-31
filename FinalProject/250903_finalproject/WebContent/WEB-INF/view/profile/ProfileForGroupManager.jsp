@@ -394,7 +394,7 @@
             <div class="profile-top">
                 <div class="profile-avatar">👤</div>
                 <div class="profile-info">
-                    <h1 class="profile-name">행복한토끼99</h1>
+                    <h1 class="profile-name">백엔드개발자</h1>
                     <div class="profile-meta">
                         <div class="meta-item">
                             <span class="meta-icon">📅</span>
@@ -417,7 +417,7 @@
                         <button class="btn btn-primary" onclick="sendMessage()">
                             ✉️ 쪽지 보내기
                         </button>
-                        <button class="btn btn-danger" onclick="reportMember()">
+                        <button class="btn btn-danger" onclick="location.href='reportcontent.do'">
                             🚨 신고하기
                         </button>
                     </div>

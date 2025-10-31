@@ -488,10 +488,10 @@
             // 실제로는 AJAX로 데이터를 불러와서 표시
         }
 
-        function goBack() {
+        /* function goBack() {
             if (hasChanges) {
                 if (confirm('저장하지 않은 변경사항이 있습니다. 정말 나가시겠습니까?')) {
-                    window.location.href = 'group_management.jsp';
+                    window.location.href = 'managelist.do';
                 }
             } else {
                 window.location.href = 'group_management.jsp';
@@ -500,7 +500,7 @@
 
         function viewHistory(memberId) {
             window.location.href = 'member_attendance_history.jsp?memberId=' + memberId;
-        }
+        } */
     </script>
 </head>
 <body>
@@ -523,7 +523,7 @@
                     </div>
                     <div class="group-name">알고리즘 정복 스터디</div>
                 </div>
-                <button class="btn-back" onclick="goBack()">← 관리 메뉴로</button>
+                <button class="btn-back" onclick="location.href='managelist.do'">← 관리 메뉴로</button>
             </div>
         </div>
 
@@ -563,9 +563,9 @@
                     <span class="filter-label">모임 일정:</span>
                     <select id="meetingSelect" class="filter-select" onchange="loadMeetingAttendance()">
                         <option value="">선택하세요</option>
-                        <option value="2024-10-17">2024-10-17 (목) 19:00 - 정기 모임</option>
-                        <option value="2024-10-10">2024-10-10 (목) 19:00 - 정기 모임</option>
-                        <option value="2024-10-03">2024-10-03 (목) 19:00 - 정기 모임</option>
+                        <option value="2024-10-17">2024-10-17 (목) 19:00 - 활동</option>
+                        <option value="2024-10-10">2024-10-10 (목) 19:00 - 활동</option>
+                        <option value="2024-10-03">2024-10-03 (목) 19:00 - 활동</option>
                     </select>
                 </div>
                 <div class="filter-group">

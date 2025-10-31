@@ -1,12 +1,14 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
-
-<!-- 상단 바 모임 개설 클릭했을 때의 화면 -->
-
-<%@ page language="java" %>
+<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%
+	request.setCharacterEncoding("UTF-8");
+	String cp = request.getContextPath();
+%>
 
 <!DOCTYPE html>
 
 <html lang="ko">
+
 
 <head>
 
@@ -612,6 +614,7 @@
 
 <body>
 
+
     <nav class="navbar">
 
         <div class="nav-left">
@@ -878,9 +881,12 @@
 
             <div class="action-buttons">
 
-                <a href="group_create_form.jsp" class="btn btn-primary">모임 개설하기</a>
+<!--                 <a href="group_create_form.jsp" class="btn btn-primary" onclick="location.href='groupcreate.do'">모임 개설하기</a>
 
-                <a href="?page=groups" class="btn btn-secondary">다른 모임 둘러보기</a>
+                <a href="?page=groups" class="btn btn-secondary" onclick="location.href='start.do'">다른 모임 둘러보기</a> -->
+                
+                <button class="btn btn-primary" onclick="location.href='groupcreate.do'">모임 개설하기</button>
+                <button class="btn btn-secondary" onclick="location.href='start.do'">다른 모임 둘러보기</button>
 
             </div>
 
@@ -891,3 +897,50 @@
 </body>
 
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

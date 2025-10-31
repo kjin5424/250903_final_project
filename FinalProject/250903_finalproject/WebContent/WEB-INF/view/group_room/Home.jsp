@@ -614,15 +614,15 @@
                         <h2 class="section-title">📢 공지사항</h2>
                         <button class="btn-more" onclick="location.href='postlist.do'">더보기 →</button>
                     </div>
-                    <div class="notice-item" onclick="viewPost(1)">
+                    <div class="notice-item" onclick="location.href='postdetail.do'">
                         <div class="notice-title">📢 이번 주 스터디 일정 안내</div>
                         <div class="notice-meta">코딩마스터 · 2024-10-10</div>
                     </div>
-                    <div class="notice-item" onclick="viewPost(2)">
+                    <div class="notice-item" onclick="location.href='postdetail.do'">
                         <div class="notice-title">🎉 모임 레벨 3 달성! 축하합니다</div>
                         <div class="notice-meta">코딩마스터 · 2024-10-08</div>
                     </div>
-                    <div class="notice-item" onclick="viewPost(3)">
+                    <div class="notice-item" onclick="location.href='postdetail.do'">
                         <div class="notice-title">⚠️ 모임 규칙 안내 (필독)</div>
                         <div class="notice-meta">코딩마스터 · 2024-10-05</div>
                     </div>

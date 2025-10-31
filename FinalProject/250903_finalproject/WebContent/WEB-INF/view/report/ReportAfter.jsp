@@ -161,7 +161,7 @@
                 감사합니다.
             </div>
             <div class="button-group">
-                <button class="btn-back" onclick="goBack()">← 이전 페이지</button>
+                <button class="btn-back" onclick="location.href='applicant.do'">← 이전 페이지</button>
                 <button class="btn-home" onclick="location.href='home.do'">모임 홈으로</button>
             </div>
         </div>

@@ -160,11 +160,11 @@
             }
 
             alert("글이 등록되었습니다!");
-            window.location.href = "board.jsp"; // 등록 후 게시판으로 이동
+            window.location.href = "/postlist.do"; // 등록 후 게시판으로 이동
         }
         function cancelWrite() {
             if (confirm("글쓰기를 취소하시겠습니까?")) {
-                window.location.href = "board.jsp";
+                window.location.href = "/postlist.do";
             }
         }
     </script>

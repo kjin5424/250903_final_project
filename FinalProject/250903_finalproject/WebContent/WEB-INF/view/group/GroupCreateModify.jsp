@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>공모자들 - 모임 개설</title>
+<title>공모자들 - 모임 정보 수정</title>
 <style>
 * {
 	margin: 0;
@@ -122,6 +122,28 @@ body {
 	font-size: 14px;
 }
 
+.warning-box {
+	background: #fff3e0;
+	border: 2px solid #ffb74d;
+	border-radius: 8px;
+	padding: 15px;
+	margin-top: 15px;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.warning-box::before {
+	content: "⚠️";
+	font-size: 20px;
+}
+
+.warning-text {
+	color: #e65100;
+	font-size: 13px;
+	font-weight: 500;
+}
+
 .form-container {
 	background: white;
 	border-radius: 12px;
@@ -177,6 +199,12 @@ body {
 	box-shadow: 0 0 0 3px rgba(139, 198, 131, 0.1);
 }
 
+.form-input:disabled, .form-select:disabled {
+	background: #f5f7fa;
+	cursor: not-allowed;
+	color: #999;
+}
+
 .form-textarea {
 	resize: vertical;
 	min-height: 100px;
@@ -194,6 +222,12 @@ body {
 .tip::before {
 	content: "💡";
 	font-size: 14px;
+}
+
+.tip-red {
+	font-size: 12px;
+	color: red;
+	margin-top: 5px;
 }
 
 .radio-group, .checkbox-group {
@@ -216,6 +250,12 @@ body {
 	accent-color: #4CAF50;
 }
 
+.radio-item input[type="radio"]:disabled, 
+.checkbox-item input[type="checkbox"]:disabled {
+	cursor: not-allowed;
+	opacity: 0.5;
+}
+
 .radio-item label, .checkbox-item label {
 	cursor: pointer;
 	font-size: 14px;
@@ -234,6 +274,15 @@ body {
 .image-upload-area:hover {
 	border-color: #8bc683;
 	background: #f8faf8;
+}
+
+.current-image {
+	max-width: 300px;
+	height: auto;
+	margin: 15px auto;
+	border-radius: 8px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	display: block;
 }
 
 #preview {
@@ -300,7 +349,7 @@ body {
 	justify-content: center;
 }
 
-.btn-submit, .btn-draft {
+.btn-submit, .btn-cancel, .btn-delete {
 	padding: 14px 40px;
 	border: none;
 	border-radius: 8px;
@@ -321,20 +370,37 @@ body {
 	box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
 }
 
-.btn-draft {
-	background: #2196F3;
+.btn-cancel {
+	background: #757575;
 	color: white;
 }
 
-.btn-draft:hover {
-	background: #1976D2;
+.btn-cancel:hover {
+	background: #616161;
 	transform: translateY(-2px);
-	box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+	box-shadow: 0 4px 12px rgba(117, 117, 117, 0.3);
 }
-.tip-red {
-    font-size: 12px;
-    color: red;
-    margin-top: 5px;
+
+.btn-delete {
+	background: #f44336;
+	color: white;
+}
+
+.btn-delete:hover {
+	background: #d32f2f;
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
+}
+
+.readonly-badge {
+	display: inline-block;
+	background: #e0e0e0;
+	color: #666;
+	padding: 4px 10px;
+	border-radius: 4px;
+	font-size: 12px;
+	font-weight: 600;
+	margin-left: 10px;
 }
 
 @media ( max-width : 768px) {
@@ -347,7 +413,7 @@ body {
 	.button-group {
 		flex-direction: column;
 	}
-	.btn-submit, .btn-draft {
+	.btn-submit, .btn-cancel, .btn-delete {
 		width: 100%;
 	}
 	.address-search-wrapper {
@@ -376,91 +442,74 @@ function togglePassword() {
 function previewImage(event) {
     const file = event.target.files[0];
     const preview = document.getElementById('preview');
+    const currentImage = document.getElementById('currentImage');
+    
     if (file) {
         const reader = new FileReader();
         reader.onload = function(e) {
             preview.src = e.target.result;
             preview.style.display = 'block';
+            if (currentImage) {
+                currentImage.style.display = 'none';
+            }
         }
         reader.readAsDataURL(file);
     } else {
         preview.src = '#';
         preview.style.display = 'none';
+        if (currentImage) {
+            currentImage.style.display = 'block';
+        }
     }
 }
 
 function validatePassword() {
-    const title = document.getElementById("title").value.trim();
-    if (!title) {
-        alert("모임 이름을 입력해주세요.");
-        document.getElementById("title").focus();
-        return false;
-    }
-
     const privacy = document.getElementById("privacy").value;
     if (privacy === "private") {
         const pw1 = document.getElementById("password").value;
         const pw2 = document.getElementById("passwordConfirm").value;
 
-        if (!pw1 || !pw2) {
-            alert("비밀번호를 모두 입력해주세요.");
-            return false;
-        }
-        if (pw1 !== pw2) {
-            alert("비밀번호가 일치하지 않습니다. 다시 입력해주세요.");
-            document.getElementById("password").value = "";
-            document.getElementById("passwordConfirm").value = "";
-            document.getElementById("password").focus();
-            return false;
-        }
-    }
-
-    // 필요하면 다른 필수 항목 체크 추가 가능
-    clearDraft();
-    return true;
-}
-
-function saveDraft() {
-    const form = document.querySelector("form");
-    const formData = new FormData(form);
-    const draft = {};
-
-    formData.forEach((value, key) => {
-        draft[key] = value;
-    });
-
-    localStorage.setItem("groupDraft", JSON.stringify(draft));
-    alert("입력한 내용이 임시저장되었습니다 ✅");
-}
-
-function loadDraft() {
-    const draftData = localStorage.getItem("groupDraft");
-    if (!draftData) return;
-
-    const draft = JSON.parse(draftData);
-
-    for (const key in draft) {
-        const el = document.querySelector(`[name="${key}"]`);
-        if (el) {
-            if (el.type === "radio" || el.type === "checkbox") {
-                document.querySelectorAll(`[name="${key}"]`).forEach(input => {
-                    input.checked = input.value === draft[key];
-                });
-            } else {
-                el.value = draft[key];
+        if (pw1 || pw2) {
+            if (pw1 !== pw2) {
+                alert("비밀번호가 일치하지 않습니다. 다시 입력해주세요.");
+                document.getElementById("password").value = "";
+                document.getElementById("passwordConfirm").value = "";
+                document.getElementById("password").focus();
+                return false;
             }
         }
     }
+    return true;
 }
 
-function clearDraft() {
-    localStorage.removeItem("groupDraft");
+function cancelEdit() {
+    if (confirm("수정을 취소하고 돌아가시겠습니까?\n변경사항이 저장되지 않습니다.")) {
+        window.location.href = "managelist.do";
+    }
 }
+
+
 
 window.onload = function() {
     toggleRegion();
     togglePassword();
-    loadDraft();
+    
+    // 기존 데이터 로드 (실제로는 서버에서 가져와야 함)
+    loadExistingData();
+}
+
+// 더미 데이터 로드 함수
+function loadExistingData() {
+    // 실제 환경에서는 서버에서 데이터를 받아와야 함
+    document.getElementById("title").value = "알고리즘 정복 스터디";
+    document.getElementById("category_it").checked = true;
+    document.querySelector('textarea[name="description"]').value = "함께 알고리즘 문제를 풀며 실력을 향상시키는 스터디입니다.";
+    document.getElementById("offline").checked = true;
+    toggleRegion();
+    document.getElementById("roadAddress").value = "서울특별시 강남구 테헤란로 123";
+    document.getElementById("postcode").value = "06234";
+    document.querySelector('select[name="difficulty"]').value = "중";
+    document.querySelector('textarea[name="rules"]').value = "매주 최소 3문제 이상 풀어오기\n지각 3회 시 경고";
 }
 </script>
 
@@ -485,12 +534,15 @@ function searchAddress() {
 			<div class="logo-tab">
 				<span>로고 들어갈 자리</span>
 			</div>
-			<a href="?page=notice" class="tab">공지사항</a> <a href="?page=groups"
-				class="tab">모임구경</a> <a href="?page=creategroup" class="tab active">모임
-				개설</a> <a href="?page=mygroups" class="tab">내 모임</a>
+			<a href="?page=notice" class="tab">공지사항</a> 
+			<a href="?page=groups" class="tab">모임구경</a> 
+			<a href="?page=creategroup" class="tab">모임 개설</a> 
+			<a href="?page=mygroups" class="tab active">내 모임</a>
 		</div>
 		<div class="nav-right">
-			<a href="mypage.jsp" class="profile-btn"> <span>👤</span> <span>마이페이지</span>
+			<a href="mypage.jsp" class="profile-btn"> 
+				<span>👤</span> 
+				<span>마이페이지</span>
 			</a>
 		</div>
 	</nav>
@@ -498,13 +550,18 @@ function searchAddress() {
 	<div class="container">
 		<!-- 페이지 헤더 -->
 		<div class="page-header">
-			<h1 class="page-title">✨ 새로운 모임 개설하기</h1>
-			<p class="page-subtitle">함께 성장할 멋진 모임을 만들어보세요!</p>
+			<h1 class="page-title">⚙️ 모임 정보 수정</h1>
+			<p class="page-subtitle">모임 정보를 수정하고 관리하세요</p>
+			<div class="warning-box">
+				<div class="warning-text">
+					일부 항목은 모임 개설 후 변경할 수 없습니다. 변경 가능한 항목만 수정할 수 있습니다.
+				</div>
+			</div>
 		</div>
 
 		<!-- 폼 컨테이너 -->
 		<div class="form-container">
-			<form action="mypage.do" method="get" enctype="multipart/form-data"
+			<form action="#" method="post" enctype="multipart/form-data"
 				onsubmit="return validatePassword()">
 
 				<!-- 기본 정보 -->
@@ -512,56 +569,68 @@ function searchAddress() {
 					<div class="section-title">📋 기본 정보</div>
 
 					<div class="form-group">
-						<label class="form-label">모임 이름</label> <input type="text"
-							class="form-input" id="title" name="title"
+						<label class="form-label">모임 이름</label> 
+						<input type="text" class="form-input" id="title" name="title"
 							placeholder="모임 이름을 입력하세요" required>
-						<div class="tip">모임 이름은 중복 가능하며, 간결하고 기억하기 쉽게 작성하세요.</div>
+						<div class="tip">모임 이름은 언제든지 수정 가능합니다.</div>
 					</div>
 
 					<div class="form-group">
 						<label class="form-label">모임 이미지</label>
 						<div class="image-upload-area">
+							<p style="margin-bottom: 10px; color: #666;">현재 이미지</p>
+							<img id="currentImage" class="current-image" 
+								 src="https://via.placeholder.com/300x200" alt="현재 모임 이미지">
 							<input type="file" id="image" name="image" accept="image/*"
-								onchange="previewImage(event)" style="margin-bottom: 10px;">
-							<div class="tip" style="justify-content: center;">이미지가 없으면
-								기본 이미지가 사용됩니다.</div>
+								onchange="previewImage(event)" style="margin-top: 15px;">
+							<div class="tip" style="justify-content: center; margin-top: 10px;">
+								새 이미지를 선택하면 기존 이미지가 교체됩니다.
+							</div>
 						</div>
-						<img id="preview" src="#" alt="이미지 미리보기">
+						<img id="preview" src="#" alt="새 이미지 미리보기">
 					</div>
 
 					<div class="form-group">
-						<label class="form-label">카테고리</label>
+						<label class="form-label">
+							카테고리
+							<!-- <span class="readonly-badge">수정 불가</span> -->
+						</label>
+						
 						<div class="radio-group">
+						
 							<div class="radio-item">
 								<input type="radio" id="category_reading" name="category"
-									value="독서" checked> <label for="category_reading">📚
-									독서</label>
+									value="독서"> 
+								<label for="category_reading">📚 독서</label>
 							</div>
 							<div class="radio-item">
 								<input type="radio" id="category_language" name="category"
-									value="어학"> <label for="category_language">🗣️
-									어학</label>
+									value="어학"> 
+								<label for="category_language">🗣️ 어학</label>
 							</div>
 							<div class="radio-item">
-								<input type="radio" id="category_it" name="category" value="IT">
+								<input type="radio" id="category_it" name="category" value="IT" checked="checked">
 								<label for="category_it">💻 IT</label>
 							</div>
 							<div class="radio-item">
 								<input type="radio" id="category_startup" name="category"
-									value="창업·취업"> <label for="category_startup">💼
-									창업·취업</label>
+									value="창업·취업" > 
+								<label for="category_startup">💼 창업·취업</label>
 							</div>
 							<div class="radio-item">
 								<input type="radio" id="category_cert" name="category"
-									value="자격증"> <label for="category_cert">📜 자격증</label>
+									value="자격증"> 
+								<label for="category_cert">📜 자격증</label>
 							</div>
 							<div class="radio-item">
 								<input type="radio" id="category_exam" name="category"
-									value="시험"> <label for="category_exam">✏️ 시험</label>
+									value="시험"> 
+								<label for="category_exam">✏️ 시험</label>
 							</div>
 							<div class="radio-item">
 								<input type="radio" id="category_hobby" name="category"
-									value="취미"> <label for="category_hobby">🎨 취미</label>
+									value="취미"> 
+								<label for="category_hobby">🎨 취미</label>
 							</div>
 							<div class="radio-item">
 								<input type="radio" id="category_etc" name="category" value="기타">
@@ -586,13 +655,13 @@ function searchAddress() {
 						<div class="checkbox-group">
 							<div class="checkbox-item">
 								<input type="checkbox" id="online" name="meeting_type"
-									value="온라인" checked onclick="toggleRegion()"> <label
-									for="online">💻 온라인</label>
+									value="온라인" checked onclick="toggleRegion()"> 
+								<label for="online">💻 온라인</label>
 							</div>
 							<div class="checkbox-item">
 								<input type="checkbox" id="offline" name="meeting_type"
-									value="오프라인" onclick="toggleRegion()"> <label
-									for="offline">🏢 오프라인</label>
+									value="오프라인" onclick="toggleRegion()"> 
+								<label for="offline">🏢 오프라인</label>
 							</div>
 						</div>
 					</div>
@@ -609,14 +678,14 @@ function searchAddress() {
 						</div>
 
 						<div class="form-group">
-							<label class="form-label">우편번호</label> <input type="text"
-								class="form-input" id="postcode" name="postcode" readonly>
+							<label class="form-label">우편번호</label> 
+							<input type="text" class="form-input" id="postcode" name="postcode" readonly>
 						</div>
 					</div>
 
 					<div class="form-group">
-						<label class="form-label">모임 빈도</label> <select
-							class="form-select" name="frequency">
+						<label class="form-label">모임 빈도</label> 
+						<select class="form-select" name="frequency">
 							<option value="1">1년</option>
 							<option value="2">반기</option>
 							<option value="3">분기</option>
@@ -634,28 +703,29 @@ function searchAddress() {
 					<div class="section-title">👥 참여 제한</div>
 
 					<div class="form-group">
-						<label class="form-label">청소년 환영</label> <select
-							class="form-select" name="teen_welcome">
+						<label class="form-label">
+							청소년 환영
+						</label> 
+						<select class="form-select" name="teen_welcome">
 							<option value="yes">예</option>
 							<option value="no" selected>아니오</option>
 						</select>
-						<div id="teenWarning" class="tip-red">
-							❗ 청소년 환영을 선택하지 않으면 청소년은 가입할 수 없습니다. 청소년 환영 시, 모임 종료 시간은 오후 10시
-							이후로 설정할 수 없습니다.</div>
-
 					</div>
 
 					<div class="form-group">
-						<label class="form-label">성별 제한</label> <select
-							class="form-select" name="gender_limit">
+						<label class="form-label">
+							성별 제한
+						</label> 
+						<select class="form-select" name="gender_limit">
 							<option value="none" selected>제한 없음</option>
 							<option value="same">동일 성별만</option>
 						</select>
+
 					</div>
 
 					<div class="form-group">
-						<label class="form-label">학습 난이도</label> <select
-							class="form-select" name="difficulty">
+						<label class="form-label">학습 난이도</label> 
+						<select class="form-select" name="difficulty">
 							<option value="상">상 (고급)</option>
 							<option value="중" selected>중 (중급)</option>
 							<option value="하">하 (초급)</option>
@@ -668,14 +738,16 @@ function searchAddress() {
 					<div class="section-title">⚙️ 모임 설정</div>
 
 					<div class="form-group">
-						<label class="form-label">가입 질문 (선택사항)</label>
+						<label class="form-label">
+							가입 질문
+						</label>
 						<div class="question-container">
 							<div class="question-item">
 								<input type="text" class="form-input" name="join_question"
 									placeholder="예: 이 모임에 참여하려는 이유는 무엇인가요?">
 							</div>
 						</div>
-						<div class="tip">가입 신청 시 답변을 요구할 질문을 하나 작성할 수 있습니다.</div>
+						<div class="tip">가입 질문은 모임 개설 후 변경할 수 없습니다.</div>
 					</div>
 
 					<div class="form-group">
@@ -685,8 +757,8 @@ function searchAddress() {
 					</div>
 
 					<div class="form-group">
-						<label class="form-label">투표 미참가 시 탈퇴 기준</label> <select
-							class="form-select" name="vote_absence">
+						<label class="form-label">투표 미참가 시 탈퇴 기준</label> 
+						<select class="form-select" name="vote_absence">
 							<option value="1">1회</option>
 							<option value="2">2회</option>
 							<option value="3">3회</option>
@@ -702,8 +774,8 @@ function searchAddress() {
 					</div>
 
 					<div class="form-group">
-						<label class="form-label">모임 공개 설정</label> <select
-							class="form-select" id="privacy" name="privacy"
+						<label class="form-label">모임 공개 설정</label> 
+						<select class="form-select" id="privacy" name="privacy"
 							onchange="togglePassword()">
 							<option value="public" selected>🌐 공개</option>
 							<option value="private">🔒 비공개 (비밀번호 필요)</option>
@@ -712,23 +784,28 @@ function searchAddress() {
 
 					<div id="passwordDiv" class="password-section">
 						<div class="form-group">
-							<label class="form-label">비밀번호 설정</label> <input type="password"
-								class="form-input" id="password" name="password"
-								placeholder="비밀번호 입력">
+							<label class="form-label">비밀번호 설정 (변경 시에만 입력)</label> 
+							<input type="password" class="form-input" id="password" name="password"
+								placeholder="새 비밀번호 입력">
 						</div>
 						<div class="form-group">
-							<label class="form-label">비밀번호 확인</label> <input type="password"
-								class="form-input" id="passwordConfirm" name="passwordConfirm"
-								placeholder="비밀번호 다시 입력">
+							<label class="form-label">비밀번호 확인</label> 
+							<input type="password" class="form-input" id="passwordConfirm" 
+								   name="passwordConfirm" placeholder="새 비밀번호 다시 입력">
 						</div>
+						<div class="tip">비밀번호를 변경하지 않으려면 비워두세요.</div>
 					</div>
 				</div>
 
 				<!-- 버튼 -->
 				<div class="button-group">
-					<button type="button" class="btn-draft" onclick="saveDraft()">
-						💾 임시저장</button>
-					<button type="submit" class="btn-submit">✨ 모임 개설하기</button>
+					<button type="button" class="btn-cancel" onclick="cancelEdit()">
+						❌ 취소
+					</button>
+					<button type="submit" class="btn-submit" onclick="location.href='home.do'">
+						✅ 수정 완료
+					</button>
+				
 				</div>
 			</form>
 		</div>

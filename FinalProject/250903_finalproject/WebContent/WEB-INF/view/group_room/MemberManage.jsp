@@ -103,7 +103,7 @@
                     <div class="page-title"><span>👥</span><span>모임원 관리</span></div>
                     <div class="group-name">알고리즘 정복 스터디</div>
                 </div>
-                <button class="btn-back" onclick="history.back()">← 뒤로 가기</button>
+                <button class="btn-back" onclick="location.href='managelist.do'">← 뒤로 가기</button>
             </div>
         </div>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
