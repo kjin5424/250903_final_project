@@ -36,6 +36,18 @@ public class ManagerReportController
 			return "/WEB-INF/view/manager/report/ReportExplanation.jsp";
 		}
 		
+		@RequestMapping(value="/blind.do", method=RequestMethod.GET)
+		public String reportBlind(Model model)
+		{
+			return "/WEB-INF/view/manager/report/Blind.jsp";
+		}
+		
+		@RequestMapping(value="/reportuserexplanation.do", method=RequestMethod.GET)
+		public String reportUserExplanation(Model model)
+		{
+			return "/WEB-INF/view/manager/report/ReportUserExplanation.jsp";
+		}
+		
 		
 	
 }
