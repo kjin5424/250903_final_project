@@ -42,10 +42,4 @@ public class ProfileController {
 	public String ProfileModify(Model model) {
 		return "/WEB-INF/view/profile/ProfileModify.jsp";
 	}
-	
-	@RequestMapping(value="/groupdetail.do", method=RequestMethod.GET)
-	public String groupDetail(Model model)
-	{
-		return "/WEB-INF/view/group/GroupDetail.jsp";
-	}
 }

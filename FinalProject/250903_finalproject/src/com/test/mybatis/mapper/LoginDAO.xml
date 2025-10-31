@@ -6,7 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="loginProcess" resultType="com.test.mybatis.dto.UserDTO">
 		SELECT
-		    A.NICKNAME AS nickName
+		    A.NICKNAME AS nickname
 		    , B.USER_CODE AS userCode
 		FROM
 		    USER_INFO A
@@ -16,5 +16,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		    A.USER_ID = #{userId}
 		    AND CRYPTPACK.DECRYPT(A.PASSWORD, A.USER_ID) = #{password}
 	</select>
+	
+	<select id="validId" resultType="java.lang.Integer">
+		SELECT
+			COUNT(*) AS COUNT
+		FROM
+			USER_INFO
+		WHERE
+			USER_ID=#{userId}
+	</select>
+	
+	<select id="validNickname" resultType="java.lang.Integer">
+		SELECT
+			COUNT(*) AS COUNT
+		FROM
+			USER_INFO
+		WHERE
+			NICKNAME=#{nickname}
+	</select>
+	
+	<select id="validEmail" resultType="java.lang.Integer">
+		SELECT
+			COUNT(*) AS COUNT
+		FROM
+			USER_INFO
+		WHERE
+			EMAIL=#{email}
+	</select>
+	
+
 
 </mapper>

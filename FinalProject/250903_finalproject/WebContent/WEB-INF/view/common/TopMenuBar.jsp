@@ -45,7 +45,7 @@ if (currentPage == null || currentPage.isEmpty())
 
 		<div class="nav-right">
 			<%
-				UserDTO user = (UserDTO) session.getAttribute("user");
+			UserDTO user = (UserDTO) session.getAttribute("user");
 			if (user == null)
 			{
 			%>
@@ -57,7 +57,7 @@ if (currentPage == null || currentPage.isEmpty())
 				<span>👤</span> <span>프로필</span>
 			</a>
 			<%
-				} else
+			} else
 			{
 			%>
 			<!-- 로그인 버튼 -->
@@ -65,10 +65,10 @@ if (currentPage == null || currentPage.isEmpty())
 			</a>
 			<!-- 프로필 버튼 -->
 			<a href="<%=cp%>/user/Profile/MyProfile.jsp" class="user-btn primary">
-				<span>👤</span> <span>${user.nickName }님</span>
+				<span>👤</span> <span>${user.nickname }님</span>
 			</a>
 			<%
-				}
+			}
 			%>
 
 		</div>
