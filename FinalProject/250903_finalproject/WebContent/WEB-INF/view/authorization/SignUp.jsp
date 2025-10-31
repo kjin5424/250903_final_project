@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<% 
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%
 	String cp = request.getContextPath();
 %>
 <!DOCTYPE html>
@@ -7,6 +8,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script type="text/javascript"
+	src="http://code.jquery.com/jquery.min.js"></script>
 <title>회원가입 - 공모자들</title>
 <style>
 * {
@@ -323,20 +326,21 @@ body {
 }
 
 /* 반응형 */
-@media (max-width: 768px) {
+@media ( max-width : 768px) {
 	.signup-box {
 		padding: 30px 24px;
 	}
-	
 	.input-with-button {
 		flex-direction: column;
 	}
-	
-	.btn-check,
-	.btn-address,
-	.btn-random {
+	.btn-check, .btn-address, .btn-random {
 		width: 100%;
 	}
+}
+
+/* 본격 작업 이후 */
+#validIdCheck {
+	display: none;
 }
 </style>
 </head>
@@ -347,46 +351,31 @@ body {
 			<h1 class="page-title">회원가입</h1>
 			<p class="page-subtitle">공모자들과 함께 시작하세요</p>
 		</div>
-		
+
 		<div class="signup-box">
-			<form id="signupForm" onsubmit="return validateSignup(event)">
+			<form action="signUp.do" id="signupForm"
+				onsubmit="return validateSignup(event)">
 				<!-- 아이디 -->
 				<div class="form-group">
-					<label class="form-label">
-						아이디<span class="required">*</span>
+					<label class="form-label"> 아이디<span class="required">*</span>
 					</label>
 					<div class="input-with-button">
-						<input 
-							type="text" 
-							id="userId" 
-							name="userId" 
-							class="form-input" 
-							placeholder="4-20자의 영문, 숫자"
-							maxlength="20"
-							required
-						>
-						<button type="button" class="btn-check" onclick="checkUserIdDuplicate()">
-							중복확인
-						</button>
+						<input type="text" id="userId" name="userId" class="form-input"
+							placeholder="4-20자의 영문, 숫자" maxlength="20" required>
+						<button type="button" class="btn-check check-id">중복확인</button>
 					</div>
 					<p class="form-help" id="userIdHelp">영문, 숫자 조합 4-20자</p>
+					<p class="form-help" id="validIdCheck"></p>
 				</div>
-				
+
 				<!-- 비밀번호 -->
 				<div class="form-group">
-					<label class="form-label">
-						비밀번호<span class="required">*</span>
-					</label>
-					<input 
-						type="password" 
-						id="password" 
-						name="password" 
-						class="form-input" 
-						placeholder="8-20자의 영문, 숫자, 특수문자(!)"
-						maxlength="20"
-						required
-					>
-					<div class="password-strength" id="passwordStrength" style="display: none;">
+					<label class="form-label"> 비밀번호<span class="required">*</span>
+					</label> <input type="password" id="password" name="password"
+						class="form-input" placeholder="8-20자의 영문, 숫자, 특수문자(!)"
+						maxlength="20" required>
+					<div class="password-strength" id="passwordStrength"
+						style="display: none;">
 						<div class="strength-bar">
 							<div class="strength-fill" id="strengthFill"></div>
 						</div>
@@ -394,211 +383,192 @@ body {
 					</div>
 					<p class="form-help">영문, 숫자, 특수문자(!) 조합 8-20자</p>
 				</div>
-				
+
 				<!-- 비밀번호 확인 -->
 				<div class="form-group">
-					<label class="form-label">
-						비밀번호 확인<span class="required">*</span>
-					</label>
-					<input 
-						type="password" 
-						id="passwordConfirm" 
-						name="passwordConfirm" 
-						class="form-input" 
-						placeholder="비밀번호를 다시 입력하세요"
-						maxlength="20"
-						required
-					>
+					<label class="form-label"> 비밀번호 확인<span class="required">*</span>
+					</label> <input type="password" id="passwordConfirm" name="passwordConfirm"
+						class="form-input" placeholder="비밀번호를 다시 입력하세요" maxlength="20"
+						required>
 					<p class="form-help" id="passwordConfirmHelp"></p>
 				</div>
-				
+
 				<!-- 닉네임 -->
 				<div class="form-group">
-					<label class="form-label">
-						닉네임<span class="required">*</span>
+					<label class="form-label"> 닉네임<span class="required">*</span>
 					</label>
 					<div class="input-with-button">
-						<input 
-							type="text" 
-							id="nickname" 
-							name="nickname" 
-							class="form-input" 
-							placeholder="2-12자의 닉네임"
-							maxlength="12"
-							required
-						>
-						<button type="button" class="btn-random" onclick="generateRandomNickname()">
-							🎲 랜덤생성
-						</button>
-						<button type="button" class="btn-check" onclick="checkNicknameDuplicate()">
-							중복확인
-						</button>
+						<input type="text" id="nickname" name="nickname"
+							class="form-input" placeholder="2-12자의 닉네임" maxlength="12"
+							required>
+						<button type="button" class="btn-random"
+							onclick="generateRandomNickname()">🎲 랜덤생성</button>
+						<button type="button" class="btn-check"
+							onclick="checkNicknameDuplicate()">중복확인</button>
 					</div>
 					<p class="form-help" id="nicknameHelp">2-12자의 한글, 영문, 숫자</p>
 				</div>
-				
+
 				<!-- 이메일 -->
 				<div class="form-group">
-					<label class="form-label">
-						이메일<span class="required">*</span>
-					</label>
-					<input 
-						type="email" 
-						id="email" 
-						name="email" 
-						class="form-input" 
-						placeholder="example@email.com"
-						required
-					>
+					<label class="form-label"> 이메일<span class="required">*</span>
+					</label> <input type="email" id="email" name="email" class="form-input"
+						placeholder="example@email.com" required>
 					<p class="form-help" id="emailHelp">이메일 형식으로 입력해주세요</p>
 				</div>
-				
+
 				<!-- 이름 -->
 				<div class="form-group">
-					<label class="form-label">
-						이름<span class="required">*</span>
-					</label>
-					<input 
-						type="text" 
-						id="userName" 
-						name="userName" 
-						class="form-input" 
-						placeholder="실명을 입력하세요"
-						required
-					>
+					<label class="form-label"> 이름<span class="required">*</span>
+					</label> <input type="text" id="userName" name="userName"
+						class="form-input" placeholder="실명을 입력하세요" required>
 				</div>
-				
+
 				<!-- 주민등록번호 -->
 				<div class="form-group">
-					<label class="form-label">
-						주민등록번호<span class="required">*</span>
+					<label class="form-label"> 주민등록번호<span class="required">*</span>
 					</label>
 					<div class="ssn-input-group">
-						<input 
-							type="text" 
-							id="ssnFront" 
-							name="ssnFront" 
-							class="form-input ssn-input" 
-							placeholder="000000"
-							maxlength="6"
-							pattern="[0-9]{6}"
-							required
-						>
-						<span class="ssn-divider">-</span>
-						<input 
-							type="password" 
-							id="ssnBack" 
-							name="ssnBack" 
-							class="form-input ssn-input" 
-							placeholder="0000000"
-							maxlength="7"
-							pattern="[0-9]{7}"
-							required
-						>
+						<input type="text" id="ssnFront" name="ssnFront"
+							class="form-input ssn-input" placeholder="000000" maxlength="6"
+							pattern="[0-9]{6}" required> <span
+							class="ssn-divider">-</span> <input type="password" id="ssnBack"
+							name="ssnBack" class="form-input ssn-input" placeholder="0000000"
+							maxlength="7" pattern="[0-9]{7}" required>
 					</div>
 					<p class="form-help" id="ssnHelp">주민등록번호는 안전하게 암호화되어 저장됩니다</p>
 				</div>
-				
+
 				<!-- 주소 -->
 				<div class="form-group">
-					<label class="form-label">
-						주소<span class="required">*</span>
+					<label class="form-label"> 주소<span class="required">*</span>
 					</label>
 					<div class="input-with-button">
-						<input 
-							type="text" 
-							id="address" 
-							name="address" 
-							class="form-input" 
-							placeholder="주소 검색 버튼을 클릭하세요"
-							readonly
-							required
-						>
-						<button type="button" class="btn-address" onclick="openAddressPopup()">
-							🔍 주소검색
-						</button>
+						<input type="text" id="address" name="address" class="form-input"
+							placeholder="주소 검색 버튼을 클릭하세요" readonly required>
+						<button type="button" class="btn-address"
+							onclick="openAddressPopup()">🔍 주소검색</button>
 					</div>
 				</div>
-				
+
 				<!-- 약관 동의 -->
 				<div class="terms-section">
 					<div class="terms-title">약관 동의</div>
 					<div class="term-item">
-						<input 
-							type="checkbox" 
-							id="agreeAll" 
-							class="term-checkbox"
-							onchange="toggleAllTerms(this)"
-						>
-						<label for="agreeAll" class="term-label">전체 동의</label>
+						<input type="checkbox" id="agreeAll" class="term-checkbox"
+							onchange="toggleAllTerms(this)"> <label
+							for="agreeAll" class="term-label">전체 동의</label>
 					</div>
-					<hr style="margin: 10px 0; border: none; border-top: 1px solid #e0e0e0;">
+					<hr
+						style="margin: 10px 0; border: none; border-top: 1px solid #e0e0e0;">
 					<div class="term-item">
-						<input 
-							type="checkbox" 
-							id="agreeService" 
-							class="term-checkbox"
-							onchange="updateAgreeAll()"
-							required
-						>
-						<label for="agreeService" class="term-label">
-							[필수] 이용약관 동의
-							<a href="#" class="term-link" onclick="showTerms('service'); return false;">보기</a>
+						<input type="checkbox" id="agreeService" class="term-checkbox"
+							onchange="updateAgreeAll()" required> <label
+							for="agreeService" class="term-label"> [필수] 이용약관 동의 <a
+							href="#" class="term-link"
+							onclick="showTerms('service'); return false;">보기</a>
 						</label>
 					</div>
 					<div class="term-item">
-						<input 
-							type="checkbox" 
-							id="agreePrivacy" 
-							class="term-checkbox"
-							onchange="updateAgreeAll()"
-							required
-						>
-						<label for="agreePrivacy" class="term-label">
-							[필수] 개인정보 수집 및 이용 동의
-							<a href="#" class="term-link" onclick="showTerms('privacy'); return false;">보기</a>
+						<input type="checkbox" id="agreePrivacy" class="term-checkbox"
+							onchange="updateAgreeAll()" required> <label
+							for="agreePrivacy" class="term-label"> [필수] 개인정보 수집 및 이용
+							동의 <a href="#" class="term-link"
+							onclick="showTerms('privacy'); return false;">보기</a>
 						</label>
 					</div>
 					<div class="term-item">
-						<input 
-							type="checkbox" 
-							id="agreeMarketing" 
-							class="term-checkbox"
-							onchange="updateAgreeAll()"
-						>
-						<label for="agreeMarketing" class="term-label">
-							[선택] 마케팅 정보 수신 동의
-						</label>
+						<input type="checkbox" id="agreeMarketing" class="term-checkbox"
+							onchange="updateAgreeAll()"> <label
+							for="agreeMarketing" class="term-label"> [선택] 마케팅 정보 수신
+							동의 </label>
 					</div>
 				</div>
-				
+
 				<button type="submit" class="btn-submit" id="submitBtn" disabled>
-					회원가입
-				</button>
+					회원가입</button>
 			</form>
-			
+
 			<div class="login-link-section">
-				이미 계정이 있으신가요?
-				<a href="loginpage.do" class="login-link">로그인</a>
+				이미 계정이 있으신가요? <a href="loginpage.do" class="login-link">로그인</a>
 			</div>
 		</div>
 	</div>
-	
+
 	<script>
 		// 중복 확인 상태 추적
 		let userIdChecked = false;
 		let nicknameChecked = false;
 		
+		$(function ()
+		{
+			// 아이디 중복 확인
+			$(".check-id").click(function ()
+			{
+				var inputId = $("#userId").val();
+				var param = {uid: inputId};
+				$.ajax(
+				{
+					type: "GET"
+					, url: "validateuniqueid.do"
+					, data: param
+					, success: function(arg)
+					{
+						var validIdText = $("#validIdCheck");
+						validIdText.css("display", "inline");
+						// arg는 해당 id로 검색한 레코드 수
+						if (Number.parseInt(arg) == 0)			// 중복이 아닌 경우
+						{
+							validIdText.css("color", "green");
+							validIdText.html("사용 가능한 아이디입니다.");
+						}
+						else									// 중복인 경우
+						{
+							validIdText.css("color", "red");
+							validIdText.html("이미 사용 중인 아이디입니다.");
+							userIdChecked = true;
+						}
+					}
+					, beforeSend: function ()
+					{
+						if (!inputId)
+						{
+							return false;
+						}
+						
+						const idPattern = /^[a-zA-Z0-9]{4,20}$/;
+						if (!idPattern.test(inputId))
+						{
+							$("#userIdHelp").css("color", "red");
+							$("#userIdHelp").html("아이디는 4-20자의 영문, 숫자만 사용 가능합니다.");
+							return false;
+						}
+						
+						return true;
+					}
+					, error: function(e)
+					{
+						alert(e.responseText);
+					}
+				});
+			});
+			
+			// 아이디칸 변경되면 코멘트 칸 변경..
+			$("#userId").keyup(function()
+			{
+				$("#userIdHelp").css("color", "#666");
+				$("#userIdHelp").html("영문, 숫자 조합 4-20자");
+				$("#validIdCheck").css("display", "inline");
+			});
+		});
+		
+		/*
 		// 아이디 중복 확인
 		function checkUserIdDuplicate() {
 			const userId = document.getElementById('userId').value.trim();
 			const help = document.getElementById('userIdHelp');
 			const input = document.getElementById('userId');
 			
-			if (!userId) {
-				alert('아이디를 입력해주세요.');
-				return;
-			}
 			
 			// 아이디 형식 검증
 			const idPattern = /^[a-zA-Z0-9]{4,20}$/;
@@ -609,26 +579,9 @@ body {
 				return;
 			}
 			
-			// 서버로 중복 확인 요청 (자바에서 구현 예정)
-			// TODO: 서버 API 호출
-			
-			// 임시 처리
-			if (userId === 'test') {
-				help.textContent = '이미 사용 중인 아이디입니다.';
-				help.className = 'form-help error';
-				input.classList.add('error');
-				input.classList.remove('success');
-				userIdChecked = false;
-			} else {
-				help.textContent = '사용 가능한 아이디입니다.';
-				help.className = 'form-help success';
-				input.classList.remove('error');
-				input.classList.add('success');
-				userIdChecked = true;
-			}
-			
 			checkFormValid();
 		}
+		*/
 		
 		// 닉네임 중복 확인
 		function checkNicknameDuplicate() {
@@ -793,7 +746,7 @@ body {
 		// 주소 검색 팝업
 		function openAddressPopup() {
 			const popup = window.open(
-				'<%=cp %>/common/AddressPopup.jsp',
+				'<%=cp%>/common/AddressPopup.jsp',
 				'addressPopup',
 				'width=500,height=600,scrollbars=yes,resizable=yes'
 			);
@@ -916,12 +869,6 @@ body {
 				return false;
 			}
 			
-			// 모든 검증 통과 - 서버로 전송
-			if (confirm('회원가입을 진행하시겠습니까?')) {
-				// 실제로는 서버로 데이터 전송
-				submitSignup();
-			}
-			
 			return false;
 		}
 		
@@ -945,7 +892,7 @@ body {
 			console.log('회원가입 데이터:', formData);
 			
 			alert('회원가입이 완료되었습니다!');
-			window.location.href = '<%=cp %>/user/login/UserLogin.jsp';
+			window.location.href = '<%=cp%>/user/login/UserLogin.jsp';
 		}
 	</script>
 </body>
