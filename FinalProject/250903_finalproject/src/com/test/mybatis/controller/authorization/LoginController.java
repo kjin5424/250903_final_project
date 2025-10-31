@@ -76,7 +76,6 @@ public class LoginController
 	public String logOut(HttpSession session)
 	{
 		session.removeAttribute("user");
-		
 		return "redirect:/start.do";
 	}
 	
@@ -86,10 +85,45 @@ public class LoginController
 	{
 		ILoginDAO dao = sqlSession.getMapper(ILoginDAO.class);
 		int idCount = dao.validId(uid);
-		
 		model.addAttribute("idCount", idCount);
 		
 		return "/WEB-INF/view/authorization/ajax/ValidId.jsp";
+	}
+	
+	// 닉네임 중복 검사
+	@RequestMapping(value="/validateuniquenickname.do")
+	public String validateUniqueNickname(Model model, String nickname)
+	{
+		ILoginDAO dao = sqlSession.getMapper(ILoginDAO.class);
+		int nicknameCount = dao.validNickname(nickname);
+		model.addAttribute("nicknameCount", nicknameCount);
+		
+		return "/WEB-INF/view/authorization/ajax/ValidNickname.jsp";
+	}
+	
+	// 이메일 중복 검사
+	@RequestMapping(value="/validateuniqueemail.do")
+	public String validateUniqueEmail(Model model, String email)
+	{
+		ILoginDAO dao = sqlSession.getMapper(ILoginDAO.class);
+		int emailCount = dao.validEmail(email);
+		model.addAttribute("emailCount", emailCount);
+		
+		// 나중에 API 엮을 부분
+		
+		return "/WEB-INF/view/authorization/ajax/ValidEmail.jsp";
+		
+	}
+	
+	// 주민등록번호 중복 검사
+	@RequestMapping(value="/validateuniquessn.do")
+	public String validateUniqueSsn(Model model, UserDTO user)
+	{
+		ILoginDAO dao = sqlSession.getMapper(ILoginDAO.class);
+		int emailCount = dao.validSsn(user);
+		model.addAttribute("emailCount", emailCount);
+		
+		return "/WEB-INF/view/authorization/ajax/ValidSsn.jsp";
 	}
 	
 	// 회원가입

@@ -8,5 +8,11 @@ public interface ILoginDAO
 	
 	public int validId(String uid);
 	
+	public int validNickname(String nickname);
+	
+	public int validEmail(String email);
+	
+	public int validSsn(UserDTO user);
+	
 	public int signUpProcess(UserDTO user);
 }

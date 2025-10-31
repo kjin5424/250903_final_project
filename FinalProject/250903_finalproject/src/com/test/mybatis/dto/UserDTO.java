@@ -3,7 +3,7 @@ package com.test.mybatis.dto;
 public class UserDTO
 {
 	// USER_INFO 테이블 속성
-	private String userId, password, nickName
+	private String userId, password, nickname
 	, ssn1, ssn2, email, address, zipCode, savePath;
 	
 	// 추가 속성
@@ -29,14 +29,14 @@ public class UserDTO
 		this.password = password;
 	}
 
-	public String getNickName()
+	public String getNickname()
 	{
-		return nickName;
+		return nickname;
 	}
 
-	public void setNickName(String nickName)
+	public void setNickname(String nickname)
 	{
-		this.nickName = nickName;
+		this.nickname = nickname;
 	}
 
 	public String getSsn1()
