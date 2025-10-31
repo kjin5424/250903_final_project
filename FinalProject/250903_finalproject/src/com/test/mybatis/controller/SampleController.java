@@ -21,7 +21,7 @@ public class SampleController
 	@RequestMapping("/start.do")
 	public String test()
 	{
-		return "/WEB-INF/view/group_room/challenge/ChallengeModify.jsp";
+		return "/WEB-INF/view/group/GroupList.jsp";
 	}
 	
 	// 자격 검증용 코드

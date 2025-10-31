@@ -79,5 +79,27 @@ public class LoginController
 		
 		return "redirect:/start.do";
 	}
+	
+	// 아이디 중복 검사
+	@RequestMapping(value="/validateuniqueid.do")
+	public String ValidateUniqueId(Model model, String uid)
+	{
+		ILoginDAO dao = sqlSession.getMapper(ILoginDAO.class);
+		int idCount = dao.validId(uid);
+		
+		model.addAttribute("idCount", idCount);
+		
+		return "/WEB-INF/view/authorization/ajax/ValidId.jsp";
+	}
+	
+	// 회원가입
+	@RequestMapping(value="/signUp.do")
+	public String signUp(UserDTO dto)
+	{
+		
+		
+		return "redirect:loginpage.do";
+	}
+	
 
 }
