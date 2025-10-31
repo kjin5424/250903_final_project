@@ -1,4 +1,4 @@
-package com.test.mybatis;
+package com.test.mybatis.controller;
 
 import javax.servlet.http.HttpSession;
 
