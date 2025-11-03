@@ -21,6 +21,8 @@ public interface IGroupDAO
 	// 모임 내용 수정
 	public String groupModify(GroupDTO dto);
 	
+	// 사용자의 전체 신청 내역 조회
+	
 	
 	
 }

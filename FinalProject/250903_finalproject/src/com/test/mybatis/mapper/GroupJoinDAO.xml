@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.mybatis.dao.IGroupJoinDAO">
+
+	<insert id="insertGroupJoin" parameterType="com.test.mybatis.dto.GroupJoinDTO">
+		EXEC PRC_JOIN_TABLE_INSERT(
+			#{userCode}
+			, #{groupJoinCode}
+			, #{selfIntro}
+			, #{answer}
+	</insert>
+	
+	
+	<!-- 중복 신청 체크 -->
+	<select id="checkDuplicationGroup" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+		FROM JOIN_TABLE JT
+		LEFT JOIN REQUEST_ANSWER RA
+			ON JT.JOIN_CODE = RA.JOIN_CODE
+		WHERE GROUP_APPLY_CODE = #{groupApplyCode}
+  			AND USER_CODE = #{userCode}
+ 		    AND (RA.ANSWER_TYPE IS NULL OR RA.ANSWER_TYPE = '3') 
+	</select>
+	
+	<!-- 현재 가입된 모임의 수 -->
+	<select id="countGroupJoin" resultType="java.lang.Integer">
+		SELECT COUNT
+		FROM JOINED_GROUP_VIEW
+		WHERE USER_CODE = #{userCode}
+	</select>
+	
+	
+	<!-- 현재 대기 중인 신청 수 조회 -->
+	<select id="countWatingGroup" resultType="java.lang.Integer">
+		SELECT COUNT(*) AS COUNT
+		FROM JOIN_TABLE JT
+		JOIN REQUEST_ANSWER RA
+		ON JT.JOIN_CODE = RA.JOIN_CODE
+		WHERE USER_CODE = #{userCode}
+		  AND RA.ANSWER_TYPE IS NULL
+	</select>
+	
+	<!-- 가입 상태 업데이트(승락 / 거절) -->
+	
+	
+	<!-- 사용자의 전체 신청 내역 조회 -->
+	<select id="selectUserRequest" resultType="com.test.mybatis.dto.GroupJoinDTO">
+		SELECT GA.SAVEPATH, T.TITLE, JT.CREATED_DATE, H.COUNT, GCMV.CURRENTMEMBERCOUNT
+		FROM JOIN_TABLE JT
+		JOIN REQUEST_ANSWER RA
+		ON JT.JOIN_CODE = RA.JOIN_CODE
+		LEFT JOIN GROUP_APPLY GA
+		ON JT.GROUP_APPLY_CODE = GA.GROUP_APPLY_CODE
+		LEFT JOIN TITLE T
+		ON JT.GROUP_APPLY_CODE = T.GROUP_APPLY_CODE
+		LEFT JOIN HEADCOUNT H
+		ON JT.GROUP_APPLY_CODE = H.GROUP_APPLY_CODE
+		LEFT JOIN G_CURRENT_MEMBER_COUNT_VIEW GCMV
+		ON JT.GROUP_APPLY_CODE = GCMV.GROUPAPPLYCODE
+		WHERE JT.USER_CODE = #{userCode}
+		  AND RA.ANSWER_TYPE IS NULL;
+	</select>
+	
+	
+	
+</mapper>
+
+
+
+
+
+
