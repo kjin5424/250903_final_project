@@ -501,7 +501,7 @@ body {
 			</form>
 			
 			<div class="login-link-section">
-				<a href="<%=cp %>/manager/login/ManagerLogin.jsp" class="login-link">관리자 로그인</a>
+				<a href="managerlogin.do" class="login-link">관리자 로그인</a>
 			</div>
 		</div>
 	</div>

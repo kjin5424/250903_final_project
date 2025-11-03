@@ -536,7 +536,7 @@ tbody tr:hover {
 		<div class="action-buttons">
 		    <button class="button btn-suspend" onclick="suspendMember()">활동 정지</button>
 		    <button class="button btn-withdraw" onclick="withdrawMember()">모임 탈퇴</button>
-		    <button class="button btn-back" onclick="location.href='UserList.jsp'">목록으로</button>
+		   <button class="button btn-back" onclick="location.href='userlist.do'">목록으로</button>
 		</div>
     </div>
 

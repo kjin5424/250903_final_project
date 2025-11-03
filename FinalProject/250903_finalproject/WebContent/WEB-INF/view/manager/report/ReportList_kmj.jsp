@@ -117,7 +117,7 @@
                     <tr><th>신고번호</th><th>신고 구분</th><th>카테고리</th><th>접수자</th><th>피신고 대상</th><th>신고일자</th><th>상태</th></tr>
                 </thead>
                 <tbody>
-                    <tr onclick="location.href='reportDetail.jsp?id=RPT012'">
+                    <tr onclick="location.href='reportdetail.do?id=RPT012'"> 
                         <td>RPT012</td><td><span class="report-type type-member">회원</span></td>
                         <td>욕설/비방/모욕/괴롭힘</td><td><a href="#" class="link-text" onclick="event.stopPropagation()">user010</a></td>
                         <td><a href="#" class="link-text" onclick="event.stopPropagation()">user015</a></td>

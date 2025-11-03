@@ -346,7 +346,7 @@
                         <td><span class="type-badge">결제/환불</span></td>
                         <!-- 제목을 inquirydetail.do로 연결 -->
                         <td>
-                            <a href="<%= cp %>/admin/inquirydetail.do?id=INQ003">결제 내역을 확인하고 싶습니다</a>
+                            <a href="inquirydetail.do">결제 내역을 확인하고 싶습니다</a>
                         </td>
                         <td>
                             <a href="<%= cp %>/admin/memberDetail.jsp?id=user006" onclick="event.stopPropagation()">user006</a>

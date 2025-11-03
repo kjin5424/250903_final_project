@@ -438,7 +438,7 @@ body {
 					최종 수정일: 2025-01-05 14:23
 				</div>
 				<div class="footer-buttons">
-					<a href="ManagerNoticeList.jsp" class="btn btn-list">
+					<a href="noticelist.do" class="btn btn-list">
 						<span>📋</span>
 						<span>목록으로</span>
 					</a>
@@ -450,9 +450,9 @@ body {
 	<script>
 		// 수정 페이지로 이동
 		function editNotice(id) {
-			if (confirm('이 공지사항을 수정하시겠습니까?')) {
-				window.location.href = 'NoticeModify.jsp?id=' + id;
-			}
+		    if (confirm('이 공지사항을 수정하시겠습니까?')) {
+		        window.location.href = 'noticemodify.do?noticeNum=' + id;
+		    }
 		}
 		
 		// 삭제 처리

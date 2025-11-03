@@ -536,7 +536,7 @@
                 });
                 
                 alert('소명 처리가 완료되었습니다.\n신청자에게 알림이 전송됩니다.');
-                location.href = 'reportList.jsp';
+                location.href = 'reportlist_kmj.do';
             }
         }
     </script>

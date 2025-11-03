@@ -22,7 +22,7 @@
             --off-white: #F8F9FA;
             --gray-light: #E0E0E0;
             --warning-bg: #FFF3E0;
-            --warning-border: #FF9800;
+            --warning-border: #FF9800;<div class="button-group">
             --error-bg: #FFEBEE;
             --error-border: #E25668;
             --shadow-md: 0 4px 8px rgba(0,0,0,0.12);
@@ -416,7 +416,7 @@
         
         <!-- 버튼 그룹 -->
         <div class="button-group">
-            <a href="postlist.do" class="btn btn-primary">
+            <a href="userposts.do" class="btn btn-primary">
                 게시판으로 돌아가기
             </a>
             <a href="${pageContext.request.contextPath}/support/contact" class="btn btn-secondary">

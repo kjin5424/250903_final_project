@@ -453,7 +453,7 @@ body {
 				</div>
 				
 				<div class="button-group">
-					<button type="button" class="btn btn-cancel" onclick="cancelEdit()">
+					<button type="button" class="btn btn-cancel" onclick="location.href='noticelist.do'">
 						<span>✕</span>
 						<span>수정 취소</span>
 					</button>
