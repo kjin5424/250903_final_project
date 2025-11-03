@@ -7,6 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.test.mybatis.dao.IUserDAO;
+
 /* ========================
 	ProfileController.java
 	- 컨트롤러
@@ -28,8 +30,14 @@ public class ProfileController {
 		return "/WEB-INF/view/profile/Mypage.jsp";
 	}
 
-	@RequestMapping(value = "/profile.do", method = RequestMethod.GET)
-	public String profile(Model model) {
+	@RequestMapping(value = "/myProfile.do", method = RequestMethod.GET)
+	public String profile(Model model, String myUserCode, String profileUserCode) {
+		IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
+		
+		
+		
+		model.addAttribute("user", dao.myProfile(profileUserCode));
+		
 		return "/WEB-INF/view/profile/Profile.jsp";
 	}
 

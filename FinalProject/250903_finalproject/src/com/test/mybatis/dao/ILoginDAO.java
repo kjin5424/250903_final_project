@@ -12,7 +12,5 @@ public interface ILoginDAO
 	
 	public int validEmail(String email);
 	
-	public int validSsn(UserDTO user);
-	
 	public int signUpProcess(UserDTO user);
 }

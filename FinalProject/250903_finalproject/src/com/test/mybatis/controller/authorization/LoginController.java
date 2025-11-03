@@ -120,8 +120,6 @@ public class LoginController
 	public String validateUniqueSsn(Model model, UserDTO user)
 	{
 		ILoginDAO dao = sqlSession.getMapper(ILoginDAO.class);
-		int emailCount = dao.validSsn(user);
-		model.addAttribute("emailCount", emailCount);
 		
 		return "/WEB-INF/view/authorization/ajax/ValidSsn.jsp";
 	}
