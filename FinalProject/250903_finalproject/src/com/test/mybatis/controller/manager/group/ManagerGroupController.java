@@ -21,13 +21,13 @@ public class ManagerGroupController
 	@RequestMapping(value="/grouplist.do", method=RequestMethod.GET)
 	public String groupList(Model model)
 	{
-		return "/WEB-INF/view/manager/group/GroupList.jsp";
+		return "/WEB-INF/view/group/GroupList.jsp";
 	}
 	
-	@RequestMapping(value="/groupdetail.do", method=RequestMethod.GET)
+	@RequestMapping(value="/grouplistdetail.do", method=RequestMethod.GET)
 	public String groupDetail(Model model)
 	{
-		return "/WEB-INF/view/manager/group/GroupDetail.jsp";
+		return "/WEB-INF/view/group/GroupListDetail.jsp";
 	}
 	
 	@RequestMapping(value="/groupmodify.do", method=RequestMethod.GET)

@@ -243,8 +243,9 @@
         function joinGroup(){
 
             if(confirm('이 모임에 가입 신청하시겠습니까?')){
-				
-            	window.location.href = 'apply.do';
+
+                alert('가입 신청이 완료되었습니다!\n모임장의 승인을 기다려주세요.');
+
             }
 
         }
@@ -357,8 +358,8 @@
 
     <div class="container">
 
-        <!-- <a href="/grouplist.do" class="back-btn">← 모임 목록으로</a> -->
-		<button class="back-btn" onclick="location.href='grouplist.do'">← 모임 목록으로</button>
+        <a href="?page=groups" class="back-btn">← 모임 목록으로</a>
+		
 		 
 
 

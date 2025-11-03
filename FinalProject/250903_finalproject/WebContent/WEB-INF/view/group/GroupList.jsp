@@ -109,9 +109,9 @@
 					</div>
 
 					<!-- 모임 카드 컨테이너 -->
-					<div class="meetings-container scroll-container">
+					<div class="meetings-container scroll-container" >
 						<!-- 모임 카드 1 -->
-						<div class="meeting-card">
+						<div class="meeting-card" onclick="location.href='grouplistdetail.do'">
 							<div class="meeting-image">
 								💻 <span class="badge badge-recruiting badge-absolute">모집중</span>
 							</div>
@@ -134,7 +134,7 @@
 									<div class="tags">
 										<span class="tag">알고리즘</span> <span class="tag">Python</span>
 									</div>
-									<button class="favorite-btn inactive">♥</button>
+									<button class="favorite-btn inactive" >♥</button>
 								</div>
 							</div>
 						</div>
@@ -237,7 +237,7 @@
 								<div class="meeting-meta">
 									<div class="meta-item">
 										<span class="meta-icon">👥</span> <span>7/10명</span>
-									</div>
+									</div>ㅊ
 									<div class="meta-item">
 										<span class="meta-icon">📅</span> <span>매주 화, 목 20:00</span>
 									</div>

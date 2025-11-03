@@ -9,7 +9,7 @@ String cp = request.getContextPath();
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>공모자들 - 모임 히스토리</title>
+<title>나의 모임 기록</title>
 <style>
 * {
 	margin: 0;
