@@ -1072,7 +1072,7 @@ body {
 		</div>
 		
 		<div class="action-buttons">
-			<a href="inquiry_write.jsp" class="btn-action btn-inquiry">새 문의하기</a>
+			<a href="inquiry/write.do" class="btn-action btn-inquiry">새 문의하기</a>
 		</div>
 	</div>
 	

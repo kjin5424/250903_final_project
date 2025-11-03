@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.mybatis.dao.IInquiryDAO">
+
+    <!-- 1. 문의 등록 -->
+    <insert id="insertInquiry" parameterType="com.test.mybatis.dto.InquiryDTO">
+        INSERT INTO INQUIRY (
+            INQUIRY_CODE, USER_CODE, TITLE, CONTENT, TYPE, REG_DATE, INQUIRY_STATUS
+        ) VALUES (
+            'IQ' || LPAD(INQUIRY_SEQ.NEXTVAL, 8, '0'),
+            #{userId},
+            #{title},
+            #{content},
+            #{type},
+            SYSDATE,
+            #{status}
+        )
+    </insert>
+
+    <!-- 2. 문의 상세보기 -->
+    <select id="inquiryDetail" parameterType="int" resultType="com.test.mybatis.dto.InquiryDTO">
+        SELECT 
+            i.INQUIRY_CODE,
+            i.TITLE,
+            i.CONTENT,
+            i.TYPE,
+            i.REG_DATE,
+            i.INQUIRY_STATUS,
+            a.ANSWER_NO,
+            a.ADMIN_ID,
+            a.ANSWER_CONTENT,
+            a.ANSWER_DATE
+        FROM INQUIRY i
+        LEFT JOIN INQUIRY_ANSWER a
+            ON i.INQUIRY_CODE = a.INQUIRY_CODE
+        WHERE i.INQUIRY_CODE = #{inquiryNo}
+    </select>
+
+    <!-- 3. 사용자별 문의 내역 리스트 -->
+    <select id="userInquiryList" parameterType="String" resultType="com.test.mybatis.dto.InquiryDTO">
+        SELECT 
+            i.INQUIRY_CODE,
+            i.TITLE,
+            i.REG_DATE,
+            i.INQUIRY_STATUS
+        FROM INQUIRY i
+        WHERE i.USER_CODE = #{userId}
+        ORDER BY i.REG_DATE DESC
+    </select>
+
+    <!-- 4. 관리자용 전체 문의 리스트 조회 -->
+    <select id="allInquiryList" resultType="com.test.mybatis.dto.InquiryDTO">
+        SELECT 
+            i.INQUIRY_CODE,
+            i.USER_CODE,
+            i.TITLE,
+            i.TYPE,
+            i.REG_DATE,
+            i.INQUIRY_STATUS
+        FROM INQUIRY i
+        ORDER BY i.REG_DATE DESC
+    </select>
+
+    <!-- 5. 답변 등록 -->
+    <insert id="insertAnswer" parameterType="com.test.mybatis.dto.InquiryDTO">
+        INSERT INTO INQUIRY_ANSWER(
+            ANSWER_NO, INQUIRY_CODE, ADMIN_ID, ANSWER_CONTENT, ANSWER_DATE
+        ) VALUES (
+            INQUIRY_ANSWER_SEQ.NEXTVAL,
+            #{inquiryNo},
+            #{adminId},
+            #{answerContent},
+            SYSDATE
+        )
+    </insert>
+
+    <!-- 6. 문의번호로 답변 조회 -->
+    <select id="answerList" parameterType="int" resultType="com.test.mybatis.dto.InquiryDTO">
+        SELECT 
+            ANSWER_NO,
+            INQUIRY_CODE,
+            ADMIN_ID,
+            ANSWER_CONTENT,
+            ANSWER_DATE
+        FROM INQUIRY_ANSWER
+        WHERE INQUIRY_CODE = #{inquiryNo}
+        ORDER BY ANSWER_DATE
+    </select>
+
+</mapper>

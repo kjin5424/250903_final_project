@@ -260,7 +260,7 @@ tbody tr:hover {
 				<tbody>
 					<tr onclick="location.href='meetingDetail.jsp?code=M001'">
 						<td>M001</td>
-						<td>요리 스터디모임</td>
+						<td onclick="location.href='/groupdetail.do';">요리 스터디모임</td>
 						<td><a href="#" class="link-text" onclick="event.stopPropagation(); goToUserDetail('user001')">김철수</a></td>
 						<td><span class="status-badge status-active">활동중</span></td>
 						<td><a href="meetingDetail.jsp?code=M001" class="link-text">상세보기</a></td>
