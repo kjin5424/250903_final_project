@@ -85,7 +85,7 @@
 .menu-tab.active {
     color: var(--color-primary-dark);
     background: var(--color-primary-lighter);
-    position: relative;
+    /* position: relative; */
 }
 
 .menu-tab.active::after {
@@ -137,11 +137,9 @@
     background: var(--color-primary-dark);
     transform: translateY(-1px);
     box-shadow: var(--shadow-md);
+    color: white;
 }
 
-.login-icon {
-    font-size: 16px;
-}
 
 /* 프로필 버튼 */
 .profile-button {
@@ -156,7 +154,7 @@
     cursor: pointer;
     transition: all var(--transition-base);
     position: relative;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 .profile-button:hover {

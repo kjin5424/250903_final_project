@@ -788,23 +788,23 @@ a:hover {
             
             <!-- 메뉴 탭 영역 -->
             <div class="navbar-menu">
-                <a href="#" class="menu-tab">
+                <a href="<%=cp%>/notice/Notice.jsp" class="menu-tab">
                     <span class="menu-icon">📢</span>
                     공지사항
                 </a>
-                <a href="#" class="menu-tab active">
+                <a href="<%=cp%>/group/GroupList.jsp" class="menu-tab active">
                     <span class="menu-icon">👥</span>
                     모임구경
                 </a>
-                <a href="#" class="menu-tab">
+                <a href="beforegroupcreate.do" class="menu-tab">
                     <span class="menu-icon">➕</span>
                     모임 개설
                 </a>
-                <a href="#" class="menu-tab">
+                <a href="?page=mygroups" class="menu-tab">
                     <span class="menu-icon">📚</span>
                     내 모임
                 </a>
-                <a href="#" class="menu-tab">
+                <a href="<%=cp%>/mypage.do" class="menu-tab">
                     <span class="menu-icon">⚙️</span>
                     마이페이지
                 </a>
