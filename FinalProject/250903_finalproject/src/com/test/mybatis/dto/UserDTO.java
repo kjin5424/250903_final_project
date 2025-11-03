@@ -3,12 +3,11 @@ package com.test.mybatis.dto;
 public class UserDTO
 {
 	// USER_INFO 테이블 속성
-	private String userId, password, nickname
-	, ssn1, ssn2, email, address, zipCode, savePath, ageRange;
+	private String userId, password, nickname, userCode
+	, ssn1, email, address, zipCode, savePath;
 	
 	
-	// 추가 속성
-	private String userCode;
+	// getter / setter 구성
 
 	public String getUserId()
 	{
@@ -50,16 +49,7 @@ public class UserDTO
 		this.ssn1 = ssn1;
 	}
 
-	public String getSsn2()
-	{
-		return ssn2;
-	}
-
-	public void setSsn2(String ssn2)
-	{
-		this.ssn2 = ssn2;
-	}
-
+	
 	public String getEmail()
 	{
 		return email;
@@ -108,16 +98,6 @@ public class UserDTO
 	public void setUserCode(String userCode)
 	{
 		this.userCode = userCode;
-	}
-
-	public String getAgeRange()
-	{
-		return ageRange;
-	}
-
-	public void setAgeRange(String ageRange)
-	{
-		this.ageRange = ageRange;
 	}
 
 }

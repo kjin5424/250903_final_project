@@ -19,7 +19,7 @@ public class HomeController
 	private SqlSession sqlSession;
 	
 	@RequestMapping(value="/home.do", method=RequestMethod.GET)
-	public String home(Model model, @RequestParam("groupApplyCode") String groupApplyCode)
+	public String home(Model model)
 	{
 		
 		

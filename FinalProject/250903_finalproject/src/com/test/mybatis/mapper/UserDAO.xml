@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.mybatis.dao.IUserDAO">
+
+	<select id="myProfile" resultType="com.test.mybatis.dto.UserDTO">
+		SELECT UI.USER_ID AS userId, UT.USER_CODE AS userCode, UI.NICKNAME AS nickname
+     		 , UI.SSN1 AS ssn1, UI.ADDRESS AS address, UI.SAVEPATH AS savePath
+     		 , UI.ZIPCODE AS zipCode
+			FROM USER_INFO UI
+			LEFT JOIN USER_TABLE UT ON UT.USER_ID = UI.USER_ID
+		WHERE UT.USER_CODE = #{userCode}
+	</select>
+
+
+</mapper>
