@@ -336,7 +336,7 @@
 
                 <div class="button-group">
                     <button class="button btn-submit" onclick="submitAnswer()">답변 등록</button>
-                    <button class="button btn-back" onclick="history.back()">목록으로</button>
+ <button class="button btn-back" onclick="location.href='inquirylist_kmj.do'">목록으로</button>
                 </div>
             </div>
         </div>
