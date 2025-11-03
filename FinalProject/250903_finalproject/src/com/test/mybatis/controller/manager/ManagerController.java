@@ -102,6 +102,12 @@ public class ManagerController
 			return "/WEB-INF/view/manager/report/Blind.jsp";
 		}
 		
+		@RequestMapping(value="/blinduserpost.do", method=RequestMethod.GET)
+		public String blindUserPost(Model model)
+		{
+			return "/WEB-INF/view/manager/report/BlindUserPost.jsp";
+		}
+		
 		@RequestMapping(value="/reportuserexplanation.do", method=RequestMethod.GET)
 		public String reportUserExplanation(Model model)
 		{

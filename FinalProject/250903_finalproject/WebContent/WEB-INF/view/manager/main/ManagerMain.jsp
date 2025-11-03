@@ -332,6 +332,31 @@ body {
 					</div>
 				</div>
 			</a>
+			
+			</a> <a href="<%=cp%>/poll.do" style="text-decoration: none;">
+				<div class="menu-card">
+					<span class="menu-icon">📊</span>
+					<h2 class="menu-title">통계관리</h2>
+					<p class="menu-description">
+						스터디 모임 통계<br>
+						모임 탈퇴,어플리케이션 탈퇴,신고 통계관리
+					</p>
+					<div class="menu-stats">
+						<div class="stat-item">
+							<span class="stat-number">20</span>
+							<span class="stat-label">모임 탈퇴</span>
+						</div>
+						<div class="stat-item">
+							<span class="stat-number">7</span>
+							<span class="stat-label">어플리케이션 탈퇴</span>
+						</div>
+					<div class="stat-item">
+							<span class="stat-number">10</span>
+							<span class="stat-label">신고 통계</span>
+						</div>
+					</div>
+				</div>
+			</a>
 		</div>
 	</div>
 	

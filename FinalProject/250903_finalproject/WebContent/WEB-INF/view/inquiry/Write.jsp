@@ -447,10 +447,6 @@ body {
 			</div>
 		</form>
 		
-		<div class="faq-link">
-			자주 묻는 질문을 먼저 확인해보세요
-			<a href="faq.jsp">FAQ 바로가기 →</a>
-		</div>
 	</div>
 	
 	<script>

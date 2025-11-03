@@ -6,312 +6,260 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>열람 불가 게시글</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/variables.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/components.css">
-    
+    <title>🚫 열람 불가 게시글</title>
+
     <style>
-        :root {
-            --primary: #C8D456;
-            --secondary: #C4BFF5;
-            --accent: #E25668;
-            --text-primary: #1A1A1A;
-            --text-secondary: #666666;
-            --white: #FFFFFF;
-            --off-white: #F8F9FA;
-            --gray-light: #E0E0E0;
-            --warning-bg: #FFF3E0;
-            --warning-border: #FF9800;<div class="button-group">
-            --error-bg: #FFEBEE;
-            --error-border: #E25668;
-            --shadow-md: 0 4px 8px rgba(0,0,0,0.12);
-            --radius-lg: 12px;
-            --radius-md: 8px;
-            --padding-lg: 16px;
-            --padding-xl: 24px;
-            --padding-xxl: 32px;
-            --margin-md: 12px;
-            --margin-lg: 16px;
-            --margin-xl: 24px;
-            --font-size-sm: 14px;
-            --font-size-base: 16px;
-            --font-size-lg: 18px;
-            --font-size-h3: 24px;
+        /* 폰트, 기본 스타일 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Malgun Gothic', '맑은 고딕', 'Apple SD Gothic Neo', Roboto, 'Segoe UI', sans-serif; 
+            background: #f0f2f5; /* 더 밝고 모던한 배경색 */
+            min-height: 100vh; 
+            color: #333; /* 기본 텍스트 색상 */
+        }
+
+        /* 네비게이션 바 */
+        .navbar { 
+            background: #4CAF50; /* Primary Green */
+            display: flex; 
+            align-items: center; 
+            padding: 0 20px; 
+            height: 55px; /* 높이 약간 증가 */
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1); 
+        }
+        .logo-tab { 
+            background: #388E3C; /* Darker Green for Logo */
+            color: #fff; 
+            padding: 0 25px; 
+            height: 40px; 
+            border-radius: 8px; 
+            display: flex; 
+            align-items: center; 
+            font-weight: bold; 
+            cursor: default; /* 클릭 불가 표시 */
+            font-size: 16px;
+        }
+
+        /* 메인 컨테이너 */
+        .container { 
+            max-width: 760px; /* 너비 약간 축소하여 집중도 향상 */
+            margin: 40px auto; 
+            padding: 0 20px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; /* 간격 축소 */
+        }
+
+        /* 주요 정보 박스 공통 스타일 */
+        .post-container, .info-box, .suspension-warning { 
+            background: #fff; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08); /* 부드럽고 깊은 그림자 */
+            padding: 25px; /* 패딩 약간 축소 */
+            animation: fadeIn 0.5s ease-in-out; 
         }
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* 블라인드 처리 알림 */
+        .post-header { 
+            text-align: center; 
+            margin-bottom: 5px; 
+            padding: 40px 25px; /* 상하 패딩 증가로 강조 */
         }
-        
-        body {
-            font-family: 'Malgun Gothic', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background-color: var(--off-white);
-            color: var(--text-primary);
-            line-height: 1.6;
-            padding: var(--padding-xl);
+        .blind-icon { 
+            font-size: 70px; 
+            margin-bottom: 10px; 
+            color: #FF7043; /* 경고를 위한 오렌지-레드 계열 */
         }
-        
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
+        .blind-title { 
+            font-size: 26px; 
+            font-weight: 800; 
+            color: #D32F2F; /* 강렬한 레드 */
+            margin-bottom: 10px; 
         }
-        
-        /* 블라인드 처리 알림 박스 */
-        .blind-notice {
-            background: var(--error-bg);
-            border: 2px solid var(--error-border);
-            border-radius: var(--radius-lg);
-            padding: var(--padding-xxl);
-            margin-bottom: var(--margin-xl);
-            box-shadow: var(--shadow-md);
-            text-align: center;
+        .blind-description { 
+            font-size: 15px; 
+            color: #666; 
+            line-height: 1.6; 
+            margin-bottom: 20px; 
         }
-        
-        .blind-icon {
-            font-size: 64px;
-            margin-bottom: var(--margin-lg);
-            opacity: 0.8;
+        .blind-reason { 
+            display: inline-block; 
+            padding: 6px 14px; 
+            background: #FFEBEE; /* 옅은 붉은 배경 */
+            border: 1px solid #D32F2F; 
+            border-radius: 20px; /* 둥근 뱃지 모양 */
+            font-weight: 700; 
+            color: #D32F2F; 
+            font-size: 14px;
         }
-        
-        .blind-title {
-            font-size: var(--font-size-h3);
-            font-weight: 700;
-            color: var(--accent);
-            margin-bottom: var(--margin-md);
-        }
-        
-        .blind-description {
-            font-size: var(--font-size-base);
-            color: var(--text-secondary);
-            line-height: 1.8;
-            margin-bottom: var(--margin-lg);
-        }
-        
-        .blind-reason {
-            display: inline-block;
-            background: var(--white);
-            border: 2px solid var(--error-border);
-            border-radius: var(--radius-md);
-            padding: var(--padding-lg);
-            font-size: var(--font-size-lg);
-            font-weight: 600;
-            color: var(--accent);
-            margin-top: var(--margin-md);
-        }
-        
+
         /* 게시글 정보 박스 */
-        .post-info-box {
-            background: var(--white);
-            border-radius: var(--radius-lg);
-            padding: var(--padding-xl);
-            margin-bottom: var(--margin-xl);
-            box-shadow: var(--shadow-md);
+        .post-info-box { 
+            padding: 25px;
         }
-        
-        .post-info-title {
-            font-size: var(--font-size-lg);
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: var(--margin-lg);
-            padding-bottom: var(--padding-lg);
-            border-bottom: 2px solid var(--gray-light);
+        .post-info-title { 
+            font-weight: 700; 
+            margin-bottom: 15px; 
+            font-size: 18px;
+            color: #4CAF50; /* Primary Green으로 강조 */
+            border-bottom: 2px solid #E8F5E9; /* 옅은 구분선 */
+            padding-bottom: 10px;
         }
-        
-        .post-info-item {
-            display: flex;
-            padding: var(--padding-lg);
-            background: var(--off-white);
-            border-radius: var(--radius-md);
-            margin-bottom: var(--margin-md);
+        .post-info-item { 
+            display: flex; 
+            justify-content: space-between; 
+            padding: 10px 0; 
+            border-bottom: 1px dashed #eee; /* 점선으로 부드럽게 구분 */
+            font-size: 15px;
         }
-        
         .post-info-item:last-child {
-            margin-bottom: 0;
+            border-bottom: none;
         }
-        
-        .post-info-label {
-            min-width: 120px;
-            font-size: var(--font-size-base);
-            font-weight: 600;
-            color: var(--text-secondary);
+        .post-info-label { 
+            font-weight: 600; 
+            color: #555; 
         }
-        
-        .post-info-value {
-            flex: 1;
-            font-size: var(--font-size-base);
-            color: var(--text-primary);
+        .post-info-value { 
+            color: #333; 
             font-weight: 500;
         }
-        
-        .post-info-value.highlight {
-            color: var(--accent);
-            font-weight: 700;
+        .highlight { 
+            font-weight: 700; 
+            color: #D32F2F; 
         }
-        
+
         /* 신고 카테고리 뱃지 */
-        .report-category-badge {
-            display: inline-block;
-            padding: 6px 16px;
-            background: var(--error-bg);
-            border: 1px solid var(--error-border);
-            border-radius: 20px;
-            font-size: var(--font-size-sm);
+        .report-category-badge { 
+            display: inline-block; 
+            background: #FFE0B2; /* 부드러운 오렌지 배경 */
+            color: #E65100; /* 다크 오렌지 텍스트 */
+            border-radius: 4px; 
+            padding: 3px 8px; 
+            margin-right: 4px; 
+            font-size: 13px; 
             font-weight: 600;
-            color: var(--accent);
-            margin-right: 8px;
         }
-        
-        /* 안내 메시지 박스 */
+
+        /* 활동 정지 경고/안내 */
+        .suspension-warning { 
+            border-left: 5px solid #FF9800; /* 오렌지색으로 경고/정지 표시 */
+            padding-left: 20px; 
+        }
+        .suspension-icon { 
+            font-size: 35px; 
+            margin-bottom: 8px; 
+            color: #FF9800;
+        }
+        .suspension-warning .suspension-icon.locked { /* isSuspended일 때 아이콘 색상 변경 */
+            color: #D32F2F;
+        }
+        .suspension-title { 
+            font-weight: 700; 
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 8px; 
+        }
+        .suspension-description { 
+            font-size: 15px; 
+            color: #666; 
+            line-height: 1.5; 
+            margin-bottom: 10px; 
+        }
+        .suspension-period { 
+            font-weight: 700; 
+            color: #D32F2F; 
+            font-size: 16px;
+        }
+
+        /* 안내 메시지 */
         .info-box {
-            background: var(--warning-bg);
-            border-left: 4px solid var(--warning-border);
-            border-radius: var(--radius-md);
-            padding: var(--padding-lg);
-            margin-bottom: var(--margin-xl);
+            background: #e8f5e9; /* 옅은 초록색 배경으로 부드러운 정보 느낌 */
         }
-        
-        .info-box-title {
-            font-size: var(--font-size-base);
-            font-weight: 700;
-            color: #F57C00;
-            margin-bottom: var(--margin-md);
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .info-box-title { 
+            font-weight: 700; 
+            font-size: 18px;
+            margin-bottom: 12px; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            color: #388E3C; /* 다크 그린 */
         }
-        
-        .info-box-content {
-            font-size: var(--font-size-sm);
-            color: var(--text-secondary);
-            line-height: 1.8;
+        .info-box-content ul { 
+            margin-left: 20px; 
+            list-style-type: '👉 '; /* 커스텀 리스트 스타일 */
+            color: #555; 
+            font-size: 14px;
         }
-        
-        .info-box-content ul {
-            margin-left: 20px;
-            margin-top: 8px;
+        .info-box-content li { 
+            margin-bottom: 8px; 
+            padding-left: 5px;
         }
-        
-        .info-box-content li {
-            margin-bottom: 6px;
-        }
-        
+
         /* 버튼 그룹 */
-        .button-group {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            margin-top: var(--margin-xl);
+        .button-group { 
+            display: flex; 
+            justify-content: center; 
+            gap: 15px; 
+            margin-top: 30px; 
+            flex-wrap: wrap; 
         }
-        
-        .btn {
-            padding: 12px 32px;
+        .btn { 
+            padding: 14px 30px; /* 버튼 크기 키움 */
+            border-radius: 8px; 
+            font-weight: 700; 
+            font-size: 16px; 
+            cursor: pointer; 
+            text-decoration: none; 
+            text-align: center; 
+            transition: all 0.3s ease; /* transition에 all 추가 */
+            display: inline-block; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             border: none;
-            border-radius: var(--radius-md);
-            font-size: var(--font-size-base);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
         }
-        
-        .btn-primary {
-            background: var(--secondary);
-            color: var(--white);
+        .btn-primary { 
+            background: #4CAF50; /* Primary Green */
+            color: #fff; 
         }
-        
-        .btn-primary:hover {
-            background: #A8A3E0;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(196, 191, 245, 0.4);
+        .btn-primary:hover { 
+            background: #388E3C; 
+            transform: translateY(-3px); 
+            box-shadow: 0 6px 10px rgba(0,0,0,0.15);
         }
-        
-        .btn-secondary {
-            background: var(--gray-light);
-            color: var(--text-primary);
+        .btn-secondary { 
+            background: #757575; /* Dark Gray */
+            color: #fff; 
         }
-        
-        .btn-secondary:hover {
-            background: #BDBDBD;
+        .btn-secondary:hover { 
+            background: #616161; 
+            transform: translateY(-3px); 
+            box-shadow: 0 6px 10px rgba(0,0,0,0.15);
         }
-        
-        /* 활동 정지 경고 (추가 경고가 필요한 경우) */
-        .suspension-warning {
-            background: linear-gradient(135deg, #FFEBEE 0%, #FFCDD2 100%);
-            border: 2px solid var(--accent);
-            border-radius: var(--radius-lg);
-            padding: var(--padding-xl);
-            margin-bottom: var(--margin-xl);
-            text-align: center;
+
+        @media (max-width: 768px) { 
+            .container { margin: 20px auto; }
+            .post-container, .info-box, .suspension-warning { padding: 20px; }
+            .button-group { flex-direction: column; gap: 10px; } 
+            .btn { width: 100%; }
+            .blind-icon { font-size: 60px; }
+            .blind-title { font-size: 22px; }
         }
-        
-        .suspension-icon {
-            font-size: 48px;
-            margin-bottom: var(--margin-md);
-        }
-        
-        .suspension-title {
-            font-size: var(--font-size-lg);
-            font-weight: 700;
-            color: var(--accent);
-            margin-bottom: var(--margin-md);
-        }
-        
-        .suspension-description {
-            font-size: var(--font-size-base);
-            color: var(--text-secondary);
-            line-height: 1.8;
-        }
-        
-        .suspension-period {
-            display: inline-block;
-            background: var(--white);
-            padding: 8px 20px;
-            border-radius: var(--radius-md);
-            font-weight: 700;
-            color: var(--accent);
-            margin-top: var(--margin-md);
-        }
-        
-        /* 반응형 */
-        @media (max-width: 768px) {
-            body {
-                padding: var(--padding-lg);
-            }
-            
-            .blind-icon {
-                font-size: 48px;
-            }
-            
-            .blind-title {
-                font-size: 20px;
-            }
-            
-            .button-group {
-                flex-direction: column;
-            }
-            
-            .btn {
-                width: 100%;
-            }
-            
-            .post-info-item {
-                flex-direction: column;
-            }
-            
-            .post-info-label {
-                margin-bottom: 6px;
-            }
+
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(15px); } 
+            to { opacity: 1; transform: translateY(0); } 
         }
     </style>
 </head>
 <body>
+    <div class="navbar">
+        <div class="logo-tab">게시판</div>
+    </div>
+
     <div class="container">
-        <!-- 블라인드 처리 알림 -->
-        <div class="blind-notice">
+        <div class="post-container post-header">
             <div class="blind-icon">🚫</div>
             <h1 class="blind-title">신고 처리로 인해 비공개 처리된 게시글입니다</h1>
             <p class="blind-description">
@@ -322,23 +270,17 @@
                 신고 사유: ${post.reportCategory != null ? post.reportCategory : '복합 사유'}
             </div>
         </div>
-        
-        <!-- 게시글 정보 -->
-        <div class="post-info-box">
+
+        <div class="post-container post-info-box">
             <h2 class="post-info-title">📋 게시글 정보</h2>
-            
             <div class="post-info-item">
                 <span class="post-info-label">게시글 제목</span>
                 <span class="post-info-value highlight">${post.title}</span>
             </div>
-            
             <div class="post-info-item">
                 <span class="post-info-label">작성일자</span>
-                <span class="post-info-value">
-                    <fmt:formatDate value="${post.createdDate}" pattern="yyyy년 MM월 dd일 HH:mm"/>
-                </span>
+                <span class="post-info-value"><fmt:formatDate value="${post.createdDate}" pattern="yyyy년 MM월 dd일 HH:mm"/></span>
             </div>
-            
             <div class="post-info-item">
                 <span class="post-info-label">신고 카테고리</span>
                 <span class="post-info-value">
@@ -351,27 +293,22 @@
                 </span>
             </div>
         </div>
-        
-        <!-- 활동 정지 경고 (조건부 표시) -->
+
         <c:if test="${showSuspensionWarning}">
-            <div class="suspension-warning">
+            <div class="post-container suspension-warning">
                 <div class="suspension-icon">⚠️</div>
                 <h3 class="suspension-title">활동 정지 경고</h3>
                 <p class="suspension-description">
                     최근 1개월 이내 블라인드 처리된 게시글이 ${blindPostCount}개입니다.<br>
-                    블라인드 게시글이 3개 이상이 되면<br>
-                    <strong>2주간 모든 모임에서 활동이 정지</strong>됩니다.
+                    블라인드 게시글이 3개 이상이 되면 <strong>2주간 모든 모임에서 활동이 정지</strong>됩니다.
                 </p>
-                <div class="suspension-period">
-                    현재 ${blindPostCount}/3개 (${3 - blindPostCount}개 남음)
-                </div>
+                <div class="suspension-period">현재 ${blindPostCount}/3개 (${3 - blindPostCount}개 남음)</div>
             </div>
         </c:if>
-        
-        <!-- 활동 정지 안내 (이미 정지된 경우) -->
+
         <c:if test="${isSuspended}">
-            <div class="suspension-warning">
-                <div class="suspension-icon">🔒</div>
+            <div class="post-container suspension-warning">
+                <div class="suspension-icon locked">🔒</div>
                 <h3 class="suspension-title">활동 정지 처리 안내</h3>
                 <p class="suspension-description">
                     최근 1개월 이내 블라인드 처리된 게시글이 3개 이상으로<br>
@@ -382,28 +319,10 @@
                     <fmt:formatDate value="${suspensionEndDate}" pattern="yyyy.MM.dd"/>
                 </div>
             </div>
-            
-            <!-- 블라인드 처리된 게시글 목록 -->
-            <div class="post-info-box">
-                <h2 class="post-info-title">🚫 블라인드 처리된 게시글 목록</h2>
-                <c:forEach items="${blindPosts}" var="blindPost" varStatus="status">
-                    <div class="post-info-item">
-                        <span class="post-info-label">${status.index + 1}번째 게시글</span>
-                        <span class="post-info-value">
-                            ${blindPost.title}
-                            (<fmt:formatDate value="${blindPost.createdDate}" pattern="yyyy.MM.dd"/>)
-                        </span>
-                    </div>
-                </c:forEach>
-            </div>
         </c:if>
-        
-        <!-- 안내 메시지 -->
-        <div class="info-box">
-            <div class="info-box-title">
-                <span>ℹ️</span>
-                <span>안내사항</span>
-            </div>
+
+        <div class="post-container info-box">
+            <div class="info-box-title">ℹ️ 안내사항</div>
             <div class="info-box-content">
                 <ul>
                     <li>신고가 접수된 게시글은 수정 및 삭제가 불가능합니다.</li>
@@ -413,21 +332,16 @@
                 </ul>
             </div>
         </div>
-        
-        <!-- 버튼 그룹 -->
+
         <div class="button-group">
-            <a href="userposts.do" class="btn btn-primary">
-                게시판으로 돌아가기
-            </a>
-            <a href="${pageContext.request.contextPath}/support/contact" class="btn btn-secondary">
-                고객센터 문의
-            </a>
+            <a href="userposts.do" class="btn btn-primary">게시글 목록</a>
+            <a href="inquirylist_kmj.do" class="btn btn-secondary">관리자 문의목록</a>
         </div>
     </div>
-    
+
     <script>
-        // 뒤로가기 처리
-        window.addEventListener('popstate', function(event) {
+        // 뒤로가기 처리 (브라우저 히스토리 관리를 위해)
+        window.addEventListener('popstate', function() {
             history.back();
         });
     </script>

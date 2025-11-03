@@ -480,7 +480,7 @@
                 <div class="button-group">
                     <button class="button btn-approve" onclick="processAppeal('approve')">소명 승인</button>
                     <button class="button btn-reject" onclick="processAppeal('reject')">소명 반려</button>
-                    <button class="button btn-back" onclick="history.back()">목록으로</button>
+                <button class="button btn-back" onclick="location.href='reportlist_kmj.do'">목록으로</button>
                 </div>
             </div>
         </div>

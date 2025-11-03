@@ -247,35 +247,36 @@
                         <tbody id="group-withdrawal-tbody">
                             <tr>
                                 <td class="table-cell-center">1</td>
-                                <td><span class="member-link" onclick="goToUserDetail('m101')">김철수</span></td>
+                                <td><a class="member-link" href="userdetail.do?memberId=m101">김철수</a></td>
+                                 
                                 <td>등산 동호회</td>
                                 <td>시간 부족</td>
                                 <td>2025-10-10 14:30</td>
                             </tr>
                             <tr>
                                 <td class="table-cell-center">2</td>
-                                <td><span class="member-link" onclick="goToUserDetail('m102')">이영희</span></td>
+                                <td><a class="member-link" href="userdetail.do?memberId=m102">이영희</a></td>
                                 <td>스터디 모임</td>
                                 <td>개인 사정</td>
                                 <td>2025-10-14 09:20</td>
                             </tr>
                             <tr>
                                 <td class="table-cell-center">3</td>
-                                <td><span class="member-link" onclick="goToUserDetail('m103')">박민수</span></td>
+                                <td><a class="member-link" href="userdetail.do?memberId=m103">박민수</a></td>
                                 <td>게임 커뮤니티</td>
                                 <td>활동 불만</td>
                                 <td>2025-10-21 17:40</td>
                             </tr>
                             <tr>
                                 <td class="table-cell-center">4</td>
-                                <td><span class="member-link" onclick="goToUserDetail('m104')">최수지</span></td>
+                                <td><a class="member-link" href="userdetail.do?memberId=m104">최수지</a></td>
                                 <td>독서 모임</td>
                                 <td>시간 부족</td>
                                 <td>2025-10-25 11:15</td>
                             </tr>
                             <tr>
                                 <td class="table-cell-center">5</td>
-                                <td><span class="member-link" onclick="goToUserDetail('m105')">장동건</span></td>
+                                <td><a class="member-link" href="userdetail.do?memberId=m105">장동건</a></td>
                                 <td>영화 감상</td>
                                 <td>모임 분위기</td>
                                 <td>2025-10-28 16:55</td>
@@ -328,35 +329,35 @@
                         <tbody id="app-withdrawal-tbody">
                             <tr>
                                 <td class="table-cell-center">1</td>
-                                <td><span class="member-link" onclick="goToUserDetail('a201')">홍길동</span></td>
+                                <td><a class="member-link" href="userdetail.do?memberId=a201">홍길동</a></td>
                                 <td>hong@example.com</td>
                                 <td>이용 불편</td>
                                 <td>2025-10-01 11:10</td>
                             </tr>
                             <tr>
                                 <td class="table-cell-center">2</td>
-                                <td><span class="member-link" onclick="goToUserDetail('a202')">이수진</span></td>
+                                <td><a class="member-link" href="userdetail.do?memberId=a202">이수진</a></td>
                                 <td>soo@example.com</td>
                                 <td>잦은 오류</td>
                                 <td>2025-10-11 13:45</td>
                             </tr>
                             <tr>
                                 <td class="table-cell-center">3</td>
-                                <td><span class="member-link" onclick="goToUserDetail('a203')">정우성</span></td>
+                                <td><a class="member-link" href="userdetail.do?memberId=a203">정우성</a></td>
                                 <td>woo@example.com</td>
                                 <td>기능 부족</td>
                                 <td>2025-10-25 09:50</td>
                             </tr>
                             <tr>
                                 <td class="table-cell-center">4</td>
-                                <td><span class="member-link" onclick="goToUserDetail('a204')">김태희</span></td>
+                                <td><a class="member-link" href="userdetail.do?memberId=a204">김태희</a></td>
                                 <td>th@example.com</td>
                                 <td>개인 정보 문제</td>
                                 <td>2025-10-26 10:00</td>
                             </tr>
                             <tr>
                                 <td class="table-cell-center">5</td>
-                                <td><span class="member-link" onclick="goToUserDetail('a205')">원빈</span></td>
+                                <td><a class="member-link" href="userdetail.do?memberId=a205">원빈</a></td>
                                 <td>wb@example.com</td>
                                 <td>사용 빈도 감소</td>
                                 <td>2025-10-27 15:20</td>
@@ -433,7 +434,8 @@
                                 <td class="table-cell-center">1</td>
                                 <td>회원</td>
                                 <td>욕설 포함</td>
-                                <td><span class="member-link" onclick="goToUserDetail('r301')">김하늘</span></td>
+                                
+                                <td><a class="member-link" href="userdetail.do?memberId=r301">김하늘</a></td>
                                 <td><span class="member-link" onclick="goToUserDetail('r302')">박하늘</span></td>
                                 <td>2025-10-02 15:30</td>
                                 <td>처리 완료</td>
