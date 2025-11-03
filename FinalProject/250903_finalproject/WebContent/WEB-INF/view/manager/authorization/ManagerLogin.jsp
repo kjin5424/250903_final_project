@@ -450,8 +450,9 @@ px
 			</form>
 
 			<div class="signup-section">
-				미등록 관리자일 경우 <a href="signup.jsp" class="signup-link">관리자 등록</a>
+				미등록 관리자일 경우 <a href="managerregister.do" class="signup-link">관리자 등록</a>
 			</div>
+
 		</div>
 	</div>
 

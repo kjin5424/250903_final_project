@@ -263,7 +263,7 @@ tbody tr:hover {
 				</tr>
 			</thead>
 			<tbody>
-				<tr onclick="location.href='memberDetail.jsp?id=user001'">
+				<tr onclick="location.href='userdetail.do?id=user001'">
 					<td>user001</td>
 					<td>홍길동123</td>
 					<td>hong@example.com</td>

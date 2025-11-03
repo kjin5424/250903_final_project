@@ -386,7 +386,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		<div class="table-container">
 			<table class="notice-table">
 				<thead>
-					<tr onclick="location.href='ManagerNoticeOpen.jsp?noticeNum=14'">
+					<tr onclick="location.href='noticedetail.do?noticeNum=14'">
 						<th style="width: 80px;">
 							<div class="sort-header <%= "number".equals(sortBy) ? "active " + sortOrder : "" %>" 
 							     onclick="sortTable('number')">
@@ -584,8 +584,8 @@ document.addEventListener("DOMContentLoaded", function() {
 		}
 		
 		function editNotice(id) {
-			window.location.href = 'NoticeModify.jsp?id=' + id;
-		}
+			  window.location.href = 'noticedetail.do?noticeNum=' + id;
+			}
 		
 		function deleteNotice(id) {
 			if (confirm('정말로 이 공지사항을 삭제하시겠습니까?')) {

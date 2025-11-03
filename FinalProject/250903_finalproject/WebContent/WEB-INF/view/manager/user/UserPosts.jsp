@@ -455,7 +455,7 @@ tbody tr:hover {
                     <td>5</td>
                     <td>자유게시판</td>
                     <td class="title-cell">
-                        <a href="#" class="title-link">Java 스터디 2주차 후기 공유합니다</a>
+                       <a href="blind.do?id=1" class="title-link">Java 스터디 2주차 후기 공유합니다</a>
                     </td>
                     <td>2024-02-05</td>
                 </tr>
