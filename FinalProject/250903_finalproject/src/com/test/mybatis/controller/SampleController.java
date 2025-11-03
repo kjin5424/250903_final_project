@@ -17,8 +17,8 @@ import com.test.mybatis.dto.UserDTO;
 @Controller
 public class SampleController
 {
-	// 페이지 테스트 구동용
-	@RequestMapping("/start.do")
+	// 메인 페이지 임시 구동
+	@RequestMapping(value="/mainpage.do")
 	public String test()
 	{
 		return "/WEB-INF/view/group/GroupList.jsp";
