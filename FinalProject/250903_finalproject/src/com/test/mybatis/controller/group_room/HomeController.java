@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
@@ -18,8 +19,10 @@ public class HomeController
 	private SqlSession sqlSession;
 	
 	@RequestMapping(value="/home.do", method=RequestMethod.GET)
-	public String home(Model model)
+	public String home(Model model, @RequestParam("groupApplyCode") String groupApplyCode)
 	{
+		
+		
 		return "/WEB-INF/view/group_room/Home.jsp";
 	}
 	
