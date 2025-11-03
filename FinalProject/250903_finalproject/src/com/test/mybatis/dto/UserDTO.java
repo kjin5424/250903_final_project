@@ -4,7 +4,8 @@ public class UserDTO
 {
 	// USER_INFO 테이블 속성
 	private String userId, password, nickname
-	, ssn1, ssn2, email, address, zipCode, savePath;
+	, ssn1, ssn2, email, address, zipCode, savePath, ageRange;
+	
 	
 	// 추가 속성
 	private String userCode;
@@ -107,6 +108,16 @@ public class UserDTO
 	public void setUserCode(String userCode)
 	{
 		this.userCode = userCode;
+	}
+
+	public String getAgeRange()
+	{
+		return ageRange;
+	}
+
+	public void setAgeRange(String ageRange)
+	{
+		this.ageRange = ageRange;
 	}
 
 }

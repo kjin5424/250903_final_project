@@ -16,6 +16,7 @@ public class GroupDTO
 	private String openDate;		// 정식 개설일
 	private String frequency;		// 빈도 타입
 	private String createdDate;		// 모임 개설 신청일
+	private String difficulty;		// 
 	
 	// getter / setter
 	public String getGroupApplyCode()
