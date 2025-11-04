@@ -4,14 +4,156 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.test.mybatis.dao.IUserDAO">
 
-	<select id="myProfile" resultType="com.test.mybatis.dto.UserDTO">
-		SELECT UI.USER_ID AS userId, UT.USER_CODE AS userCode, UI.NICKNAME AS nickname
-     		 , UI.SSN1 AS ssn1, UI.ADDRESS AS address, UI.SAVEPATH AS savePath
-     		 , UI.ZIPCODE AS zipCode
-			FROM USER_INFO UI
-			LEFT JOIN USER_TABLE UT ON UT.USER_ID = UI.USER_ID
+	<select id="myProfile" resultType="com.test.mybatis.dto.UserDTO">		
+		SELECT UI.USER_ID AS USERID, UI.NAME AS NAME, UI.NICKNAME AS NICKNAME
+		     , UI.SAVEPATH AS SAVEPATH, UI.SSN1 AS SSN1, UI.EMAIL AS EMAIL 
+		     , UI.ADDRESS AS ADDRESS, UI.ZIPCODE AS ZIPCODE
+		FROM USER_TABLE UT
+		JOIN USER_INFO UI ON UI.USER_ID = UT.USER_ID
 		WHERE UT.USER_CODE = #{userCode}
 	</select>
 
-
+	<select id="otherProfile" resultType="com.test.mybatis.dto.UserDTO">		
+		SELECT UI.NICKNAME AS NICKNAME
+		     , UI.SAVEPATH AS SAVEPATH, UI.SSN1 AS SSN1, CRYPTPACK.DECRYPT(UI.SSN2, UI.USER_ID) AS SSN2
+		     , UI.ADDRESS AS ADDRESS, UI.ZIPCODE AS ZIPCODE
+		     , TO_CHAR(UT.CREATED_DATE, 'YYYY-MM-DD') AS CREATEDDATE
+		     , NVL((SELECT COUNT(*)
+		           FROM CURRENT_MEMBER_VIEW
+		           WHERE USERCODE = UT.USER_CODE
+		           AND POSITION IN ('모임장')), 0) AS MYGROUP
+		     , NVL((SELECT COUNT(*)
+		           FROM CURRENT_MEMBER_VIEW
+		           WHERE USERCODE = UT.USER_CODE
+		           AND POSITION NOT IN ('모임장')), 0) AS JOINGROUP
+		FROM USER_TABLE UT
+		JOIN USER_INFO UI ON UI.USER_ID = UT.USER_ID
+		WHERE UT.USER_CODE = #{userCode}
+	</select>
+	
+	<select id="currentGroupList" resultType="com.test.mybatis.dto.GroupJoinDTO" parameterType="java.lang.String">
+		SELECT CGV.GROUPAPPLYCODE
+		     , CGV.TITLE AS GROUPTITLE
+		     , CMV.POSITION
+		     , TO_CHAR(CMV.JOINDATE, 'YYYY-MM-DD') AS JOINDATE
+		     , (SELECT COUNT(*) 
+		        FROM JOIN_TABLE J
+		        LEFT JOIN ACTIVITY_VOTE ACV ON ACV.JOIN_CODE = J.JOIN_CODE
+		        LEFT JOIN ATTENDANCE ATT ON ATT.ACTIVITY_VOTE_CODE = ACV.ACTIVITY_VOTE_CODE
+		        WHERE J.JOIN_CODE = CMV.JOINCODE
+		        AND ATT.ACTIVITY_VOTE_CODE IS NOT NULL
+		        ) AS ATTENDANCEACTIVITY
+		     , NVL((
+		            SELECT COUNT(*)
+		            FROM JOIN_TABLE J
+		            LEFT JOIN ACTIVITY_VOTE ACV ON ACV.JOIN_CODE = J.JOIN_CODE
+		            WHERE J.JOIN_CODE = CMV.JOINCODE
+		       ), 0) AS TOTALACTIVITY
+		     , NVL((
+		            SELECT COUNT(DISTINCT CM.CHALLENGE_MEMBER_CODE)
+		            FROM JOIN_TABLE J
+		            JOIN CHALLENGE_MEMBER CM ON CM.JOIN_CODE = J.JOIN_CODE
+		            JOIN CHALLENGE C ON C.CHALLENGE_CODE = CM.CHALLENGE_CODE
+		            WHERE J.JOIN_CODE = CMV.JOINCODE
+		       ), 0) AS TOTALCHALLENGE
+		     , NVL((
+		            SELECT COUNT(DISTINCT CASE WHEN CC.CHECK_COUNT = CD.DETAIL_COUNT 
+		                                       THEN CM.CHALLENGE_MEMBER_CODE 
+		                                  END)
+		            FROM JOIN_TABLE J
+		            JOIN CHALLENGE_MEMBER CM ON CM.JOIN_CODE = J.JOIN_CODE
+		            JOIN CHALLENGE C ON C.CHALLENGE_CODE = CM.CHALLENGE_CODE
+		            LEFT JOIN (
+		                        SELECT CHALLENGE_CODE, COUNT(*) AS DETAIL_COUNT
+		                        FROM CHALLENGE_DETAIL
+		                        GROUP BY CHALLENGE_CODE
+		            ) CD ON CD.CHALLENGE_CODE = C.CHALLENGE_CODE
+		            LEFT JOIN (
+		                        SELECT CHALLENGE_MEMBER_CODE, COUNT(*) AS CHECK_COUNT
+		                        FROM CHALLENGE_CHECK
+		                        GROUP BY CHALLENGE_MEMBER_CODE
+		            ) CC ON CC.CHALLENGE_MEMBER_CODE = CM.CHALLENGE_MEMBER_CODE
+		            WHERE J.JOIN_CODE = CMV.JOINCODE
+		      ), 0) AS CHECKCHALLENGE
+		FROM CURRENT_MEMBER_VIEW CMV
+		JOIN CURRENT_GROUP_VIEW CGV ON CGV.GROUPAPPLYCODE = CMV.GROUPAPPLYCODE
+		WHERE CMV.USERCODE = #{userCode, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="quitGroupList" resultType="com.test.mybatis.dto.GroupJoinDTO" parameterType="java.lang.String">
+		SELECT CGV.GROUPAPPLYCODE
+		     , CGV.TITLE AS GROUPTITLE
+		     , QMV.JOINDATE AS JOINDATE
+		     , QMV.QUITDATE AS QUITDATE
+		     , QMV.QUIT_REASON AS QUITREASON
+		     , (SELECT COUNT(*) 
+		        FROM JOIN_TABLE J
+		        LEFT JOIN ACTIVITY_VOTE ACV ON TO_CHAR(ACV.JOIN_CODE) = TO_CHAR(J.JOIN_CODE)
+		        LEFT JOIN ATTENDANCE ATT ON ATT.ACTIVITY_VOTE_CODE = ACV.ACTIVITY_VOTE_CODE
+		        WHERE TO_CHAR(J.JOIN_CODE) = QMV.JOINCODE
+		        AND ATT.ACTIVITY_VOTE_CODE IS NOT NULL
+		        ) AS ATTENDANCEACTIVITY
+		     , NVL((
+		            SELECT COUNT(*)
+		            FROM JOIN_TABLE J
+		            LEFT JOIN ACTIVITY_VOTE ACV ON TO_CHAR(ACV.JOIN_CODE) = TO_CHAR(J.JOIN_CODE)
+		            WHERE TO_CHAR(J.JOIN_CODE) = TO_CHAR(QMV.JOINCODE)
+		       ), 0) AS TOTALACTIVITY
+		     , NVL((
+		            SELECT COUNT(DISTINCT CM.CHALLENGE_MEMBER_CODE)
+		            FROM JOIN_TABLE J
+		            JOIN CHALLENGE_MEMBER CM ON TO_CHAR(CM.JOIN_CODE) = TO_CHAR(J.JOIN_CODE)
+		            JOIN CHALLENGE C ON C.CHALLENGE_CODE = CM.CHALLENGE_CODE
+		            WHERE TO_CHAR(J.JOIN_CODE) = TO_CHAR(QMV.JOINCODE)
+		       ), 0) AS TOTALCHALLENGE
+		     , NVL((
+		            SELECT COUNT(DISTINCT CASE WHEN CC.CHECK_COUNT = CD.DETAIL_COUNT 
+		                                       THEN CM.CHALLENGE_MEMBER_CODE 
+		                                  END)
+		            FROM JOIN_TABLE J
+		            JOIN CHALLENGE_MEMBER CM ON TO_CHAR(CM.JOIN_CODE) = TO_CHAR(J.JOIN_CODE)
+		            JOIN CHALLENGE C ON C.CHALLENGE_CODE = CM.CHALLENGE_CODE
+		            LEFT JOIN (
+		                        SELECT CHALLENGE_CODE, COUNT(*) AS DETAIL_COUNT
+		                        FROM CHALLENGE_DETAIL
+		                        GROUP BY CHALLENGE_CODE
+		            ) CD ON CD.CHALLENGE_CODE = C.CHALLENGE_CODE
+		            LEFT JOIN (
+		                        SELECT CHALLENGE_MEMBER_CODE, COUNT(*) AS CHECK_COUNT
+		                        FROM CHALLENGE_CHECK
+		                        GROUP BY CHALLENGE_MEMBER_CODE
+		            ) CC ON CC.CHALLENGE_MEMBER_CODE = CM.CHALLENGE_MEMBER_CODE
+		            WHERE TO_CHAR(J.JOIN_CODE) = TO_CHAR(QMV.JOINCODE)
+		      ), 0) AS CHECKCHALLENGE
+		FROM QUITMEMBERVIEW QMV
+		JOIN CURRENT_GROUP_VIEW CGV ON CGV.GROUPAPPLYCODE = QMV.GROUPAPPLYCODE
+		WHERE QMV.USERCODE = #{userCode, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="relationCheck" resultType="java.lang.Integer">
+		SELECT CASE WHEN #{readerUserCode} = #{targetUserCode} THEN 1  
+            WHEN EXISTS (
+                        SELECT 1
+                        FROM CURRENT_MEMBER_VIEW V_LEADER
+                        JOIN CURRENT_MEMBER_VIEW V_TARGET ON V_LEADER.GROUPAPPLYCODE = V_TARGET.GROUPAPPLYCODE
+                        JOIN 
+                        (
+                            SELECT JOIN_CODE, POSITION_TYPE, GRANT_TYPE
+                            FROM 
+                            (
+                                SELECT JOIN_CODE, POSITION_TYPE, GRANT_TYPE,
+                                       ROW_NUMBER() OVER (PARTITION BY JOIN_CODE ORDER BY CREATED_DATE DESC) AS RN
+                                FROM MEMBER_POSITION
+                            ) WHERE RN = 1
+                        ) MP ON MP.JOIN_CODE = V_LEADER.JOINCODE
+                        WHERE V_LEADER.USERCODE = #{readerUserCode}
+                        AND V_TARGET.USERCODE = #{targetUserCode}
+                        AND MP.POSITION_TYPE = 1
+                        AND MP.GRANT_TYPE = 1
+		        ) THEN 2
+		        ELSE 3
+		        END AS RELATION_TYPE
+		FROM DUAL
+	</select>
+	
 </mapper>

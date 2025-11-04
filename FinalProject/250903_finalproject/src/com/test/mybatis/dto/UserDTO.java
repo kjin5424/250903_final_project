@@ -4,10 +4,52 @@ public class UserDTO
 {
 	// USER_INFO 테이블 속성
 	private String userId, password, nickname, userCode
-	, ssn1, email, address, zipCode, savePath;
+	, ssn1, ssn2, email, address, zipCode, savePath, createdDate
+	, myGroup, joinGroup;
+	
 	
 	
 	// getter / setter 구성
+
+	public String getSsn2()
+	{
+		return ssn2;
+	}
+
+	public void setSsn2(String ssn2)
+	{
+		this.ssn2 = ssn2;
+	}
+
+	public String getMyGroup()
+	{
+		return myGroup;
+	}
+
+	public void setMyGroup(String myGroup)
+	{
+		this.myGroup = myGroup;
+	}
+
+	public String getJoinGroup()
+	{
+		return joinGroup;
+	}
+
+	public void setJoinGroup(String joinGroup)
+	{
+		this.joinGroup = joinGroup;
+	}
+
+	public String getCreatedDate()
+	{
+		return createdDate;
+	}
+
+	public void setCreatedDate(String createdDate)
+	{
+		this.createdDate = createdDate;
+	}
 
 	public String getUserId()
 	{

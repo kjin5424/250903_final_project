@@ -22,7 +22,77 @@ public class GroupJoinDTO
 	// 추가 속성
 	private UserDTO user;				// 신청한 유저 정보
 	private GroupDTO group;				// 신청 대상 모임 정보
+	private String position;			// 모임 내 역할
+	private String totalActivity, attendanceActivity;	// 모임 소속 기간 내 전체 모임 활동과 참여한 활동 횟수		
+	private String totalChallenge, checkChallenge;		// 참여했던 도전과제와 완수 도전과제 개수
+	private String groupTitle;
+	private String quitDate;			// 모임 탈퇴 날짜
+	private String quitReason;			// 모임 탈퇴 사유
 	
+	public String getQuitReason()
+	{
+		return quitReason;
+	}
+	public void setQuitReason(String quitReason)
+	{
+		this.quitReason = quitReason;
+	}
+	public String getQuitDate()
+	{
+		return quitDate;
+	}
+	public void setQuitDate(String quitDate)
+	{
+		this.quitDate = quitDate;
+	}
+	public String getGroupTitle()
+	{
+		return groupTitle;
+	}
+	public void setGroupTitle(String groupTitle)
+	{
+		this.groupTitle = groupTitle;
+	}
+	public String getPosition()
+	{
+		return position;
+	}
+	public void setPosition(String position)
+	{
+		this.position = position;
+	}
+	public String getTotalActivity()
+	{
+		return totalActivity;
+	}
+	public void setTotalActivity(String totalActivity)
+	{
+		this.totalActivity = totalActivity;
+	}
+	public String getAttendanceActivity()
+	{
+		return attendanceActivity;
+	}
+	public void setAttendanceActivity(String attendanceActivity)
+	{
+		this.attendanceActivity = attendanceActivity;
+	}
+	public String getTotalChallenge()
+	{
+		return totalChallenge;
+	}
+	public void setTotalChallenge(String totalChallenge)
+	{
+		this.totalChallenge = totalChallenge;
+	}
+	public String getCheckChallenge()
+	{
+		return checkChallenge;
+	}
+	public void setCheckChallenge(String checkChallenge)
+	{
+		this.checkChallenge = checkChallenge;
+	}
 	// getter / setter 
 	public String getGroupJoinCode()
 	{

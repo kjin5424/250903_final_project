@@ -1,6 +1,23 @@
+<%@page import="java.time.LocalDate"%>
+<%@page import="com.test.mybatis.dto.UserDTO"%>
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!-- 타 회원이 조회하는 프로필 화면 생성 -->
 <%@ page language="java" %>
+<%
+	UserDTO userDto = (UserDTO)request.getAttribute("profile");
+	int ssn1 = Integer.parseInt(userDto.getSsn1().substring(0, 2));
+	int ssn2 = Integer.parseInt(userDto.getSsn2().substring(0, 1));
+	LocalDate localDate = LocalDate.now();
+	int currentYear = localDate.getYear() - 1;
+	
+	String ageRange = "";
+	
+	if (ssn2>=2)
+		ageRange = (((currentYear - (ssn1+1900))/10)*10) + "대";
+	else
+		ageRange = (((currentYear - (ssn1+2000))/10)*10) + "대";
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -186,7 +203,7 @@
         /* 활동 통계 */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(2, 1fr);
             gap: 20px;
         }
         .stat-card {
@@ -195,6 +212,7 @@
             background: #f8faf8;
             border-radius: 10px;
             border: 2px solid #e8f5e6;
+            width: 100%;
         }
         .stat-value {
             font-size: 28px;
@@ -394,23 +412,23 @@
             <div class="profile-top">
                 <div class="profile-avatar">👤</div>
                 <div class="profile-info">
-                    <h1 class="profile-name">행복한토끼99</h1>
+                    <h1 class="profile-name">${profile.nickname} </h1>
                     <div class="profile-meta">
                         <div class="meta-item">
                             <span class="meta-icon">📅</span>
-                            <span>가입일: 2024년 3월</span>
+                            <span>가입일: ${profile.createdDate} </span>
                         </div>
                         <div class="meta-item">
                             <span class="meta-icon">📍</span>
-                            <span>서울시 강남구</span>
+                            <span>${profile.address} </span>
                         </div>
                         <div class="meta-item">
                             <span class="meta-icon">🎂</span>
-                            <span>20대</span>
+                            <span><%=ageRange %></span>
                         </div>
                         <div class="meta-item">
                             <span class="meta-icon">👥</span>
-                            <span>활동 모임: 3개</span>
+                            <span>활동 모임: ${Integer.parseInt(profile.joinGroup) + Integer.parseInt(profile.myGroup)} </span>
                         </div>
                     </div>
                     <div class="profile-actions">
@@ -427,149 +445,97 @@
             <!-- 활동 통계 -->
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-value">3</div>
+                    <div class="stat-value">${profile.joinGroup }</div>
                     <div class="stat-label">참여 모임</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">1</div>
+                    <div class="stat-value">${profile.myGroup }</div>
                     <div class="stat-label">운영 모임</div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-value">89%</div>
-                    <div class="stat-label">평균 출석률</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value">8개월</div>
-                    <div class="stat-label">활동 기간</div>
-                </div>
             </div>
         </div>
 
-        <!-- 운영 중인 모임 -->
+		<c:if test="${not empty currentGroup}">
         <div class="section">
-            <h2 class="section-title">🎯 운영 중인 모임</h2>
+            <h2 class="section-title">🎯 활동 중인 모임</h2>
             <div class="history-list">
-                <div class="history-item">
+                
+                <c:forEach var="currentGroupDTO" items="${currentGroup }">
+                	<div class="history-item">
                     <div class="history-header">
                         <div class="history-title">
-                            <span>알고리즘 정복 스터디</span>
-                            <span class="role-badge badge-owner">모임장</span>
+                            <span>${currentGroupDTO.groupTitle }</span>
+                        	
+                        	<c:choose>
+                        	<c:when test="${currentGroupDTO.position.equals('모임장') }">   
+                            	<span class="role-badge badge-owner">${currentGroupDTO.position }</span>
+                            </c:when>
+                            <c:otherwise>
+                            	<span class="role-badge badge-member">${currentGroupDTO.position }</span>
+                            </c:otherwise>
+                        	</c:choose>
                         </div>
-                        <div class="history-period">2024-09-15 ~ 현재</div>
+                        <div class="history-period">${currentGroupDTO.joinDate } ~ </div>
                     </div>
                     <div class="history-stats">
                         <div class="stat-item">
-                            <div class="stat-item-value">92%</div>
+                            <div class="stat-item-value">
+                            	${String.format("%.1f", (Integer.parseInt(currentGroupDTO.attendanceActivity) 
+                            	/ Integer.parseInt(currentGroupDTO.totalActivity) * 100))}%
+                            </div>
                             <div class="stat-item-label">출석률</div>
                         </div>
                         <div class="stat-item">
-                            <div class="stat-item-value">5/5</div>
+                            <div class="stat-item-value">${currentGroupDTO.checkChallenge}/${currentGroupDTO.totalChallenge }</div>
                             <div class="stat-item-label">도전과제</div>
                         </div>
                         <div class="stat-item">
-                            <div class="stat-item-value">12회</div>
+                            <div class="stat-item-value">${currentGroupDTO.attendanceActivity }회</div>
                             <div class="stat-item-label">누적 활동</div>
                         </div>
                     </div>
-                </div>
+                	</div>
+                </c:forEach>
+                
             </div>
         </div>
-
-        <!-- 참여 중인 모임 -->
-        <div class="section">
-            <h2 class="section-title">📚 참여 중인 모임</h2>
-            <div class="history-list">
-                <div class="history-item">
-                    <div class="history-header">
-                        <div class="history-title">
-                            <span>영어 회화 스터디</span>
-                            <span class="role-badge badge-member">모임원</span>
-                        </div>
-                        <div class="history-period">2024-07-20 ~ 현재</div>
-                    </div>
-                    <div class="history-stats">
-                        <div class="stat-item">
-                            <div class="stat-item-value">88%</div>
-                            <div class="stat-item-label">출석률</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-item-value">3/4</div>
-                            <div class="stat-item-label">도전과제</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-item-value">15회</div>
-                            <div class="stat-item-label">누적 활동</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="history-item">
-                    <div class="history-header">
-                        <div class="history-title">
-                            <span>자바 스프링 부트 스터디</span>
-                            <span class="role-badge badge-member">모임원</span>
-                        </div>
-                        <div class="history-period">2024-06-10 ~ 현재</div>
-                    </div>
-                    <div class="history-stats">
-                        <div class="stat-item">
-                            <div class="stat-item-value">85%</div>
-                            <div class="stat-item-label">출석률</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-item-value">4/5</div>
-                            <div class="stat-item-label">도전과제</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-item-value">20회</div>
-                            <div class="stat-item-label">누적 활동</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 이전 모임 이력 -->
-       <!--  <div class="section">
+        </c:if>
+      	
+      	<c:if test="${not empty quitGroup}">
+       <div class="section">
             <h2 class="section-title">📜 이전 모임 이력</h2>
             <div class="history-list">
-                <div class="history-item">
+                <c:forEach var="quitGroupDTO" items="${quitGroup }">
+                	<div class="history-item">
                     <div class="history-header">
                         <div class="history-title">
-                            <span>코딩테스트 준비반</span>
-                            <span class="role-badge badge-member">모임원</span>
+                            <span>${quitGroupDTO.groupTitle }</span>
                         </div>
-                        <div class="history-period">2024-01-15 ~ 2024-05-30</div>
+                        <div class="history-period">${quitGroupDTO.joinDate } ~ ${quitGroupDTO.quitDate }</div>
                     </div>
                     <div class="history-stats">
                         <div class="stat-item">
-                            <div class="stat-item-value">95%</div>
+                            <div class="stat-item-value">
+                            	92%
+                            </div>
                             <div class="stat-item-label">출석률</div>
                         </div>
                         <div class="stat-item">
-                            <div class="stat-item-value">7/7</div>
+                            <div class="stat-item-value">
+                            	${quitGroupDTO.checkChallenge }/${quitGroupDTO.totalChallenge }
+                            </div>
                             <div class="stat-item-label">도전과제</div>
                         </div>
                         <div class="stat-item">
-                            <div class="stat-item-value">자진탈퇴</div>
+                            <div class="stat-item-value">${quitGroupDTO.quitReason }</div>
                             <div class="stat-item-label">탈퇴 사유</div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div> -->
-
-        <!-- 비공개 설정 예시 (조건부 표시) -->
-        <!-- 
-        <div class="section">
-            <h2 class="section-title">📚 참여 중인 모임</h2>
-            <div class="private-notice">
-                <div class="private-icon">🔒</div>
-                <div class="private-text">비공개 프로필</div>
-                <div class="private-subtext">이 회원은 모임 이력을 비공개로 설정했습니다</div>
+                </c:forEach>
             </div>
         </div>
-        -->
+		</c:if>
     </div>
 </body>
 </html>
