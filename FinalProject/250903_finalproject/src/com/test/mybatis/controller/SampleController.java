@@ -1,12 +1,18 @@
 package com.test.mybatis.controller;
 
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.test.mybatis.dao.IGroupDAO;
+import com.test.mybatis.dto.GroupDTO;
 import com.test.mybatis.dto.UserDTO;
 
 /* ========================
@@ -17,10 +23,32 @@ import com.test.mybatis.dto.UserDTO;
 @Controller
 public class SampleController
 {
+	@Autowired
+	private SqlSession sqlSession;
+	
 	// 메인 페이지 임시 구동
 	@RequestMapping(value="/mainpage.do")
-	public String test()
+	public String test(Model model)
 	{
+		IGroupDAO dao = sqlSession.getMapper(IGroupDAO.class);
+		
+		try
+		{
+			ArrayList<GroupDTO> groupList = dao.groupList();
+			// 현재 인원 수 구하는 코드
+			for (GroupDTO dto : groupList)
+			{
+				String groupApplyCode = dto.getGroupApplyCode();
+				dto.setCurrentMemberCount(dao.groupMemberCount(groupApplyCode));
+			}
+			
+			model.addAttribute("groupList", groupList);
+			
+		} catch (Exception e)
+		{
+			System.out.println(e.toString());
+		}
+		
 		return "/WEB-INF/view/group/GroupList.jsp";
 	}
 	
@@ -41,7 +69,6 @@ public class SampleController
 		
 		return "";
 	}
-	
 	
 	
 	@RequestMapping(value="/sample.action", method=RequestMethod.GET)

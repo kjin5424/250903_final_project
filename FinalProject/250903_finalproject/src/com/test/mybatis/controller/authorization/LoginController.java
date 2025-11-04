@@ -63,12 +63,9 @@ public class LoginController
 			return "redirect:/loginpage.do";
 		}
 		else
-		{
-			System.out.println("신원 확인\nuserCode : " + findUser.getUserCode());
 			session.setAttribute("user", findUser);
-		}
 		
-		return "redirect:start.do";
+		return "redirect:mainpage.do";
 	}
 	
 	// 로그아웃
@@ -113,15 +110,6 @@ public class LoginController
 		
 		return "/WEB-INF/view/authorization/ajax/ValidEmail.jsp";
 		
-	}
-	
-	// 주민등록번호 중복 검사
-	@RequestMapping(value="/validateuniquessn.do")
-	public String validateUniqueSsn(Model model, UserDTO user)
-	{
-		ILoginDAO dao = sqlSession.getMapper(ILoginDAO.class);
-		
-		return "/WEB-INF/view/authorization/ajax/ValidSsn.jsp";
 	}
 	
 	// 회원가입
