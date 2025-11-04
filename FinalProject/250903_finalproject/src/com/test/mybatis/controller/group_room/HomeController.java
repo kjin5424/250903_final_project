@@ -21,15 +21,7 @@ public class HomeController
 	@RequestMapping(value="/home.do", method=RequestMethod.GET)
 	public String home(Model model)
 	{
-		
-		
 		return "/WEB-INF/view/group_room/Home.jsp";
-	}
-	
-	@RequestMapping(value="/postlist.do", method=RequestMethod.GET)
-	public String postList(Model model)
-	{
-		return "/WEB-INF/view/group_room/board/PostList.jsp";
 	}
 	
 	@RequestMapping(value="/challengelist.do", method=RequestMethod.GET)
@@ -106,26 +98,6 @@ public class HomeController
 	{
 		return "/WEB-INF/view/group_room/manage/Attendance.jsp";
 	}
-	
-	@RequestMapping(value="/writepost.do", method=RequestMethod.GET)
-	public String writePost(Model model)
-	{
-		return "/WEB-INF/view/group_room/board/WritePost.jsp";
-	}
-	
-	@RequestMapping(value="/postdetail.do", method=RequestMethod.GET)
-	public String announcement(Model model)
-	{
-		return "/WEB-INF/view/group_room/board/PostDetail.jsp";
-	}
-	
-	@RequestMapping(value="/editpost.do", method=RequestMethod.GET)
-	public String editPost(Model model)
-	{
-		return "/WEB-INF/view/group_room/board/EditPost.jsp";
-	}
-	
-	
 }
 
 
