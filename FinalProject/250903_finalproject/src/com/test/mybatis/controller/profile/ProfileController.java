@@ -1,11 +1,13 @@
 package com.test.mybatis.controller.profile;
 
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.test.mybatis.dao.IUserDAO;
 
@@ -30,13 +32,29 @@ public class ProfileController {
 		return "/WEB-INF/view/profile/Mypage.jsp";
 	}
 
-	@RequestMapping(value = "/myProfile.do", method = RequestMethod.GET)
-	public String profile(Model model, String myUserCode, String profileUserCode) {
+	@RequestMapping(value = "/profile.do", method = RequestMethod.GET)
+	public String profile(Model model,@RequestParam("readerUserCode") String readerUserCode,@RequestParam("targetUserCode") String targetUserCode) {
 		IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
 		
+		int relationCheck = dao.relationCheck(readerUserCode, targetUserCode);
 		
+		System.out.println("RELATION_CHECK : " + relationCheck);
 		
-		model.addAttribute("user", dao.myProfile(profileUserCode));
+		switch (relationCheck)
+		{
+			case 1: return "redirect:/profilemodify.do";
+			case 2: model.addAttribute("profile", dao.otherProfile(targetUserCode)); 
+					model.addAttribute("currentGroup", dao.currentGroupList(targetUserCode)); 
+					model.addAttribute("quitGroup", dao.quitGroupList(targetUserCode)); break;
+			case 3: model.addAttribute("profile", dao.otherProfile(targetUserCode)); 
+					model.addAttribute("currentGroup", sqlSession.selectList("com.test.mybatis.dao.IUserDAO.currentGroupList", targetUserCode)); 
+					model.addAttribute("quitGroup", sqlSession.selectList("com.test.mybatis.dao.IUserDAO.quitGroupList", targetUserCode)); break;
+			default: break;
+		}
+		
+		//sqlSession.selectList("com.example.mapper.UserMapper.getUserById", userId)
+		// Map<String, User> userMap = sqlSession.selectMap("com.example.mapper.UserMapper.getAllUsers", "userCode");
+		
 		
 		return "/WEB-INF/view/profile/Profile.jsp";
 	}
