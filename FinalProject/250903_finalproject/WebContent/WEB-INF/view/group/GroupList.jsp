@@ -105,154 +105,83 @@
 				<div class="section category-section">
 					<div class="section-header">
 						<h2 class="section-title">💻 IT</h2>
-						<span class="section-count">8</span>
 					</div>
-
-					<!-- 모임 카드 컨테이너 -->
-					<div class="meetings-container scroll-container" >
-						<!-- 모임 카드 1 -->
-						<div class="meeting-card" onclick="location.href='grouplistdetail.do'">
-							<div class="meeting-image">
-								💻 <span class="badge badge-recruiting badge-absolute">모집중</span>
-							</div>
-							<div class="meeting-info">
-								<h3 class="meeting-title">알고리즘 정복 스터디</h3>
-								<p class="meeting-description">매주 3문제씩 풀고 코드 리뷰하는 알고리즘
-									스터디입니다.</p>
-								<div class="meeting-meta">
-									<div class="meta-item">
-										<span class="meta-icon">👥</span> <span>8/10명</span>
+					
+					<div class="meetings-container scroll-container">
+						<!-- 모임 카드 컨테이너 -->
+						<c:forEach var="group" items="${groupList}">
+							<div class="meeting-card" 
+								onclick="location.href='grouplistdetail.do?groupCode=${group.groupApplyCode}'">
+								<div class="meeting-image">
+									<c:choose>
+										<c:when test="${group.savePath != null }">
+											<img src="<%=cp %>/img/group/${group.savePath}" />
+										</c:when>
+										<c:when test="${group.topicType eq '1'}">
+											📖
+										</c:when>
+										<c:when test="${group.topicType eq '2'}">
+											🌐
+										</c:when>
+										<c:when test="${group.topicType eq '3'}">
+											💻
+										</c:when>
+										<c:when test="${group.topicType eq '4'}">
+											🚀
+										</c:when>
+										<c:when test="${group.topicType eq '5'}">
+											📜
+										</c:when>
+										<c:when test="${group.topicType eq '6'}">
+											📝
+										</c:when>
+										<c:when test="${group.topicType eq '7'}">
+											🎨
+										</c:when>
+										<c:otherwise>
+											88
+										</c:otherwise>
+									</c:choose>
+									<c:choose>
+										<c:when test="${group.currentMemberCount < group.headCount}">
+											<span class="badge badge-recruiting badge-absolute">모집중</span>
+										</c:when>
+										<c:otherwise>
+											<span class="badge badge-recruiting badge-absolute">모집완료</span>
+										</c:otherwise>
+									</c:choose>
+								</div>
+								<div class="meeting-info" data-groupCode="${group.groupApplyCode }">
+									<h3 class="meeting-title">${group.groupTitle }</h3>
+									<p class="meeting-description">${group.groupContent }</p>
+									<div class="meeting-meta">
+										<div class="meta-item">
+											<span class="meta-icon">👥</span> <span>${group.currentMemberCount}/${group.headCount }명</span>
+										</div>
+										<div class="meta-item">
+											<span class="meta-icon">📅</span> <span>주기 : ${group.frequency }</span>
+										</div>
+										<div class="meta-item">
+											<span class="meta-icon">📍</span> <span>${group.onOff }</span><br>
+										</div>
+										<div class="meta-item">
+											<c:choose>
+												<c:when test="${group.region != null}">
+													<span>모임 지역 : ${group.region }</span>
+												</c:when>
+											</c:choose>
+										</div>
 									</div>
-									<div class="meta-item">
-										<span class="meta-icon">📅</span> <span>매주 월, 수 19:00</span>
-									</div>
-									<div class="meta-item">
-										<span class="meta-icon">📍</span> <span>온라인</span>
+									<div class="meeting-footer">
+										<div class="tags">
+											<!-- 하트 우측하단 용 공백 div -->
+											<!-- 삭제해도 무방 -->
+										</div>
+										<button class="favorite-btn inactive">♥</button>
 									</div>
 								</div>
-								<div class="meeting-footer">
-									<div class="tags">
-										<span class="tag">알고리즘</span> <span class="tag">Python</span>
-									</div>
-									<button class="favorite-btn inactive" >♥</button>
-								</div>
 							</div>
-						</div>
-
-						<!-- 모임 카드 2 -->
-						<div class="meeting-card">
-							<div class="meeting-image">
-								📖 <span class="lock-icon">🔒</span> <span
-									class="badge badge-applying badge-absolute">참여신청중</span>
-							</div>
-							<div class="meeting-info">
-								<h3 class="meeting-title">Java Spring 마스터</h3>
-								<p class="meeting-description">Spring Boot로 실전 프로젝트를 만들어보는
-									스터디</p>
-								<div class="meeting-meta">
-									<div class="meta-item">
-										<span class="meta-icon">👥</span> <span>5/8명</span>
-									</div>
-									<div class="meta-item">
-										<span class="meta-icon">📅</span> <span>매주 토 14:00</span>
-									</div>
-									<div class="meta-item">
-										<span class="meta-icon">📍</span> <span>강남역 스터디카페</span>
-									</div>
-								</div>
-								<div class="meeting-footer">
-									<div class="tags">
-										<span class="tag">Java</span> <span class="tag">Spring</span>
-									</div>
-									<button class="favorite-btn active">♥</button>
-								</div>
-							</div>
-						</div>
-
-						<!-- 모임 카드 3 -->
-						<div class="meeting-card">
-							<div class="meeting-image">
-								🎨 <span class="badge badge-closed badge-absolute">모집완료</span>
-							</div>
-							<div class="meeting-info">
-								<h3 class="meeting-title">React 실전 프로젝트</h3>
-								<p class="meeting-description">React로 실제 서비스를 만들어보는 프로젝트형
-									스터디</p>
-								<div class="meeting-meta">
-									<div class="meta-item">
-										<span class="meta-icon">👥</span> <span>6/6명</span>
-									</div>
-									<div class="meta-item">
-										<span class="meta-icon">📅</span> <span>매주 수 20:00</span>
-									</div>
-									<div class="meta-item">
-										<span class="meta-icon">📍</span> <span>온라인</span>
-									</div>
-								</div>
-								<div class="meeting-footer">
-									<div class="tags">
-										<span class="tag">React</span> <span class="tag">프론트엔드</span>
-									</div>
-									<button class="favorite-btn inactive">♥</button>
-								</div>
-							</div>
-						</div>
-
-						<!-- 모임 카드 4 -->
-						<div class="meeting-card">
-							<div class="meeting-image">
-								🗄️ <span class="badge badge-recruiting badge-absolute">모집중</span>
-							</div>
-							<div class="meeting-info">
-								<h3 class="meeting-title">데이터베이스 심화</h3>
-								<p class="meeting-description">MySQL, PostgreSQL 성능 최적화 스터디</p>
-								<div class="meeting-meta">
-									<div class="meta-item">
-										<span class="meta-icon">👥</span> <span>3/6명</span>
-									</div>
-									<div class="meta-item">
-										<span class="meta-icon">📅</span> <span>매주 목 19:30</span>
-									</div>
-									<div class="meta-item">
-										<span class="meta-icon">📍</span> <span>온라인</span>
-									</div>
-								</div>
-								<div class="meeting-footer">
-									<div class="tags">
-										<span class="tag">Database</span> <span class="tag">SQL</span>
-									</div>
-									<button class="favorite-btn active">♥</button>
-								</div>
-							</div>
-						</div>
-
-						<!-- 모임 카드 5 -->
-						<div class="meeting-card">
-							<div class="meeting-image">
-								🤖 <span class="badge badge-recruiting badge-absolute">모집중</span>
-							</div>
-							<div class="meeting-info">
-								<h3 class="meeting-title">AI/ML 입문반</h3>
-								<p class="meeting-description">파이썬으로 시작하는 머신러닝 기초 스터디</p>
-								<div class="meeting-meta">
-									<div class="meta-item">
-										<span class="meta-icon">👥</span> <span>7/10명</span>
-									</div>ㅊ
-									<div class="meta-item">
-										<span class="meta-icon">📅</span> <span>매주 화, 목 20:00</span>
-									</div>
-									<div class="meta-item">
-										<span class="meta-icon">📍</span> <span>온라인</span>
-									</div>
-								</div>
-								<div class="meeting-footer">
-									<div class="tags">
-										<span class="tag">AI</span> <span class="tag">머신러닝</span>
-									</div>
-									<button class="favorite-btn inactive">♥</button>
-								</div>
-							</div>
-						</div>
+						</c:forEach>
 					</div>
 				</div>
 
@@ -465,7 +394,6 @@
 						</div>
 					</div>
 				</div>
-
 			</div>
 		</div>
 	</div>
