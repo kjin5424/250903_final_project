@@ -44,11 +44,13 @@ public class ProfileController {
 		{
 			case 1: return "redirect:/profilemodify.do";
 			case 2: model.addAttribute("profile", dao.otherProfile(targetUserCode)); 
-					model.addAttribute("currentGroup", dao.currentGroupList(targetUserCode)); 
-					model.addAttribute("quitGroup", dao.quitGroupList(targetUserCode)); break;
+					model.addAttribute("currentGroup", sqlSession.selectList("com.test.mybatis.dao.IUserDAO.currentGroupList", targetUserCode)); 
+					model.addAttribute("quitGroup", sqlSession.selectList("com.test.mybatis.dao.IUserDAO.quitGroupList", targetUserCode)); 
+					model.addAttribute("relation", relationCheck); break;
 			case 3: model.addAttribute("profile", dao.otherProfile(targetUserCode)); 
 					model.addAttribute("currentGroup", sqlSession.selectList("com.test.mybatis.dao.IUserDAO.currentGroupList", targetUserCode)); 
-					model.addAttribute("quitGroup", sqlSession.selectList("com.test.mybatis.dao.IUserDAO.quitGroupList", targetUserCode)); break;
+					model.addAttribute("quitGroup", sqlSession.selectList("com.test.mybatis.dao.IUserDAO.quitGroupList", targetUserCode)); 
+					model.addAttribute("relation", relationCheck); break;
 			default: break;
 		}
 		

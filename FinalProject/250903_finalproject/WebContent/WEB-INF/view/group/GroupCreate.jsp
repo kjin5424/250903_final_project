@@ -422,7 +422,7 @@ function validateAndSubmit(event) {
         document.getElementById('groupCreateForm').submit();
     }
     
-    return false;
+    return true;
 }
 
 function loadDraft() {
@@ -495,11 +495,9 @@ function searchAddress() {
 		</div>
 
 		<div class="form-container">
-			<form id="groupCreateForm" action="${pageContext.request.contextPath}/groupcreatecomplete.do" method="post" enctype="multipart/form-data"
+			<form id="groupCreateForm" action="${pageContext.request.contextPath}/groupcreatecomplete.do" method="GET"
 				onsubmit="return validateAndSubmit(event)">
 
-				<!-- Hidden proposerCode -->
-				<input type="hidden" name="proposerCode" value="UC00000007">
 
 				<!-- 기본 정보 -->
 				<div class="form-section">

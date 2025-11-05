@@ -2,6 +2,8 @@ package com.test.mybatis.dao;
 
 import java.util.ArrayList;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.test.mybatis.dto.GroupDTO;
 
 public interface IGroupDAO
@@ -19,13 +21,15 @@ public interface IGroupDAO
 	public GroupDTO groupDetail(String groupApplyCode);
 	
 	// 모임 개설 신청
-	public int groupApply(GroupDTO dto);
+	public void groupApply(GroupDTO dto);
 	
 	// 모임 내용 수정
 	public String groupModify(GroupDTO dto);
 	
 	// 사용자의 전체 신청 내역 조회
 	
+	// 모임 홈에서 출력할 내용들
+	public GroupDTO groupHomeGroupInfo(@Param("userCode") String userCode,@Param("groupApplyCode") String groupApplyCode);
 	
 	
 }

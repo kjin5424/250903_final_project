@@ -6,11 +6,11 @@ public class GroupDTO
 	private String proposerCode;	// 신청자 코드
 	private String groupTitle;		// 가장 최신값의 제목
 	private String groupContent;	// 가장 최신값의 모임 설명
-	private String topicType;		// 가장 최신 값 모임 주제의 타입
+	private int topicType;		// 가장 최신 값 모임 주제의 타입
 	private String topic;			// 가장 최신 값의 모임 주제
-	private String youthFriendlyType;// 청소년 환영 타입  
+	private int youthFriendlyType;// 청소년 환영 타입  
 	private String youthFriendly;	// 청소년 환영 여부
-	private String genderType;		// 동성 제한 타입
+	private int genderType;		// 동성 제한 타입
 	private String gender;			// 동성 제한 여부
 	private String questionCode;	// 가장 최신값의 가입 질문의 코드
 	private String question;		// 가장 최신 값의 쌩 가입질문
@@ -21,15 +21,60 @@ public class GroupDTO
 	private int groupLevel;			// 가장 최신의 모임 레벨 = 역대 가장 높은 레벨
 	private int maxCount;			// 레벨 비례 최대 인원 수
 	private String region;			// 가장 최신 모임 지역
-	private String onOffType;		// 온오프 코드
+	private int onOffType;		// 온오프 코드
 	private String onOff;			// 온오프 내용
-	private String frequencyType;	// 빈도 타입에 대한 코드
+	private int frequencyType;	// 빈도 타입에 대한 코드
 	private String frequency;		// 빈도 타입
-	private String difficultyType;	// 난이도 코드
+	private int difficultyType;	// 난이도 코드
 	private String difficulty;		// 난이도
 	private String savePath;		// 이미지 저장 경로
 	private String createdDate;		// 모임 개설 신청일
 	private String openDate;		// 정식 개설일
+	private String joinDate;		// 가입일
+	private String totalActivity;	// 모임 총 활동횟수
+	
+	public String getTotalActivity()
+	{
+		return totalActivity;
+	}
+
+	public void setTotalActivity(String totalActivity)
+	{
+		this.totalActivity = totalActivity;
+	}
+
+	public String getJoinDate()
+	{
+		return joinDate;
+	}
+
+	public void setJoinDate(String joinDate)
+	{
+		this.joinDate = joinDate;
+	}
+
+	public String getCheckChallenge()
+	{
+		return checkChallenge;
+	}
+
+	public void setCheckChallenge(String checkChallenge)
+	{
+		this.checkChallenge = checkChallenge;
+	}
+
+	public String getTotalAttendance()
+	{
+		return totalAttendance;
+	}
+
+	public void setTotalAttendance(String totalAttendance)
+	{
+		this.totalAttendance = totalAttendance;
+	}
+
+	private String checkChallenge;	// 모임의 도전과제 총 달성률
+	private String totalAttendance;	// 모임의 총 출석률
 	
 	private int currentMemberCount;	// 현재 멤버 인원수
 
@@ -73,12 +118,12 @@ public class GroupDTO
 		this.groupContent = groupContent;
 	}
 
-	public String getTopicType()
+	public int getTopicType()
 	{
 		return topicType;
 	}
 
-	public void setTopicType(String topicType)
+	public void setTopicType(int topicType)
 	{
 		this.topicType = topicType;
 	}
@@ -93,12 +138,12 @@ public class GroupDTO
 		this.topic = topic;
 	}
 
-	public String getYouthFriendlyType()
+	public int getYouthFriendlyType()
 	{
 		return youthFriendlyType;
 	}
 
-	public void setYouthFriendlyType(String youthFriendlyType)
+	public void setYouthFriendlyType(int youthFriendlyType)
 	{
 		this.youthFriendlyType = youthFriendlyType;
 	}
@@ -113,12 +158,12 @@ public class GroupDTO
 		this.youthFriendly = youthFriendly;
 	}
 
-	public String getGenderType()
+	public int getGenderType()
 	{
 		return genderType;
 	}
 
-	public void setGenderType(String genderType)
+	public void setGenderType(int genderType)
 	{
 		this.genderType = genderType;
 	}
@@ -223,12 +268,12 @@ public class GroupDTO
 		this.region = region;
 	}
 
-	public String getOnOffType()
+	public int getOnOffType()
 	{
 		return onOffType;
 	}
 
-	public void setOnOffType(String onOffType)
+	public void setOnOffType(int onOffType)
 	{
 		this.onOffType = onOffType;
 	}
@@ -243,12 +288,12 @@ public class GroupDTO
 		this.onOff = onOff;
 	}
 
-	public String getFrequencyType()
+	public int getFrequencyType()
 	{
 		return frequencyType;
 	}
 
-	public void setFrequencyType(String frequencyType)
+	public void setFrequencyType(int frequencyType)
 	{
 		this.frequencyType = frequencyType;
 	}
@@ -263,12 +308,12 @@ public class GroupDTO
 		this.frequency = frequency;
 	}
 
-	public String getDifficultyType()
+	public int getDifficultyType()
 	{
 		return difficultyType;
 	}
 
-	public void setDifficultyType(String difficultyType)
+	public void setDifficultyType(int difficultyType)
 	{
 		this.difficultyType = difficultyType;
 	}
