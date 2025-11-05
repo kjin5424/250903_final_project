@@ -1227,7 +1227,15 @@
 
         window.onload = function() {
 
-            showTab('my-groups');
+        	 const urlParams = new URLSearchParams(window.location.search);
+        	    const tabParam = urlParams.get('tab');
+        	    
+        	    // tab 파라미터가 있으면 해당 탭으로, 없으면 기본 탭으로
+        	    if (tabParam) {
+        	        showTab(tabParam);
+        	    } else {
+        	        showTab('my-groups');
+        	    }
 
         }
 

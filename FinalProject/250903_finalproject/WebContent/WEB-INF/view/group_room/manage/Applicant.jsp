@@ -921,6 +921,7 @@
             <div class="applicant-list">
 
                 <!-- 신청자 1 -->
+                <c:forEach var="applicant" items="${applicantList }">
 
                 <div class="applicant-card">
 
@@ -928,11 +929,11 @@
 
                         <div class="applicant-avatar">👤</div>
 
-                        <div class="applicant-info">
+                        <div class="appli 	cant-info">
 
                             <div class="applicant-name-row">
 
-                                <span class="applicant-name">백엔드개발자</span>
+                                <span class="applicant-name">${applicant.user.name }</span>
 
                                 <span class="applicant-badge">신규 신청</span>
 
@@ -944,7 +945,7 @@
 
                                     <span>📅</span>
 
-                                    <span>신청일: 2024-10-12</span>
+                                    <span>신청일: ${applicant.joinDate }</span>
 
                                 </div>
 
@@ -952,15 +953,15 @@
 
                                     <span>📍</span>
 
-                                    <span>서울 강남구</span>
+                                    <span>${applicant.user.location }</span>
 
                                 </div>
 
                                 <div class="applicant-meta-item">
 
-                                    <!-- <span>🎂</span> -->
+                                     <span>🎂</span> 
 
-                                   <!--  <span>20대</span> -->
+                                    <span>연령대</span> 
 
                                 </div>
 
@@ -986,7 +987,7 @@
 
                             <div class="info-content">
 
-                                알고리즘 공부를 체계적으로 하고 싶어서 신청했습니다. 함께 성장하는 스터디 문화를 만들고 싶습니다!
+                                ${applicant.selfIntro }
 
                             </div>
 
@@ -994,53 +995,7 @@
 
 
 
-                        <div class="info-section">
-
-                            <div class="info-section-title">📊 활동 이력</div>
-
-                            <div class="activity-history">
-
-                                <div class="history-item">
-
-                                    <div>
-
-                                        <div class="history-group">자바 스프링 스터디</div>
-
-                                        <div class="history-period">2024.03 ~ 2024.08 (6개월)</div>
-
-                                    </div>
-
-                                    <div class="history-stats">
-
-                                        출석률: <span class="stat-good">95%</span>
-
-                                    </div>
-
-                                </div>
-
-                                <div class="history-item">
-
-                                    <div>
-
-                                        <div class="history-group">코딩테스트 준비반</div>
-
-                                        <div class="history-period">2024.01 ~ 2024.02 (2개월)</div>
-
-                                    </div>
-
-                                    <div class="history-stats">
-
-                                        출석률: <span class="stat-good">88%</span>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
+                      
 
                         <div class="info-section">
 
@@ -1052,7 +1007,7 @@
 
                                     <div class="question">Q1. 어떤 프로그래밍 언어를 주로 사용하시나요?</div>
 
-                                    <div class="answer">Java와 Python을 주로 사용합니다. 최근에는 Java로 백엔드 개발을 공부하고 있습니다.</div>
+                                    <div class="answer">${applicant.questionAnswer }</div>
 
                                 </div>
 
@@ -1060,7 +1015,7 @@
 
                         </div>
 
-
+				
 
                         <div class="applicant-actions" style="margin-top: 20px;">
 
@@ -1083,6 +1038,7 @@
                 </div>
 
 
+                </c:forEach>
 
                 <!-- 신청자 2 -->
 

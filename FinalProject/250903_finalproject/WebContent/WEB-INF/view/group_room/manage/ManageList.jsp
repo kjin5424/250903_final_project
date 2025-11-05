@@ -335,8 +335,8 @@
                     <div class="stat-label">현재 모임원</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">3</div>
-                    <div class="stat-label">대기 중인 신청</div>
+                    <div class="stat-value">12</div>
+                    <div class="stat-label">누적 활동</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-value">85%</div>
@@ -377,6 +377,22 @@
                     <div class="card-title">출석 관리</div>
                     <div class="card-description">
                         모임원의 출석/결석을 체크하고 출석률을 관리합니다.
+                    </div>
+                    <span class="permission-badge">부모임장 이상</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 콘텐츠 관리 -->
+        <div class="section">
+            <div class="section-title">📢 콘텐츠 관리</div>
+            <div class="section-divider"></div>
+            <div class="management-grid">
+                <div class="management-card" onclick="location.href='post_management.do'">
+                    <div class="card-icon">📄</div>
+                    <div class="card-title">게시물/댓글 관리</div>
+                    <div class="card-description">
+                        부적절한 게시물과 댓글을 삭제하고 공지사항을 관리합니다.
                     </div>
                     <span class="permission-badge">부모임장 이상</span>
                 </div>

@@ -36,11 +36,6 @@ public class ManagerGroupController
 		return "/WEB-INF/view/manager/group/GroupModify.jsp";
 	}
 	
-	@RequestMapping(value="/groupcreate.do", method=RequestMethod.GET)
-	public String groupCreate(Model model)
-	{
-		return "/WEB-INF/view/group/GroupCreate.jsp";
-	}
 	
 	@RequestMapping(value="/beforegroupcreate.do", method=RequestMethod.GET)
 	public String beforeGroupCreate(Model model)

@@ -19,7 +19,7 @@ public interface IGroupDAO
 	public GroupDTO groupDetail(String groupApplyCode);
 	
 	// 모임 개설 신청
-	public String groupApply(GroupDTO dto);
+	public int groupApply(GroupDTO dto);
 	
 	// 모임 내용 수정
 	public String groupModify(GroupDTO dto);
