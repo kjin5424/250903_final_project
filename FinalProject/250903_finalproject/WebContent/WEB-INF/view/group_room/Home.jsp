@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!-- 모임 홈 화면 생성 -->
 <!DOCTYPE html>
 <html lang="ko">
@@ -560,8 +561,8 @@
         <div class="group-header">
             <div class="group-header-top">
                 <div class="group-title-area">
-                    <h1 class="group-title">알고리즘 정복 스터디</h1>
-                    <button class="group-level" onclick="location.href='level.do'" title="레벨 현황을 자세히 확인할 수 있어요">Lv.3</button>
+                    <h1 class="group-title">${groupInfo.groupTitle }</h1>
+                    <button class="group-level" onclick="location.href='level.do'" title="레벨 현황을 자세히 확인할 수 있어요">Lv.${groupInfo.groupLevel }</button>
                 </div>
                 <div class="group-actions">
                     <button class="btn-header" onclick="location.href='postlist.do'">📋 게시판</button>
@@ -576,30 +577,42 @@
             <div class="group-dates">
                 <div class="date-item">
                     <span class="date-icon">🎉</span>
-                    <span class="date-label">모임 시작일:</span>
-                    <span class="date-value">2024년 8월 15일</span>
+                    
+                    <c:choose>
+                    <c:when test="${not empty groupInfo.openDate}">
+                    	<span class="date-label">모임 시작일:</span>
+                    	<span class="date-value">${groupInfo.openDate }</span>
+                    </c:when>
+                    <c:otherwise>
+                    	<span class="date-label">모임 개설신청일:</span>
+                    	<span class="date-value">${groupInfo.createdDate }</span>
+                    </c:otherwise>
+                    </c:choose>
+                    
                 </div>
-                <div class="date-item">
-                    <span class="date-icon">👋</span>
-                    <span class="date-label">내 가입일:</span>    
-                    <span class="date-value">2024년 9월 1일</span>
-                </div>
+                <c:if test="${not empty groupInfo.joinDate}">
+	                <div class="date-item">
+	                    <span class="date-icon">👋</span>
+	                    <span class="date-label">내 가입일:</span>    
+	                    <span class="date-value">${groupInfo.joinDate }</span>
+	                </div>
+                </c:if>
             </div>
             <div class="group-stats">
                 <div class="stat-card">
-                    <div class="stat-value">7/10</div>
+                    <div class="stat-value">${groupInfo.currentMemberCount }/${groupInfo.headCount }</div>
                     <div class="stat-label">모임원</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">85%</div>
+                    <div class="stat-value">${groupInfo.totalAttendance }</div>
                     <div class="stat-label">전체 출석률</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">78%</div>
+                    <div class="stat-value">${groupInfo.checkChallenge }</div>
                     <div class="stat-label">도전과제 달성률</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">12회</div>
+                    <div class="stat-value">${groupInfo.totalActivity }</div>
                     <div class="stat-label">누적 활동</div>
                 </div>
             </div>
