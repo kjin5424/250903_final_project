@@ -113,9 +113,9 @@
             }
 
             if (confirm('이 모임에 가입 신청하시겠습니까?')) {
-                alert('가입 신청이 완료되었습니다!\n모임장의 승인을 기다려주세요.');
+                
                 // JS에서 바로 이동
-                window.location.href = 'grouplist.do';
+                window.location.href = 'applicationcomplete.do';
             }
         }
 

@@ -389,7 +389,9 @@ function previewImage(event) {
     }
 }
 
-function validatePassword() {
+function validateAndSubmit(event) {
+    event.preventDefault();
+    
     const title = document.getElementById("title").value.trim();
     if (!title) {
         alert("모임 이름을 입력해주세요.");
@@ -415,22 +417,12 @@ function validatePassword() {
         }
     }
 
-    // 필요하면 다른 필수 항목 체크 추가 가능
-    clearDraft();
-    return true;
-}
-
-function saveDraft() {
-    const form = document.querySelector("form");
-    const formData = new FormData(form);
-    const draft = {};
-
-    formData.forEach((value, key) => {
-        draft[key] = value;
-    });
-
-    localStorage.setItem("groupDraft", JSON.stringify(draft));
-    alert("입력한 내용이 임시저장되었습니다 ✅");
+    if (confirm('모임 개설을 신청하시겠습니까?')) {
+        clearDraft();
+        document.getElementById('groupCreateForm').submit();
+    }
+    
+    return false;
 }
 
 function loadDraft() {
@@ -464,8 +456,7 @@ window.onload = function() {
 }
 </script>
 
-<script
-	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
 function searchAddress() {
     new daum.Postcode({
@@ -479,41 +470,44 @@ function searchAddress() {
 </head>
 
 <body>
-	<!-- 네비게이션 바 -->
 	<nav class="navbar">
 		<div class="nav-left">
 			<div class="logo-tab">
 				<span>로고 들어갈 자리</span>
 			</div>
-			<a href="?page=notice" class="tab">공지사항</a> <a href="?page=groups"
-				class="tab">모임구경</a> <a href="?page=creategroup" class="tab active">모임
-				개설</a> <a href="?page=mygroups" class="tab">내 모임</a>
+			<a href="?page=notice" class="tab">공지사항</a> 
+			<a href="?page=groups" class="tab">모임구경</a> 
+			<a href="?page=creategroup" class="tab active">모임 개설</a> 
+			<a href="?page=mygroups" class="tab">내 모임</a>
 		</div>
 		<div class="nav-right">
-			<a href="mypage.jsp" class="profile-btn"> <span>👤</span> <span>마이페이지</span>
+			<a href="mypage.jsp" class="profile-btn"> 
+				<span>👤</span> 
+				<span>마이페이지</span>
 			</a>
 		</div>
 	</nav>
 
 	<div class="container">
-		<!-- 페이지 헤더 -->
 		<div class="page-header">
 			<h1 class="page-title">✨ 새로운 모임 개설하기</h1>
 			<p class="page-subtitle">함께 성장할 멋진 모임을 만들어보세요!</p>
 		</div>
 
-		<!-- 폼 컨테이너 -->
 		<div class="form-container">
-			<form action="mypage.do" method="get" enctype="multipart/form-data"
-				onsubmit="return validatePassword()">
+			<form id="groupCreateForm" action="${pageContext.request.contextPath}/groupcreatecomplete.do" method="post" enctype="multipart/form-data"
+				onsubmit="return validateAndSubmit(event)">
+
+				<!-- Hidden proposerCode -->
+				<input type="hidden" name="proposerCode" value="UC00000007">
 
 				<!-- 기본 정보 -->
 				<div class="form-section">
 					<div class="section-title">📋 기본 정보</div>
 
 					<div class="form-group">
-						<label class="form-label">모임 이름</label> <input type="text"
-							class="form-input" id="title" name="title"
+						<label class="form-label">모임 이름</label> 
+						<input type="text" class="form-input" id="title" name="groupTitle"
 							placeholder="모임 이름을 입력하세요" required>
 						<div class="tip">모임 이름은 중복 가능하며, 간결하고 기억하기 쉽게 작성하세요.</div>
 					</div>
@@ -521,10 +515,9 @@ function searchAddress() {
 					<div class="form-group">
 						<label class="form-label">모임 이미지</label>
 						<div class="image-upload-area">
-							<input type="file" id="image" name="image" accept="image/*"
+							<input type="file" id="image" name="savePath" accept="image/*"
 								onchange="previewImage(event)" style="margin-bottom: 10px;">
-							<div class="tip" style="justify-content: center;">이미지가 없으면
-								기본 이미지가 사용됩니다.</div>
+							<div class="tip" style="justify-content: center;">이미지가 없으면 기본 이미지가 사용됩니다.</div>
 						</div>
 						<img id="preview" src="#" alt="이미지 미리보기">
 					</div>
@@ -533,38 +526,35 @@ function searchAddress() {
 						<label class="form-label">카테고리</label>
 						<div class="radio-group">
 							<div class="radio-item">
-								<input type="radio" id="category_reading" name="category"
-									value="독서" checked> <label for="category_reading">📚
-									독서</label>
+								<input type="radio" id="category_reading" name="topicType" value="1" checked> 
+								<label for="category_reading">📚 독서</label>
 							</div>
 							<div class="radio-item">
-								<input type="radio" id="category_language" name="category"
-									value="어학"> <label for="category_language">🗣️
-									어학</label>
+								<input type="radio" id="category_language" name="topicType" value="2"> 
+								<label for="category_language">🗣️ 어학</label>
 							</div>
 							<div class="radio-item">
-								<input type="radio" id="category_it" name="category" value="IT">
+								<input type="radio" id="category_it" name="topicType" value="3">
 								<label for="category_it">💻 IT</label>
 							</div>
 							<div class="radio-item">
-								<input type="radio" id="category_startup" name="category"
-									value="창업·취업"> <label for="category_startup">💼
-									창업·취업</label>
+								<input type="radio" id="category_startup" name="topicType" value="4"> 
+								<label for="category_startup">💼 창업·취업</label>
 							</div>
 							<div class="radio-item">
-								<input type="radio" id="category_cert" name="category"
-									value="자격증"> <label for="category_cert">📜 자격증</label>
+								<input type="radio" id="category_cert" name="topicType" value="5"> 
+								<label for="category_cert">📜 자격증</label>
 							</div>
 							<div class="radio-item">
-								<input type="radio" id="category_exam" name="category"
-									value="시험"> <label for="category_exam">✏️ 시험</label>
+								<input type="radio" id="category_exam" name="topicType" value="6"> 
+								<label for="category_exam">✏️ 시험</label>
 							</div>
 							<div class="radio-item">
-								<input type="radio" id="category_hobby" name="category"
-									value="취미"> <label for="category_hobby">🎨 취미</label>
+								<input type="radio" id="category_hobby" name="topicType" value="7"> 
+								<label for="category_hobby">🎨 취미</label>
 							</div>
 							<div class="radio-item">
-								<input type="radio" id="category_etc" name="category" value="기타">
+								<input type="radio" id="category_etc" name="topicType" value="8">
 								<label for="category_etc">📦 기타</label>
 							</div>
 						</div>
@@ -572,7 +562,7 @@ function searchAddress() {
 
 					<div class="form-group">
 						<label class="form-label">상세 내용</label>
-						<textarea class="form-textarea" name="description" rows="5"
+						<textarea class="form-textarea" name="groupContent" rows="5"
 							placeholder="모임에 대한 자세한 설명을 작성하세요"></textarea>
 					</div>
 				</div>
@@ -583,16 +573,18 @@ function searchAddress() {
 
 					<div class="form-group">
 						<label class="form-label">모임 형태</label>
-						<div class="checkbox-group">
-							<div class="checkbox-item">
-								<input type="checkbox" id="online" name="meeting_type"
-									value="온라인" checked onclick="toggleRegion()"> <label
-									for="online">💻 온라인</label>
+						<div class="radio-group">
+							<div class="radio-item">
+								<input type="radio" id="online" name="onOffType" value="1" checked onclick="toggleRegion()"> 
+								<label for="online">💻 온라인</label>
 							</div>
-							<div class="checkbox-item">
-								<input type="checkbox" id="offline" name="meeting_type"
-									value="오프라인" onclick="toggleRegion()"> <label
-									for="offline">🏢 오프라인</label>
+							<div class="radio-item">
+								<input type="radio" id="offline" name="onOffType" value="2" onclick="toggleRegion()"> 
+								<label for="offline">🏢 오프라인</label>
+							</div>
+							<div class="radio-item">
+								<input type="radio" id="both" name="onOffType" value="3" onclick="toggleRegion()"> 
+								<label for="both">🌐 온오프 병행</label>
 							</div>
 						</div>
 					</div>
@@ -602,21 +594,21 @@ function searchAddress() {
 							<label class="form-label">주소 검색</label>
 							<div class="address-search-wrapper">
 								<input type="text" class="form-input" id="roadAddress"
-									name="roadAddress" placeholder="주소 검색 버튼을 눌러주세요" readonly>
+									name="region" placeholder="주소 검색 버튼을 눌러주세요" readonly>
 								<button type="button" class="btn-search"
 									onclick="searchAddress()">🔍 주소 검색</button>
 							</div>
 						</div>
 
-						<div class="form-group">
-							<label class="form-label">우편번호</label> <input type="text"
-								class="form-input" id="postcode" name="postcode" readonly>
+						<div class="form-group" style="display:none;">
+							<label class="form-label">우편번호</label> 
+							<input type="text" class="form-input" id="postcode" name="postcode" readonly>
 						</div>
 					</div>
 
 					<div class="form-group">
-						<label class="form-label">모임 빈도</label> <select
-							class="form-select" name="frequency">
+						<label class="form-label">모임 빈도</label> 
+						<select class="form-select" name="frequencyType">
 							<option value="1">1년</option>
 							<option value="2">반기</option>
 							<option value="3">분기</option>
@@ -634,31 +626,30 @@ function searchAddress() {
 					<div class="section-title">👥 참여 제한</div>
 
 					<div class="form-group">
-						<label class="form-label">청소년 환영</label> <select
-							class="form-select" name="teen_welcome">
-							<option value="yes">예</option>
-							<option value="no" selected>아니오</option>
+						<label class="form-label">청소년 환영</label> 
+						<select class="form-select" name="youthFriendlyType">
+							<option value="1">예</option>
+							<option value="2" selected>아니오</option>
 						</select>
 						<div id="teenWarning" class="tip-red">
-							❗ 청소년 환영을 선택하지 않으면 청소년은 가입할 수 없습니다. 청소년 환영 시, 모임 종료 시간은 오후 10시
-							이후로 설정할 수 없습니다.</div>
-
+							❗ 청소년 환영을 선택하지 않으면 청소년은 가입할 수 없습니다. 청소년 환영 시, 모임 종료 시간은 오후 10시 이후로 설정할 수 없습니다.
+						</div>
 					</div>
 
 					<div class="form-group">
-						<label class="form-label">성별 제한</label> <select
-							class="form-select" name="gender_limit">
-							<option value="none" selected>제한 없음</option>
-							<option value="same">동일 성별만</option>
+						<label class="form-label">성별 제한</label> 
+						<select class="form-select" name="genderType">
+							<option value="1" selected>제한 없음</option>
+							<option value="2">동일 성별만</option>
 						</select>
 					</div>
 
 					<div class="form-group">
-						<label class="form-label">학습 난이도</label> <select
-							class="form-select" name="difficulty">
-							<option value="상">상 (고급)</option>
-							<option value="중" selected>중 (중급)</option>
-							<option value="하">하 (초급)</option>
+						<label class="form-label">학습 난이도</label> 
+						<select class="form-select" name="difficultyType">
+							<option value="1">상 (고급)</option>
+							<option value="2" selected>중 (중급)</option>
+							<option value="3">하 (초급)</option>
 						</select>
 					</div>
 				</div>
@@ -671,7 +662,7 @@ function searchAddress() {
 						<label class="form-label">가입 질문 (선택사항)</label>
 						<div class="question-container">
 							<div class="question-item">
-								<input type="text" class="form-input" name="join_question"
+								<input type="text" class="form-input" name="question"
 									placeholder="예: 이 모임에 참여하려는 이유는 무엇인가요?">
 							</div>
 						</div>
@@ -680,13 +671,13 @@ function searchAddress() {
 
 					<div class="form-group">
 						<label class="form-label">모임 내 주의사항/규칙</label>
-						<textarea class="form-textarea" name="rules" rows="3"
+						<textarea class="form-textarea" name="rule" rows="3"
 							placeholder="모임원들이 지켜야 할 규칙이나 주의사항을 작성하세요"></textarea>
 					</div>
 
 					<div class="form-group">
-						<label class="form-label">투표 미참가 시 탈퇴 기준</label> <select
-							class="form-select" name="vote_absence">
+						<label class="form-label">투표 미참가 시 탈퇴 기준</label> 
+						<select class="form-select" name="kickOut">
 							<option value="1">1회</option>
 							<option value="2">2회</option>
 							<option value="3">3회</option>
@@ -702,8 +693,8 @@ function searchAddress() {
 					</div>
 
 					<div class="form-group">
-						<label class="form-label">모임 공개 설정</label> <select
-							class="form-select" id="privacy" name="privacy"
+						<label class="form-label">모임 공개 설정</label> 
+						<select class="form-select" id="privacy" name="privacy"
 							onchange="togglePassword()">
 							<option value="public" selected>🌐 공개</option>
 							<option value="private">🔒 비공개 (비밀번호 필요)</option>
@@ -712,22 +703,19 @@ function searchAddress() {
 
 					<div id="passwordDiv" class="password-section">
 						<div class="form-group">
-							<label class="form-label">비밀번호 설정</label> <input type="password"
-								class="form-input" id="password" name="password"
+							<label class="form-label">비밀번호 설정</label> 
+							<input type="password" class="form-input" id="password" name="password"
 								placeholder="비밀번호 입력">
 						</div>
 						<div class="form-group">
-							<label class="form-label">비밀번호 확인</label> <input type="password"
-								class="form-input" id="passwordConfirm" name="passwordConfirm"
+							<label class="form-label">비밀번호 확인</label> 
+							<input type="password" class="form-input" id="passwordConfirm" name="passwordConfirm"
 								placeholder="비밀번호 다시 입력">
 						</div>
 					</div>
 				</div>
 
-				<!-- 버튼 -->
 				<div class="button-group">
-					<button type="button" class="btn-draft" onclick="saveDraft()">
-						💾 임시저장</button>
 					<button type="submit" class="btn-submit">✨ 모임 개설하기</button>
 				</div>
 			</form>

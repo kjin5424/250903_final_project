@@ -131,5 +131,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  	AND RA.ANSWER_TYPE=1
 		  	AND QM.JOIN_CODE IS NULL
 	</select>
+	
+	<insert id="groupApply" parameterType="com.test.mybatis.dto.GroupDTO" statementType="CALLABLE">
+		{CALL PRC_GROUP_APPLY_INSERT(#{proposerCode, jdbcType=VARCHAR}, #{onOffType, jdbcType=INTEGER}, #{frequencyType, jdbcType=INTEGER}, #{difficultyType, jdbcType=INTEGER}, #{savePath, jdbcType=VARCHAR},#{groupTitle, jdbcType=VARCHAR},#{groupContent, jdbcType=VARCHAR}, #{topicType, jdbcType=INTEGER}, #{youthFriendlyType, jdbcType=INTEGER}, #{genderType, jdbcType=INTEGER}, #{question, jdbcType=VARCHAR}, #{rule, jdbcType=VARCHAR}, #{kickOut, jdbcType=INTEGER}, #{password, jdbcType=VARCHAR}, #{region, jdbcType=VARCHAR})}
+	</insert>
 
 </mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

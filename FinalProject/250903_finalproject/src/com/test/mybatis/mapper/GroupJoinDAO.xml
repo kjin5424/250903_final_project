@@ -4,13 +4,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.test.mybatis.dao.IGroupJoinDAO">
 
+	<!-- insert 유저가 특정 모임에 가입 신청 -->
 	<insert id="insertGroupJoin" parameterType="com.test.mybatis.dto.GroupJoinDTO">
 		EXEC PRC_JOIN_TABLE_INSERT(
-			#{userCode}
+			#{userCode jdbcType=VARCHAR}
 			, #{groupJoinCode}
 			, #{selfIntro}
 			, #{answer}
+			)
 	</insert>
+	
+	<!-- 가입 신청 상세 조회 -->
+	<select id="selectGroupJoinById" resultType="com.test.mybatis.dto.GroupJoinDTO">
+		SELECT UI.NICKNAME AS NICKNAME, J.CREATED_DATE AS REQUESTDATE
+	     , J.INTRODUCE AS INTRODUCE, G.GROUP_APPLY_CODE AS GROUPCODE
+	     , J.JOIN_CODE AS JOINCODE
+	FROM GROUP_APPLY G
+	JOIN JOIN_TABLE J ON G.GROUP_APPLY_CODE = J.GROUP_APPLY_CODE
+	JOIN USER_TABLE UT ON J.USER_CODE = UT.USER_CODE
+	JOIN USER_INFO UI ON UT.USER_ID = UI.USER_ID
+	LEFT JOIN REQUEST_ANSWER RA ON J.JOIN_CODE = RA.JOIN_CODE
+	LEFT JOIN ANSWER_TYPE ANS ON RA.ANSWER_TYPE = ANS.ANSWER_TYPE
+	LEFT JOIN REPORT_JOIN_REQUEST RJR ON RJR.JOIN_CODE = J.JOIN_CODE
+	LEFT JOIN REPORT_INTRODUCE RI ON RI.JOIN_CODE = J.JOIN_CODE
+	WHERE RA.ANSWER_TYPE IS NULL
+	AND RI.JOIN_CODE IS NULL
+	AND RJR.JOIN_CODE IS NULL
+	AND G.GROUP_APPLY_CODE = #{groupApplyCode}
+	</select>
+	
 	
 	
 	<!-- 중복 신청 체크 -->
@@ -26,9 +48,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 현재 가입된 모임의 수 -->
 	<select id="countGroupJoin" resultType="java.lang.Integer">
-		SELECT COUNT
+		SELECT COUNT(*)
 		FROM JOINED_GROUP_VIEW
-		WHERE USER_CODE = #{userCode}
+		WHERE USER_CODE = #{userCode, jdbcType=VARCHAR}
 	</select>
 	
 	
@@ -60,7 +82,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		LEFT JOIN G_CURRENT_MEMBER_COUNT_VIEW GCMV
 		ON JT.GROUP_APPLY_CODE = GCMV.GROUPAPPLYCODE
 		WHERE JT.USER_CODE = #{userCode}
-		  AND RA.ANSWER_TYPE IS NULL;
+		  AND RA.ANSWER_TYPE IS NULL
 	</select>
 	
 	
