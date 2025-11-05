@@ -2,19 +2,19 @@ package com.test.mybatis.dto;
 
 public class GroupPostDTO
 {
-	String postCode;				// 게시글 코드
-	String boardCategory;			// 게시글 카테고리
-	String subject;					// 게시글 제목
-	String content;					// 게시글 내용
-	String nickName;				// 게시글 작성자 닉네임
-	String joinCode;				// 게시글 작성자 회원 코드 
-	String groupApplyCode;			// 게시글 작성된 모임 코드
-	String createdDate;				// 게시글 작성 일자
-	String updatedDate;				// 게시글 수정 일자
-	String savePath;				// 게시글 작성자 프사
-	boolean isBlinded;				// 블라인드 처리 여부
-	int commentCount;				// 게시글에 작성된 댓글 수
-	int totalCount;					// 총 게시글 개수
+	private String postCode;				// 게시글 코드
+	private String boardCategory;			// 게시글 카테고리
+	private String subject;					// 게시글 제목
+	private String content;					// 게시글 내용
+	private String nickName;				// 게시글 작성자 닉네임
+	private String joinCode;				// 게시글 작성자 회원 코드 
+	private String groupApplyCode;			// 게시글 작성된 모임 코드
+	private String createdDate;				// 게시글 작성 일자
+	private String updatedDate;				// 게시글 수정 일자
+	private String savePath;				// 게시글 작성자 프사
+	private boolean isBlinded;				// 블라인드 처리 여부
+	private int commentCount;				// 게시글에 작성된 댓글 수
+	private int totalCount;					// 총 게시글 개수
 	
 	
 	public String getPostCode()
