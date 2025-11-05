@@ -1,6 +1,10 @@
 package com.test.mybatis.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 
 import javax.servlet.http.HttpSession;
 
@@ -28,21 +32,79 @@ public class SampleController
 	
 	// 메인 페이지 임시 구동
 	@RequestMapping(value="/mainpage.do")
-	public String test(Model model)
+	public String test(Model model, String category)
 	{
 		IGroupDAO dao = sqlSession.getMapper(IGroupDAO.class);
+		String topicType;
+		
+		HashMap<String, String> categoryMap = new HashMap<String, String>();
+		// category로 들어온 문자형 topicType에 맞도록 매핑
+		categoryMap.put("reading", "1");
+		categoryMap.put("language", "2");
+		categoryMap.put("it", "3");
+		categoryMap.put("startup", "4");
+		categoryMap.put("license", "5");
+		categoryMap.put("exam", "6");
+		categoryMap.put("hobby", "7");
+		categoryMap.put("etc", "8");
 		
 		try
 		{
-			ArrayList<GroupDTO> groupList = dao.groupList();
-			// 현재 인원 수 구하는 코드
-			for (GroupDTO dto : groupList)
+			// category null 이거나 all일 경우
+			if ("".equals(category) || category == null || "all".equals(category))
 			{
-				String groupApplyCode = dto.getGroupApplyCode();
-				dto.setCurrentMemberCount(dao.groupMemberCount(groupApplyCode));
+				topicType = "%";
+				
+				// 전체 그룹 리스트 출력
+				ArrayList<GroupDTO> groupListAll = dao.groupList(topicType);
+				
+				// 리스트 요소 섞기
+				Collections.shuffle(groupListAll);
+				
+				// 전체 중 10개만 뽑기(groupList에 덮어쓰기)
+				List<GroupDTO> groupList = groupListAll.subList(0, Math.min(10, groupListAll.size()));
+	
+				// 현재 인원 수 구하는 코드
+				for (GroupDTO dto : groupList)
+				{
+					String groupApplyCode = dto.getGroupApplyCode();
+					dto.setCurrentMemberCount(dao.groupMemberCount(groupApplyCode));
+				}
+				model.addAttribute("groupList", groupList);
+				
+				// 랜덤 카테고리 그룹 리스트 출력
+				Random rd = new Random();
+				String rdNum = String.valueOf(rd.nextInt(8)+1);
+				ArrayList<GroupDTO> groupRandomList = dao.groupList(rdNum);
+				
+				Collections.shuffle(groupRandomList);
+				
+				for (GroupDTO dto : groupRandomList)
+				{
+					String groupApplyCode = dto.getGroupApplyCode();
+					dto.setCurrentMemberCount(dao.groupMemberCount(groupApplyCode));
+				}
+				model.addAttribute("groupRandomList", groupRandomList);
+				
+				// 카테고리 이름 찍어주기 용
+				model.addAttribute("categoryNum", rdNum);
 			}
-			
-			model.addAttribute("groupList", groupList);
+			else	// 특정 카테고리가 들어온 경우
+			{
+				// topicType → 문자타입 숫자형 (reading → 1) 
+				topicType = categoryMap.get(category);
+				
+				ArrayList<GroupDTO> groupList = dao.groupList(topicType);
+				Collections.shuffle(groupList);
+				for (GroupDTO dto : groupList)
+				{
+					String groupApplyCode = dto.getGroupApplyCode();
+					dto.setCurrentMemberCount(dao.groupMemberCount(groupApplyCode));
+				}
+				model.addAttribute("groupList", groupList);
+				// 카테고리 이름 찍어주기 용
+				model.addAttribute("categoryNum", topicType);
+			}
 			
 		} catch (Exception e)
 		{
