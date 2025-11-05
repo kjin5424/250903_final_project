@@ -43,5 +43,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE
 			EMAIL=#{email}
 	</select>
+	
+	<insert id="signUpProcess">
+		INSERT INTO
+			USER_INFO(USER_ID, PASSWORD, NAME, NICKNAME, SSN1, SSN2, EMAIL, ADDRESS, ZIPCODE)
+		VALUES(#{userId}, CRYPTPACK.ENCRYPT(#{password}, #{userId}), #{userName}, #{nickname}
+			, #{ssn1}, CRYPTPACK.ENCRYPT(#{ssn2}, #{userId}), #{email}, #{address}, #{zipCode})
+	</insert>
 
 </mapper>

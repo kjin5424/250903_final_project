@@ -11,11 +11,12 @@
 	{
 		currentPage = "meetings";
 	}
-	 */
+	*/
 %>
 
-<link rel="stylesheet" href="<%=cp%>/css_new/topmenubar_sample.css">
-
+<link rel="stylesheet" href="css_new/common_sample.css">
+<link rel="stylesheet" href="css_new/topmenubar_sample.css">
+<link rel="stylesheet" href="css_new/board_sample.css">
 
 <nav class="navbar">
 	<div class="navbar-inner">

@@ -5,8 +5,10 @@
 let userIdChecked = false;
 let nicknameChecked = false;
 // 모든 필수 요소 검증
-let passwordChecked = false;
+let passwordChecked1 = false;
+let passwordChecked2 = false;
 let emailChecked = false;
+let userNameChecked = false;
 let frontSsnChecked = false;
 let backSsnChecked = false;
 let addressChecked = false;
@@ -20,65 +22,57 @@ $(function()
 	$("#check-id").click(function()
 	{
 		var inputId = $("#userId").val().trim();
-		var param =
+		var help = $("#validIdCheck");
+		
+		// id 형식 검사
+		var idPattern = /^[a-zA-Z0-9]{4,20}$/;
+		if (!idPattern.test(inputId))
 		{
-			uid : inputId
-		};
+			$("#userIdHelp").addClass("error");
+			$("#userIdHelp").text("아이디는 4-20자의 영문, 숫자만 사용 가능합니다.");
+			userIdChecked = false;
+			return checkFormValid();
+		}
+		
 		$.ajax(
 		{
-			type : "GET",
-			url : "validateuniqueid.do",
-			data : param,
-			success : function(arg) // 입력된 아이디의 갯수
+			type : "GET"
+			, url : "validateuniqueid.do"
+			, data : {uid:inputId}
+			, success : function(arg) // 입력된 아이디의 갯수
 			{
 				tempUserId = inputId;
-				var validIdText = $("#validIdCheck");
-				validIdText.css("display", "inline");
+				help.css("display", "inline");
 				// arg는 해당 id로 검색한 레코드 수
-				if (Number.parseInt(arg) == 0) // 중복이 아닌 경우
+				if (Number.parseInt(arg) === 0) 	// 중복이 아닌 경우
 				{
-					validIdText.removeClass("error");
-					validIdText.addClass("success");
-					validIdText.text("사용 가능한 아이디입니다.");
+					help.removeClass("error");
+					help.addClass("success");
+					help.text("사용 가능한 아이디입니다.");
 					userIdChecked = true;
-				} else
-				// 중복인 경우
+				} else								// 중복인 경우
 				{
-					validIdText.removeClass("success");
-					validIdText.addClass("error");
-					validIdText.text("이미 사용 중인 아이디입니다.");
+					help.removeClass("success");
+					help.addClass("error");
+					help.text("이미 사용 중인 아이디입니다.");
 					userIdChecked = false;
 				}
 				checkFormValid();
-			},
-			beforeSend : function()
+			}
+			, error : function(e)
 			{
-				if (!inputId) // 공백 검사
-					return false;
-
-				const idPattern = /^[a-zA-Z0-9]{4,20}$/;
-				if (!idPattern.test(inputId)) // 아이디 형식 검사
-				{
-					$("#userIdHelp").addClass("error");
-					$("#userIdHelp").text("아이디는 4-20자의 영문, 숫자만 사용 가능합니다.");
-					return false;
-				}
-
-				return true;
-			},
-			error : function(e)
-			{
+				userIdChecked = false;
+				checkFormValid();
 				alert(e.responseText);
 			}
 		});
-		
 	});
 
 	// 아이디 칸 키 입력
 	$("#userId").keyup(function(event)
 	{
 		// 아이디 입력값 변경 시
-		if ($("#userId").val() != tempUserId)
+		if ($(this).val() !== tempUserId)
 		{
 			$("#userIdHelp").removeClass("error");
 			$("#userIdHelp").text("영문, 숫자 조합 4-20자");
@@ -99,53 +93,45 @@ $(function()
 	function()
 	{
 		var inputNickname = $("#nickname").val().trim();
-		var param =
+		var help = $("#validNicknameCheck");
+		
+		const nicknamePattern = /^[가-힣a-zA-Z0-9]{2,12}$/;
+		if (!nicknamePattern.test(inputNickname))		// 닉네임 유효성 검사
 		{
-			nickname : inputNickname
-		};
+			$("#nicknameHelp").addClass("error");
+			$("#nicknameHelp").text(" 닉네임은 2-12자의 한글, 영문, 숫자만 사용 가능합니다.");
+			nicknameChecked = false;
+			return checkFormValid();
+		}
+		
 		$.ajax(
 		{
-			type : "GET",
-			url : "validateuniquenickname.do",
-			data : param,
-			success : function(arg)
+			type : "GET"
+			, url : "validateuniquenickname.do"
+			, data : {nickname : inputNickname}
+			, success : function(arg)
 			{
 				tempUserNickname = inputNickname;
-				var validNicknameText = $("#validNicknameCheck");
-				validNicknameText.css("display", "inline");
+				help.css("display", "inline");
 				if (Number.parseInt(arg) == 0)
 				{
-					validNicknameText.removeClass("error");
-					validNicknameText.addClass("success");
-					validNicknameText.text("사용 가능한 닉네임입니다.");
+					help.removeClass("error");
+					help.addClass("success");
+					help.text("사용 가능한 닉네임입니다.");
 					nicknameChecked = true;
 				} else
 				{
-					validNicknameText.removeClass("success");
-					validNicknameText.addClass("error");
-					validNicknameText.text("이미 사용중인 닉네임입니다.");
+					help.removeClass("success");
+					help.addClass("error");
+					help.text("이미 사용중인 닉네임입니다.");
 					nicknameChecked = false;
 				}
 				checkFormValid();
-			},
-			beforeSend : function()
+			}
+			, error : function(e)
 			{
-				if (!inputNickname) // 공백 검사
-					return false;
-
-				const nicknamePattern = /^[가-힣a-zA-Z0-9]{2,12}$/;
-				if (!nicknamePattern.test(inputNickname)) // 유효성 검사
-				{
-					$("#nicknameHelp").addClass("error");
-					$("#nicknameHelp").text(
-							" 닉네임은 2-12자의 한글, 영문, 숫자만 사용 가능합니다.");
-					return false;
-				}
-
-				return true;
-			},
-			error : function(e)
-			{
+				nicknameChecked = false;
+				checkFormValid();
 				alert(e.responseText);
 			}
 		});
@@ -155,7 +141,7 @@ $(function()
 	$("#nickname").keyup(function(event)
 	{
 		// 닉네임 입력값 변경 시
-		if ($("#nickname").val() != tempUserNickname)
+		if ($(this).val() != tempUserNickname)
 		{
 			$("#nicknameHelp").removeClass("error");
 			$("#nicknameHelp").text("2-12자의 한글, 영문, 숫자");
@@ -182,6 +168,8 @@ $(function()
 		if (inputPw.length === 0)
 		{
 			$("#passwordStrength").css("display", "none");
+			passwordChecked1 = false;
+			checkFormValid();
 			return;
 		}
 
@@ -192,7 +180,8 @@ $(function()
 		{
 			$("#passwordStrength").css("display", "none");
 			$("#password-help").text('영문, 숫자, 특수문자(~,!,@,#,$)만 사용 가능합니다.');
-			return;
+			passwordChecked1 = false;
+			return checkFormValid();
 		}
 
 		var strength = 0;
@@ -206,7 +195,7 @@ $(function()
 			strength++;
 
 		idStr.css("display", "inline");
-		fill.removeClass("week medium strong");
+		fill.removeClass("weak medium strong");
 		if (strength <= 2)
 		{
 			fill.addClass('weak');
@@ -220,12 +209,27 @@ $(function()
 			fill.addClass('strong');
 			idStr.text('강함');
 		}
+		passwordChecked1 = true;
 		
+		if ($("#passwordConfirm").val() === "")
+		{
+			return;
+		}
+		else if ($("#passwordConfirm").val() != inputPw)
+		{
+			const help = document.getElementById('passwordConfirmHelp');
+			help.textContent = '비밀번호가 일치하지않습니다.';
+			help.className = 'form-help error';
+			this.classList.remove('success');
+			this.classList.add('error');
+			passwordChecked2 = false;
+		}
+		checkFormValid();
 	});
 	
 	
 	// 비밀번호 확인
-	$("#passwordConfirm").keyup(function checkPw()
+	$("#passwordConfirm").keyup(function ()
 	{
 		const password = $("#password").val();
 		const checkPw = $(this).val();
@@ -235,6 +239,7 @@ $(function()
 		{
 			help.textContent = '';
 			this.classList.remove('error', 'success');
+			passwordChecked2 = false;
 			return;
 		}
 
@@ -244,14 +249,14 @@ $(function()
 			help.className = 'form-help success';
 			this.classList.remove('error');
 			this.classList.add('success');
-			passwordChecked = true;
+			passwordChecked2 = true;
 		} else
 		{
 			help.textContent = '비밀번호가 일치하지않습니다.';
 			help.className = 'form-help error';
 			this.classList.remove('success');
 			this.classList.add('error');
-			passwordChecked = false;
+			passwordChecked2 = false;
 		}
 		
 		checkFormValid();
@@ -264,12 +269,21 @@ $(function()
 		const inputEmail = this.value.trim();
 		const help = $("#emailHelp");
 
-		var param = {email: inputEmail}
+		const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		if(!emailPattern.test(inputEmail) || !inputEmail)
+		{
+			help.text('올바른 이메일 형식이 아닙니다.');
+			help.removeClass("success");
+			help.addClass("error");
+			emailChecked = false;
+			return checkFormValid();
+		}
+		
 		$.ajax(
 		{
 			type: "GET"
 			, url: "validateuniqueemail.do"
-			, data: param
+			, data: {email: inputEmail}
 			, success: function(arg)
 			{
 				if (Number.parseInt(arg) == 0)
@@ -293,23 +307,32 @@ $(function()
 				}
 				checkFormValid();
 			}
-			, beforeSend: function()
-			{
-				const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-				if(!emailPattern.test(inputEmail) || !inputEmail)
-				{
-					help.text('올바른 이메일 형식이 아닙니다.');
-					help.removeClass("success");
-					help.addClass("error");
-					return false;
-				}
-				return true;
-			}
 			, error: function(e)
 			{
+				emailChecked = false;
+				checkFormValid();
 				alert(e.responseText);
 			}
 		});
+	});
+	
+	
+	// 이름 유효성 검사
+	$("#userName").blur(function()
+	{
+		var inputName = $(this).val().trim()
+		const namePattern = /^[가-힣]+$/;
+		if (!namePattern.test(inputName))
+		{
+			userNameChecked = false;
+			$("#userNameHelp").text("이름을 제대로 입력해주세요.");
+		}
+		else
+		{
+			userNameChecked = true;
+			$("#userNameHelp").text("");
+		}
+		checkFormValid();
 	});
 	
 	
@@ -318,19 +341,21 @@ $(function()
 	{
 		const ssnFront = $(this).val().trim();
 		const help = document.getElementById('ssnHelp');
-		const ssnPattern = /^[0-9]{6}$/;
 		
+		const ssnPattern = /^[0-9]{6}$/;
 		if (!ssnPattern.test(ssnFront))
 		{
 			help.textContent = '주민등록번호를 정확히 입력해주세요.';
 			help.className = 'form-help error';
 			frontSsnChecked = false;
-			return;
+		}
+		else
+		{
+			help.textContent = '주민등록번호는 안전하게 암호화되어 저장됩니다.';
+			help.className = 'form-help';
+			frontSsnChecked = true;
 		}
 		
-		help.textContent = '주민등록번호는 안전하게 암호화되어 저장됩니다.';
-		help.className = 'form-help';
-		frontSsnChecked = true;
 		checkFormValid();
 	});
 	
@@ -340,41 +365,45 @@ $(function()
 	{
 		const ssnBack = $(this).val().trim();
 		const help = $("#ssnHelp");
-		const ssnPattern = /^[0-9]{7}$/;
 
+		const ssnPattern = /^[0-9]{7}$/;
 		if (!ssnPattern.test(ssnBack))
 		{
-			help.textContent = '주민등록번호를 정확히 입력해주세요.';
+			help.text('주민등록번호를 정확히 입력해주세요.');
 			help.className = 'form-help error';
 			backSsnChecked = false;
-			return;
 		}
 		
 		// 서버로 중복 확인 요청 (자바에서 구현 예정)
 		// TODO: 주민등록번호 중복 확인 API 호출
 		// 만약 중복이면 아이디 찾기 페이지로 이동 여부 물어보기
 		// 중복검사 패스
-		
-		help.textContent = '주민등록번호는 안전하게 암호화되어 저장됩니다.';
-		help.className = 'form-help';
-		backSsnChecked = true;
+		else
+		{
+			help.text('주민등록번호는 안전하게 암호화되어 저장됩니다.');
+			help.className = 'form-help';
+			backSsnChecked = true;
+		}
 		checkFormValid();
 	});
 	
 	$("#check-addr").click(function()
 	{
 		new daum.Postcode({
-	        oncomplete: function(data) {
-	          // 도로명 주소
-	          var roadAddr = data.roadAddress;
-	          // 우편번호
-	          var zonecode = data.zonecode;
-
-	          $("#zipCode").val(zonecode);
-	          $("#address").val(roadAddr);
+			oncomplete: function(data)
+			{
+				// 도로명 주소
+				var roadAddr = data.roadAddress;
+				// 우편번호
+				var zonecode = data.zonecode;
+	
+				$("#zipCode").val(zonecode);
+				$("#address").val(roadAddr);
+		          
+		  		addressChecked = true;
+		  		checkFormValid();
 	        }
 		}).open();
-		addressChecked = true;
 	});
 
 });
@@ -431,11 +460,18 @@ function checkFormValid() {
 	const privacy = document.getElementById('agreePrivacy').checked;
 	const submitBtn = document.getElementById('submitBtn');
 	
-	// 필수 약관과 중복확인이 모두 완료되었는지 체크
-	if (userIdChecked && nicknameChecked && service && privacy) {
-		submitBtn.disabled = false;
-	} else {
-		submitBtn.disabled = true;
-	}
-}
+	// 모든 필수 조건 통합 검사
+    const isValid = userIdChecked 
+        && nicknameChecked 
+        && passwordChecked1 
+        && passwordChecked2 
+        && emailChecked 
+        && userNameChecked 
+        && frontSsnChecked 
+        && backSsnChecked 
+        && addressChecked
+        && service
+        && privacy;
 
+    submitBtn.disabled = !isValid;
+}

@@ -114,9 +114,16 @@ public class LoginController
 	
 	// 회원가입
 	@RequestMapping(value="/signUp.do")
-	public String signUp(UserDTO dto)
+	public String signUp(UserDTO user)
 	{
-		
+		ILoginDAO dao = sqlSession.getMapper(ILoginDAO.class);
+		try
+		{
+			dao.signUpProcess(user);
+		}
+		catch (Exception e) {
+			System.out.println(e.toString());
+		}
 		
 		return "redirect:loginpage.do";
 	}

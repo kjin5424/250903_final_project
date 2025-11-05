@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="<%=cp%>/css/cssAuthorization/SignUp.css">
 <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
- <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javascript" src="<%=cp%>/js/jsAuthorization/SignUp.js"></script>
 <title>회원가입 - 공모자들</title>
 </head>
@@ -23,8 +23,7 @@
 		</div>
 
 		<div class="signup-box">
-			<form action="signUp.do" id="signupForm"
-				onsubmit="return validateSignup(event)">
+			<form action="signUp.do" id="signupForm">
 				<!-- 아이디 -->
 				<div class="form-group">
 					<label class="form-label"> 아이디<span class="required">*</span>
@@ -92,6 +91,7 @@
 					<label class="form-label"> 이름<span class="required">*</span>
 					</label> <input type="text" id="userName" name="userName"
 						class="form-input" placeholder="실명을 입력하세요" required>
+					<p class="form-help" id="userNameHelp"></p>
 				</div>
 
 				<!-- 주민등록번호 -->
@@ -99,11 +99,11 @@
 					<label class="form-label"> 주민등록번호<span class="required">*</span>
 					</label>
 					<div class="ssn-input-group">
-						<input type="text" id="ssnFront" name="ssnFront"
+						<input type="text" id="ssnFront" name="ssn1"
 							class="form-input ssn-input" placeholder="000000" maxlength="6"
 							pattern="[0-9]{6}" required> <span
 							class="ssn-divider">-</span> <input type="password" id="ssnBack"
-							name="ssnBack" class="form-input ssn-input" placeholder="0000000"
+							name="ssn2" class="form-input ssn-input" placeholder="0000000"
 							maxlength="7" pattern="[0-9]{7}" required>
 					</div>
 					<p class="form-help" id="ssnHelp">주민등록번호는 안전하게 암호화되어 저장됩니다</p>
