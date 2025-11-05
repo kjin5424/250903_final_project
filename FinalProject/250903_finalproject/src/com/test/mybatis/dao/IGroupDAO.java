@@ -7,7 +7,7 @@ import com.test.mybatis.dto.GroupDTO;
 public interface IGroupDAO
 {
 	// 모임 리스트 조회(검색 X)
-	public ArrayList<GroupDTO> groupList();
+	public ArrayList<GroupDTO> groupList(String category);
 	
 	// 현재 인원 수 산출
 	public int groupMemberCount(String groupApplyCode);

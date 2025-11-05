@@ -73,7 +73,7 @@ public class LoginController
 	public String logOut(HttpSession session)
 	{
 		session.removeAttribute("user");
-		return "redirect:/start.do";
+		return "redirect:/mainpage.do";
 	}
 	
 	// 아이디 중복 검사
