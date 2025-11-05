@@ -2,13 +2,13 @@ package com.test.mybatis.dto;
 
 public class GroupPostCommentDTO
 {
-	String commentCode;		// 댓글 코드
-	String nickName;		// 작성자 닉네임
-	String createdDate;		// 작성일
-	String updatedDate;		// 수정일
-	String content;			// 내용
-	String savePath;		// 댓글 작성자 프사 
-	boolean isBlinded;		// 블라인드 처리 여부
+	private String commentCode;		// 댓글 코드
+	private String nickName;		// 작성자 닉네임
+	private String createdDate;		// 작성일
+	private String updatedDate;		// 수정일
+	private String content;			// 내용
+	private String savePath;		// 댓글 작성자 프사 
+	private boolean isBlinded;		// 블라인드 처리 여부
 	
 	public String getCommentCode()
 	{
