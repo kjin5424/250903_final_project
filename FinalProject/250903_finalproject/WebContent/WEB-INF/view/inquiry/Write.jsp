@@ -1,4 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%
+	request.setCharacterEncoding("UTF-8");
+	String cp = request.getContextPath(); 
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -332,7 +337,7 @@ body {
 		//     return;
 		// }
 		
-		// 임시 사용자 정보
+		
 		String userId = "user123";
 		String userEmail = "user123@example.com";
 	%>
@@ -378,6 +383,7 @@ body {
 				</div>
 			</div>
 		</div>
+		
 		
 		<form id="inquiryForm" onsubmit="return validateInquiry(event)">
 			<div class="form-container">
@@ -434,10 +440,10 @@ body {
 					<p class="form-help">문의 내용을 구체적으로 작성해주시면 더 정확한 답변을 받으실 수 있습니다.</p>
 				</div>
 				
-				<div class="button-group">
-					<a href="index.jsp" class="btn btn-cancel">
-						<span>✕</span>
-						<span>취소</span>
+						<div class="button-group">
+					<a href="<%= cp %>/profilemodify.do?tab=inquiry" class="btn btn-cancel">
+					    <span>✕</span>
+					    <span>프로필로</span>
 					</a>
 					<button type="submit" class="btn btn-submit">
 						<span>📨</span>
@@ -516,11 +522,13 @@ body {
 			}
 			
 			// 최종 확인
-			if (confirm('문의를 등록하시겠습니까?\n\n답변은 1-2일 내에 이메일로 발송됩니다.')) {
+			if (confirm('문의를 등록하시겠습니까?')) {
 				submitInquiry(title, content);
 			}
 			
 			return false;
+			
+			
 		}
 		
 		// 문의 제출
@@ -535,8 +543,9 @@ body {
 			
 			console.log('문의 데이터:', inquiryData);
 			
-			alert('문의가 성공적으로 등록되었습니다!\n답변은 이메일로 발송됩니다.');
-			window.location.href = 'index.jsp';
+			alert('문의가 성공적으로 등록되었습니다!');
+			window.location.href = '<%=cp %>/profilemodify.do';
+			
 		}
 		
 		// 페이지 이탈 방지

@@ -1,9 +1,11 @@
-<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
     request.setCharacterEncoding("UTF-8");
     String cp = request.getContextPath();
 %>
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -204,10 +206,7 @@
                     <span class="info-label">답변 상태:</span>
                     <span class="status-badge status-answered">답변완료</span>
                 </div>
-                <div class="info-item">
-                    <span class="info-label">답변 수:</span>
-                    <span class="answer-count">2건</span>
-                </div>
+
             </div>
 
             <div class="form-group">
@@ -234,7 +233,11 @@
         <!-- 관리자 답변 이력 -->
         <div class="section">
             <div class="section-title">답변 내역</div>
-            <div class="answer-list">
+            
+            
+            
+            
+<!--             <div class="answer-list">
                 <div class="answer-item">
                     <div class="answer-header">
                         <span class="answer-author">관리자 (admin_service01)</span>
@@ -267,9 +270,26 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
+        
+		<div class="answer-list">
+		    <c:forEach var="ans" items="${inquiry.answers}">
+		        <div class="answer-item">
+		            <div class="answer-header">
+		                <span class="answer-author">관리자 (${ans.adminId})</span>
+		                <span class="answer-date">${ans.answerDate}</span>
+		            </div>
+		            <div class="answer-content">${ans.answerContent}</div>
+		        </div>
+		    </c:forEach>
+		</div>
+		        
+        
+        
+        
 
-        <a href="myInquiries.jsp" class="btn-back">목록으로 돌아가기</a>
+        <!-- <a href="profilemodify.do?tab=inquiry" class="btn-back">목록으로</a> -->
+        <a href="list.do" class="btn-back">목록으로</a>
     </div>
 </body>
 </html>

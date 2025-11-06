@@ -66,8 +66,9 @@ public class ProfileController {
 		return "/WEB-INF/view/profile/ProfileForGroupManager.jsp";
 	}
 	
+	/*
 	@RequestMapping(value = "/profilemodify.do", method = RequestMethod.GET)
 	public String ProfileModify(Model model) {
 		return "/WEB-INF/view/profile/ProfileModify.jsp";
-	}
+	}*/
 }
