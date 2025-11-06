@@ -14,9 +14,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.test.mybatis.dao.IGroupDAO;
 import com.test.mybatis.dto.GroupDTO;
+import com.test.mybatis.dto.SearchDTO;
 import com.test.mybatis.dto.UserDTO;
 
 /* ========================
@@ -30,9 +32,9 @@ public class SampleController
 	@Autowired
 	private SqlSession sqlSession;
 	
-	// 메인 페이지 임시 구동
+	// 임시 메인 페이지 임시 구동
 	@RequestMapping(value="/mainpage.do")
-	public String test(Model model, String category)
+	public String testMain(Model model, String category)
 	{
 		IGroupDAO dao = sqlSession.getMapper(IGroupDAO.class);
 		String topicType;
@@ -113,6 +115,46 @@ public class SampleController
 		
 		return "/WEB-INF/view/group/GroupList.jsp";
 	}
+	
+	
+	// 임시 검색 페이지 구동
+	@RequestMapping(value="/search.do", method=RequestMethod.POST)
+	public String testSearch( Model model, String content
+		  , @RequestParam(value = "category", required = false) List<String> category
+		  , @RequestParam(value = "region", required = false) List<String> region
+		  , @RequestParam(value = "type", required = false) List<String> type
+		  , @RequestParam(value = "status", required = false) List<String> status )
+	{
+		IGroupDAO dao = sqlSession.getMapper(IGroupDAO.class);
+		SearchDTO filter = new SearchDTO();
+		
+		try
+		{
+			if (content != null || "".contentEquals(content))
+				filter.setContent(content);
+			if (category != null)
+				filter.setCategory(category);
+			if (region != null)
+				filter.setCategory(region);
+			if (type != null)
+				filter.setCategory(type);
+			if (status != null)
+				filter.setCategory(status);
+		} catch (Exception e)
+		{
+			System.out.println(e.toString());
+		}
+		
+		ArrayList<GroupDTO> groupList = dao.searchList(filter);
+		for (GroupDTO dto : groupList)
+			dto.setCurrentMemberCount(dao.groupMemberCount(dto.getGroupApplyCode()));
+		
+		model.addAttribute("groupList", groupList);
+		model.addAttribute("content", content);
+		
+		return "/WEB-INF/view/group/SearchList.jsp";
+	}
+	
 	
 	// 자격 검증용 코드
 	public String testUser(HttpSession session)

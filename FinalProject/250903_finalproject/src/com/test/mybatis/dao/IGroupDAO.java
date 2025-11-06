@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.apache.ibatis.annotations.Param;
 
 import com.test.mybatis.dto.GroupDTO;
+import com.test.mybatis.dto.SearchDTO;
 
 public interface IGroupDAO
 {
@@ -15,7 +16,7 @@ public interface IGroupDAO
 	public int groupMemberCount(String groupApplyCode);
 	
 	// 모임 리스트 검색으로 조회
-	//public ArrayList<GroupDTO> groupList(GroupDTO dto);
+	public ArrayList<GroupDTO> searchList(SearchDTO dto);
 	
 	// 모임 상세 내용(매개변수로 모임개설코드)
 	public GroupDTO groupDetail(String groupApplyCode);
