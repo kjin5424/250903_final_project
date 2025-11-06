@@ -44,6 +44,10 @@ public interface IGroupJoinDAO
 	// select -> 그 모임에서 신청 대기 인원 수
 	public int countApplyGroup(String groupJoinCode);
 	
+	// select -> Home.jsp 에서 사용할 한 줄 자기소개 가져오기
+	public GroupJoinDTO getSelfIntro(@Param("groupApplyCode") String groupApplyCode, @Param("userCode") String userCode);
 	
+	// update -> Home.jsp 에서 한 줄 자기소개 수정하는 페이지
+	public String updateIntroduce(@Param("joinCode") String joinCode, @Param("introduce") String introduce);
 }
  

@@ -181,6 +181,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE PC.POST_CODE = #{postCode}
 	</select>
 	
+	
+	
 	<insert id="insertComment">
 	</insert>
 	
@@ -189,5 +191,37 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<delete id="deleteComment">
 	</delete>
+	
+	<select id="postListAtHome" resultType="com.test.mybatis.dto.GroupPostDTO">
+		SELECT P.POST_CODE AS postCode
+		     , BC.TYPE AS boardCategory
+		     , P.SUBJECT AS subject
+		     , P.CONTENT AS content
+		     , UI.NICKNAME AS nickName
+		     , JT.GROUP_APPLY_CODE AS groupApplyCode
+		     , TO_CHAR(P.CREATED_DATE, 'YYYY-MM-DD HH24:MI:SS') AS createdDate
+		     , TO_CHAR(PU.CREATED_DATE, 'YYYY-MM-DD HH24:MI:SS') AS updatedDate
+		     , UI.SAVEPATH AS savePath
+		     , (SELECT COUNT(*)
+		        FROM POST_COMMENT
+		        WHERE POST_CODE = P.POST_CODE) COMMENTCOUNT
+		     , CASE WHEN RP.POST_CODE IS NULL THEN 0
+		            WHEN NVL(RP.POST_CODE, 0)>0 AND RPP.PROCESS_TYPE IN (0, 1, 2)  THEN 0
+		            WHEN NVL(RP.POST_CODE, 0)>0 AND RPP.PROCESS_TYPE IN (3, 4)  THEN 1
+		            WHEN RPP.PROCESS_TYPE IS NULL THEN 1
+		            ELSE 0
+		       END AS isBlinded
+		FROM POST P
+		LEFT JOIN BOARD_CATEGORY BC ON P.BOARD_CATEGORY = BC.BOARD_CATEGORY
+		LEFT JOIN JOIN_TABLE JT ON JT.JOIN_CODE = P.JOIN_CODE
+		LEFT JOIN USER_TABLE UT ON JT.USER_CODE = UT.USER_CODE
+		LEFT JOIN USER_INFO UI ON UI.USER_ID = UT.USER_ID
+		LEFT JOIN POST_UPDATE PU ON PU.POST_CODE = P.POST_CODE
+		LEFT JOIN REPORT_POST RP ON RP.POST_CODE = P.POST_CODE
+		LEFT JOIN REPORT_POST_PROCESS RPP ON RPP.REPORT_POST_CODE = RP.REPORT_POST_CODE
+		WHERE JT.GROUP_APPLY_CODE = #{groupApplyCode}
+		AND P.BOARD_CATEGORY = 1
+		ORDER BY P.CREATED_DATE DESC
+	</select>
 	
 </mapper>

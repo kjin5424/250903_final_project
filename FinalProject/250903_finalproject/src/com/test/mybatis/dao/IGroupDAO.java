@@ -31,5 +31,6 @@ public interface IGroupDAO
 	// 모임 홈에서 출력할 내용들
 	public GroupDTO groupHomeGroupInfo(@Param("userCode") String userCode,@Param("groupApplyCode") String groupApplyCode);
 	
-	
+	// 특정 회원이 특정 모임의 모임원인지 검증하는 메소드
+	public int checkMember(@Param("groupApplyCode") String groupApplyCode, @Param("userCode") String userCode);
 }

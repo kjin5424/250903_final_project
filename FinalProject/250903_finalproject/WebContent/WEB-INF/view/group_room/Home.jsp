@@ -1,6 +1,30 @@
+<%@page import="com.test.mybatis.dto.ChallengeDTO"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.test.mybatis.dto.ActivityDTO"%>
+<%@page import="com.test.mybatis.dto.GroupDTO"%>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%
+	GroupDTO group = (GroupDTO)request.getAttribute("groupInfo");	
+
+	float totalAttendance = Float.valueOf(group.getTotalAttendance());
+	float checkChallenge = Float.valueOf(group.getCheckChallenge());	
+	
+	ChallengeDTO challenge = (ChallengeDTO)request.getAttribute("challenge");
+	
+	String challengePercent = "";
+	
+	if(challenge!=null)
+	{
+		int challengeCheck = Integer.parseInt(challenge.getChallengeCheck());
+		int challengeDetail = Integer.parseInt(challenge.getChallengeDetail());
+		int challengeMember = Integer.parseInt(challenge.getChallengeMember());
+		challengePercent = String.valueOf((challengeCheck / (challengeMember * challengeDetail)) * 100);
+	}
+	
+	
+%>
 <!-- 모임 홈 화면 생성 -->
 <!DOCTYPE html>
 <html lang="ko">
@@ -562,16 +586,16 @@
             <div class="group-header-top">
                 <div class="group-title-area">
                     <h1 class="group-title">${groupInfo.groupTitle }</h1>
-                    <button class="group-level" onclick="location.href='level.do'" title="레벨 현황을 자세히 확인할 수 있어요">Lv.${groupInfo.groupLevel }</button>
+                    <button class="group-level" onclick="location.href='level.do?${groupInfo.groupApplyCode}'" title="레벨 현황을 자세히 확인할 수 있어요">Lv.${groupInfo.groupLevel }</button>
                 </div>
                 <div class="group-actions">
-                    <button class="btn-header" onclick="location.href='postlist.do'">📋 게시판</button>
-                    <button class="btn-header" onclick="location.href='challengelist.do'">🏆 도전과제</button>
-                    <button class="btn-header" onclick="location.href='history.do'">🕰 히스토리</button>
-                    <button class="btn-header" onclick="location.href='memberlist.do'">👥 모임원</button>
+                    <button class="btn-header" onclick="location.href='postlist.do?groupApplyCode=${groupInfo.groupApplyCode}'">📋 게시판</button>
+                    <button class="btn-header" onclick="location.href='challengelist.do?groupApplyCode=${groupInfo.groupApplyCode}'">🏆 도전과제</button>
+                    <button class="btn-header" onclick="location.href='history.do?groupApplyCode=${groupInfo.groupApplyCode}'">🕰 히스토리</button>
+                    <button class="btn-header" onclick="location.href='memberlist.do?groupApplyCode=${groupInfo.groupApplyCode}'">👥 모임원</button>
                     <button class="btn-header" onclick="location.href='messagelist.do'">✉️ 쪽지</button>
-                    <button class="btn-header" onclick="location.href='managelist.do'">⚙️ 관리</button>
-                    <button class="btn-header" onclick="location.href='reportgroup.do'">🚨 </button>
+                    <button class="btn-header" onclick="location.href='managelist.do?groupApplyCode=${groupInfo.groupApplyCode}'">⚙️ 관리</button>
+                    <button class="btn-header" onclick="location.href='reportgroup.do?groupApplyCode=${groupInfo.groupApplyCode}'">🚨 </button>
                 </div>
             </div>
             <div class="group-dates">
@@ -604,11 +628,11 @@
                     <div class="stat-label">모임원</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">${groupInfo.totalAttendance }</div>
+                    <div class="stat-value"><%=String.format("%.0f%%", totalAttendance) %></div>
                     <div class="stat-label">전체 출석률</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">${groupInfo.checkChallenge }</div>
+                    <div class="stat-value"><%=String.format("%.0f%%", checkChallenge) %></div>
                     <div class="stat-label">도전과제 달성률</div>
                 </div>
                 <div class="stat-card">
@@ -625,107 +649,103 @@
                 <div class="notice-section">
                     <div class="section-header">
                         <h2 class="section-title">📢 공지사항</h2>
-                        <button class="btn-more" onclick="location.href='postlist.do'">더보기 →</button>
+                        <button class="btn-more" onclick="location.href='postlist.do?${groupInfo.groupApplyCode}'">더보기 →</button>
                     </div>
-                    <div class="notice-item" onclick="location.href='postdetail.do'">
-                        <div class="notice-title">📢 이번 주 스터디 일정 안내</div>
-                        <div class="notice-meta">코딩마스터 · 2024-10-10</div>
-                    </div>
-                    <div class="notice-item" onclick="location.href='postdetail.do'">
-                        <div class="notice-title">🎉 모임 레벨 3 달성! 축하합니다</div>
-                        <div class="notice-meta">코딩마스터 · 2024-10-08</div>
-                    </div>
-                    <div class="notice-item" onclick="location.href='postdetail.do'">
-                        <div class="notice-title">⚠️ 모임 규칙 안내 (필독)</div>
-                        <div class="notice-meta">코딩마스터 · 2024-10-05</div>
-                    </div>
+                    <c:choose>
+                    <c:when test="${not empty post }">
+                    <c:forEach var="postDTO" items="${post }">
+	                    <div class="notice-item" onclick="location.href='postdetail.do?groupApplyCode=${groupInfo.groupApplyCode}'">
+	                        <div class="notice-title">${postDTO.subject }</div>
+	                        <div class="notice-meta">${postDTO.nickName } · ${postDTO.createdDate }</div>
+	                    </div>
+                    </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                    	등록된 공지가 없습니다.
+                    </c:otherwise>
+                    </c:choose>
                 </div>
 
                 <!-- 진행중인 투표 -->
                 <div class="vote-section">
                     <div class="section-header">
                         <h2 class="section-title">🗳️ 진행중인 투표</h2>
-                        <button class="btn-more" onclick="location.href='votelist.do'">더보기 →</button>
+                        <button class="btn-more" onclick="location.href='votelist.do?groupApplyCode=${groupInfo.groupApplyCode}'">더보기 →</button>
                     </div>
-                    <div class="vote-card">
-                        <div class="vote-header">
-                            <div class="vote-title">10월 3주차 정기 모임</div>
-                            <div class="vote-status">진행중</div>
-                        </div>
-                        <div class="vote-info">
-                            <div class="vote-info-item">
-                                <span>📅</span>
-                                <span>10/17 (목) 19:00~21:00</span>
-                            </div>
-                            <div class="vote-info-item">
-                                <span>📍</span>
-                                <span>온라인</span>
-                            </div>
-                        </div>
-                        <div class="vote-progress">
-                            <div class="vote-progress-bar">
-                                <div class="vote-progress-fill" style="width: 71%;"></div>
-                            </div>
-                            <div class="vote-progress-text">참여: 5명 / 미참여: 2명</div>
-                        </div>
-                        <button class="btn-vote" onclick="participateVote(1)">투표하기</button>
-                    </div>
+                    
+                    <c:choose>
+                    	<c:when test="${not empty activity }">
+                    	<c:forEach var="activityDTO" items="${activity }">
+	                    <div class="vote-card">
+	                        <div class="vote-header">
+	                            <div class="vote-title">${activityDTO.content }</div>
+	                            <div class="vote-status">진행중</div>
+	                        </div>
+	                        <div class="vote-info">
+	                            <div class="vote-info-item">
+	                                <span>📅</span>
+	                                <span>${activityDTO.activeDate }</span>
+	                            </div>
+	                            <div class="vote-info-item">
+	                                <span>📍</span>
+	                                <span>${activityDTO.onOffLine }</span>
+	                            </div>
+	                        </div>
+	                        <div class="vote-progress">
+	                            <div class="vote-progress-bar">
+	                                <div class="vote-progress-fill" style="width: ${Integer.parseInt(activityDTO.registrants) / Integer.parseInt(activityDTO.totalMember) * 100}%;"></div>
+	                            </div>
+	                            <div class="vote-progress-text">참여: ${activityDTO.registrants }명 / 미참여: ${Integer.parseInt(activityDTO.totalMember) - Integer.parseInt(activityDTO.registrants) }명</div>
+	                        </div>
+	                        <button class="btn-vote" onclick="participateVote(1)">투표하기</button>
+	                    </div>
+	                    </c:forEach>
+                    	</c:when>
+                    	<c:otherwise>
+                    		 <div class="vote-card">
+                    		 	진행중인 투표가 없습니다.
+                    		 </div>
+                    	</c:otherwise>
+                    </c:choose>
+                    
 
-                    <div class="vote-card">
-                        <div class="vote-header">
-                            <div class="vote-title">10월 4주차 정기 모임</div>
-                            <div class="vote-status closed">대기중</div>
-                        </div>
-                        <div class="vote-info">
-                            <div class="vote-info-item">
-                                <span>📅</span>
-                                <span>10/24 (목) 19:00~21:00</span>
-                            </div>
-                            <div class="vote-info-item">
-                                <span>📍</span>
-                                <span>오프라인 (강남동)</span>
-                            </div>
-                        </div>
-                        <div class="vote-progress">
-                            <div class="vote-progress-bar">
-                                <div class="vote-progress-fill" style="width: 0%;"></div>
-                            </div>
-                            <div class="vote-progress-text">투표 시작 전입니다</div>
-                        </div>
-                        <button class="btn-vote" disabled>투표 대기중</button>
-                    </div>
+                   
                 </div>
             </div>
 
             <!-- 오른쪽 컬럼 -->
             <div>
                 <!-- 도전 과제 -->
-                <div class="challenge-section">
-                    <div class="section-header">
-                        <h2 class="section-title">🏆 진행중인 도전과제</h2>
-                        <button class="btn-more" onclick="location.href='challengelist.do'">더보기 →</button>
-                    </div>
-                    <div class="challenge-card">
-                        <div class="challenge-title">일주일 알고리즘 챌린지</div>
-                        <div class="challenge-progress">
-                            <div class="challenge-progress-text">Day 4/7 진행중</div>
-                            <div class="challenge-progress-bar">
-                                <div class="challenge-progress-fill" style="width: 57%;"></div>
-                            </div>
-                        </div>
-                        <div class="challenge-info">
-                            <span>참여: 6명</span>
-                            <span>평균 달성률: 78%</span>
-                        </div>
-                        <button class="btn-challenge" onclick="viewChallenge(1)">인증하기</button>
-                    </div>
-                </div>
+                <c:if test="${not empty checkMember }">
+	                <c:if test="${checkMember == 1 }">
+	                	<c:if test="${not empty challenge }">
+		                <div class="challenge-section">
+		                    <div class="section-header">
+		                        <h2 class="section-title">🏆 진행중인 도전과제</h2>
+		                        <button class="btn-more" onclick="location.href='challengelist.do?groupApplyCode=${groupInfo.groupApplyCode}'">더보기 →</button>
+		                    </div>
+		                    <div class="challenge-card">
+		                        <div class="challenge-title">${challenge.title }</div>
+		                        <div class="challenge-progress">
+		                            <div class="challenge-progress-text">${challenge.datePercent } ${challenge.status }</div>
+		                            <div class="challenge-progress-bar">
+		                                <div class="challenge-progress-fill" style="width: <%=challengePercent %>%;"></div>
+		                            </div>
+		                        </div>
+		                        <div class="challenge-info">
+		                            <span>참여: ${challenge.challengeMember }명</span>
+		                            <span>평균 달성률: <%=challengePercent %>%</span>
+		                        </div>
+		                        <button class="btn-challenge" onclick="viewChallenge(1)">인증하기</button>
+		                    </div>
+		                </div>
+		                </c:if>
+	                </c:if>
+                </c:if>
 
                 <!-- 알림 -->
                 <div class="notification-panel">
                     <div class="section-header">
-                        <h2 class="section-title">🔔 알림</h2>
-                        <!-- <button class="btn-more" onclick="goToBoard()">더보기 →</button> -->
                     </div>
                     <div class="notification-item">
                         <div class="notification-icon icon-notice">📢</div>
@@ -751,16 +771,31 @@
                 </div>
 
                 <!-- 내 한줄소개 -->
-                <div class="intro-section">
-                    <div class="section-header">
-                        <h2 class="section-title">✍️ 내 한줄소개</h2>
-                    </div>
-                    <div class="my-intro">
-                        <div class="intro-label">나의 소개</div>
-                        <div class="intro-text">알고리즘 공부를 체계적으로 하고 싶어서 가입했습니다!</div>
-                    </div>
-                    <button class="btn-edit-intro" onclick="editIntro()">수정하기</button>
-                </div>
+                <c:if test="${not empty checkMember }">
+	            	<c:if test="${checkMember == 1 }">
+	                <div class="intro-section">
+	                    <div class="section-header">
+	                        <h2 class="section-title">✍️ 내 한줄소개</h2>
+	                    </div>
+	                    <c:choose>
+		                    <c:when test="${not empty selfIntro }">
+			                    <div class="my-intro">
+			                        <div class="intro-label">나의 소개</div>
+			                        <div class="intro-text">${selfIntro.selfIntro }</div>
+			                    </div>
+		                    	<button class="btn-edit-intro" onclick="editIntro()">수정하기</button>
+		                    </c:when>
+		                    <c:otherwise>
+		                    	<div class="my-intro">
+			                        <div class="intro-label">나의 소개</div>
+			                        <div class="intro-text"><span style="font-size: small;">등록된 소개가 없습니다.</span></div>
+			                    </div>
+		                    	<button class="btn-edit-intro" onclick="editIntro()">등록하기</button>
+		                    </c:otherwise>
+	                    </c:choose>
+	                </div>
+                	</c:if>
+                </c:if>
             </div>
         </div>
     </div>

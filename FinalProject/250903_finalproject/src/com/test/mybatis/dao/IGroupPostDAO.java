@@ -47,4 +47,7 @@ public interface IGroupPostDAO
 	
 	// delete -> 댓글 삭제
 	public int deleteComment(GroupPostCommentDTO dto);
+	
+	// select -> Home.jsp 에서 사용할 공지 게시글만 가져오기
+	public List<GroupPostDTO> postListAtHome(@Param("groupApplyCode") String groupApplyCode);
 }
