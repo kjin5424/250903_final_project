@@ -32,6 +32,9 @@ public class GroupDTO
 	private String openDate;		// 정식 개설일
 	private String joinDate;		// 가입일
 	private String totalActivity;	// 모임 총 활동횟수
+	private String checkChallenge;	// 모임의 도전과제 총 달성률
+	private String totalAttendance;	// 모임의 총 출석률
+	private int currentMemberCount;	// 현재 멤버 인원수
 	
 	public String getTotalActivity()
 	{
@@ -72,11 +75,6 @@ public class GroupDTO
 	{
 		this.totalAttendance = totalAttendance;
 	}
-
-	private String checkChallenge;	// 모임의 도전과제 총 달성률
-	private String totalAttendance;	// 모임의 총 출석률
-	
-	private int currentMemberCount;	// 현재 멤버 인원수
 
 	public String getGroupApplyCode()
 	{

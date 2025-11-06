@@ -16,13 +16,18 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.oreilly.servlet.MultipartRequest;
+import com.test.mybatis.dao.IActivityDAO;
+import com.test.mybatis.dao.IChallengeDAO;
 import com.test.mybatis.dao.IGroupDAO;
 import com.test.mybatis.dao.IGroupJoinDAO;
+import com.test.mybatis.dto.ActivityDTO;
 import com.test.mybatis.dto.GroupDTO;
 import com.test.mybatis.dto.GroupJoinDTO;
 import com.test.mybatis.dto.UserDTO;
+import com.test.util.Paging;
 
 
 @Controller
@@ -36,6 +41,8 @@ public class HomeController
 	public String home(Model model, HttpSession session, String groupApplyCode)
 	{
 		IGroupDAO dao = sqlSession.getMapper(IGroupDAO.class);
+		IChallengeDAO cDao = sqlSession.getMapper(IChallengeDAO.class);
+		IGroupJoinDAO joinDao = sqlSession.getMapper(IGroupJoinDAO.class);
 		
 		UserDTO user = (UserDTO)session.getAttribute("user");
 		String userCode;
@@ -45,6 +52,11 @@ public class HomeController
 			userCode = user.getUserCode();
 		
 		model.addAttribute("groupInfo",dao.groupHomeGroupInfo(userCode, groupApplyCode));
+		model.addAttribute("activity", sqlSession.selectList("com.test.mybatis.dao.IActivityDAO.activityListAtHome", groupApplyCode));
+		model.addAttribute("post", sqlSession.selectList("com.test.mybatis.dao.IGroupPostDAO.postListAtHome", groupApplyCode));
+		model.addAttribute("checkMember", dao.checkMember(groupApplyCode, userCode));
+		model.addAttribute("challenge", cDao.challengeAtHome(groupApplyCode, userCode));
+		model.addAttribute("selfIntro", joinDao.getSelfIntro(groupApplyCode, userCode));
 		
 		return "/WEB-INF/view/group_room/Home.jsp";
 	}
@@ -78,9 +90,51 @@ public class HomeController
 		return "/WEB-INF/view/group_room/manage/ManageList.jsp";
 	}
 	@RequestMapping(value="/votelist.do", method=RequestMethod.GET)
-	public String votelist(Model model)
+	public String votelist(HttpServletRequest request, Model model, @RequestParam("groupApplyCode") String groupApplyCode, String pageNum)
 	{
-		return "/WEB-INF/view/group_room/vote/VoteList.jsp";
+		IActivityDAO dao = sqlSession.getMapper(IActivityDAO.class);
+		
+		ActivityDTO activityDTO = new ActivityDTO();
+		
+		int currentPage = 1;	// 기본값
+		if (pageNum != null)
+			currentPage = Integer.parseInt(pageNum);
+		
+		// 전체 데이터 개수 구하기
+		int dataCount = dao.countActivity(groupApplyCode);
+		int numPerPage = 10;	// 한 페이지에 표시할 데이터 개수
+		
+		Paging paging = new Paging();
+		int totalPage = paging.getPageCount(numPerPage, dataCount);
+		
+		if (currentPage > totalPage)
+			currentPage = totalPage;
+		
+		int start = (currentPage - 1) * numPerPage + 1;
+		int end = currentPage * numPerPage;
+			
+		// url 생성
+		String cp = request.getContextPath();
+		String listUrl = cp + "/votelist.do";
+		String pageIndexList = paging.pageIndexList(currentPage, totalPage, listUrl);
+		
+		// model에 데이터 담기
+		model.addAttribute("pageIndexList", pageIndexList);
+		model.addAttribute("start", start);
+		
+		activityDTO.setGroupApplyCode(groupApplyCode);
+		activityDTO.setStart(start);
+		activityDTO.setEnd(end);
+		
+		// 주소 구성
+		String articleUrl = "/WEB-INF/view/group_room/vote/VoteList.jsp";
+		articleUrl += "?pageNum=" + currentPage;
+		
+		model.addAttribute("activityList"
+				, sqlSession.selectList("com.test.mybatis.dao.IActivityDAO.activityForGroup", activityDTO));
+		
+		
+		return articleUrl;
 	}
 	
 	@RequestMapping(value="/level.do", method=RequestMethod.GET)
@@ -210,6 +264,7 @@ public class HomeController
 	{
 		return "/WEB-INF/view/group_room/manage/Attendance.jsp";
 	}
+	
 	
 	
 }

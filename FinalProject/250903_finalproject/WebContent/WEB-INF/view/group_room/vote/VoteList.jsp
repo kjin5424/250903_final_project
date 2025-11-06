@@ -24,32 +24,38 @@
 			<c:import url="/WEB-INF/view/group_room/SideBar.jsp"></c:import>
 		</div>
 
+		
+		
 		<div class="main">
 			<!-- 진행중인 투표 -->
+			<c:if test="${not empty activityList }">
+			<c:forEach var="activityDTO" items="${activityList }">
 			<div class="card">
 				<div class="card-header">
-					<span class="title">진행중인 투표</span> <span class="date-range">2025-10-14
-						~ 2025-10-16</span>
+					<span class="title">${activityDTO.status }</span> 
+					<span class="date-range">투표기간 : ${activityDTO.createdDate }
+						~ ${activityDTO.limitVoteDate }</span>
 				</div>
 
 				<div class="meta">
-					<span>총: 12명</span> | <span>투표자: 5명</span>
+					<span>총: ${activityDTO.totalMember }명</span> | <span>참여투표자: ${activityDTO.registrants }명</span>
 				</div>
-				<div class="meta">2025-10-17 20:00 ~ 22:00</div>
-				<div class="meta">장소 : 서울 마포구 ...</div>
+				<div class="meta">${activityDTO.activeDate} ~ ${activityDTO.activeEndTime }</div>
+				<div class="meta">${activityDTO.onOffLine }</div>
+				<div class="meta">장소(화상회의 주소) : ${activityDTO.place }</div>
 
 				<div class="progress-section">
 					<div class="progress-label">
-						<span>참여<input type="radio" name="vote" value="1"></span>
-						<span>4명 (80%)</span>
+						<label><span>참여 <input type="radio" name="vote" value="1"></span></label>
+						<span>${activityDTO.registrants }명 (${activityDTO.registrants / activityDTO.totalMember * 100 }%)</span>
 					</div>
 					<div class="progress-bar blue" style="width: 80%;"></div>
 				</div>
 
 				<div class="progress-section">
 					<div class="progress-label">
-						<span>미참<input type="radio" name="vote" value="0"></span>
-						<span>1명 (20%)</span>
+						<label><span>미참 <input type="radio" name="vote" value="0"></span></label>
+						<span>${activityDTO.totalMember - activityDTO.registrants }명 (${(activityDTO.totalMember - activityDTO.registrants) / activityDTO.totalMember * 100 }%)</span>
 					</div>
 					<div class="progress-bar gray" style="width: 20%;"></div>
 				</div>
@@ -61,72 +67,17 @@
 					<button id="submit-btn">제출</button>
 				</div>
 			</div>
-
-			<!-- 종료된 투표 -->
-			<div class="card">
-				<div class="card-header">
-					<span class="title">종료된 투표</span> <span class="date-range">2025-10-01
-						~ 2025-10-03</span>
-				</div>
-
-				<div class="meta">
-					<span>총: 12명</span> | <span>투표자: 10명</span>
-				</div>
-				<div class="meta">2025-10-04 14:00 ~ 17:00</div>
-				<div class="meta">장소 : 서울 마포구 ...</div>
-
-				<div class="progress-section">
-					<div class="progress-label">
-						<span>참여</span> <span>8명 (80%)</span>
-					</div>
-					<div class="progress-bar blue" style="width: 80%;"></div>
-				</div>
-
-				<div class="progress-section">
-					<div class="progress-label">
-						<span>미참</span> <span>2명 (20%)</span>
-					</div>
-					<div class="progress-bar gray" style="width: 20%;"></div>
-				</div>
-			</div>
-
-			<!-- 종료된 투표 2 -->
-			<div class="card">
-				<div class="card-header">
-					<span class="title">종료된 투표</span> <span class="date-range">2025-09-23
-						~ 2025-09-25</span>
-				</div>
-
-				<div class="meta">
-					<span>총: 12명</span> | <span>투표자: 11명</span>
-				</div>
-				<div class="meta">2025-09-26 19:00 ~ 21:00</div>
-				<div class="meta">장소 : 서울 마포구 ...</div>
-
-				<div class="progress-section">
-					<div class="progress-label">
-						<span>참여</span> <span>10명 (91%)</span>
-					</div>
-					<div class="progress-bar blue" style="width: 91%;"></div>
-				</div>
-
-				<div class="progress-section">
-					<div class="progress-label">
-						<span>미참</span> <span>1명 (9%)</span>
-					</div>
-					<div class="progress-bar gray" style="width: 9%;"></div>
-				</div>
-			</div>
-
+			</c:forEach>
+			</c:if>
+			
 			<div class="create-vote-wrapper">
-				<a href="VoteCreate.jsp">
+				<a href="votecreate.do">
 				<button class="create-vote-btn">+ 새 투표 만들기</button></a>
 			</div>
 
 			<!-- 페이지네이션 -->
 			<div class="pagination">
-				<a href="#">1</a> <a href="#">2</a> <a href="#">3</a> <a href="#">4</a>
-				<a href="#">5</a>
+				${pageIndexList }
 			</div>
 
 		</div>
