@@ -36,11 +36,13 @@ public class ManagerController
 			return "/WEB-INF/view/manager/inquiry/inquiryList_kmj.jsp";
 		}
 	
+		/*
 		@RequestMapping(value="/inquirydetail.do", method=RequestMethod.GET)
 		public String inquiryDetail(Model model)
 		{
 			return "/WEB-INF/view/manager/inquiry/inquiryDetail.jsp";
 		}
+		*/
 		
 		@RequestMapping(value="/inquiryopenandanswer.do", method=RequestMethod.GET)
 		public String inquiryAnswer(Model model)

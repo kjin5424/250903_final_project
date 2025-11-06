@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <% 
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
 	request.setAttribute("cp", cp); 
 %>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -1040,40 +1042,60 @@ body {
 					<tr>
 						<th style="width: 80px;">번호</th>
 						<th>제목</th>
-						<th style="width: 120px;">작성일</th>
-						<th style="width: 100px;">상태</th>
-						<th style="width: 100px;">관리</th>
+						<th style="width: 120px;">아이디</th>
+						<!-- <th style="width: 100px;">제목</th> -->
+						<th style="width: 100px;">작성일</th> 
 					</tr>
 				</thead>
-				<tbody>
+				
+			<!-- <tbody>
 					<tr>
 						<td>3</td>
 						<td>회원탈퇴는 어떻게 하나요?</td>
 						<td>2025-01-10</td>
 						<td><span class="inquiry-status status-answered">답변완료</span></td>
-						<td><button class="btn-view" onclick="viewInquiry(3)">보기</button></td>
 					</tr>
 					<tr>
 						<td>2</td>
 						<td>모임 생성 방법 문의</td>
 						<td>2025-01-05</td>
 						<td><span class="inquiry-status status-answered">답변완료</span></td>
-						<td><button class="btn-view" onclick="viewInquiry(2)">보기</button></td>
 					</tr>
 					<tr>
 						<td>1</td>
 						<td>결제 오류 관련 문의</td>
 						<td>2024-12-28</td>
 						<td><span class="inquiry-status status-pending">답변대기</span></td>
-						<td><button class="btn-view" onclick="viewInquiry(1)">보기</button></td>
 					</tr>
-				</tbody>
-			</table>
+				</tbody> -->
+
+			<tbody>
+		    <c:forEach var="inq" items="${inquiries}">
+		        <tr>
+		            <td>${inq.inquiryCode}</td> <!-- 문의번호 -->
+		            <td>
+		                <a href="${cp}/inquirydetail.do?inquiryCode=${inq.inquiryCode}">
+		                    ${inq.content}
+		                </a>
+		            </td> <!-- 제목 클릭 시 상세 페이지 이동 -->
+		            <td>${inq.userCode}</td>    <!-- 사용자 아이디 -->
+		            <td><fmt:formatDate value="${inq.createdDate}" pattern="yyyy-MM-dd"/></td>
+		        </tr>
+		    </c:forEach>
+		</tbody>
+					
+					
+		</table>
 		</div>
-		
-		<div class="action-buttons">
+					
+		<!-- <div class="action-buttons">
 			<a href="inquiry/write.do" class="btn-action btn-inquiry">새 문의하기</a>
-		</div>
+		</div> -->
+		
+		    <div style="margin-top:20px; text-align:right;">
+        <a href="${cp}/inquiry/write.do" class="btn-action btn-inquiry">문의하기</a>
+    </div>
+    
 	</div>
 	
 	<!-- 계정 관리 탭 -->
