@@ -1,0 +1,339 @@
+@charset "UTF-8";
+/* 검색 섹션 전체 */
+.search-section {
+   /* background: white; */
+   padding: 0px;
+   margin: 60px 0px 30px 0px;
+   border-radius: 12px;
+   /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06); */
+}
+
+/* 검색 컨테이너 */
+.search-container {
+   position: relative;
+   max-width: 100%;
+   margin: 0 auto;
+}
+
+/* 검색바 래퍼 */
+.search-bar-wrapper {
+   display: flex;
+   gap: 10px;
+   margin-bottom: 20px;
+}
+
+/* 검색 입력창 */
+.search-box {
+   flex: 1;
+   padding: 14px 20px 14px 45px;
+   font-size: 15px;
+   border: 2px solid #e0e0e0;
+   border-radius: 8px;
+   outline: none;
+   transition: all 0.2s ease;
+   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%23999" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>');
+   background-repeat: no-repeat;
+   background-position: 15px center;
+   background-size: 18px;
+}
+
+.search-box:focus {
+   border-color: #a8d5a1;
+   box-shadow: 0 0 0 3px rgba(168, 213, 161, 0.1);
+}
+
+.search-box::placeholder {
+   color: #999;
+}
+
+/* 검색 버튼 */
+.search-btn {
+   background: #2d5a29;
+   color: white;
+   border: none;
+   padding: 14px 28px;
+   border-radius: 8px;
+   cursor: pointer;
+   font-size: 15px;
+   font-weight: 600;
+   transition: all 0.2s ease;
+   white-space: nowrap;
+   display: flex;
+   align-items: center;
+   gap: 6px;
+}
+
+.search-btn:hover {
+   background: #1f4019;
+   transform: translateY(-1px);
+   box-shadow: 0 4px 8px rgba(45, 90, 41, 0.2);
+}
+
+.search-btn:active {
+   transform: translateY(0);
+}
+
+/* 필터 토글 버튼 */
+.filter-toggle-btn {
+   background: #f8faf9;
+   color: #2d5a29;
+   border: 2px solid #e8f5e6;
+   padding: 14px 24px;
+   border-radius: 8px;
+   cursor: pointer;
+   font-size: 15px;
+   font-weight: 600;
+   transition: all 0.2s ease;
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   white-space: nowrap;
+}
+
+.filter-toggle-btn:hover {
+   background: #e8f5e6;
+   border-color: #a8d5a1;
+}
+
+.filter-toggle-btn.active {
+   background: #e8f5e6;
+   border-color: #2d5a29;
+   color: #1f4019;
+}
+
+.filter-count {
+   background: #2d5a29;
+   color: white;
+   padding: 2px 8px;
+   border-radius: 12px;
+   font-size: 12px;
+   font-weight: bold;
+}
+
+/* 필터 패널 */
+.filter-panel {
+   display: none;
+   background: #f8faf9;
+   border-radius: 8px;
+   padding: 20px;
+   margin-top: 15px;
+   border: 2px solid #e8f5e6;
+   animation: slideDown 0.3s ease;
+}
+
+.filter-panel.show {
+   display: block;
+}
+
+@keyframes slideDown {
+   from {
+      opacity: 0;
+      transform: translateY(-10px);
+   }
+   to {
+      opacity: 1;
+      transform: translateY(0);
+   }
+}
+
+/* 필터 그리드 */
+.filter-grid {
+   display: grid;
+   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+   gap: 20px;
+}
+
+/* 필터 섹션 */
+.filter-section {
+   background: white;
+   padding: 15px;
+   border-radius: 8px;
+   border: 1px solid #e0e0e0;
+}
+
+.filter-section h4 {
+   margin: 0 0 12px 0;
+   font-size: 14px;
+   color: #2d5a29;
+   font-weight: 600;
+   display: flex;
+   align-items: center;
+   gap: 6px;
+}
+
+.filter-section h4::before {
+   content: '';
+   width: 3px;
+   height: 14px;
+   background: #2d5a29;
+   border-radius: 2px;
+}
+
+/* 체크박스 그룹 */
+.checkbox-group {
+   display: flex;
+   flex-direction: column;
+   gap: 8px;
+}
+
+/* 커스텀 체크박스 */
+.custom-checkbox {
+   display: flex;
+   align-items: center;
+   cursor: pointer;
+   padding: 6px 8px;
+   border-radius: 6px;
+   transition: background 0.2s ease;
+}
+
+.custom-checkbox:hover {
+   background: #f5f7fa;
+}
+
+.custom-checkbox input[type="checkbox"] {
+   appearance: none;
+   width: 18px;
+   height: 18px;
+   border: 2px solid #d0d0d0;
+   border-radius: 4px;
+   margin-right: 10px;
+   cursor: pointer;
+   position: relative;
+   transition: all 0.2s ease;
+   flex-shrink: 0;
+}
+
+.custom-checkbox input[type="checkbox"]:checked {
+   background: #2d5a29;
+   border-color: #2d5a29;
+}
+
+.custom-checkbox input[type="checkbox"]:checked::after {
+   content: '✓';
+   position: absolute;
+   color: white;
+   font-size: 12px;
+   font-weight: bold;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+}
+
+.custom-checkbox label {
+   cursor: pointer;
+   font-size: 14px;
+   color: #333;
+   user-select: none;
+}
+
+/* 필터 액션 버튼 */
+.filter-actions {
+   display: flex;
+   gap: 10px;
+   margin-top: 20px;
+   padding-top: 15px;
+   border-top: 1px solid #e0e0e0;
+}
+
+.filter-btn {
+   padding: 10px 20px;
+   border-radius: 6px;
+   border: none;
+   cursor: pointer;
+   font-size: 14px;
+   font-weight: 600;
+   transition: all 0.2s ease;
+}
+
+.filter-btn.primary {
+   background: #2d5a29;
+   color: white;
+   flex: 1;
+}
+
+.filter-btn.primary:hover {
+   background: #1f4019;
+}
+
+.filter-btn.secondary {
+   background: white;
+   color: #666;
+   border: 1px solid #d0d0d0;
+}
+
+.filter-btn.secondary:hover {
+   background: #f5f7fa;
+}
+
+/* 선택된 필터 태그 */
+.selected-filters {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 8px;
+   margin-top: 15px;
+   padding: 12px;
+   background: white;
+   border-radius: 8px;
+   border: 1px solid #e8f5e6;
+   min-height: 20px;
+}
+
+.selected-filters:empty {
+   display: none;
+}
+
+.filter-tag {
+   display: inline-flex;
+   align-items: center;
+   gap: 6px;
+   background: #e8f5e6;
+   color: #2d5a29;
+   padding: 6px 12px;
+   border-radius: 16px;
+   font-size: 13px;
+   font-weight: 500;
+}
+
+.filter-tag .remove-btn {
+   cursor: pointer;
+   font-weight: bold;
+   color: #2d5a29;
+   opacity: 0.7;
+   transition: opacity 0.2s;
+   font-size: 16px;
+   line-height: 1;
+}
+
+.filter-tag .remove-btn:hover {
+   opacity: 1;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+   .search-section {
+      padding: 20px 15px;
+      margin: 15px;
+   }
+   
+   .search-bar-wrapper {
+      flex-direction: column;
+   }
+   
+   .filter-toggle-btn,
+   .search-btn {
+      width: 100%;
+      justify-content: center;
+   }
+   
+   .filter-grid {
+      grid-template-columns: 1fr;
+   }
+   
+   .filter-actions {
+      flex-direction: column;
+   }
+   
+   .filter-btn {
+      width: 100%;
+   }
+}
