@@ -133,9 +133,29 @@ public class VoteController
 	@RequestMapping(value="/voteinsert.do", method = RequestMethod.GET)
 	public String insertActivity(HttpServletRequest request, @RequestParam("groupApplyCode") String groupApplyCode) throws UnsupportedEncodingException
 	{
-		String url = "redirect: votelist.do?groupApplyCode=" + groupApplyCode;
+		String url = "redirect:votelist.do?groupApplyCode=" + groupApplyCode;
 		
+		IActivityDAO dao = sqlSession.getMapper(IActivityDAO.class);
 		
+		ActivityDTO dto = new ActivityDTO();
+		
+		dto.setActiveDate(request.getParameter("date") + " " + request.getParameter("start-time"));
+		dto.setJoinCode(request.getParameter("joinCode"));
+		dto.setContent(request.getParameter("content"));
+		dto.setTime(request.getParameter("progress-time"));
+		
+		if(request.getParameter("on_off").equals("offline"))
+		{
+			dto.setPlace(request.getParameter("location"));
+			dto.setOnOffLine("2");
+		}
+		else
+		{
+			dto.setPlace(request.getParameter("uri"));
+			dto.setOnOffLine("1");
+		}
+		
+		dao.addActivity(dto);
 		
 		return url;
 	}
