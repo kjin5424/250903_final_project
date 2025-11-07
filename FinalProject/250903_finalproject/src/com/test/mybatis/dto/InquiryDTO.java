@@ -10,6 +10,7 @@ public class InquiryDTO {
     // =========================
     private String inquiryCode;
     private String userCode;
+    private String title;        // 🔹 문의 제목 추가
     private String content;
     private Date createdDate;
 
@@ -34,6 +35,9 @@ public class InquiryDTO {
 
     public String getUserCode() { return userCode; }
     public void setUserCode(String userCode) { this.userCode = userCode; }
+
+    public String getTitle() { return title; }                // 🔹 추가
+    public void setTitle(String title) { this.title = title; } // 🔹 추가
 
     public String getContent() { return content; }
     public void setContent(String content) { this.content = content; }

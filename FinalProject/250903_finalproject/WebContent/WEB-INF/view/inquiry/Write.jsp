@@ -1,8 +1,7 @@
-<%@ page contentType="text/html; charset=UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
-	request.setCharacterEncoding("UTF-8");
-	String cp = request.getContextPath(); 
+    request.setCharacterEncoding("UTF-8");
+    String cp = request.getContextPath();
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -337,7 +336,7 @@ body {
 		//     return;
 		// }
 		
-		
+		// 임시 사용자 정보
 		String userId = "user123";
 		String userEmail = "user123@example.com";
 	%>
@@ -356,7 +355,6 @@ body {
 			</div>
 			<div class="info-box-content">
 				<ul>
-					<li>문의 답변은 평균 1-2일 내에 이메일로 발송됩니다.</li>
 					<li>자주 묻는 질문은 FAQ 페이지에서 빠르게 확인하실 수 있습니다.</li>
 					<li>구체적으로 작성해주실수록 정확한 답변이 가능합니다.</li>
 				</ul>
@@ -369,23 +367,24 @@ body {
 				<span>자주 묻는 질문 템플릿</span>
 			</div>
 			<div class="quick-question-list">
-				<div class="quick-question-item" onclick="applyTemplate('회원탈퇴', '회원탈퇴는 어떻게 하나요?\\n\\n탈퇴 절차와 주의사항에 대해 알려주세요.')">
+				<div class="quick-question-item" onclick="applyTemplate('회원탈퇴', '회원탈퇴는 어떻게 하나요? 탈퇴 절차와 주의사항에 대해 알려주세요.')">
 					📌 회원탈퇴는 어떻게 하나요?
 				</div>
-				<div class="quick-question-item" onclick="applyTemplate('모임 생성 문의', '모임을 생성하고 싶은데 방법을 알려주세요.\\n\\n모임 카테고리: \\n예상 인원: \\n활동 지역: ')">
+				<div class="quick-question-item" onclick="applyTemplate('모임 생성 문의', '모임을 생성하고 싶은데 방법을 알려주세요. 모임 카테고리: 예상 인원: 활동 지역: ')">
 					📌 모임 생성 방법을 알려주세요
 				</div>
-				<div class="quick-question-item" onclick="applyTemplate('신고 처리 문의', '신고한 내용의 처리 결과가 궁금합니다.\\n\\n신고 번호: \\n신고 일시: ')">
+				<div class="quick-question-item" onclick="applyTemplate('신고 처리 문의', '신고한 내용의 처리 결과가 궁금합니다. 신고 번호: 신고 일시: ')">
 					📌 신고 처리 결과가 궁금해요
 				</div>
-				<div class="quick-question-item" onclick="applyTemplate('결제/환불 문의', '결제 및 환불에 대해 문의드립니다.\\n\\n문의 내용: ')">
+				<div class="quick-question-item" onclick="applyTemplate('결제/환불 문의', '결제 및 환불에 대해 문의드립니다. 문의 내용: ')">
 					📌 결제/환불 관련 문의
 				</div>
 			</div>
 		</div>
 		
+		<!-- <form id="inquiryForm" onsubmit="return validateInquiry(event)"> -->
+		<form id="inquiryForm" action="write.do" method="post" onsubmit="return validateInquiry(event)">
 		
-		<form id="inquiryForm" onsubmit="return validateInquiry(event)">
 			<div class="form-container">
 				<div class="user-info-section">
 					<div class="user-info-title">
@@ -440,10 +439,10 @@ body {
 					<p class="form-help">문의 내용을 구체적으로 작성해주시면 더 정확한 답변을 받으실 수 있습니다.</p>
 				</div>
 				
-						<div class="button-group">
-					<a href="<%= cp %>/profilemodify.do?tab=inquiry" class="btn btn-cancel">
-					    <span>✕</span>
-					    <span>프로필로</span>
+				<div class="button-group">
+					 <a href="<%=cp %>/profilemodify.do?tab=inquiry" class="btn btn-cancel">
+						<span>✕</span>
+						<span>취소</span>
 					</a>
 					<button type="submit" class="btn btn-submit">
 						<span>📨</span>
@@ -453,6 +452,10 @@ body {
 			</div>
 		</form>
 		
+		<div class="faq-link">
+			자주 묻는 질문을 먼저 확인해보세요
+			<a href="faq.jsp">FAQ 바로가기 →</a>
+		</div>
 	</div>
 	
 	<script>
@@ -491,47 +494,44 @@ body {
 		}
 		
 		// 폼 유효성 검사
-		function validateInquiry(event) {
-			event.preventDefault();
-			
-			const title = titleInput.value.trim();
-			const content = contentInput.value.trim();
-			
-			if (!title) {
-				alert('제목을 입력해주세요.');
-				titleInput.focus();
-				return false;
-			}
-			
-			if (title.length < 5) {
-				alert('제목은 최소 5자 이상 입력해주세요.');
-				titleInput.focus();
-				return false;
-			}
-			
-			if (!content) {
-				alert('내용을 입력해주세요.');
-				contentInput.focus();
-				return false;
-			}
-			
-			if (content.length < 10) {
-				alert('내용은 최소 10자 이상 입력해주세요.');
-				contentInput.focus();
-				return false;
-			}
-			
-			// 최종 확인
-			if (confirm('문의를 등록하시겠습니까?')) {
-				submitInquiry(title, content);
-			}
-			
-			return false;
-			
-			
-		}
-		
-		// 문의 제출
+	function validateInquiry(event) {
+    // event.preventDefault(); ← 제거, 유효성 검사 통과 시 제출되도록 변경
+    
+    const title = titleInput.value.trim();
+    const content = contentInput.value.trim();
+    
+    if (!title) {
+        alert('제목을 입력해주세요.');
+        titleInput.focus();
+        return false;
+    }
+    
+    if (title.length < 5) {
+        alert('제목은 최소 5자 이상 입력해주세요.');
+        titleInput.focus();
+        return false;
+    }
+    
+    if (!content) {
+        alert('내용을 입력해주세요.');
+        contentInput.focus();
+        return false;
+    }
+    
+    if (content.length < 10) {
+        alert('내용은 최소 10자 이상 입력해주세요.');
+        contentInput.focus();
+        return false;
+    }
+    
+    // 최종 확인
+    if (confirm('문의를 등록하시겠습니까?')) {
+        return true; // true 반환 → form 정상 제출
+    }
+    
+    return false; // 취소 시 제출 중단
+}
+		<%-- // 문의 제출
 		function submitInquiry(title, content) {
 			// 실제로는 서버로 데이터 전송
 			const inquiryData = {
@@ -543,10 +543,9 @@ body {
 			
 			console.log('문의 데이터:', inquiryData);
 			
-			alert('문의가 성공적으로 등록되었습니다!');
-			window.location.href = '<%=cp %>/profilemodify.do';
-			
-		}
+			alert('문의가 성공적으로 등록되었습니다!\n답변은 이메일로 발송됩니다.');
+			window.location.href = 'index.jsp';
+		} --%>
 		
 		// 페이지 이탈 방지
 		let isSubmitting = false;

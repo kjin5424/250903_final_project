@@ -5,39 +5,52 @@
 
 <mapper namespace="com.test.mybatis.dao.IInquiryDAO">
 
-    <!-- 1. 사용자별 문의 내역 조회 -->
-    <select id="list" resultType="com.test.mybatis.dto.InquiryDTO">
-        SELECT
-            INQUIRY_CODE AS inquiryCode,
-            USER_CODE AS userCode,
-            CONTENT AS content,
-            CREATED_DATE AS createdDate
-        FROM INQUIRY
-        WHERE USER_CODE = #{userCode}
-        ORDER BY CREATED_DATE DESC
-    </select>
+	<!-- 1. 사용자별 문의 내역 조회 -->
+	<select id="list" resultType="com.test.mybatis.dto.InquiryDTO">
+		SELECT
+		INQUIRY_CODE AS inquiryCode,
+		USER_CODE AS userCode,
+		CONTENT AS content,
+		CREATED_DATE AS createdDate
+		FROM INQUIRY
+		WHERE USER_CODE = #{userCode}
+		ORDER BY CREATED_DATE DESC
+	</select>
 
-<!-- 2. 특정 문의 상세 조회 -->
-    <select id="detail" parameterType="String" resultType="com.test.mybatis.dto.InquiryDTO">
-        SELECT
-            INQUIRY_CODE AS inquiryCode,
-            USER_CODE AS userCode,
-            CONTENT AS content,
-            CREATED_DATE AS createdDate
-        FROM INQUIRY
-        WHERE INQUIRY_CODE = #{inquiryCode}
-    </select>
+	<!-- 2. 특정 문의 상세 조회 -->
+	<select id="detail" parameterType="String"
+		resultType="com.test.mybatis.dto.InquiryDTO">
+		SELECT
+		INQUIRY_CODE AS inquiryCode,
+		USER_CODE AS userCode,
+		CONTENT AS content,
+		CREATED_DATE AS createdDate
+		FROM INQUIRY
+		WHERE INQUIRY_CODE = #{inquiryCode}
+	</select>
 
-    <!-- 6. 특정 문의에 대한 답변 조회 -->
-    <select id="answers" parameterType="String" resultType="com.test.mybatis.dto.InquiryDTO">
-        SELECT
-            INQUIRY_CODE AS inquiryCode,
-            MANAGER_CODE AS adminId,
-            CONTENT AS answerContent,
-            CREATED_DATE AS answerDate
-        FROM INQUIRY_ANSWER
-        WHERE INQUIRY_CODE = #{inquiryCode}
-        ORDER BY CREATED_DATE DESC
-    </select>
+	<!-- 3. 특정 문의에 대한 답변 조회 -->
+	<select id="answers" parameterType="String"
+		resultType="com.test.mybatis.dto.InquiryDTO">
+		SELECT
+		INQUIRY_CODE AS inquiryCode,
+		MANAGER_CODE AS adminId,
+		CONTENT AS answerContent,
+		CREATED_DATE AS answerDate
+		FROM INQUIRY_ANSWER
+		WHERE INQUIRY_CODE = #{inquiryCode}
+		ORDER BY CREATED_DATE DESC
+	</select>
+
+	<!-- 4. 문의 등록 -->
+	<insert id="add" parameterType="com.test.mybatis.dto.InquiryDTO">
+		INSERT INTO INQUIRY (INQUIRY_CODE, USER_CODE, CONTENT, CREATED_DATE)
+		VALUES (
+		'IQ' || LPAD(INQUIRY_SEQ.NEXTVAL, 8, '0'),
+		#{userCode},
+		#{content},
+		SYSDATE
+		)
+	</insert>
 
 </mapper>
