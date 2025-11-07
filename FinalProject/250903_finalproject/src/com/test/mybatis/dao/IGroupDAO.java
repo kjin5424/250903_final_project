@@ -46,17 +46,11 @@ public interface IGroupDAO
 	public GroupDTO groupQuestionRule(@Param("groupApplyCode") String groupApplyCode);
 	
 	// 누적 활동 수 구하기
-	public Integer countActivity(@Param("groupApplyCode") String groupApplyCode);
+	public int countActivity(@Param("groupApplyCode") String groupApplyCode);
 	
 	// 마이페이지에서 사용될 현재 활동 : 참여 모임에 대해 조회하는 쿼리문
 	public GroupDTO myPageJoinGroup(@Param("userCode")String userCode);
 	
 	// 마이페이지에서 사용될 현재 활동 : 운영 모임에 대해 조회하는 쿼리문
 	public GroupDTO myPageMyGroup(@Param("userCode")String userCode);
-	
-	// 모임에 대한 관리에 모임원 관련 내용
-	public List<GroupDTO> groupManageMemberList(@Param("groupApplyCode") String groupApplyCode);
-	
-	// 모임 정보 수정
-	public void updateGroup(GroupDTO dto);
 }
