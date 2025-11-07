@@ -255,7 +255,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE
 			CG.GROUP_APPLY_CODE IS NULL
 		  	AND RG.GROUP_APPLY_CODE IS NULL
-		  	AND (GA.CREATED_DATE + 7 > SYSDATE OR GA.OPEN_DATE IS NOT NULL)
 		  	<if test="content != null and content != ''">
 		  		AND TT.TITLE LIKE '%' || #{content} || '%'
 		  	</if>
@@ -278,7 +277,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					#{item}
 				</foreach>
 			</if>
-			
+			<choose>
+				<when test="status != null and status.size() > 0">
+				AND
+					<foreach collection="status" item="item" open="(" separator=" OR " close=")">
+						${item}
+					</foreach>
+				</when>
+				<otherwise>
+				  	AND (GA.CREATED_DATE + 7 > SYSDATE OR GA.OPEN_DATE IS NOT NULL)
+				</otherwise>
+			</choose>
+		  	
 	</select>
 	
 	
@@ -337,24 +347,3 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 </mapper>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
