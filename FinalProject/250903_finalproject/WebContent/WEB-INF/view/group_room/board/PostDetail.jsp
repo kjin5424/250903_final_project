@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <% 
     request.setCharacterEncoding("UTF-8");
     String cp = request.getContextPath();
@@ -33,16 +34,15 @@
         });
     });
 
-    function editPost() {
+    function editPost(postCode) {
         if (confirm('게시글을 수정하시겠습니까?')) {
-            window.location.href = '/editpost.do';
+            window.location.href = '<%=cp%>/postedit.do?postCode=' + postCode;
         }
     }
 
-    function deletePost() {
+    function deletePost(postCode) {
         if (confirm('정말로 이 게시글을 삭제하시겠습니까?')) {
-            alert('게시글이 삭제되었습니다.');
-            window.location.href = 'postlist.do';
+            window.location.href = '<%=cp%>/postdeleteOk.do?postCode=' + postCode;
         }
     }
 
@@ -82,12 +82,37 @@
             <!-- 게시글 헤더 -->
             <div class="notice-detail-header">
                 <div class="post-title-wrapper">
-                    <span class="post-category category-notice">${post.boardCategory }</span>
+                	<c:choose>
+                		<c:when test="${post.boardCategory=='공지' }">
+		                    <span class="post-category category-notice">${post.boardCategory }</span>
+                		</c:when>
+                		<c:when test="${post.boardCategory=='활동' }">
+		                    <span class="post-category category-activity">${post.boardCategory }</span>
+                		</c:when>
+                		<c:when test="${post.boardCategory=='질문' }">
+		                    <span class="post-category category-question">${post.boardCategory }</span>
+                		</c:when>
+                		<c:when test="${post.boardCategory=='자료' }">
+		                    <span class="post-category category-resource">${post.boardCategory }</span>
+                		</c:when>
+                		<c:when test="${post.boardCategory=='자유' }">
+		                    <span class="post-category category-free">${post.boardCategory }</span>
+                		</c:when>
+                	</c:choose>
                     <h1 class="notice-detail-title">${post.subject }</h1>
                 </div>
                 <div class="notice-detail-meta">
                     <div class="notice-detail-meta-item">
-                        <div class="author-avatar">${post.savePath }</div>
+                        <div class="author-avatar">
+                        	<c:choose>
+							    <c:when test="${not empty post.savePath}">
+							        ${post.savePath}
+							    </c:when>
+							    <c:otherwise>
+							        ${fn:substring(post.nickName, 0, 1)}
+							    </c:otherwise>
+							</c:choose>
+                        </div>
                         <span>${post.nickName }</span>
                     </div>
                     <div class="notice-detail-meta-item">
@@ -106,14 +131,14 @@
 
             <!-- 게시글 본문 -->
             <div class="notice-detail-content">
-                ${post.content }
+                ${fn:replace(post.content, '\\n', '<br>')}
             </div>
 
             <!-- 버튼 영역 -->
             <div class="notice-actions">
                 <button class="btn-notice-action" onclick="location.href='postlist.do'">📋 목록으로</button>
-                <button class="btn-notice-action" onclick="editPost()">✏️ 수정</button>
-                <button class="btn-notice-action" onclick="deletePost()">🗑️ 삭제</button>
+                <button class="btn-notice-action" onclick="editPost(${post.postCode})">✏️ 수정</button>
+                <button class="btn-notice-action" onclick="deletePost(${post.postCode})">🗑️ 삭제</button>
             </div>
 
             <!-- 댓글 섹션 -->
@@ -124,6 +149,7 @@
                 </h3>
 
                 <!-- 댓글 작성 -->
+                <form action=""></form>
                 <div class="comment-write">
                     <textarea id="commentText" class="comment-textarea" 
                               placeholder="댓글을 입력하세요..."></textarea>
@@ -140,7 +166,16 @@
                 		<div class="comment-item">
                         <div class="comment-header">
                             <div class="comment-author-info">
-                                <div class="author-avatar">${dto.savePath }</div>
+                                <div class="author-avatar">
+	                                <c:choose>
+									    <c:when test="${not empty post.savePath}">
+									        ${dto.savePath}
+									    </c:when>
+									    <c:otherwise>
+									        ${fn:substring(dto.nickName, 0, 1)}
+									    </c:otherwise>
+									</c:choose>
+                                </div>
                                 <div>
                                     <div class="comment-author-name">${dto.nickName }</div>
                                     <div class="comment-date">${dto.createdDate }
