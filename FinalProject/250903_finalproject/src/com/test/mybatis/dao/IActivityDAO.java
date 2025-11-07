@@ -21,6 +21,6 @@ public interface IActivityDAO
 	public Integer countActivity(@Param("groupApplyCode") String groupApplyCode);
 	
 	// 특정 모임의 활동 한 개를 등록하는 메소드
-	public void addActivity(@Param("activityDTO") ActivityDTO activityDTO);
+	public void addActivity(@Param("dto") ActivityDTO activityDTO);
 	
 }

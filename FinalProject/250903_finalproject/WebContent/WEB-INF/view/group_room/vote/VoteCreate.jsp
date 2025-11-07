@@ -46,6 +46,9 @@ $(function()
 	$("#submitBtn").click(function()
 	{
 		
+		alert($("#start-time").val());
+		
+		
 		//alert("확인");
 		const inputDateString = $("#date").val();
 		
@@ -70,8 +73,6 @@ $(function()
 			alert("활동시작 시간을 선택해주세요.");
 			return false;
 		}
-		
-		var selectedGender = $('input[name="gender"]:checked').val();
 		
 		var checkOnOff = $("input[name='on_off']:checked").val();
 		
@@ -100,7 +101,7 @@ $(function()
 			return false;
 		}
 		
-		return false;
+		return true;
 		
 	});
 	
@@ -123,6 +124,7 @@ $(function()
 		<div class="main">
 			<form action="voteinsert.do" method="get">
 				<input type="hidden" name="groupApplyCode" value="${groupApplyCode }"/>
+				<input type="hidden" name="joinCode" value="${joinCode}"/>
 				<div class="input-group">
 					<label for="date">일자</label> <input type="date" id="date"
 						name="date" required="required">

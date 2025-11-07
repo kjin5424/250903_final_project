@@ -84,5 +84,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE GA.GROUP_APPLY_CODE = #{groupApplyCode}
 		GROUP BY GA.GROUP_APPLY_CODE
 	</select>
-
+	
+	<insert id="addActivity" parameterType="com.test.mybatis.dto.ActivityDTO" statementType="CALLABLE">
+		{CALL PRC_ACTIVITY_INSERT(#{dto.joinCode, jdbcType=VARCHAR}, TO_DATE(#{dto.activeDate, jdbcType=DATE},'YYYY-MM-DD HH24:MI:SS'), #{dto.onOffLine, jdbcType=INTEGER}, #{dto.time, jdbcType=INTEGER}, #{dto.place, jdbcType=VARCHAR}, #{dto.content, jdbcType=VARCHAR})}
+	</insert>
+	
 </mapper>
