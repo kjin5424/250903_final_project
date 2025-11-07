@@ -47,4 +47,10 @@ public interface IGroupDAO
 	
 	// 누적 활동 수 구하기
 	public int countActivity(@Param("groupApplyCode") String groupApplyCode);
+	
+	// 마이페이지에서 사용될 현재 활동 : 참여 모임에 대해 조회하는 쿼리문
+	public GroupDTO myPageJoinGroup(@Param("userCode")String userCode);
+	
+	// 마이페이지에서 사용될 현재 활동 : 운영 모임에 대해 조회하는 쿼리문
+	public GroupDTO myPageMyGroup(@Param("userCode")String userCode);
 }

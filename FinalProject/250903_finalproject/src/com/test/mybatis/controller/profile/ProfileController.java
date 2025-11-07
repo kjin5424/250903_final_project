@@ -1,6 +1,8 @@
 package com.test.mybatis.controller.profile;
 
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.test.mybatis.dao.IUserDAO;
+import com.test.mybatis.dto.UserDTO;
 
 /* ========================
 	ProfileController.java
@@ -28,7 +31,22 @@ public class ProfileController {
 	}
 
 	@RequestMapping(value = "/mypage.do", method = RequestMethod.GET)
-	public String mypage(Model model) {
+	public String mypage(Model model, HttpSession session) {
+		
+		UserDTO user = (UserDTO)session.getAttribute("user");
+		IUserDAO userDao = sqlSession.getMapper(IUserDAO.class);
+		String userCode = "UC00000010";
+		
+		if(user!=null)
+		{
+			userCode = user.getUserCode();
+		}
+		
+		model.addAttribute("user", userDao.inMyPage(userCode));
+		model.addAttribute("currentJoinGroup", sqlSession.selectList("com.test.mybatis.dao.IGroupDAO.myPageJoinGroup", userCode));
+		model.addAttribute("currentMyGroup", sqlSession.selectList("com.test.mybatis.dao.IGroupDAO.myPageMyGroup", userCode));
+		
+		
 		return "/WEB-INF/view/profile/Mypage.jsp";
 	}
 
