@@ -18,28 +18,28 @@
 }
 
 .category-notice {
-    background: var(--color-accent-light);
-    color: var(--color-accent-dark);
+    background: var(--color-accent);
+    color: white;
 }
 
 .category-activity {
-    background: var(--color-primary-lighter);
-    color: var(--color-primary-darker);
+    background: var(--color-primary-dark);
+    color: white;
 }
 
 .category-question {
-    background: #B3E5FC;
-    color: #01579B;
+    background: var(--color-secondary-dark);
+    color: white;
 }
 
 .category-resource {
-    background: #FFE0B2;
-    color: #E65100;
+    background: #feb985;
+    color: white;
 }
 
 .category-free {
-    background: var(--color-secondary-lighter);
-    color: var(--color-secondary-dark);
+    background: #8c9eff;
+    color: white;
 }
 
 /* 작성자 아바타 */
@@ -47,7 +47,7 @@
     width: 38px;
     height: 38px;
     border-radius: var(--radius-full);
-    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+    background: linear-gradient(135deg, var(--color-secondary), var(--color-secondary-dark));
     color: white;
     display: flex;
     align-items: center;

@@ -25,32 +25,6 @@
     let currentCategory = 'all';
 
     $(document).ready(function() {
-        // 모바일 메뉴 토글
-        $('.mobile-menu-toggle').click(function() {
-            $(this).toggleClass('active');
-            $('.navbar-menu').toggleClass('active');
-        });
-        
-        // 스크롤 시 헤더 스타일 변경
-        $(window).scroll(function() {
-            if ($(this).scrollTop() > 50) {
-                $('.navbar').addClass('scrolled');
-            } else {
-                $('.navbar').removeClass('scrolled');
-            }
-        });
-        
-        // 프로필 드롭다운
-        $('.profile-button').click(function(e) {
-            e.stopPropagation();
-            $('.dropdown-menu').toggleClass('show');
-        });
-        
-        // 드롭다운 외부 클릭 시 닫기
-        $(document).click(function() {
-            $('.dropdown-menu').removeClass('show');
-        });
-        
         // 엔터키로 검색
         $('#searchKeyword').keypress(function(e) {
             if (e.key === 'Enter') {
@@ -91,7 +65,7 @@
                 post.style.display = 'grid';
             } else if (currentCategory === 'notice' && categoryText === '공지') {
                 post.style.display = 'grid';
-            } else if (currentCategory === 'activity' && categoryText === '활동내용') {
+            } else if (currentCategory === 'activity' && categoryText === '활동') {
                 post.style.display = 'grid';
             } else if (currentCategory === 'question' && categoryText === '질문') {
                 post.style.display = 'grid';
@@ -103,17 +77,6 @@
                 post.style.display = 'none';
             }
         });
-
-        // 고정 공지사항은 항상 표시
-        const pinnedPosts = document.querySelectorAll('.post-item.pinned');
-        pinnedPosts.forEach(post => {
-            if (currentCategory === 'all' || currentCategory === 'notice') {
-                post.style.display = 'grid';
-            } else {
-                post.style.display = 'none';
-            }
-        });
-
         // 게시글이 하나도 없으면 빈 상태 표시
         checkEmptyState();
     }
@@ -149,13 +112,12 @@
 
     // 게시글 보기
     function viewPost(postCode) {
-    	// window.location.href = 'postdetail.do?' + this.value();
      	window.location.href = 'postdetail.do?postCode=' + postCode;
     }
 
     // 게시글 작성
     function writePost() {
-        window.location.href = '<%=cp%>/board/write';
+        window.location.href = 'postwrite.do';
     }
 
     // 게시글 검색
@@ -204,7 +166,7 @@
             <div class="board-tabs">
                 <button class="board-tab active" onclick="switchTab('all')">전체</button>
                 <button class="board-tab" onclick="switchTab('notice')">공지</button>
-                <button class="board-tab" onclick="switchTab('activity')">활동내용</button>
+                <button class="board-tab" onclick="switchTab('activity')">활동</button>
                 <button class="board-tab" onclick="switchTab('question')">질문</button>
                 <button class="board-tab" onclick="switchTab('resource')">자료</button>
                 <button class="board-tab" onclick="switchTab('free')">자유</button>
@@ -260,7 +222,7 @@
 	                    	<c:if test="${dto.boardCategory=='공지' }">
 		                        <span class="post-category category-notice">${dto.boardCategory }</span>
 	                    	</c:if>
-	                    	<c:if test="${dto.boardCategory=='활동내용'}">
+	                    	<c:if test="${dto.boardCategory=='활동'}">
 		                        <span class="post-category category-activity">${dto.boardCategory }</span>
 	                    	</c:if>
 	                    	<c:if test="${dto.boardCategory=='질문' }">

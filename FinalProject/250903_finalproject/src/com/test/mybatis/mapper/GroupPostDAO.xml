@@ -30,7 +30,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		LEFT JOIN BOARD_CATEGORY BC ON BC.BOARD_CATEGORY = PS.BOARD_CATEGORY
 		WHERE NVL(RPSPR.PROCESS_TYPE, 0) NOT IN (4)
 		AND DPS.POST_CODE IS NULL
-		AND GA.GROUP_APPLY_CODE = '32'
+		AND GA.GROUP_APPLY_CODE = #{groupApplyCode}
 		ORDER BY PS.CREATED_DATE DESC))
 		WHERE RN BETWEEN #{start} AND #{end}
 	</select>
@@ -79,7 +79,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="searchList" resultType="com.test.mybatis.dto.GroupPostDTO">
-		<!-- 
 		SELECT postCode, boardCategory, subject, nickName, joinCode
 			 , groupApplyCode, createdDate, commentCount
 		FROM(
@@ -106,16 +105,60 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE NVL(RPSPR.PROCESS_TYPE, 0) NOT IN (4)
 		AND DPS.POST_CODE IS NULL
 		AND GA.GROUP_APPLY_CODE = '32'
-		AND PS.SUBJECT LIKE '%라라%'
-		AND PS.CONTENT LIKE '%라라%'
-		AND UI.NICKNAME LIKE '%라라%'
+		<choose>
+            <when test="searchType == 'title'">
+                AND PS.SUBJECT LIKE '%' || #{searchKeyword} || '%'
+            </when>
+            <when test="searchType == 'author'">
+                AND UI.NICKNAME LIKE '%' || #{searchKeyword} || '%'
+            </when>
+            <when test="searchType == 'content'">
+                AND PS.CONTENT LIKE '%' || #{searchKeyword} || '%'
+            </when>
+        </choose>
 		ORDER BY PS.CREATED_DATE DESC))
-		WHERE RN BETWEEN 11 AND 12
-		 -->
+		WHERE RN BETWEEN #{start} AND #{end}
 	</select>
 	
 	<select id="searchListCount" resultType="java.lang.Integer">
-	</select>
+		SELECT NVL(COUNT(*), 0) AS totalCount
+		FROM(
+		SELECT postCode, boardCategory, subject, nickName, joinCode
+			 , groupApplyCode, createdDate, commentCount, ROWNUM AS RN
+		FROM(
+		SELECT PS.POST_CODE AS postCode, BC.TYPE AS boardCategory
+			 , PS.SUBJECT AS subject, UI.NICKNAME AS nickName
+			 , J.JOIN_CODE AS joinCode
+			 , GA.GROUP_APPLY_CODE AS groupApplyCode
+			 , TO_CHAR(PS.CREATED_DATE, 'YYYY-MM-DD') AS createdDate
+			 , (SELECT COUNT(*)
+				FROM POST_COMMENT
+				WHERE POST_CODE = PS.POST_CODE) AS commentCount
+		FROM POST PS
+		LEFT JOIN REPORT_POST RPS ON PS.POST_CODE = RPS.POST_CODE
+		LEFT JOIN REPORT_POST_PROCESS RPSPR ON RPSPR.REPORT_POST_CODE = RPS.REPORT_POST_CODE
+		LEFT JOIN JOIN_TABLE J ON PS.JOIN_CODE = J.JOIN_CODE
+		LEFT JOIN USER_TABLE UT ON UT.USER_CODE = J.USER_CODE
+		LEFT JOIN USER_INFO UI ON UI.USER_ID = UT.USER_ID
+		LEFT JOIN GROUP_APPLY GA ON GA.GROUP_APPLY_CODE = J.GROUP_APPLY_CODE
+		LEFT JOIN DELETE_POST DPS ON DPS.POST_CODE = PS.POST_CODE
+		LEFT JOIN BOARD_CATEGORY BC ON BC.BOARD_CATEGORY = PS.BOARD_CATEGORY
+		WHERE NVL(RPSPR.PROCESS_TYPE, 0) NOT IN (4)
+		AND DPS.POST_CODE IS NULL
+		AND GA.GROUP_APPLY_CODE = '32'
+		<choose>
+            <when test="searchType == 'title'">
+                AND PS.SUBJECT LIKE '%' || #{searchKeyword} || '%'
+            </when>
+            <when test="searchType == 'author'">
+                AND UI.NICKNAME LIKE '%' || #{searchKeyword} || '%'
+            </when>
+            <when test="searchType == 'content'">
+                AND PS.CONTENT LIKE '%' || #{searchKeyword} || '%'
+            </when>
+        </choose>
+		ORDER BY PS.CREATED_DATE DESC))
+	</select> 
 
 	<select id="postDetail" resultType="com.test.mybatis.dto.GroupPostDTO">
 		SELECT P.POST_CODE AS postCode
@@ -136,6 +179,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 					WHEN RPP.PROCESS_TYPE IS NULL THEN 1
 					ELSE 0
 			   END AS isBlinded
+			 , P.JOIN_CODE as joinCode
 		FROM POST P
 		LEFT JOIN BOARD_CATEGORY BC ON P.BOARD_CATEGORY = BC.BOARD_CATEGORY
 		LEFT JOIN JOIN_TABLE JT ON JT.JOIN_CODE = P.JOIN_CODE
@@ -148,12 +192,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<insert id="insertPost">
+		INSERT INTO POST(POST_CODE, JOIN_CODE, BOARD_CATEGORY, SUBJECT, CONTENT, SAVEPATH)
+		VALUES(POST_SEQ.NEXTVAL, #{joinCode}, #{boardCategory}, #{subject}, #{content}, #{savePath})
 	</insert>
 	
 	<update id="updatePost">
+		UPDATE POST
+		SET BOARD_CATEGORY = #{boardCategory}
+		  , SUBJECT = #{subject}
+		  , CONTENT = #{content}
+		  , SAVEPATH = #{savePath}
+		WHERE POST_CODE = #{postCode}
 	</update>
 	
 	<delete id="deletePost">
+		INSERT INTO DELETE_POST(POST_CODE) VALUES(#{postCode})
 	</delete>
 	
 	<select id="commentList" resultType="com.test.mybatis.dto.GroupPostCommentDTO">
@@ -181,9 +234,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE PC.POST_CODE = #{postCode}
 	</select>
 	
-	
-	
 	<insert id="insertComment">
+		
 	</insert>
 	
 	<update id="updateComment">
@@ -224,4 +276,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		ORDER BY P.CREATED_DATE DESC
 	</select>
 	
+	<select id="validateMember" resultType="java.lang.String">
+		SELECT POSITION AS position
+		FROM CURRENT_MEMBER_VIEW
+		WHERE JOINCODE = #{joinCode}
+	</select>
+	
+	<select id="getJoinCode" resultType="java.lang.String">
+		SELECT JOINCODE AS joinCode
+		FROM CURRENT_MEMBER_VIEW
+		WHERE GROUPAPPLYCODE = #{groupApplyCode}
+		  AND USERCODE = #{userCode}
+	</select>
 </mapper>
