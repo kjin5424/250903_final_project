@@ -11,6 +11,29 @@
 <title>투표 리스트(정기+비정기)</title>
 <link rel="stylesheet" href="<%=cp %>/css/css_vote/votelist.css" />
 <link rel="stylesheet" href="<%=cp%>/css/topsidecontent.css" />
+<script type="text/javascript" src="https://code.jquery.com/jquery.min.js"></script>
+<script type="text/javascript">
+    
+    $(function() {
+    	
+    	// 확인
+    	//alert("그냥 띄우기");
+        var errorType = parseInt("${errorType}", 10);
+
+        // message가 빈 값이 아니라면 alert 띄우기
+        if (errorType) 
+        {
+            if (errorType===1)
+        	{
+            	alert("로그인 후 이용 가능합니다.");
+        	}
+            else if(errorType===2)
+           	{
+            	alert("활동 등록은 해당 모임의 구성원만 가능합니다.");
+           	}
+        }
+    });
+</script>
 </head>
 <body>
 	<!-- 상단 메뉴바 -->
@@ -71,7 +94,7 @@
 			</c:if>
 			
 			<div class="create-vote-wrapper">
-				<a href="votecreate.do">
+				<a href="votecreate.do?groupApplyCode=${groupApplyCode }">
 				<button class="create-vote-btn">+ 새 투표 만들기</button></a>
 			</div>
 

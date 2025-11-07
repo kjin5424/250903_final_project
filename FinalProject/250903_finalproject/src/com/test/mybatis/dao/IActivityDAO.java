@@ -18,6 +18,9 @@ public interface IActivityDAO
 	public ArrayList<ActivityDTO> activityListAtHome(@Param("groupApplyCode") String groupApplyCode);
 	
 	// 특정 모임의 전체 활동 개수 출력하는 메소드
-	public int countActivity(@Param("groupApplyCode") String groupApplyCode);
+	public Integer countActivity(@Param("groupApplyCode") String groupApplyCode);
+	
+	// 특정 모임의 활동 한 개를 등록하는 메소드
+	public void addActivity(@Param("activityDTO") ActivityDTO activityDTO);
 	
 }

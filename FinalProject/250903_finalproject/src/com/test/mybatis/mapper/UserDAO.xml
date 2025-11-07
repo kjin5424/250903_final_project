@@ -156,4 +156,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM DUAL
 	</select>
 	
+	<select id="checkMember" resultType="String">
+		SELECT JOINCODE
+		FROM CURRENT_MEMBER_VIEW
+		WHERE GROUPAPPLYCODE = #{userCode}
+		AND USERCODE = #{groupApplyCode}
+	</select>
+	
 </mapper>
