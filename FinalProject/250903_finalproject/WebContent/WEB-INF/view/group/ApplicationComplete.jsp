@@ -229,7 +229,7 @@
     <div class="success-container">
         <div class="success-icon">✅</div>
         
-        <h1 class="success-title">가입 신청이 완료되었습니다!</h1>
+        <h1 class="success-title">${message }</h1>
         
         <p class="success-message">
             아래 모임에 가입 신청이 성공적으로 제출되었습니다.

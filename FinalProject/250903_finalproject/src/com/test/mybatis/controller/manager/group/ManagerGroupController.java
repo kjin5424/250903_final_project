@@ -24,7 +24,7 @@ public class ManagerGroupController
 		return "/WEB-INF/view/group/GroupList.jsp";
 	}
 	
-	@RequestMapping(value="/grouplistdetail.do", method=RequestMethod.GET)
+	@RequestMapping(value="/managergrouplistdetail.do", method=RequestMethod.GET)
 	public String groupDetail(Model model)
 	{
 		return "/WEB-INF/view/group/GroupListDetail.jsp";
