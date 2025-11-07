@@ -10,8 +10,7 @@ String cp = request.getContextPath();
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="<%=cp%>/css/cssSearch/Search.css">
-<script type="text/javascript"
-	src="http://code.jquery.com/jquery.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
 <script type="text/javascript" src="<%=cp%>/js/jsSearch/Search.js"></script>
 <title>검색 기능</title>
 </head>
@@ -24,7 +23,7 @@ String cp = request.getContextPath();
 				<!-- 검색바 -->
 				<div class="search-bar-wrapper">
 					<input type="text" id="searchBox" name="content" class="search-box"
-						placeholder="모임 이름, 설명으로 검색하세요...">
+						placeholder="모임 이름으로 검색하세요...">
 					<button type="submit" id="searchBtn" class="search-btn">
 						<span>🔍</span> <span>검색</span>
 					</button>
@@ -79,18 +78,33 @@ String cp = request.getContextPath();
 							<h4>🗺️ 지역</h4>
 							<div class="checkbox-group">
 								<label class="custom-checkbox"> <input type="checkbox"
-									value="송도" name="region" data-category="region" onchange="updateFilters()">
-									<span>송도</span>
+									value="서울" name="region" data-category="region" onchange="updateFilters()">
+									<span>서울</span>
 								</label> <label class="custom-checkbox"> <input type="checkbox"
-									value="센트럴파크" name="region" data-category="region" onchange="updateFilters()">
-									<span>센트럴파크</span>
+									value="경기" name="region" data-category="region" onchange="updateFilters()">
+									<span>경기</span>
 								</label> <label class="custom-checkbox"> <input type="checkbox"
-									value="롯데월드" name="region" data-category="region" onchange="updateFilters()">
-									<span>롯데월드</span>
+									value="부산" name="region" data-category="region" onchange="updateFilters()">
+									<span>부산</span>
 								</label> <label class="custom-checkbox"> <input type="checkbox"
-									value="기타" name="region" data-category="region" onchange="updateFilters()">
-									<span>기타</span>
-								</label>
+									value="인천" name="region" data-category="region" onchange="updateFilters()">
+									<span>인천</span>
+								</label>  <label class="custom-checkbox"> <input type="checkbox"
+									value="대구" name="region" data-category="region" onchange="updateFilters()">
+									<span>대구</span>
+								</label>  <label class="custom-checkbox"> <input type="checkbox"
+									value="광주" name="region" data-category="region" onchange="updateFilters()">
+									<span>광주</span>
+								</label>  <label class="custom-checkbox"> <input type="checkbox"
+									value="대전" name="region" data-category="region" onchange="updateFilters()">
+									<span>대전</span>
+								</label>  <label class="custom-checkbox"> <input type="checkbox"
+									value="울산" name="region" data-category="region" onchange="updateFilters()">
+									<span>울산</span>
+								</label> <label class="custom-checkbox"> <input type="checkbox"
+									value="제주" name="region" data-category="region" onchange="updateFilters()">
+									<span>제주</span>
+								</label> 
 							</div>
 						</div>
 
@@ -99,14 +113,14 @@ String cp = request.getContextPath();
 							<h4>📍 모임 유형</h4>
 							<div class="checkbox-group">
 								<label class="custom-checkbox"> <input type="checkbox"
-									value="온라인" name="onOffType" data-category="type" onchange="updateFilters()">
+									value="온라인" name="type" data-category="type" onchange="updateFilters()">
 									<span>온라인</span>
 								</label> <label class="custom-checkbox"> <input type="checkbox"
-									value="오프라인" name="onOffType" data-category="type" onchange="updateFilters()">
+									value="오프라인" name="type" data-category="type" onchange="updateFilters()">
 									<span>오프라인</span>
 								</label> <label class="custom-checkbox"> <input type="checkbox"
-									value="혼합" name="onOffType" data-category="type" onchange="updateFilters()">
-									<span>혼합 (온·오프라인)</span>
+									value="복합" name="type" data-category="type" onchange="updateFilters()">
+									<span>복합 (온·오프라인)</span>
 								</label>
 							</div>
 						</div>
@@ -133,7 +147,7 @@ String cp = request.getContextPath();
 					<div class="filter-actions">
 						<button type="submit" class="filter-btn primary" onclick="performSearch()">
 							검색하기</button>
-						<button class="filter-btn secondary" onclick="resetFilters()">초기화</button>
+						<button type="button" class="filter-btn secondary" onclick="resetFilters()">초기화</button>
 					</div>
 				</div>
 			</div>

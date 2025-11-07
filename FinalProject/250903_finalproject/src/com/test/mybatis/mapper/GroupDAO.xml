@@ -260,14 +260,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  		AND TT.TITLE LIKE '%' || #{content} || '%'
 		  	</if>
 			<if test="category != null and category.size() > 0">
-				AND TP.TOPIC IN
+				AND TP.TOPIC_TYPE IN
 				<foreach collection="category" item="item" open="(" separator="," close=")">
 					#{item}
 				</foreach>
 			</if>
 			<if test="region != null and region.size() > 0">
-				AND RG.REGION LIKE
-				<foreach collection="region" item="item" open="(" separator=" OR " close=")">
+			    AND (
+			    <foreach collection="region" item="item" separator=" OR ">
+			        RE.REGION LIKE '%' || #{item} || '%'
+			    </foreach>
+			    )
+			</if>
+			<if test="type != null and type.size() > 0">
+				AND ONOFFLINE_TYPE IN
+				<foreach collection="type" item="item" open="(" separator=" , " close=")">
 					#{item}
 				</foreach>
 			</if>

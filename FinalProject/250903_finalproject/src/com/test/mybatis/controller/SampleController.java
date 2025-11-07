@@ -127,30 +127,68 @@ public class SampleController
 	{
 		IGroupDAO dao = sqlSession.getMapper(IGroupDAO.class);
 		SearchDTO filter = new SearchDTO();
+		SearchDTO tempFilter = new SearchDTO();
+		
+		
+		HashMap<String, String> categoryMap = new HashMap<String, String>();
+		categoryMap.put("독서", "1");
+		categoryMap.put("어학", "2");
+		categoryMap.put("IT", "3");
+		categoryMap.put("창업·취업", "4");
+		categoryMap.put("자격증", "5");
+		categoryMap.put("시험", "6");
+		categoryMap.put("취미", "7");
+		categoryMap.put("기타", "8");
+		
+		HashMap<String, String> typeMap = new HashMap<String, String>();
+		typeMap.put("온라인", "1");
+		typeMap.put("오프라인", "2");
+		typeMap.put("복합", "3");
 		
 		try
 		{
 			if (content != null || "".contentEquals(content))
+			{
 				filter.setContent(content);
+				tempFilter.setContent(content);
+			}
 			if (category != null)
+			{
+				List<String> temp = new ArrayList<String>();
 				filter.setCategory(category);
+				for(String str : category)
+					temp.add(categoryMap.get(str));
+				tempFilter.setCategory(temp);
+			}
 			if (region != null)
-				filter.setCategory(region);
+			{
+				filter.setRegion(region);
+				tempFilter.setRegion(region);
+			}
 			if (type != null)
-				filter.setCategory(type);
+			{
+				filter.setType(type);
+				List<String> temp = new ArrayList<String>();
+				for(String str : type)
+					temp.add(typeMap.get(str));
+				tempFilter.setType(temp);
+			}
 			if (status != null)
-				filter.setCategory(status);
+			{
+				filter.setStatus(status);
+				tempFilter.setStatus(status);
+			}
+			
+			ArrayList<GroupDTO> groupList = dao.searchList(tempFilter);
+			for (GroupDTO dto : groupList)
+				dto.setCurrentMemberCount(dao.groupMemberCount(dto.getGroupApplyCode()));
+			
+			model.addAttribute("groupList", groupList);
+			model.addAttribute("filter", filter);
 		} catch (Exception e)
 		{
 			System.out.println(e.toString());
 		}
-		
-		ArrayList<GroupDTO> groupList = dao.searchList(filter);
-		for (GroupDTO dto : groupList)
-			dto.setCurrentMemberCount(dao.groupMemberCount(dto.getGroupApplyCode()));
-		
-		model.addAttribute("groupList", groupList);
-		model.addAttribute("content", content);
 		
 		return "/WEB-INF/view/group/SearchList.jsp";
 	}
