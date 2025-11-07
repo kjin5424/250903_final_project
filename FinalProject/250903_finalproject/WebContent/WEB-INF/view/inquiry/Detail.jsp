@@ -186,110 +186,61 @@
 <body>
     <div class="header">문의 내역</div>
     <div class="container">
+
         <!-- 회원 문의 이력 -->
         <div class="section">
             <div class="section-title">문의 내역</div>
             <div class="inquiry-info">
                 <div class="info-item">
                     <span class="info-label">문의번호:</span>
-                    <span class="info-value">INQ007</span>
+                    <span class="info-value">${inquiry.inquiryCode}</span>
                 </div>
-                <div class="info-item">
-                    <span class="info-label">문의 유형:</span>
-                    <span class="inquiry-type">결제/환불</span>
-                </div>
-                <div class="info-item">
+
+               <div class="info-item">
                     <span class="info-label">접수 일자:</span>
-                    <span class="info-value">2024-10-02 14:30:25</span>
+                    <span class="info-value">
+                        <fmt:formatDate value="${inquiry.createdDate}" pattern="yyyy-MM-dd" />
+                    </span>
                 </div>
+
                 <div class="info-item">
                     <span class="info-label">답변 상태:</span>
                     <span class="status-badge status-answered">답변완료</span>
                 </div>
-
             </div>
 
             <div class="form-group">
                 <div class="form-label">문의 제목</div>
-                <div class="inquiry-content">유료 모임 환불 문의드립니다</div>
+                <div class="inquiry-content">${inquiry.title}</div>
             </div>
 
             <div class="form-group">
                 <div class="form-label">문의 내용</div>
-                <div class="inquiry-content">
-안녕하세요.
-
-지난주에 가입한 모임의 취지가 저와 맞지 않아 탈퇴하려고 합니다.
-모임에 가입한지 3일밖에 안 됐는데 가능한가요?
-
-모임명: 프리미엄 독서 모임
-
-빠른 답변 부탁드립니다.
-감사합니다.
-                </div>
+                <div class="inquiry-content">${inquiry.content}</div>
             </div>
         </div>
 
         <!-- 관리자 답변 이력 -->
         <div class="section">
             <div class="section-title">답변 내역</div>
-            
-            
-            
-            
-<!--             <div class="answer-list">
-                <div class="answer-item">
-                    <div class="answer-header">
-                        <span class="answer-author">관리자 (admin_service01)</span>
-                        <span class="answer-date">2024-10-02 16:15:40</span>
+
+            <div class="answer-list">
+                <c:forEach var="ans" items="${inquiry.answers}">
+                    <div class="answer-item">
+                        <div class="answer-header">
+                            <span class="answer-author">관리자 (${ans.adminId})</span>
+                           <span class="answer-date">
+                                <fmt:formatDate value="${ans.answerDate}" pattern="yyyy-MM-dd" />
+                            </span>
+                        </div>
+                        <div class="answer-content">${ans.answerContent}</div>
                     </div>
-                    <div class="answer-content">
-안녕하세요. 문의 주셔서 감사합니다.
-
-회원탈퇴를 원하시는걸까요? 모임탈퇴를 원하시는걸까요?
-질의에 대한 답변 부탁드립니다.
-
-감사합니다.
-                    </div>
-                </div>
-
-                <div class="answer-item">
-                    <div class="answer-header">
-                        <span class="answer-author">관리자 (admin_service01)</span>
-                        <span class="answer-date">2024-10-03 10:20:15</span>
-                    </div>
-                    <div class="answer-content">
-추가 안내드립니다.
-
-요청하신 부분 반영되었습니다.
-
-서비스 이용에 불편을 드려 죄송합니다.
-더 나은 서비스로 보답하겠습니다.
-
-감사합니다.
-                    </div>
-                </div>
+                </c:forEach>
             </div>
-        </div> -->
-        
-		<div class="answer-list">
-		    <c:forEach var="ans" items="${inquiry.answers}">
-		        <div class="answer-item">
-		            <div class="answer-header">
-		                <span class="answer-author">관리자 (${ans.adminId})</span>
-		                <span class="answer-date">${ans.answerDate}</span>
-		            </div>
-		            <div class="answer-content">${ans.answerContent}</div>
-		        </div>
-		    </c:forEach>
-		</div>
-		        
-        
-        
-        
+        </div>
 
-        <!-- <a href="profilemodify.do?tab=inquiry" class="btn-back">목록으로</a> -->
-        <a href="list.do" class="btn-back">목록으로</a>
+       <a href="<%= cp %>/profilemodify.do?tab=inquiry" class="btn-back">목록으로</a>
+
     </div>
 </body>
 </html>

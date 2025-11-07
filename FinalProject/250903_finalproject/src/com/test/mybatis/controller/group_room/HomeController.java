@@ -98,24 +98,7 @@ public class HomeController
 	{
 		return "/WEB-INF/view/group_room/Level.jsp";
 	}
-	@RequestMapping(value="/reportgroup.do", method=RequestMethod.GET)
-	public String reportGroup(Model model)
-	{
-		return "/WEB-INF/view/report/ReportGroup.jsp";
-	}
-	
-	@RequestMapping(value="/reportcontent.do", method=RequestMethod.GET)
-	public String reportContent(Model model)
-	{
-		return "/WEB-INF/view/report/ReportContent.jsp";
-	}
-	
-	@RequestMapping(value="/reportafter.do", method=RequestMethod.GET)
-	public String reportAfter(Model model)
-	{
-		return "/WEB-INF/view/report/ReportAfter.jsp";
-	}
-	
+
 	@RequestMapping(value="/membermanage.do", method=RequestMethod.GET)
 	public String memberManage(Model model)
 	{
@@ -132,7 +115,6 @@ public class HomeController
 		return "/WEB-INF/view/group/GroupCreate.jsp";
 	}
 	
-
 	@Transactional
 	@RequestMapping(value="/groupcreatecomplete.do", method= RequestMethod.GET)
 	public String groupCreateComplete(HttpServletRequest request, HttpSession session)
