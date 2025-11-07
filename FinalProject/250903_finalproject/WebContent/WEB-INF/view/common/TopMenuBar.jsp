@@ -21,7 +21,7 @@
 <nav class="navbar">
 	<div class="navbar-inner">
 		<!-- 로고 -->
-		<a href="<%=cp%>/start.do" class="navbar-logo">
+		<a href="mainpage.do" class="navbar-logo">
 			<span class="logo-icon">🌱</span>
                <span class="logo-text">공모자들</span>
 		</a>
@@ -32,7 +32,7 @@
                    <span class="menu-icon">📢</span>
                    공지사항
                </a>
-               <a href="<%=cp%>/group/GroupList.jsp" class="menu-tab active">
+               <a href="mainpage.do" class="menu-tab active">
                    <span class="menu-icon">👥</span>
                    모임구경
                </a>

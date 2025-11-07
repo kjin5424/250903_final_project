@@ -130,13 +130,10 @@ String cp = request.getContextPath();
 							<h4>🚀 상태</h4>
 							<div class="checkbox-group">
 								<label class="custom-checkbox"> <input type="checkbox"
-									value="신규 개설" name="status" data-category="status" onchange="updateFilters()">
+									value="신규개설" name="status" data-category="status" onchange="updateFilters()">
 									<span>신규 개설</span>
 								</label> <label class="custom-checkbox"> <input type="checkbox"
-									value="모집 중" name="status" data-category="status" onchange="updateFilters()">
-									<span>모집 중</span>
-								</label> <label class="custom-checkbox"> <input type="checkbox"
-									value="진행 중" name="status" data-category="status" onchange="updateFilters()">
+									value="진행중" name="status" data-category="status" onchange="updateFilters()">
 									<span>진행 중</span>
 								</label>
 							</div>

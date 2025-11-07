@@ -145,6 +145,10 @@ public class SampleController
 		typeMap.put("오프라인", "2");
 		typeMap.put("복합", "3");
 		
+		HashMap<String, String> statusMap = new HashMap<String, String>();
+		statusMap.put("신규개설", "GA.CREATED_DATE + 7 > SYSDATE");
+		statusMap.put("진행중", "GA.OPEN_DATE IS NOT NULL");
+		
 		try
 		{
 			if (content != null || "".contentEquals(content))
@@ -156,8 +160,8 @@ public class SampleController
 			{
 				List<String> temp = new ArrayList<String>();
 				filter.setCategory(category);
-				for(String str : category)
-					temp.add(categoryMap.get(str));
+				for(String key : category)
+					temp.add(categoryMap.get(key));
 				tempFilter.setCategory(temp);
 			}
 			if (region != null)
@@ -169,14 +173,17 @@ public class SampleController
 			{
 				filter.setType(type);
 				List<String> temp = new ArrayList<String>();
-				for(String str : type)
-					temp.add(typeMap.get(str));
+				for(String key : type)
+					temp.add(typeMap.get(key));
 				tempFilter.setType(temp);
 			}
 			if (status != null)
 			{
 				filter.setStatus(status);
-				tempFilter.setStatus(status);
+				List<String> temp = new ArrayList<String>();
+				for(String key : status)
+					temp.add(statusMap.get(key));
+				tempFilter.setStatus(temp);
 			}
 			
 			ArrayList<GroupDTO> groupList = dao.searchList(tempFilter);
