@@ -163,4 +163,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		AND USERCODE = #{groupApplyCode}
 	</select>
 	
+	<select id="inMyPage" resultType="com.test.mybatis.dto.UserDTO">
+		SELECT UI.NICKNAME, UI.EMAIL
+		     , (SELECT COUNT(CMV.GROUPAPPLYCODE)
+		        FROM CURRENT_MEMBER_VIEW CMV
+		        WHERE CMV.USERCODE = UT.USER_CODE
+		        AND CMV.POSITION NOT IN('모임장')) AS JOINGROUP
+		     , (SELECT COUNT(CMV.GROUPAPPLYCODE)
+		        FROM CURRENT_MEMBER_VIEW CMV
+		        WHERE CMV.USERCODE = UT.USER_CODE
+		        AND CMV.POSITION IN('모임장')) AS MYGROUP
+		     , UI.SAVEPATH
+		FROM USER_INFO UI
+		JOIN USER_TABLE UT ON UI.USER_ID = UT.USER_ID
+		WHERE UT.USER_CODE = #{userCode}
+	</select>
+	
 </mapper>

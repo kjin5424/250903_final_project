@@ -346,6 +346,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		AND USERCODE = #{userCode}
 	</select>
 	
+<<<<<<< Upstream, based on develop
 	<select id="groupDetail" parameterType="String" resultType="com.test.mybatis.dto.GroupDTO">
 
 WITH 
@@ -682,5 +683,27 @@ WHERE
 	GROUP BY GA.GROUP_APPLY_CODE
 </select>
 
+=======
+	<select id="myPageJoinGroup" resultType="com.test.mybatis.dto.GroupDTO">
+		SELECT GLV.GROUPAPPLYCODE
+		     , GLV.TITLE AS GROUPTITLE, GLV.HEADCOUNT, GLV.CURRENTMEMBERCOUNT, GLV.REGION
+		     , GLV.ONOFF
+		FROM CURRENT_MEMBER_VIEW CMV
+		JOIN GROUP_LIST_VIEW GLV ON CMV.GROUPAPPLYCODE = GLV.GROUPAPPLYCODE
+		WHERE USERCODE = #{userCode}
+		AND CMV.POSITION NOT IN ('모임장')
+	</select>
+	
+	<select id="myPageMyGroup" resultType="com.test.mybatis.dto.GroupDTO">
+		SELECT GLV.GROUPAPPLYCODE
+		     , GLV.TITLE AS GROUPTITLE, GLV.HEADCOUNT, GLV.CURRENTMEMBERCOUNT, GLV.REGION
+		     , GLV.ONOFF
+		FROM CURRENT_MEMBER_VIEW CMV
+		JOIN GROUP_LIST_VIEW GLV ON CMV.GROUPAPPLYCODE = GLV.GROUPAPPLYCODE
+		WHERE USERCODE = #{userCode}
+		AND CMV.POSITION IN ('모임장')
+	</select>
+	
+>>>>>>> 2e7a7de 좋다~
 	
 </mapper>
