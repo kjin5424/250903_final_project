@@ -76,7 +76,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		ORDER BY RN DESC
 	</select>
 	
-	<select id="countActivity" resultType="int">
+	<select id="countActivity" resultType="java.lang.Integer">
 		SELECT COUNT(AC.ACTIVITY_CODE) AS TOTALDATACOUNT
 		FROM ACTIVITY AC
 		JOIN JOIN_TABLE J ON J.JOIN_CODE = AC.JOIN_CODE
