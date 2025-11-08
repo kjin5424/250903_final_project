@@ -95,6 +95,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		AND GA.GROUP_APPLY_CODE = #{groupApplyCode}
 	</select>
 	
+	<update id="updateIntroduce">
+		UPDATE JOIN_TABLE
+		SET INTRODUCE = #{introduce}
+		WHERE JOIN_CODE = #{joinCode}
+	</update>
+	
+	<select id="myPageQuitGroup" resultType="com.test.mybatis.dto.GroupJoinDTO">
+		SELECT GROUPAPPLYCODE, TITLE AS GROUPTITLE, JOINDATE, QUITDATE, QUIT_REASON AS QUITREASON
+		FROM QUITMEMBERVIEW
+		WHERE USERCODE = #{userCode}
+	</select>
+	
 </mapper>
 
 

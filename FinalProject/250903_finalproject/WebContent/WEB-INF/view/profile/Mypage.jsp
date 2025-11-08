@@ -1272,44 +1272,6 @@
 		<c:import url="/WEB-INF/view/common/TopMenuBar.jsp"/>
 	</div>
 
-
-<!-- 임시 사이드 바, 나중에 임포트 할 거 -->
-   <!--  <nav class="navbar">
-
-        <div class="nav-left">
-
-            <div class="logo-tab">
-
-                <span>로고 들어갈 자리</span>
-
-            </div>
-
-            <a href="?page=notice" class="tab">공지사항</a>
-
-            <a href="?page=groups" class="tab">모임구경</a>
-
-            <a href="?page=creategroup" class="tab">모임 개설</a>
-
-            <a href="?page=mygroups" class="tab">내 모임</a>
-
-        </div>
-
-        <div class="nav-right">
-
-            <a href="mypage.jsp" class="profile-btn active">
-
-                <span>👤</span>
-
-                <span>마이페이지</span>
-
-            </a>
-
-        </div>
-
-    </nav> -->
-
-
-
     <div class="container">
 
         <!-- 사이드바 -->
@@ -1318,17 +1280,24 @@
 
             <div class="profile-section">
 
-                <div class="profile-avatar">👤</div>
+				<c:choose>
+				<c:when test="${not empty myInfo.savePath }">
+                	<div class="profile-avatar"><img src="${myInfo.savePath }"></div>
+				</c:when>				
+				<c:otherwise>
+                	<div class="profile-avatar">👤</div>
+                </c:otherwise>
+                </c:choose>
 
-                <div class="profile-name">스터디러버</div>
+                <div class="profile-name">${myInfo.nickname }</div>
 
-                <div class="profile-email">study@example.com</div>
+                <div class="profile-email">${myInfo.email }</div>
 
                 <div class="profile-stats">
 
                     <div class="stat-box">
 
-                        <div class="stat-value">3</div>
+                        <div class="stat-value">${myInfo.joinGroup }</div>
 
                         <div class="stat-label">참여 모임</div>
 
@@ -1336,7 +1305,7 @@
 
                     <div class="stat-box">
 
-                        <div class="stat-value">1</div>
+                        <div class="stat-value">${myInfo.myGroup }</div>
 
                         <div class="stat-label">운영 모임</div>
 
@@ -1456,23 +1425,25 @@
 
 
 
-                <h3 style="margin-top: 30px; margin-bottom: 15px; color: #666;">운영 중인 모임 (1)</h3>
+                <h3 style="margin-top: 30px; margin-bottom: 15px; color: #666;">운영 중인 모임 (${myInfo.myGroup })</h3>
 
                 <div class="group-grid">
-
+					<c:choose>
+					<c:when test="${not empty myGroup }">
+					<c:forEach var="myGroupDTO" items="${myGroup }">
                     <div class="group-card" onclick="viewGroup(1)">
 
                         <span class="group-badge badge-owner">👑 모임장</span>
 
                         <img src="https://via.placeholder.com/300x150" alt="모임 이미지" class="group-image">
 
-                        <div class="group-title">알고리즘 정복 스터디</div>
+                        <div class="group-title">${myGroupDTO.groupTitle }</div>
 
                         <div class="group-meta">
 
                             <span>👥</span>
 
-                            <span>7/10명</span>
+                            <span>${myGroupDTO.currentMemberCount }/${myGroupDTO.headCount }명</span>
 
                         </div>
 
@@ -1480,7 +1451,7 @@
 
                             <span>📍</span>
 
-                            <span>강남동 • 온라인/오프라인</span>
+                            <span>${myGroupDTO.onOff }</span>
 
                         </div>
 
@@ -1488,7 +1459,7 @@
 
                             <span>📊</span>
 
-                            <span>평균 출석률 85%</span>
+                            <span>평균 출석률 ${myGroupDTO.totalAttendance }%</span>
 
                         </div>
 
@@ -1501,28 +1472,36 @@
                         </div>
 
                     </div>
+                    </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                    	운영중인 모임이 존재하지 않습니다.
+                    </c:otherwise>
+                    </c:choose>
 
                 </div>
 
 
 
-                <h3 style="margin-top: 40px; margin-bottom: 15px; color: #666;">참여 중인 모임 (2)</h3>
+                <h3 style="margin-top: 40px; margin-bottom: 15px; color: #666;">참여 중인 모임 (${myInfo.joinGroup })</h3>
 
                 <div class="group-grid">
-
+				<c:choose>
+					<c:when test="${not empty joinGroup }">
+					<c:forEach var="joinGroupDTO" items="${joinGroup }">
                     <div class="group-card" onclick="viewGroup(2)">
 
                         <span class="group-badge badge-member">참여 중</span>
 
                         <img src="https://via.placeholder.com/300x150" alt="모임 이미지" class="group-image">
 
-                        <div class="group-title">영어 회화 스터디</div>
+                        <div class="group-title">${joinGroupDTO.groupTitle }</div>
 
                         <div class="group-meta">
 
                             <span>👥</span>
 
-                            <span>5/7명</span>
+                            <span>${joinGroupDTO.currentMemberCount }/${joinGroupDTO.headCount }명</span>
 
                         </div>
 
@@ -1530,7 +1509,7 @@
 
                             <span>📍</span>
 
-                            <span>온라인</span>
+                            <span>${joinGroupDTO.onOff }</span>
 
                         </div>
 
@@ -1538,7 +1517,7 @@
 
                             <span>📊</span>
 
-                            <span>나의 출석률 92%</span>
+                            <span>전체 출석률 ${String.format("%.3s", joinGroupDTO.totalAttendance) }%</span>
 
                         </div>
 
@@ -1551,50 +1530,12 @@
                         </div>
 
                     </div>
-
-
-
-                    <div class="group-card" onclick="viewGroup(3)">
-
-                        <span class="group-badge badge-member">참여 중</span>
-
-                        <img src="https://via.placeholder.com/300x150" alt="모임 이미지" class="group-image">
-
-                        <div class="group-title">자바 스프링 부트 스터디</div>
-
-                        <div class="group-meta">
-
-                            <span>👥</span>
-
-                            <span>8/10명</span>
-
-                        </div>
-
-                        <div class="group-meta">
-
-                            <span>📍</span>
-
-                            <span>역삼동 • 오프라인</span>
-
-                        </div>
-
-                        <div class="group-meta">
-
-                            <span>📊</span>
-
-                            <span>나의 출석률 78%</span>
-
-                        </div>
-
-                        <div class="group-actions">
-
-                            <button class="btn-small btn-primary-small" onclick="event.stopPropagation(); viewGroup(3)">참여하기</button>
-
-                            <button class="btn-small btn-danger-small" onclick="event.stopPropagation(); leaveGroup(3)">탈퇴</button>
-
-                        </div>
-
-                    </div>
+                    </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                    	참가중인 모임이 없습니다.
+                    </c:otherwise>
+                    </c:choose>
 
                 </div>
 
@@ -1612,23 +1553,24 @@
 
 
 
-                <h3 style="margin-top: 30px; margin-bottom: 15px; color: #666;">참여 신청 중 (2)</h3>
+                <h3 style="margin-top: 30px; margin-bottom: 15px; color: #666;">참여 신청 중 (${myInfo.requestJoin })</h3>
 
                 <div class="group-grid">
-
+				<c:if test="${not empty requestJoinGroup }">
+				<c:forEach var="requestJoinGroupDTO" items="${requestJoinGroup }"></c:forEach>
                     <div class="group-card">
 
                         <span class="group-badge badge-pending">승인 대기</span>
 
                         <img src="https://via.placeholder.com/300x150" alt="모임 이미지" class="group-image">
 
-                        <div class="group-title">토익 900+ 목표반</div>
+                        <div class="group-title">${requestJoinGroupDTO.groupTitle }</div>
 
                         <div class="group-meta">
 
                             <span>📅</span>
 
-                            <span>신청일: 2024-10-08</span>
+                            <span>신청일: ${requestJoinGroupDTO.joinDate }</span>
 
                         </div>
 
@@ -1636,7 +1578,7 @@
 
                             <span>👥</span>
 
-                            <span>6/10명</span>
+                            <span>${requestJoinGroupDTO.currentMemberCount }/${requestJoinGroupDTO.headCount }명</span>
 
                         </div>
 
@@ -1649,64 +1591,29 @@
                         </div>
 
                     </div>
-
-
-
-                    <div class="group-card">
-
-                        <span class="group-badge badge-pending">승인 대기</span>
-
-                        <img src="https://via.placeholder.com/300x150" alt="모임 이미지" class="group-image">
-
-                        <div class="group-title">프론트엔드 개발 스터디</div>
-
-                        <div class="group-meta">
-
-                            <span>📅</span>
-
-                            <span>신청일: 2024-10-09</span>
-
-                        </div>
-
-                        <div class="group-meta">
-
-                            <span>👥</span>
-
-                            <span>4/7명</span>
-
-                        </div>
-
-                        <div class="group-actions">
-
-                            <button class="btn-small btn-outline-small" onclick="viewGroup(5)">상세보기</button>
-
-                            <button class="btn-small btn-danger-small" onclick="cancelApplication(5)">신청 취소</button>
-
-                        </div>
-
-                    </div>
+                    </c:if>
 
                 </div>
 
 
 
-                <h3 style="margin-top: 40px; margin-bottom: 15px; color: #666;">개설 대기 중 (1)</h3>
+                <h3 style="margin-top: 40px; margin-bottom: 15px; color: #666;">개설 대기 중 (${myInfo.requestApply })</h3>
 
                 <div class="group-grid">
-
+					<c:if test="${not empty requestApplyGroup }">
                     <div class="group-card">
 
                         <span class="group-badge badge-waiting">개설 신청중</span>
 
                         <img src="https://via.placeholder.com/300x150" alt="모임 이미지" class="group-image">
 
-                        <div class="group-title">초보자를 위한 파이썬 입문</div>
+                        <div class="group-title">${requestApplyGroup.groupTitle }</div>
 
                         <div class="group-meta">
 
                             <span>📍</span>
 
-                            <span>신촌동 • 오프라인</span>
+                            <span>${requestApplyGroup.onOff }</span>
 
                         </div>
 
@@ -1714,7 +1621,7 @@
 
                             <span>📅</span>
 
-                            <span>신청일: 2024-10-07</span>
+                            <span>신청일: ${requestApplyGroup.createdDate }</span>
 
                         </div>
 
@@ -1727,7 +1634,7 @@
                         </div>
 
                     </div>
-
+					</c:if>
                 </div>
 
 
@@ -1753,71 +1660,33 @@
 
 
                 <div class="group-grid" style="margin-top:20px;">
-
+					<c:if test="${not empty quitGroup }">
+					<c:forEach var="quitGroupDTO" items="quitGroup">
                     <div class="group-card">
 
                         <img src="https://via.placeholder.com/300x150" alt="모임 이미지" class="group-image">
 
-                        <div class="group-title">중급 자바 스터디 (종료)</div>
+                        <div class="group-title">${quitGroupDTO.groupTitle }</div>
 
                         <div class="group-meta">
 
                             <span>📅</span>
 
-                            <span>기간: 2024-06-01 ~ 2024-09-30</span>
+                            <span>기간: ${quitGroupDTO.joinDate } ~ ${quitGroupDTO.quitDate }</span>
 
                         </div>
 
-                        <div class="group-meta">
 
-                            <span>📊</span>
 
-                            <span>최종 출석률 82%</span>
-
-                        </div>
 
                         <div class="group-actions">
 
                             <button class="btn-small btn-outline-small" onclick="viewGroup(7)">기록 보기</button>
 
-                            
-
                         </div>
-
                     </div>
-
-
-
-                    <div class="group-card">
-
-                        <img src="https://via.placeholder.com/300x150" alt="모임 이미지" class="group-image">
-
-                        <div class="group-title">토익 스터디 (종료)</div>
-
-                        <div class="group-meta">
-
-                            <span>📅</span>
-
-                            <span>기간: 2023-11-01 ~ 2024-02-28</span>
-
-                        </div>
-
-                        <div class="group-meta">
-
-                            <span>📊</span>
-
-                            <span>평균 점수 상승 80점</span>
-
-                        </div>
-
-                        <div class="group-actions">
-
-                            <button class="btn-small btn-outline-small" onclick="viewGroup(8)">기록 보기</button>
-
-                        </div>
-
-                    </div>
-
+                    </c:forEach>
+					</c:if>
                 </div>
 
             </div>
@@ -1905,16 +1774,17 @@
 
 
                 <div style="margin-top:20px;">
-
+				<c:if test="${not empty favoriteGroup }">
+					<c:forEach var="favoriteGroupDTO" items="${favoriteGroup }">
                     <div class="favorite-item">
 
                         <div class="favorite-icon">📚</div>
 
                         <div class="favorite-info">
 
-                            <div class="favorite-name">알고리즘 스터디</div>
+                            <div class="favorite-name">${favoriteGroupDTO.groupTitle }</div>
 
-                            <div class="favorite-status">운영중 • 7/10명</div>
+                            <div class="favorite-status">${favoriteGroupDTO.currentMemberCount }/${favoriteGroupDTO.headCount }명</div>
 
                         </div>
 
@@ -1927,32 +1797,10 @@
                         </div>
 
                     </div>
-
-
-
-                    <div class="favorite-item">
-
-                        <div class="favorite-icon">🧪</div>
-
-                        <div class="favorite-info">
-
-                            <div class="favorite-name">데이터 사이언스 스터디</div>
-
-                            <div class="favorite-status">모집중 • 3/10명</div>
-
-                        </div>
-
-                        <div class="favorite-actions">
-
-                            <button class="btn-small btn-primary-small" onclick="viewGroup(9)">참여하기</button>
-
-                            <button class="btn-small btn-outline-small" onclick="removeFavorite(9)">삭제</button>
-
-                        </div>
-
-                    </div>
-
-                </div>
+					
+					</c:forEach>
+				</c:if>
+				</div>
 
             </div>
 
@@ -1970,7 +1818,7 @@
 				
 				
 
-              
+            </div>
 
 
             <!-- 프로필 설정 탭 -->

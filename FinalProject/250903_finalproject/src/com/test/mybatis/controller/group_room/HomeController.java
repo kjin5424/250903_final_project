@@ -45,10 +45,8 @@ public class HomeController
 		IGroupJoinDAO joinDao = sqlSession.getMapper(IGroupJoinDAO.class);
 		
 		UserDTO user = (UserDTO)session.getAttribute("user");
-		String userCode;
-		if(user==null)
-			userCode = "user";
-		else
+		String userCode = "UC00000010";
+		if(user!=null)
 			userCode = user.getUserCode();
 		
 		session.setAttribute("groupApplyCode", groupApplyCode);
@@ -127,7 +125,7 @@ public class HomeController
 			return "redirect:loginpage.do";
 		
 		//MultipartRequest multi = null;
-		//multi = new MultipartRequest(요청객체, 저장경로, 최대업로드크기, 인코딩방식, 파일명정책);
+		//multi = new MultipartRequest(�슂泥�媛앹껜, ���옣寃쎈줈, 理쒕��뾽濡쒕뱶�겕湲�, �씤肄붾뵫諛⑹떇, �뙆�씪紐낆젙梨�);
 		//multi = new MultipartRequest(request, savePath, maxFileSize, encType, new DefaultFileRenamePolicy());
 				
 		
@@ -203,6 +201,22 @@ public class HomeController
 		return "/WEB-INF/view/group_room/manage/Attendance.jsp";
 	}
 	
+	@RequestMapping(value = "/updateIntroduce.do", method=RequestMethod.GET)
+	public String updateIntroduce(HttpSession session, String groupApplyCode, String joinCode, String introduce)
+	{
+		String url = "redirect:home.do?groupApplyCode=" + groupApplyCode;
+		
+		IGroupJoinDAO joinDAO = sqlSession.getMapper(IGroupJoinDAO.class);
+		
+		UserDTO user = (UserDTO)session.getAttribute("user");
+		String userCode = "UC00000010";
+		if(user!=null)
+			userCode = user.getUserCode();
+		
+		joinDAO.updateIntroduce(joinCode, introduce);
+		
+		return url;
+	}
 	
 	
 }

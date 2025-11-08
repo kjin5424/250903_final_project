@@ -9,29 +9,39 @@ import com.test.mybatis.dto.SearchDTO;
 
 public interface IGroupDAO
 {
-	// 모임 리스트 조회(검색 X)
+	// 紐⑥엫 由ъ뒪�듃 議고쉶(寃��깋 X)
 	public ArrayList<GroupDTO> groupList(String category);
 	
-	// 현재 인원 수 산출
+	// �쁽�옱 �씤�썝 �닔 �궛異�
 	public int groupMemberCount(String groupApplyCode);
 	
-	// 모임 리스트 검색으로 조회
+	// 紐⑥엫 由ъ뒪�듃 寃��깋�쑝濡� 議고쉶
 	public ArrayList<GroupDTO> searchList(SearchDTO dto);
 	
-	// 모임 상세 내용(매개변수로 모임개설코드)
+	// 紐⑥엫 �긽�꽭 �궡�슜(留ㅺ컻蹂��닔濡� 紐⑥엫媛쒖꽕肄붾뱶)
 	public GroupDTO groupDetail(String groupApplyCode);
 	
-	// 모임 개설 신청
+	// 紐⑥엫 媛쒖꽕 �떊泥�
 	public void groupApply(GroupDTO dto);
 	
-	// 모임 내용 수정
+	// 紐⑥엫 �궡�슜 �닔�젙
 	public String groupModify(GroupDTO dto);
 	
-	// 사용자의 전체 신청 내역 조회
+	// �궗�슜�옄�쓽 �쟾泥� �떊泥� �궡�뿭 議고쉶
 	
-	// 모임 홈에서 출력할 내용들
+	// 紐⑥엫 �솃�뿉�꽌 異쒕젰�븷 �궡�슜�뱾
 	public GroupDTO groupHomeGroupInfo(@Param("userCode") String userCode,@Param("groupApplyCode") String groupApplyCode);
 	
-	// 특정 회원이 특정 모임의 모임원인지 검증하는 메소드
-	public int checkMember(@Param("groupApplyCode") String groupApplyCode, @Param("userCode") String userCode);
+	// �듅�젙 �쉶�썝�씠 �듅�젙 紐⑥엫�쓽 紐⑥엫�썝�씤吏� 寃�利앺븯�뒗 硫붿냼�뱶
+	public String checkMember(@Param("groupApplyCode") String groupApplyCode, @Param("userCode") String userCode);
+	
+	public GroupDTO myPageMyGroup(@Param("userCode") String userCode);
+
+	public GroupDTO myPageJoinGroup(@Param("userCode") String userCode);
+	
+	public GroupDTO myPageRequestJoinGroup(@Param("userCode") String userCode);
+	
+	public GroupDTO myPageRequestApplyGroup(@Param("userCode") String userCode);
+	
+	public GroupDTO myPageFavoriteGroup(@Param("userCode") String userCode);
 }
