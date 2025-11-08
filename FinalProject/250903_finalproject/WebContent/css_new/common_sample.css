@@ -12,6 +12,7 @@
     --color-primary-lighter: #E8F5E6;   /* 아주 연한 연두 */
     --color-primary-dark: #8BC683;      /* 진한 연두 */
     --color-primary-darker: #6BAF61;    /* 더 진한 연두 */
+    --color-primary-deep: #2d5a29;		/* 더더 진한 거의 초록 */
     
     /* 서브 포인트 - 라벤더 (10%) */
     --color-secondary: #D4C5F9;         /* 메인 라벤더 */
