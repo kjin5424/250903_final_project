@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<!-- 모임원 리스트 화면 생성 -->
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -58,20 +58,11 @@
 
 </head>
 <body>
+<!-- 상단바 -->
+<c:import url="/WEB-INF/view/common/TopMenuBar.jsp" />
 
-    <!-- 네비게이션 -->
-    <nav class="navbar">
-        <div class="nav-left">
-            <div class="logo-tab"><span>로고</span></div>
-            <a href="?page=notice" class="tab">공지사항</a>
-            <a href="?page=groups" class="tab active">모임구경</a>
-            <a href="?page=creategroup" class="tab">모임 개설</a>
-            <a href="?page=mygroups" class="tab">내 모임</a>
-        </div>
-        <div class="nav-right">
-            <a href="login.jsp" class="login-btn">🔐 로그인</a>
-        </div>
-    </nav>
+<!-- 사이드바 -->
+<c:import url="/WEB-INF/view/common/GroupSideBar.jsp" />
 
     <div class="container">
        <!--  <a href="groupDetail.jsp" class="back-btn" onclick="location.href='managelist.do'">← 뒤로 가기</a> -->
@@ -87,21 +78,21 @@
                 <div class="member-intro">알고리즘과 코딩 교육 전문가입니다.</div>
             </div>
 
-            <div class="member-card" onclick="openModal('민수','일반','문제를 같이 풀며 성장하고 싶습니다.')">
+            <div class="member-card" onclick="openModal('민수','모임원','문제를 같이 풀며 성장하고 싶습니다.')">
                 <div class="member-avatar">민</div>
                 <div class="member-name">민수</div>
                 <div class="member-role">모임원</div>
                 <div class="member-intro">문제를 같이 풀며 성장하고 싶습니다.</div>
             </div>
 
-            <div class="member-card" onclick="openModal('지연','일반','매주 성실하게 참여합니다.')">
+            <div class="member-card" onclick="openModal('지연','모임원','매주 성실하게 참여합니다.')">
                 <div class="member-avatar">지</div>
                 <div class="member-name">지연</div>
                 <div class="member-role">모임원</div>
                 <div class="member-intro">매주 성실하게 참여합니다.</div>
             </div>
 
-            <div class="member-card" onclick="openModal('하준','일반','CS 공부에 관심이 많습니다.')">
+            <div class="member-card" onclick="openModal('하준','모임원','CS 공부에 관심이 많습니다.')">
                 <div class="member-avatar">하</div>
                 <div class="member-name">하준</div>
                 <div class="member-role">모임원</div>

@@ -2,9 +2,15 @@
    모임 홈 페이지 전용 스타일
    ================================================ */
 
+.container {
+    max-width: 1400px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
 /* 모임 헤더 */
 .group-header {
-    background: linear-gradient(135deg, #2d5a29 0%, #4a8a42 100%);
+    background: linear-gradient(135deg, var(--color-primary-deep), var(--color-primary-darker));
     color: white;
     padding: 40px;
     border-radius: var(--radius-lg);
@@ -83,6 +89,21 @@
     border-color: rgba(255, 255, 255, 0.5);
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-header.btn-report {
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border: none;
+    box-shadow: none;
+    padding: 8px;
+    font-size: 18px;
+}
+
+.btn-header.btn-report:hover {
+    background: rgba(255, 107, 122, 0.1);
+    transform: scale(1.1);
 }
 
 .group-dates {
@@ -492,6 +513,17 @@
     line-height: 1.4;
 }
 
+.history-arrow {
+    font-size: 24px;
+    color: var(--color-text-tertiary);
+    transition: all var(--transition-base);
+}
+
+.history-link-section:hover .history-arrow {
+    color: var(--color-primary);
+    transform: translateX(4px);
+}
+
 /* ================================================
    알림 패널 스타일
    ================================================ */
@@ -577,9 +609,14 @@
     font-size: 14px;
 }
 
+.intro-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
 .btn-edit-intro {
     padding: 8px 16px;
-    background: var(--color-primary);
+    background: var(--color-primary-dark);
     color: white;
     border: none;
     border-radius: var(--radius-md);
@@ -593,9 +630,14 @@
 }
 
 .btn-edit-intro:hover {
-    background: var(--color-primary-dark);
+    background: var(--color-secondary);
     transform: translateY(-1px);
     box-shadow: var(--shadow-sm);
+}
+
+.intro-actions {
+    display: flex;
+    justify-content: flex-end;
 }
 
 /* ================================================
@@ -673,3 +715,4 @@
         gap: 10px;
     }
 }
+

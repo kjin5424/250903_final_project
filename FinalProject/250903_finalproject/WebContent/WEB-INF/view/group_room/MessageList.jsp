@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" %>
-<!-- 쪽지 기능 생성 -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -114,18 +114,11 @@
     </script>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-left">
-            <div class="logo-tab">로고 들어갈 자리</div>
-            <a href="group_home.jsp" class="tab">모임 홈</a>
-            <a href="board.jsp" class="tab">게시판</a>
-            <a href="mypage.jsp" class="tab">마이페이지</a>
-            <a href="message.jsp" class="tab active">쪽지함</a>
-        </div>
-        <div class="nav-right">
-            <a href="mypage.jsp" class="profile-btn">👤 마이페이지</a>
-        </div>
-    </nav>
+<!-- 상단바 -->
+<c:import url="/WEB-INF/view/common/TopMenuBar.jsp" />
+
+<!-- 사이드바 -->
+<c:import url="/WEB-INF/view/common/GroupSideBar.jsp" />
 
     <div class="container">
         <div class="message-section">

@@ -38,15 +38,6 @@
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
-    <style>
-        /* 컨테이너 - 원본과 동일 */
-        .container {
-            max-width: 1400px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-    </style>
-    
     <script>
         function goToBoard() {
             window.location.href = 'board.jsp';
@@ -101,23 +92,23 @@
                 </div>
                 <div class="group-actions">
                     <button class="btn-header" onclick="location.href='postlist.do?groupApplyCode=${groupInfo.groupApplyCode}'">
-                        📋 게시판
+                        	📋 게시판
                     </button>
                     <button class="btn-header" onclick="location.href='challengelist.do?groupApplyCode=${groupInfo.groupApplyCode}'">
-                        🏆 도전과제
+                        	🏆 도전과제
                     </button>
                     <button class="btn-header" onclick="location.href='memberlist.do?groupApplyCode=${groupInfo.groupApplyCode}'">
-                        👥 모임원
+                        	👥 모임원
                     </button>
                     <button class="btn-header" onclick="location.href='messagelist.do'">
-                        ✉️ 쪽지
+                      		  ✉️ 쪽지
                     </button>
                     <button class="btn-header" onclick="location.href='managelist.do?groupApplyCode=${groupInfo.groupApplyCode}'">
-                        ⚙️ 관리
+                       		 ⚙️ 관리
                     </button>
-                    <button class="btn-header" onclick="location.href='reportgroup.do?groupApplyCode=${groupInfo.groupApplyCode}'">
-                        🚨 신고
-                    </button>
+                    <button class="btn-report" onclick="location.href='reportgroup.do?groupApplyCode=${groupInfo.groupApplyCode}'" title="신고">
+					    	🚨
+					</button>
                 </div>
             </div>
             
@@ -240,12 +231,13 @@
             <div>
                 <!-- 모임 히스토리 -->
                 <div class="history-link-section" onclick="location.href='history.do?groupApplyCode=${groupInfo.groupApplyCode}'">
-                    <div class="history-icon">🕰️</div>
-                    <div class="history-content">
-                        <div class="history-title">모임 히스토리</div>
-                        <div class="history-desc">우리 모임의 활동 기록을 확인해보세요</div>
-                    </div>
-                </div>
+				    <div class="history-icon">🕰️</div>
+				    <div class="history-content">
+				        <div class="history-title">모임 히스토리</div>
+				        <div class="history-desc">우리 모임의 활동 기록을 확인해보세요</div>
+				    </div>
+				    <div class="history-arrow">→</div>
+				</div>
 
                 <!-- 도전 과제 -->
                 <c:if test="${not empty checkMember}">
@@ -316,21 +308,25 @@
                             </div>
                             <c:choose>
                                 <c:when test="${not empty selfIntro}">
-                                    <div class="my-intro">
-                                        <div class="intro-label">나의 소개</div>
-                                        <div class="intro-text">${selfIntro.selfIntro}</div>
-                                    </div>
-                                    <button class="btn-edit-intro" onclick="editIntro()">수정하기</button>
-                                </c:when>
-                                <c:otherwise>
-                                    <div class="my-intro">
-                                        <div class="intro-label">나의 소개</div>
-                                        <div class="intro-text">
-                                            <span style="font-size: small;">등록된 소개가 없습니다.</span>
-                                        </div>
-                                    </div>
-                                    <button class="btn-edit-intro" onclick="editIntro()">등록하기</button>
-                                </c:otherwise>
+								    <div class="my-intro">
+								        <div class="intro-label">나의 소개</div>
+								        <div class="intro-text">${selfIntro.selfIntro}</div>
+								    </div>
+								    <div class="intro-actions">
+								        <button class="btn-edit-intro" onclick="editIntro()">수정하기</button>
+								    </div>
+								</c:when>
+								<c:otherwise>
+								    <div class="my-intro">
+								        <div class="intro-label">나의 소개</div>
+								        <div class="intro-text">
+								            <span style="font-size: small;">등록된 소개가 없습니다.</span>
+								        </div>
+								    </div>
+								    <div class="intro-actions">
+								        <button class="btn-edit-intro" onclick="editIntro()">등록하기</button>
+								    </div>
+								</c:otherwise>
                             </c:choose>
                         </div>
                     </c:if>

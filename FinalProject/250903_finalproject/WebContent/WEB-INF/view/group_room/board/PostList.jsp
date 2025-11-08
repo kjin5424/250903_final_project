@@ -14,9 +14,9 @@
 <title>게시판 - 공모자들</title>
 
 <!-- CSS 파일 임포트 -->
-<link rel="stylesheet" href="css_new/common_sample.css">
-<link rel="stylesheet" href="css_new/topmenubar_sample.css">
-<link rel="stylesheet" href="css_new/board_sample.css">
+<link rel="stylesheet" href="<%=cp %>/css_new/home_sample.css" />
+<link rel="stylesheet" href="<%=cp %>/ccss_new/common_sample.css">
+<link rel="stylesheet" href="<%=cp %>/ccss_new/board_sample.css">
 
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -138,11 +138,11 @@
 </script>
 </head>
 <body>
-    <!-- ================================================
-         상단 메뉴바
-         ================================================ -->
-    <!-- 상단바 (그라디언트 영역) -->
+    <!-- 상단바 -->
 	<c:import url="/WEB-INF/view/common/TopMenuBar.jsp" />
+	
+	<!-- 사이드바 -->
+	<c:import url="/WEB-INF/view/common/GroupSideBar.jsp" />
 
     <!-- ================================================
          메인 컨테이너

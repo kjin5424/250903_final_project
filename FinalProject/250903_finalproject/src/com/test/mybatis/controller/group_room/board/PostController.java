@@ -50,7 +50,7 @@ public class PostController
 			
 		// url 생성
 		String cp = request.getContextPath();
-		String listUrl = cp + "/postlist.do";
+		String listUrl = cp + "/postlist.do?groupApplyCode=" + groupApplyCode;
 		String pageIndexList = paging.pageIndexList(currentPage, totalPage, listUrl);
 		
 		// model에 데이터 담기

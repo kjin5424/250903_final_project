@@ -203,6 +203,29 @@ a:hover {
     font-size: 16px;
 }
 
+/* Report Button */
+.btn-report {
+    background: transparent;
+    color: var(--color-primary-dark); /* 필요 시 수정. 현재 white 아이콘이면 white로 */
+    border: none;
+    border-radius: var(--radius-md);
+    box-shadow: none;
+    padding: 4px; 
+    font-size: 18px; 
+}
+
+.btn-report:hover {
+    background: rgba(255, 107, 122, 0.1);
+    transform: scale(1.1);
+    box-shadow: none; 
+}
+
+/* 
+<button class="btn-report" onclick="location.href='">
+    	🚨
+</button>
+ */
+
 /* ================================================
    카드 스타일
    ================================================ */

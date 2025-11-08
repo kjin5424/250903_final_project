@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -78,11 +79,11 @@
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-left">
-            <div class="logo-tab"><span>로고 들어갈 자리</span></div>
-        </div>
-    </nav>
+<!-- 상단바 -->
+<c:import url="/WEB-INF/view/common/TopMenuBar.jsp" />
+
+<!-- 사이드바 -->
+<c:import url="/WEB-INF/view/common/GroupSideBar.jsp" />
 
     <div class="container">
         <div class="page-header">
