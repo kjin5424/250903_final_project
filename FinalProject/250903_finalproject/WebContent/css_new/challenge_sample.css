@@ -1,0 +1,360 @@
+/* ================================================
+   도전 과제 카드 스타일
+   ================================================ */
+
+/* 도전 과제 컨테이너 */
+.challenge-container {
+    max-width: var(--max-width);
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+/* 필터 탭 */
+.challenge-filters {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
+    padding: var(--spacing-md) 0;
+    flex-wrap: wrap;
+}
+
+.filter-tab {
+    padding: 10px 20px;
+    background: transparent;
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.filter-tab:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary-dark);
+    background: var(--color-primary-lighter);
+}
+
+.filter-tab.active {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: white;
+}
+
+/* 카드 그리드 */
+.challenge-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+}
+
+/* 카드 기본 스타일 - 고정 높이 */
+.challenge-card {
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-base);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid transparent;
+    height: 280px; /* 고정 높이 */
+    display: flex;
+    flex-direction: column;
+}
+
+.challenge-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    transition: all var(--transition-base);
+}
+
+/* 진행 중인 카드 */
+.challenge-card.started {
+    border-color: var(--color-primary);
+    background: linear-gradient(135deg, #FFFFFF, #F8FFF7);
+}
+
+.challenge-card.started::before {
+    background: linear-gradient(90deg, var(--color-primary), var(--color-primary-dark));
+}
+
+.challenge-card.started:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--color-primary-dark);
+}
+
+/* 대기 중인 카드 */
+.challenge-card.ready {
+    border-color: var(--color-secondary);
+    background: linear-gradient(135deg, #FFFFFF, #FDFBFF);
+}
+
+.challenge-card.ready::before {
+    background: linear-gradient(90deg, var(--color-secondary), var(--color-secondary-dark));
+}
+
+.challenge-card.ready:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--color-secondary-dark);
+}
+
+/* 종료된 카드 */
+.challenge-card.ended {
+    opacity: 0.6;
+    background: #FAFAFA;
+    border-color: #E0E0E0;
+}
+
+.challenge-card.ended::before {
+    background: #BDBDBD;
+}
+
+.challenge-card.ended:hover {
+    opacity: 0.8;
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+}
+
+/* 카드 헤더 - 고정 높이 */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--spacing-md);
+    min-height: 60px; /* 고정 최소 높이 */
+}
+
+.card-title-section {
+    flex: 1;
+    overflow: hidden;
+    margin-right: var(--spacing-sm);
+}
+
+.card-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+    transition: transform 0.3s ease;
+}
+
+/* 제목 슬라이드 효과 */
+.challenge-card:hover .card-title {
+    animation: slideText 3s linear infinite;
+}
+
+@keyframes slideText {
+    0% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(calc(-100% + 200px));
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.challenge-card.ended .card-title {
+    color: var(--color-text-tertiary);
+}
+
+/* 상태 배지 */
+.status-badge {
+    padding: 6px 16px;
+    border-radius: var(--radius-full);
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.status-badge.started {
+    background: var(--color-primary);
+    color: white;
+}
+
+.status-badge.ready {
+    background: var(--color-secondary);
+    color: white;
+}
+
+.status-badge.ended {
+    background: #E0E0E0;
+    color: #757575;
+}
+
+/* 카드 정보 섹션 - 고정 높이 */
+.card-info {
+    margin-bottom: var(--spacing-md);
+    flex: 1; /* 남은 공간 채우기 */
+}
+
+.info-row {
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-sm) 0;
+    border-bottom: 1px solid var(--color-border-light);
+    min-height: 44px; /* 고정 높이 */
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    font-weight: 600;
+    min-width: 80px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.info-value {
+    font-size: 14px;
+    color: var(--color-text-primary);
+    font-weight: 500;
+    flex: 1;
+}
+
+.challenge-card.ended .info-value {
+    color: var(--color-text-tertiary);
+}
+
+/* 타입 배지 */
+.type-badge.daily {
+    color: #E65100;
+}
+
+.type-badge.monthly {
+    color: #6A1B9A;
+}
+
+/* 카드 푸터 - 고정 높이 */
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: var(--spacing-md);
+    border-top: 2px solid var(--color-border-light);
+    margin-top: auto; /* 항상 하단에 위치 */
+    min-height: 50px; /* 고정 높이 */
+}
+
+.card-author {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: 13px;
+    color: var(--color-text-secondary);
+}
+
+.author-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 12px;
+    flex-shrink: 0; /* 크기 고정 */
+}
+
+.card-date {
+    font-size: 12px;
+    color: var(--color-text-tertiary);
+}
+
+/* 빈 상태 */
+.challenge-empty {
+    text-align: center;
+    padding: var(--spacing-2xl) var(--spacing-lg);
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.empty-icon {
+    font-size: 64px;
+    margin-bottom: var(--spacing-lg);
+    opacity: 0.3;
+}
+
+.empty-text {
+    font-size: 18px;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-md);
+}
+
+.empty-subtext {
+    font-size: 14px;
+    color: var(--color-text-tertiary);
+}
+
+/* 페이지네이션 */
+.challenge-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-xl);
+}
+
+/* 반응형 */
+@media (max-width: 1024px) {
+    .challenge-grid {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .challenge-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-md);
+    }
+    
+    .challenge-filters {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+    }
+    
+    .challenge-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .challenge-title {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .card-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+    }
+}

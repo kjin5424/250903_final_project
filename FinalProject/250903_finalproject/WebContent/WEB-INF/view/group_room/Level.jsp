@@ -1,6 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!-- 공부 모임 레벨 확인 화면 생성 -->
 <%
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
@@ -372,23 +371,11 @@
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-left">
-            <div class="logo-tab">
-                <span>로고 들어갈 자리</span>
-            </div>
-            <a href="?page=notice" class="tab">공지사항</a>
-            <a href="?page=groups" class="tab">모임구경</a>
-            <a href="?page=creategroup" class="tab">모임 개설</a>
-            <a href="?page=mygroups" class="tab active">내 모임</a>
-        </div>
-        <div class="nav-right">
-            <a href="mypage.jsp" class="profile-btn">
-                <span>👤</span>
-                <span>마이페이지</span>
-            </a>
-        </div>
-    </nav>
+<!-- 상단바 -->
+<c:import url="/WEB-INF/view/common/TopMenuBar.jsp" />
+
+<!-- 사이드바 -->
+<c:import url="/WEB-INF/view/common/GroupSideBar.jsp" />
 
     <div class="container">
         <!-- 현재 레벨 헤더 -->
