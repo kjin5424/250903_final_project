@@ -1,263 +1,245 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" 
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" %>
+<% 
+    request.setCharacterEncoding("UTF-8");
+    String cp = request.getContextPath();
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>공모자들 - 모임 관리</title>
+    
+    <!-- CSS 파일 임포트 -->
+    <link rel="stylesheet" href="css_new/common_sample.css">
+    <link rel="stylesheet" href="css_new/topmenubar_sample.css">
+    <link rel="stylesheet" href="css_new/home_sample.css">
+    <link rel="stylesheet" href="css_new/manager_sample.css">
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f7fa;
-        }
-        .navbar {
-            background: #a8d5a1;
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            height: 48px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            gap: 4px;
-        }
-        .nav-left {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            flex: 1;
-        }
-        .logo-tab {
-            background: #8bc683;
-            color: white;
-            padding: 0 20px;
-            height: 36px;
-            border-radius: 8px 8px 0 0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: bold;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-
-        /* 헤더 */
-        .page-header {
-            background: linear-gradient(135deg, #2d5a29 0%, #4a8a42 100%);
-            color: white;
-            padding: 40px;
-            border-radius: 12px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-        .header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        .page-title {
-            font-size: 32px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .role-badge {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 6px 15px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-        }
-        .btn-back {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 2px solid white;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-        }
-        .btn-back:hover {
-            background: white;
-            color: #2d5a29;
-        }
-        .group-name {
-            font-size: 18px;
-            opacity: 0.9;
-        }
-
-        /* 관리 메뉴 그리드 */
-        .management-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
-            margin-bottom: 30px;
-        }
-        .management-card {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s;
-            cursor: pointer;
-            border: 2px solid transparent;
-            position: relative;
-        }
-        .management-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-            border-color: #8bc683;
-        }
-        .management-card.disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            pointer-events: none;
-        }
-        .card-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #8bc683 0%, #6ba562 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 12px rgba(139, 198, 131, 0.3);
-        }
-        .card-title {
-            font-size: 20px;
-            font-weight: bold;
-            color: #2d5a29;
-            margin-bottom: 10px;
-        }
-        .card-description {
-            font-size: 14px;
-            color: #666;
-            line-height: 1.6;
-        }
-        .permission-badge {
-            display: inline-block;
-            background: #e3f2fd;
-            color: #1976d2;
-            padding: 4px 8px;
-            border-radius: 10px;
-            font-size: 11px;
-            font-weight: 600;
-            margin-top: 8px;
-        }
-
-        /* 섹션 구분 */
-        .section {
-            margin-bottom: 40px;
-        }
-        .section-title {
-            font-size: 24px;
-            font-weight: bold;
-            color: #2d5a29;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .section-divider {
-            height: 3px;
-            background: linear-gradient(90deg, #8bc683 0%, transparent 100%);
-            margin-bottom: 20px;
-        }
-
-        /* 통계 카드 */
+        
+        /* 통계 그리드 - 원본과 동일하게 */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
         }
-        .stat-card {
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            text-align: center;
+        
+        /* 관리 카드 그리드 스타일 */
+        .management-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
         }
-        .stat-value {
-            font-size: 32px;
-            font-weight: bold;
-            color: #2d5a29;
+        
+        .management-card {
+            background: var(--color-white);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            box-shadow: var(--shadow-sm);
+            transition: all var(--transition-base);
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        
+        .management-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--color-primary);
+        }
+        
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .card-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: 10px;
+        }
+        
+        .card-description {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            line-height: 1.6;
             margin-bottom: 8px;
         }
-        .stat-label {
-            font-size: 14px;
-            color: #666;
+        
+        .permission-badge {
+            display: inline-block;
+            background: var(--color-primary-lighter);
+            color: var(--color-primary-dark);
+            padding: 4px 10px;
+            border-radius: var(--radius-full);
+            font-size: 11px;
+            font-weight: 700;
         }
-
+        
+        /* 섹션 스타일 */
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-divider {
+            height: 3px;
+            background: linear-gradient(90deg, var(--color-primary), transparent);
+            margin-bottom: 20px;
+        }
+        
         /* 위험 영역 */
         .danger-zone {
-            background: #fff5f5;
-            border: 2px solid #ffebee;
-            border-radius: 12px;
+            background: #FFF5F5;
+            border: 2px solid #FFEBEE;
+            border-radius: var(--radius-lg);
             padding: 30px;
             margin-top: 40px;
         }
+        
         .danger-title {
             font-size: 20px;
-            font-weight: bold;
-            color: #d32f2f;
+            font-weight: 700;
+            color: #D32F2F;
             margin-bottom: 15px;
             display: flex;
             align-items: center;
             gap: 10px;
         }
+        
         .danger-description {
-            color: #666;
+            color: var(--color-text-secondary);
             margin-bottom: 20px;
             line-height: 1.6;
         }
+        
         .btn-danger {
-            background: #f44336;
+            background: #F44336;
             color: white;
             border: none;
             padding: 12px 24px;
-            border-radius: 8px;
+            border-radius: var(--radius-md);
             font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all var(--transition-base);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
+        
         .btn-danger:hover {
-            background: #d32f2f;
+            background: #D32F2F;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
+            box-shadow: var(--shadow-md);
         }
-
+        
+        .danger-note {
+            font-size: 13px;
+            color: var(--color-text-tertiary);
+            margin-top: 10px;
+        }
+        
+        /* 페이지 헤더는 group-header 스타일 활용 */
+        .page-header-custom {
+            background: linear-gradient(135deg, var(--color-primary-deep), var(--color-primary-darker));
+            color: white;
+            padding: 40px;
+            border-radius: var(--radius-lg);
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .page-title-custom {
+            font-size: 32px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .role-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 6px 15px;
+            border-radius: var(--radius-full);
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .group-name {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+        
+        .btn-back-custom {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+            padding: 10px 20px;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-back-custom:hover {
+            background: white;
+            color: var(--color-primary-dark);
+        }
+        
         @media (max-width: 768px) {
             .management-grid {
                 grid-template-columns: 1fr;
             }
-            .page-header {
+            
+            .page-header-custom {
                 padding: 25px 20px;
             }
-            .page-title {
+            
+            .page-title-custom {
                 font-size: 24px;
             }
+            
             .header-top {
                 flex-direction: column;
                 gap: 15px;
@@ -265,25 +247,10 @@
             }
         }
     </style>
+    
     <script>
         // 현재 사용자 권한 (서버에서 전달받아야 함)
         const userRole = 'leader'; // leader, subleader, helper
-
-        function goToMemberManagement() {
-            window.location.href = 'member_management.jsp';
-        }
-
-        function goToAttendanceManagement() {
-            window.location.href = 'attendance_management.jsp';
-        }
-
-        function goToGroupEdit() {
-            window.location.href = 'group_edit.jsp';
-        }
-
-        function goToApplicationManagement() {
-            window.location.href = 'application_management.jsp';
-        }
 
         function closeGroup() {
             if(confirm('정말 모임을 폐쇄하시겠습니까?\n모든 모임원이 탈퇴되며 복구할 수 없습니다.')) {
@@ -294,34 +261,29 @@
                 }
             }
         }
-
-        function goBack() {
-            window.location.href = 'group_home.jsp';
-        }
     </script>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-left">
-            <div class="logo-tab">
-                <span>로고 들어갈 자리</span>
-            </div>
-        </div>
-    </nav>
+    <!-- 상단 메뉴바 -->
+    <c:import url="/WEB-INF/view/common/TopMenuBar.jsp" />
 
+    <!-- 관리 페이지 컨테이너 -->
     <div class="container">
         <!-- 페이지 헤더 -->
-        <div class="page-header">
+        <div class="page-header-custom">
             <div class="header-top">
                 <div>
-                    <div class="page-title">
+                    <div class="page-title-custom">
                         <span>⚙️</span>
                         <span>모임 관리</span>
                         <span class="role-badge">모임장</span>
                     </div>
                     <div class="group-name">알고리즘 정복 스터디</div>
                 </div>
-                <button class="btn-back" onclick="location.href='home.do'">← 뒤로 가기</button>
+                <a href="home.do" class="btn-back-custom">
+                    <span>←</span>
+                    <span>뒤로 가기</span>
+                </a>
             </div>
         </div>
 
@@ -425,9 +387,10 @@
                 아래 작업은 되돌릴 수 없습니다. 신중하게 결정해주세요.
             </div>
             <button class="btn-danger" onclick="closeGroup()">
-                🗑️ 모임 폐쇄
+                <span>🗑️</span>
+                <span>모임 폐쇄</span>
             </button>
-            <p style="font-size: 13px; color: #999; margin-top: 10px;">
+            <p class="danger-note">
                 모임 폐쇄 시 모든 모임원이 탈퇴 처리되며, 게시글과 활동 내역은 삭제됩니다.
             </p>
         </div>

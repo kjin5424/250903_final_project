@@ -4,8 +4,8 @@
 
 /* 관리자 컨테이너 */
 .manager-container {
-    max-width: 1600px;
-    margin: 0 auto;
+    max-width: 1400;
+    margin: 30px auto;
     padding: var(--spacing-2xl) var(--spacing-lg);
 }
 
@@ -17,6 +17,8 @@
     margin-bottom: var(--spacing-xl);
     flex-wrap: wrap;
     gap: var(--spacing-md);
+    padding: 40px;
+    bordaer-radius: 12px;
 }
 
 .header-left {
