@@ -1,5 +1,8 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%
+    request.setCharacterEncoding("UTF-8");
+    String cp = request.getContextPath();
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -160,10 +163,11 @@
                 허위 신고는 제재 대상이 될 수 있습니다.<br>
                 감사합니다.
             </div>
-            <div class="button-group">
-                <button class="btn-back" onclick="location.href='applicant.do'">← 이전 페이지</button>
-                <button class="btn-home" onclick="location.href='home.do'">모임 홈으로</button>
-            </div>
+            
+           <div class="button-group">
+                <button class="btn-back" onclick="location.href='reportgroup.do'">← 이전 페이지</button>
+                <button class="btn-home" onclick="location.href='mainpage.do'">모임 홈으로</button>
+            </div> 
         </div>
     </div>
 </body>
