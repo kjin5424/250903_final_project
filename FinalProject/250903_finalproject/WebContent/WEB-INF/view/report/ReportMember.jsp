@@ -1,6 +1,11 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page language="java" %>
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%
+    request.setCharacterEncoding("UTF-8");
+    String cp = request.getContextPath();
+%>
+<!DOCTYPE html> 
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -365,8 +370,15 @@
         }
 
         function validateForm() {
-            const reportType = document.querySelector('input[name="reportType"]:checked');
-            const reportContent = document.getElementById('reportContent').value.trim();
+        	console.log('validateForm 호출됨');
+        	
+        	const reportType = document.querySelector('input[name="reportMemberType"]:checked');
+        	
+         	console.log('선택된 신고유형:', reportType);
+         	
+        	const reportContent = document.getElementById('reportContent').value.trim();
+        	
+        	console.log('신고내용:', reportContent);
 
             if (!reportType) {
                 alert('신고 유형을 선택해주세요.');
@@ -397,10 +409,10 @@
             return false;
         }
 
-        function cancelReport() {
-            if (confirm('신고를 취소하시겠습니까?')) {
-                history.back();
-            }
+    	function cancelMember() {
+    	    if(confirm('신고를 취소하시겠습니까?')) {
+    	    	window.location.href = "<%= cp %>/reportmember.do";
+    	    }
         }
     </script>
 </head>
@@ -424,7 +436,7 @@
                     </div>
                     <div class="group-name">📚 알고리즘 정복 스터디</div>
                 </div>
-                <button class="btn-back" onclick="history.back()">← 뒤로 가기</button>
+                <!-- <button class="btn-back" onclick="history.back()">← 뒤로 가기</button> -->
             </div>
             <div class="header-description">
                 부적절한 행동을 하는 모임원을 신고할 수 있습니다.<br>
@@ -435,7 +447,13 @@
         
 
         <!-- 신고 폼 -->
-        <form class="report-form" onsubmit="return validateForm()" method="post" action="memberReportSubmit.action">
+<%-- <form class="report-form" method="post" action="<%= cp %>/reportmember.do" onsubmit="return validateForm()"> --%>
+
+<form class="report-form" method="POST" action="<%=cp%>/reportmember.do" onsubmit="return validateForm()">
+        
+       <%--  <form method="post" action="<%= cp %>/reportmember.do" name="reportForm" onsubmit="return validateForm()">  --%>
+        
+        
             <!-- 정보 박스 -->
             <div class="info-box">
                 <div class="info-content">
@@ -472,7 +490,7 @@
                     </div>
                     <div class="target-item">
                         <span class="target-label">가입일:</span>
-                        <span class="target-value">2024.09.15</span>
+                        <span class="target-value">2025-11-09</span>
                     </div>
                     <div class="target-item">
                         <span class="target-label">출석률:</span>
@@ -495,32 +513,39 @@
                 </div>
                 <div class="report-type-grid">
                     <div class="report-type-option">
-                        <input type="radio" id="type1" name="reportType" value="abuse">
+                       <!--  <input type="radio" id="type1" name="reportType" value="abuse"> -->
+                       <input type="radio" id="type1" name="reportMemberType" value="1">
                         <label class="report-type-label" for="type1">폭력적 언어/행위(따돌림 포함)</label>
                     </div>
                     <div class="report-type-option">
-                        <input type="radio" id="type2" name="reportType" value="harassment">
+                        <!-- <input type="radio" id="type2" name="reportType" value="harassment"> -->
+                        <input type="radio" id="type2" name="reportMemberType" value="2">
                         <label class="report-type-label" for="type2">성희롱/불쾌한 언행</label>
                     </div>
                     <div class="report-type-option">
-                        <input type="radio" id="type3" name="reportType" value="spam">
+                   <!--      <input type="radio" id="type3" name="reportType" value="spam"> -->
+                        <input type="radio" id="type3" name="reportMemberType" value="3">
                         <label class="report-type-label" for="type3">도용/사칭</label>
                     </div>
                     <div class="report-type-option">
-                        <input type="radio" id="type4" name="reportType" value="inappropriate">
-                        <label class="report-type-label" for="type4">불법 활동 및 강요·권유(마약 도박)</label>
+                       <!--  <input type="radio" id="type4" name="reportType" value="inappropriate"> -->
+                         <input type="radio" id="type4" name="reportMemberType" value="4">
+                        <label class="report-type-label" for="type4">불법활동 및 강요(마약/도박)</label>
                     </div>
                     <div class="report-type-option">
-                        <input type="radio" id="type5" name="reportType" value="violation">
-                        <label class="report-type-label" for="type5">금전적/비금전적 사귀 행위</label>
+                      <!--   <input type="radio" id="type5" name="reportType" value="violation"> -->
+                        <input type="radio" id="type5" name="reportMemberType" value="5">
+                        <label class="report-type-label" for="type5">금전적/비금전적 사기 행위</label>
                     </div>
                     <div class="report-type-option">
-                        <input type="radio" id="type6" name="reportType" value="absence">
-                        <label class="report-type-label" for="type6">모임원 의견을 무시한 모임 운영</label>
+                        <!-- <input type="radio" id="type6" name="reportType" value="absence"> -->
+                         <input type="radio" id="type6" name="reportMemberType" value="6">
+                        <label class="report-type-label" for="type6">모임원 의견을 무시한 모임운영</label>
                     </div>
               
                     <div class="report-type-option">
-                        <input type="radio" id="type8" name="reportType" value="etc">
+                       <!--  <input type="radio" id="type8" name="reportType" value="etc"> -->
+                        <input type="radio" id="type8" name="reportMemberType" value="8">
                         <label class="report-type-label" for="type8">기타</label>
                     </div>
                 </div>
@@ -534,11 +559,9 @@
                 <div class="form-description">
                     신고 사유를 구체적으로 작성해주세요. 가능하면 날짜, 상황, 증거 등을 포함해주세요. (최소 5자, 최대 1000자)
                 </div>
-                <textarea 
-                    id="reportContent" 
-                    name="reportContent" 
+                <textarea id="reportContent" name="content"
                     rows="10" 
-                    placeholder="신고 사유를 상세히 작성해주세요.&#10;&#10;예시:&#10;- 언제: 2024년 10월 20일 모임 중&#10;- 어떤 상황: 다른 모임원에게 지속적으로 욕설을 사용&#10;- 구체적 내용: '○○○' 등의 욕설을 반복적으로 사용하며 다른 모임원을 비하함&#10;- 증거: 해당 게시글/댓글 링크 또는 스크린샷&#10;&#10;※ 가능한 객관적 사실을 중심으로 작성해주세요."
+                    placeholder="신고 사유를 상세히 작성해주세요.&#10;&#10;예시:&#10;- 언제: 2025년 11월 09일 모임 중&#10;- 어떤 상황: 다른 모임원에게 지속적으로 욕설을 사용&#10;- 구체적 내용: '○○○' 등의 욕설을 반복적으로 사용하며 다른 모임원을 비하함&#10;- 증거: 해당 게시글/댓글 링크 또는 스크린샷&#10;&#10;※ 가능한 객관적 사실을 중심으로 작성해주세요."
                     oninput="updateCharCount()"
                     maxlength="1000"></textarea>
                 <div class="char-count" id="charCount">0 / 1000</div>
@@ -546,8 +569,12 @@
 
             <!-- 버튼 -->
             <div class="button-group">
-                <button type="button" class="btn-cancel" onclick="cancelReport()">취소</button>
-                <button type="submit" class="btn-submit">신고 제출</button>
+            	<input type="hidden" name="reporterCode" value="249">
+				<input type="hidden" name="reporteeCode" value="250">
+         
+                <button type="button" class="btn-cancel" onclick="cancelMember()">취소</button>
+        				<button type="submit" class="btn-submit">신고 제출</button> 
+
             </div>
         </form>
     </div>

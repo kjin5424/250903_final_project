@@ -80,41 +80,30 @@ public class ManagerController
 			return "/WEB-INF/view/manager/notice/NoticeWrite.jsp";
 		}
 		
-		@RequestMapping(value="/reportdetail.do", method=RequestMethod.GET)
-		public String reportDetail(Model model)
-		{
-			return "/WEB-INF/view/manager/report/ReportDetail.jsp";
-		}
-	
-		@RequestMapping(value="/reportlist_kmj.do", method=RequestMethod.GET)
-		public String reportList(Model model)
-		{
-			return "/WEB-INF/view/manager/report/ReportList_kmj.jsp";
-		}
-	
-		@RequestMapping(value="/reportexplanation.do", method=RequestMethod.GET)
-		public String reportExplanation(Model model)
-		{
-			return "/WEB-INF/view/manager/report/ReportExplanation.jsp";
-		}
-		
-		@RequestMapping(value="/blind.do", method=RequestMethod.GET)
-		public String reportBlind(Model model)
-		{
-			return "/WEB-INF/view/manager/report/Blind.jsp";
-		}
-		
-		@RequestMapping(value="/blinduserpost.do", method=RequestMethod.GET)
-		public String blindUserPost(Model model)
-		{
-			return "/WEB-INF/view/manager/report/BlindUserPost.jsp";
-		}
-		
-		@RequestMapping(value="/reportuserexplanation.do", method=RequestMethod.GET)
-		public String reportUserExplanation(Model model)
-		{
-			return "/WEB-INF/view/manager/report/ReportUserExplanation.jsp";
-		}
+		/*
+		 * @RequestMapping(value="/reportdetail.do", method=RequestMethod.GET) public
+		 * String reportDetail(Model model) { return
+		 * "/WEB-INF/view/manager/report/ReportDetail.jsp"; }
+		 * 
+		 * @RequestMapping(value="/reportlist_kmj.do", method=RequestMethod.GET) public
+		 * String reportList(Model model) { return
+		 * "/WEB-INF/view/manager/report/ReportList_kmj.jsp"; }
+		 * 
+		 * @RequestMapping(value="/reportexplanation.do", method=RequestMethod.GET)
+		 * public String reportExplanation(Model model) { return
+		 * "/WEB-INF/view/manager/report/ReportExplanation.jsp"; }
+		 * 
+		 * @RequestMapping(value="/blind.do", method=RequestMethod.GET) public String
+		 * reportBlind(Model model) { return "/WEB-INF/view/manager/report/Blind.jsp"; }
+		 * 
+		 * @RequestMapping(value="/blinduserpost.do", method=RequestMethod.GET) public
+		 * String blindUserPost(Model model) { return
+		 * "/WEB-INF/view/manager/report/BlindUserPost.jsp"; }
+		 * 
+		 * @RequestMapping(value="/reportuserexplanation.do", method=RequestMethod.GET)
+		 * public String reportUserExplanation(Model model) { return
+		 * "/WEB-INF/view/manager/report/ReportUserExplanation.jsp"; }
+		 */
 		
 		@RequestMapping(value="/userlist.do", method=RequestMethod.GET)
 		public String userList(Model model)
