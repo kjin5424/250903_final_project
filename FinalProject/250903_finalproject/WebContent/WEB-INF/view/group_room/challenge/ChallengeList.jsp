@@ -56,8 +56,76 @@
 			</div>
 			
 			<!-- 도전 과제 카드 그리드 -->
+			<!-- 진행, 대기, 종료 나눌 예정 -->
+			<c:forEach var="challenge" items="${challengeList }">
+				<div class="challenge-card ready" data-status="ready" 
+					onclick="location.href='challengedetailpage.do?challengeCode=${challenge.challengeCode}'">
+					<div class="card-header">
+						<div class="card-title-section">
+							<h3 class="card-title">${challenge.title } 📚</h3>
+						</div>
+						<c:choose>
+							<c:when test="${challenge.status eq 1}">
+								<span class="status-badge ready">
+									<span>⏱️</span>
+									<span>대기중</span>
+								</span>
+							</c:when>
+							<c:when test="${challenge.status eq 2 }">
+								<span class="status-badge started">
+									<span>🔥</span>
+									<span>진행중</span>
+								</span>
+							</c:when>
+							<c:otherwise>
+								<span class="status-badge ended">
+									<span>✓</span>
+									<span>종료</span>
+								</span>
+							</c:otherwise>
+						</c:choose>
+					</div>
+					
+					<div class="card-info">
+						<div class="info-row">
+							<div class="info-label">
+								<span>📅</span>
+								<span>기간</span>
+							</div>
+							<div class="info-value">${challenge.startDate } ~ ${challenge.endDate }</div>
+						</div>
+						<div class="info-row">
+							<div class="info-label">
+								<span>🎯</span>
+								<span>타입</span>
+							</div>
+							<div class="info-value">
+								<c:choose>
+									<c:when test="${challenge.challengeType eq 1}">
+										<span class="type-badge daily">☀️ 일간과제</span>
+									</c:when>
+									<c:otherwise>
+										<span class="type-badge monthly">🌙 월간과제</span>
+									</c:otherwise>
+								</c:choose>
+							</div>
+						</div>
+					</div>
+					
+					<div class="card-footer">
+						<div class="card-author">
+							<div class="author-avatar">A</div>
+							<span>userA</span>
+						</div>
+						<div class="card-date">${challenge.createdDate }</div>
+					</div>
+				</div>
+			</c:forEach>
+			
+			<!-- 
+			도전 과제 카드 그리드
 			<div class="challenge-grid">
-				<!-- 대기 중인 과제 -->
+				대기 중인 과제
 				<div class="challenge-card ready" data-status="ready" onclick="location.href='ChallengeDetail.jsp'">
 					<div class="card-header">
 						<div class="card-title-section">
@@ -97,7 +165,7 @@
 					</div>
 				</div>
 				
-				<!-- 진행 중인 과제 -->
+				진행 중인 과제
 				<div class="challenge-card started" data-status="started" onclick="location.href='ChallengeDetail.jsp'">
 					<div class="card-header">
 						<div class="card-title-section">
@@ -139,7 +207,7 @@
 					</div>
 				</div>
 				
-				<!-- 종료된 과제 1 -->
+				종료된 과제 1
 				<div class="challenge-card ended" data-status="ended" onclick="location.href='ChallengeDetail.jsp'">
 					<div class="card-header">
 						<div class="card-title-section">
@@ -179,7 +247,7 @@
 					</div>
 				</div>
 				
-				<!-- 종료된 과제 2 -->
+				종료된 과제 2
 				<div class="challenge-card ended" data-status="ended" onclick="location.href='ChallengeDetail.jsp'">
 					<div class="card-header">
 						<div class="card-title-section">
@@ -219,7 +287,7 @@
 					</div>
 				</div>
 				
-				<!-- 종료된 과제 3 -->
+				종료된 과제 3
 				<div class="challenge-card ended" data-status="ended" onclick="location.href='ChallengeDetail.jsp'">
 					<div class="card-header">
 						<div class="card-title-section">
@@ -259,7 +327,7 @@
 					</div>
 				</div>
 				
-				<!-- 종료된 과제 4 -->
+				종료된 과제 4
 				<div class="challenge-card ended" data-status="ended" onclick="location.href='ChallengeDetail.jsp'">
 					<div class="card-header">
 						<div class="card-title-section">
@@ -299,7 +367,7 @@
 					</div>
 				</div>
 				
-				<!-- 종료된 과제 5 -->
+				종료된 과제 5
 				<div class="challenge-card ended" data-status="ended" onclick="location.href='ChallengeDetail.jsp'">
 					<div class="card-header">
 						<div class="card-title-section">
@@ -339,7 +407,7 @@
 					</div>
 				</div>
 				
-				<!-- 종료된 과제 6 -->
+				종료된 과제 6
 				<div class="challenge-card ended" data-status="ended" onclick="location.href='ChallengeDetail.jsp'">
 					<div class="card-header">
 						<div class="card-title-section">
@@ -379,7 +447,7 @@
 					</div>
 				</div>
 			</div>
-			
+			 -->
 			<!-- 페이지네이션 -->
 			<div class="pagination">
 				<button class="page-btn active">1</button>
