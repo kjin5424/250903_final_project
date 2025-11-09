@@ -327,20 +327,6 @@ public class HomeController
 		return "/WEB-INF/view/group/GroupCreateComplete.jsp";
 	}
 	
-	
-	@RequestMapping(value="/applicant.do", method=RequestMethod.GET)
-	public String applicant(String groupApplyCode, Model model)
-	{
-		IGroupJoinDAO dao = sqlSession.getMapper(IGroupJoinDAO.class);
-		List<GroupJoinDTO> applicantList = dao.selectGroupJoinById(groupApplyCode);
-		
-		model.addAttribute("applicant", applicantList);
-		
-		
-		
-		return "/WEB-INF/view/group_room/manage/Applicant.jsp";
-	}
-	
 	@Transactional
 	@RequestMapping(value="/applicationcomplete.do", method=RequestMethod.POST)
 	public String groupJoinInsert(HttpServletRequest request, HttpSession session, Model model)

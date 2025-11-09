@@ -16,9 +16,62 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="<%=cp%>/css/cssSearch/SearchList.css">
+<!-- CSS 파일 로드 -->
+<link rel="stylesheet" href="<%=cp%>/css_new/common_sample.css">
+<link rel="stylesheet" href="<%=cp%>/css_new/grouplist_sample.css">
 <title>검색 결과 - 공모자들</title>
 <style>
+/* 검색 페이지 전용 스타일 */
+.search-header {
+    background: var(--color-white);
+    padding: var(--spacing-xl);
+    margin-bottom: var(--spacing-xl);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.search-info {
+    margin-bottom: var(--spacing-lg);
+}
+
+.search-keyword {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.search-keyword-text {
+    color: var(--color-primary-dark);
+    background: var(--color-primary-lighter);
+    padding: 4px 12px;
+    border-radius: var(--radius-md);
+    display: inline-block;
+    margin: 2px;
+}
+
+.search-count {
+    font-size: 15px;
+    color: var(--color-text-secondary);
+}
+
+.search-count-num {
+    font-weight: 700;
+    color: var(--color-primary-dark);
+}
+
+.lock-icon {
+    position: absolute;
+    top: var(--spacing-md);
+    left: var(--spacing-md);
+    font-size: 20px;
+}
+
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--spacing-lg);
+}
 </style>
 </head>
 <body>
@@ -49,92 +102,92 @@
 	%>
 
 	<!-- 검색 헤더 -->
-	<div class="search-header">
-		<div class="search-info">
-			<div class="search-keyword">
-				검색 결과<br>
-				<c:if test="${filter.content eq null}">
-					내용 : <span class="search-keyword-text"> ${filter.content } </span>
-				</c:if>
-				<br>
-				<c:forEach var="item" items="${filter.category }">
-					<span class="search-keyword-text"> ${item } </span>
-				</c:forEach>
-				<c:forEach var="item" items="${filter.region }">
-					<span class="search-keyword-text"> ${item } </span>
-				</c:forEach>
-				<c:forEach var="item" items="${filter.type }">
-					<span class="search-keyword-text"> ${item } </span>
-				</c:forEach>
-				<c:forEach var="item" items="${filter.status }">
-					<span class="search-keyword-text"> ${item } </span>
-				</c:forEach>
+	<div class="content">
+		<div class="search-header">
+			<div class="search-info">
+				<div class="search-keyword">
+					<c:if test="${filter.content ne null}">
+					📑<span class="search-keyword-text">${filter.content}</span> 검색 결과<br>
+					</c:if>
+					<c:forEach var="item" items="${filter.category}">
+						<span class="search-keyword-text">${item}</span>
+					</c:forEach>
+					<c:forEach var="item" items="${filter.region}">
+						<span class="search-keyword-text">${item}</span>
+					</c:forEach>
+					<c:forEach var="item" items="${filter.type}">
+						<span class="search-keyword-text">${item}</span>
+					</c:forEach>
+					<c:forEach var="item" items="${filter.status}">
+						<span class="search-keyword-text">${item}</span>
+					</c:forEach>
+				</div>
+				<div class="search-count">
+					총 <span class="search-count-num"><%=groupList.size()%></span>개의 모임을 찾았습니다.
+				</div>
 			</div>
-			<div class="search-count">
-				총 <span class="search-count-num"> <%=groupList.size()%>
-				</span>개의 모임을 찾았습니다.
-			</div>
+
+			<c:import url="/WEB-INF/view/common/Search.jsp" />
 		</div>
 
-		<c:import url="/WEB-INF/view/common/Search.jsp" />
-	</div>
+		<!-- 필터 섹션 -->
+	<%--
+		<div class="filter-section">
+			<span class="filter-label">필터:</span> <select class="filter-select"
+				onchange="applyFilter('category', this.value)">
+				<option value="all" <%="all".equals(category) ? "selected" : ""%>>전체
+					카테고리</option>
+				<option value="reading"
+					<%="reading".equals(category) ? "selected" : ""%>>📖 독서</option>
+				<option value="language"
+					<%="language".equals(category) ? "selected" : ""%>>🌐 어학</option>
+				<option value="it" <%="it".equals(category) ? "selected" : ""%>>💻
+					IT</option>
+				<option value="startup"
+					<%="startup".equals(category) ? "selected" : ""%>>🚀 창업·취업</option>
+				<option value="license"
+					<%="license".equals(category) ? "selected" : ""%>>📜 자격증</option>
+				<option value="exam" <%="exam".equals(category) ? "selected" : ""%>>✏️
+					시험</option>
+				<option value="hobby" <%="hobby".equals(category) ? "selected" : ""%>>🎨
+					취미</option>
+				<option value="etc" <%="etc".equals(category) ? "selected" : ""%>>📌
+					기타</option>
+			</select> <select class="filter-select"
+				onchange="applyFilter('status', this.value)">
+				<option value="all" <%="all".equals(status) ? "selected" : ""%>>전체
+					상태</option>
+				<option value="recruiting"
+					<%="recruiting".equals(status) ? "selected" : ""%>>모집중</option>
+				<option value="ongoing"
+					<%="ongoing".equals(status) ? "selected" : ""%>>진행중</option>
+			</select> <select class="filter-select"
+				onchange="applyFilter('sort', this.value)">
+				<option value="recent" <%="recent".equals(sort) ? "selected" : ""%>>최신순</option>
+				<option value="popular" <%="popular".equals(sort) ? "selected" : ""%>>인기순</option>
+				<option value="deadline"
+					<%="deadline".equals(sort) ? "selected" : ""%>>마감임박순</option>
+			</select>
+		</div>
+	--%>
 
-	<!-- 필터 섹션 -->
-<%--
-	<div class="filter-section">
-		<span class="filter-label">필터:</span> <select class="filter-select"
-			onchange="applyFilter('category', this.value)">
-			<option value="all" <%="all".equals(category) ? "selected" : ""%>>전체
-				카테고리</option>
-			<option value="reading"
-				<%="reading".equals(category) ? "selected" : ""%>>📖 독서</option>
-			<option value="language"
-				<%="language".equals(category) ? "selected" : ""%>>🌐 어학</option>
-			<option value="it" <%="it".equals(category) ? "selected" : ""%>>💻
-				IT</option>
-			<option value="startup"
-				<%="startup".equals(category) ? "selected" : ""%>>🚀 창업·취업</option>
-			<option value="license"
-				<%="license".equals(category) ? "selected" : ""%>>📜 자격증</option>
-			<option value="exam" <%="exam".equals(category) ? "selected" : ""%>>✏️
-				시험</option>
-			<option value="hobby" <%="hobby".equals(category) ? "selected" : ""%>>🎨
-				취미</option>
-			<option value="etc" <%="etc".equals(category) ? "selected" : ""%>>📌
-				기타</option>
-		</select> <select class="filter-select"
-			onchange="applyFilter('status', this.value)">
-			<option value="all" <%="all".equals(status) ? "selected" : ""%>>전체
-				상태</option>
-			<option value="recruiting"
-				<%="recruiting".equals(status) ? "selected" : ""%>>모집중</option>
-			<option value="ongoing"
-				<%="ongoing".equals(status) ? "selected" : ""%>>진행중</option>
-		</select> <select class="filter-select"
-			onchange="applyFilter('sort', this.value)">
-			<option value="recent" <%="recent".equals(sort) ? "selected" : ""%>>최신순</option>
-			<option value="popular" <%="popular".equals(sort) ? "selected" : ""%>>인기순</option>
-			<option value="deadline"
-				<%="deadline".equals(sort) ? "selected" : ""%>>마감임박순</option>
-		</select>
-	</div>
---%>
-	<div class="content">
 		<%
 			if (groupList.size() == 0) {
 		%>
 		<!-- 검색 결과 없음 -->
-		<div class="empty-results">
-			<div class="empty-icon">😥</div>
-			<div class="empty-title">검색 결과가 없습니다</div>
-			<div class="empty-description">
-				'${filter.content }'에 대한 검색 결과를 찾을 수 없습니다.<br> 다른 키워드로 다시
+		<div class="empty-state">
+			<div class="empty-state-icon">😥</div>
+			<div class="empty-state-title">검색 결과가 없습니다</div>
+			<div class="empty-state-description">
+				'${filter.content}'에 대한 검색 결과를 찾을 수 없습니다.<br> 다른 키워드로 다시
 				검색해보세요.
 			</div>
 
-			<div class="empty-suggestions">
-				<div class="suggestions-title">검색 TIP</div>
-				<ul class="suggestions-list">
+			<div style="margin-top: var(--spacing-xl);">
+				<div style="font-size: 18px; font-weight: 700; color: var(--color-text-primary); margin-bottom: var(--spacing-md);">
+					검색 TIP
+				</div>
+				<ul style="text-align: left; max-width: 500px; margin: 0 auto; color: var(--color-text-secondary); line-height: 1.8;">
 					<li>단어의 철자가 정확한지 확인해보세요</li>
 					<li>더 일반적인 검색어로 다시 검색해보세요</li>
 					<li>다른 키워드를 사용해보세요</li>
@@ -169,33 +222,33 @@
 						</c:if>
 						<c:choose>
 							<c:when test="${group.currentMemberCount < group.headCount}">
-								<span class="meeting-status">모집중</span>
+								<span class="meeting-status recruiting">모집중</span>
 							</c:when>
 							<c:otherwise>
-								<span class="meeting-status">모집완료</span>
+								<span class="meeting-status full">모집완료</span>
 							</c:otherwise>
 						</c:choose>
 					</div>
 					<div class="meeting-info">
-						<h3 class="meeting-title">${group.groupTitle }</h3>
-						<p class="meeting-description">${group.groupContent }</p>
+						<h3 class="meeting-title">${group.groupTitle}</h3>
+						<p class="meeting-description">${group.groupContent}</p>
 						<div class="meeting-meta">
 							<div class="meta-item">
-								<span class="meta-icon">📚</span> <span>범주 : ${group.topic }</span>
+								<span class="meta-icon">📚</span> <span>범주 : ${group.topic}</span>
 							</div>
 							<div class="meta-item">
-								<span class="meta-icon">👥</span> <span>${group.currentMemberCount}/${group.headCount }명</span>
+								<span class="meta-icon">👥</span> <span>${group.currentMemberCount}/${group.headCount}명</span>
 							</div>
 							<div class="meta-item">
-								<span class="meta-icon">📅</span> <span>주기 :	${group.frequency }</span>
+								<span class="meta-icon">📅</span> <span>주기 : ${group.frequency}</span>
 							</div>
 							<div class="meta-item">
-								<span class="meta-icon">📍</span> <span>${group.onOff }</span><br>
+								<span class="meta-icon">📍</span> <span>${group.onOff}</span>
 							</div>
 							<div class="meta-item">
 								<c:choose>
 									<c:when test="${group.region != null}">
-										<span>모임 지역 : ${group.region }</span>
+										<span>모임 지역 : ${group.region}</span>
 									</c:when>
 									<c:otherwise>
 										<span style="visibility: hidden;">space</span>

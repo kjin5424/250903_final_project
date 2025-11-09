@@ -110,7 +110,7 @@
 					    	🚨
 					</button>
                 </div>
-            </div>
+            </div><!-- .group-header-top -->
             
             <div class="group-dates">
                 <div class="date-item">
@@ -162,14 +162,14 @@
                 <div class="section-wrapper">
                     <div class="section-header">
                         <h2 class="section-title">📢 공지사항</h2>
-                        <button class="btn-more" onclick="location.href='postlist.do?${groupInfo.groupApplyCode}'">
+                        <button class="btn-more" onclick="location.href='postlist.do?groupApplyCode=?${groupInfo.groupApplyCode}'">
                             더보기 →
                         </button>
                     </div>
                     <c:choose>
                         <c:when test="${not empty post}">
                             <c:forEach var="postDTO" items="${post}">
-                                <div class="notice-item" onclick="location.href='postdetail.do?groupApplyCode=${groupInfo.groupApplyCode}'">
+                                <div class="notice-item" onclick="location.href='postdetail.do?postCode=${postDTO.postCode}'">
                                     <div class="notice-title">${postDTO.subject}</div>
                                     <div class="notice-meta">${postDTO.nickName} · ${postDTO.createdDate}</div>
                                 </div>

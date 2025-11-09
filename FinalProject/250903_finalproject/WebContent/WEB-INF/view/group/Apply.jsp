@@ -1,12 +1,27 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
-<!-- 가입 신청 화면 생성 -->
+<%@ page contentType="text/html; charset=UTF-8" 
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" %>
+<% 
+    request.setCharacterEncoding("UTF-8");
+    String cp = request.getContextPath();
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>공모자들 - 모임 가입 신청</title>
+    
+    <!-- CSS 파일 임포트 -->
+    <link rel="stylesheet" href="css_new/common_sample.css">
+    <link rel="stylesheet" href="css_new/topmenubar_sample.css">
+    <link rel="stylesheet" href="css_new/home_sample.css">
+    <link rel="stylesheet" href="css_new/manager_sample.css">
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
         body { font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#f5f7fa; }
@@ -169,23 +184,8 @@
     </script>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-left">
-            <div class="logo-tab">
-                <span>로고 들어갈 자리</span>
-            </div>
-            <a href="?page=notice" class="tab">공지사항</a>
-            <a href="?page=groups" class="tab active">모임구경</a>
-            <a href="?page=creategroup" class="tab">모임 개설</a>
-            <a href="?page=mygroups" class="tab">내 모임</a>
-        </div>
-        <div class="nav-right">
-            <a href="mypage.jsp" class="profile-btn">
-                <span>👤</span>
-                <span>마이페이지</span>
-            </a>
-        </div>
-    </nav>
+    <!-- 상단 메뉴바 -->
+    <c:import url="/WEB-INF/view/common/TopMenuBar.jsp" />
 
     <div class="container">
         <div class="page-header">

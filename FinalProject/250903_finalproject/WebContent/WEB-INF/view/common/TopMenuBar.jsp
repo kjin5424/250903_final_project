@@ -28,13 +28,13 @@
 
 		<!-- 메뉴 탭 -->
 		<div class="navbar-menu">
-               <a href="<%=cp%>/notice/Notice.jsp" class="menu-tab">
+               <a href="announcelist.do" class="menu-tab">
                    <span class="menu-icon">📢</span>
                    공지사항
                </a>
                <a href="mainpage.do" class="menu-tab active">
                    <span class="menu-icon">👥</span>
-                   모임구경
+                   모임 구경
                </a>
                <a href="beforegroupcreate.do" class="menu-tab">
                    <span class="menu-icon">➕</span>
@@ -44,10 +44,12 @@
                    <span class="menu-icon">📚</span>
                    내 모임
                </a>
+               <%-- 
                <a href="<%=cp%>/mypage.do" class="menu-tab">
                    <span class="menu-icon">⚙️</span>
                    마이페이지
                </a>
+                --%>
            </div>
 		<div class="navbar-actions">
 			<%
@@ -74,10 +76,12 @@
                         <span>👤</span>
                         <span>내 프로필</span>
                     </a>
+                    <!-- 
                     <a href="#" class="dropdown-item">
                         <span>⚙️</span>
                         <span>설정</span>
                     </a>
+                     -->
                     <div class="dropdown-divider"></div>
                     <a href="logout.do" class="dropdown-item">
                         <span>🚪</span>
