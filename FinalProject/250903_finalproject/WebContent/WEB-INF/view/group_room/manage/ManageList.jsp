@@ -325,7 +325,7 @@
                     <span class="permission-badge">모임장 전용</span>
                 </div>
 
-                <div class="management-card" onclick="location.href='applicant.do'">
+                <div class="management-card" onclick="location.href='applicant.do?groupApplyCode=${groupApplyCode}'">
                     <div class="card-icon">📝</div>
                     <div class="card-title">가입 신청 관리</div>
                     <div class="card-description">
@@ -334,7 +334,7 @@
                     <span class="permission-badge">모임장 이상</span>
                 </div>
 
-                <div class="management-card" onclick="location.href='attendance.do'">
+                <div class="management-card" onclick="location.href='attendance.do?groupApplyCode=${groupApplyCode}'">
                     <div class="card-icon">📋</div>
                     <div class="card-title">출석 관리</div>
                     <div class="card-description">

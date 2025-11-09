@@ -20,7 +20,7 @@
         .tab.active { background:#f5f7fa; color:#2d5a29; height:40px; }
         .profile-btn { background:#2d5a29; color:white; border:none; padding:8px 20px; border-radius:6px; cursor:pointer; font-size:14px; font-weight:500; text-decoration:none; display:flex; align-items:center; gap:6px; }
 
-        /* 컨테이너 */
+        /* 컨테이너 */	
         .container { max-width:800px; margin:40px auto; padding:0 20px; }
         .page-header { text-align:center; margin-bottom:40px; }
         .page-title { font-size:32px; font-weight:bold; color:#2d5a29; margin-bottom:10px; }
@@ -90,7 +90,7 @@
         }
 
         function submitApplication() {
-            // 1. 유효성 검사 (기존 로직 유지)
+            // 1. 유효성 검사
             const intro = document.getElementById('selfIntro').value.trim();
             if (!intro) {
                 alert('한줄 자기소개는 필수 항목입니다.');
@@ -114,59 +114,50 @@
             }
 
             if (confirm('이 모임에 가입 신청하시겠습니까?')) {
-                // 2. GroupJoinDTO에 맞게 데이터 수집 및 구성
-                const formData = new URLSearchParams();
+                // 2. Form 생성
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = 'applicationcomplete.do';
                 
-                // 2-1. DTO 필수 필드 (HTML의 Hidden Input에서 가져온다고 가정)
-                // 🚨 HTML에 <input type="hidden" id="userCodeInput" ...> 이 반드시 있어야 합니다.
-                let userCode = document.getElementById('userCodeInput').value;
-                let groupJoinCode = document.getElementById('groupJoinCodeInput').value;
-
-                if (!userCode || !groupJoinCode) {
-                    // ❌ 이 경고 대신 임시 값을 할당하여 테스트를 진행합니다.
-                    // alert('필수 코드가 누락되었습니다. (UserCode/GroupJoinCode)');
-                    // return;
-                    
-                    // ✅ 임시 값 강제 할당 (테스트용)
-                    console.warn("UserCode/GroupJoinCode가 비어있어 임시 코드를 할당합니다.");
-                    userCode = "U999_TEMP";      // 로그인한 사용자 코드를 임의로 설정
-                    groupJoinCode = "G100_TEST"; // 가입하려는 모임 코드를 임의로 설정
-                }
-
-                formData.append('userCode', userCode);
-                formData.append('groupJoinCode', groupJoinCode);
-
-                // 2-2. selfIntro
-                formData.append('selfIntro', intro);
-
-                // 2-3. answer (모든 답변을 ||| 구분자로 합쳐서 하나의 문자열로 전송)
+                // userCode
+                const userCodeInput = document.createElement('input');
+                userCodeInput.type = 'hidden';
+                userCodeInput.name = 'userCode';
+                userCodeInput.value = document.getElementById('userCodeInput').value;
+                form.appendChild(userCodeInput);
+                console.log('✅ userCode:', userCodeInput.value);
+                
+                // groupJoinCode (✅ Controller에서 이 이름으로 받음)
+                const groupJoinCodeInput = document.createElement('input');
+                groupJoinCodeInput.type = 'hidden';
+                groupJoinCodeInput.name = 'groupJoinCode';
+                groupJoinCodeInput.value = document.getElementById('groupJoinCodeInput').value;
+                form.appendChild(groupJoinCodeInput);
+                console.log('✅ groupJoinCode:', groupJoinCodeInput.value);
+                
+                // introduce
+                const introduceInput = document.createElement('input');
+                introduceInput.type = 'hidden';
+                introduceInput.name = 'introduce';
+                introduceInput.value = intro;
+                form.appendChild(introduceInput);
+                console.log('✅ introduce:', intro);
+                
+                // answer
                 const allAnswers = Array.from(questions)
                     .map(q => q.value.trim())
                     .join('|||');
-                formData.append('answer', allAnswers);
                 
-                // 3. fetch API를 사용해 POST 요청 전송
-                fetch('applicationcomplete.do', {
-                    method: 'POST', // 🔑 이 부분이 405 오류를 해결합니다.
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded' 
-                    },
-                    body: formData // DTO 바인딩을 위한 데이터 전송
-                })
-                .then(response => {
-                    // 서버에서 응답이 오면 (컨트롤러 실행 완료)
-                    if (response.ok || response.status === 200) {
-                        // 성공적으로 처리된 후, 결과 JSP를 보여주기 위해 다시 GET 요청으로 이동
-                        window.location.href = 'applicationcomplete.do'; 
-                    } else {
-                        // 서버 내부 오류(500)나 다른 HTTP 오류 처리
-                        alert('가입 신청 처리 중 오류가 발생했습니다. (HTTP 상태: ' + response.status + ')');
-                    }
-                })
-                .catch(error => {
-                    console.error('Fetch Error:', error);
-                    alert('네트워크 연결 문제로 가입 신청에 실패했습니다.');
-                });
+                const answerInput = document.createElement('input');
+                answerInput.type = 'hidden';
+                answerInput.name = 'answer';
+                answerInput.value = allAnswers;
+                form.appendChild(answerInput);
+                console.log('✅ answer:', allAnswers);
+                
+                // Form 제출
+                document.body.appendChild(form);
+                form.submit();
             }
         }
 
@@ -207,12 +198,12 @@
             <div class="group-header">
                 <img src="https://via.placeholder.com/100" alt="모임 이미지" class="group-image">
                 <div>
-                    <h2 class="group-title">알고리즘 정복 스터디</h2>
+                    <h2 class="group-title">${groupDetail.groupTitle }</h2>
                     <div class="group-meta">
-                        <div class="group-meta-item"><span>👥</span><span>7/10명</span></div>
-                        <div class="group-meta-item"><span>📍</span><span>강남동</span></div>
-                        <div class="group-meta-item"><span>⏰</span><span>월/수/금 19:00~21:00</span></div>
-                        <div class="group-meta-item"><span>🎯</span><span>난이도: 중</span></div>
+                        <div class="group-meta-item"><span>👥</span><span>${groupDetail.currentMemberCount}/${groupDetail.maxCount}</span></div>
+                        <div class="group-meta-item"><span>📍</span><span>${groupDetail.region}</span></div>
+                        <div class="group-meta-item"><span>⏰</span><span>${groupDetail.frequency}</span></div>
+                        <div class="group-meta-item"><span>🎯</span><span>난이도: ${groupDetail.difficulty}</span></div>
                     </div>
                 </div>
             </div>
@@ -254,7 +245,7 @@
                         placeholder="간단한 자기소개를 작성해주세요 (50자 이내)"
                         maxlength="50"
                         oninput="updateCharCount('selfIntro','introCount',50)"
-                        name = "selfIntro"
+                        name = "introduce"
                     ></textarea>
                     <div class="char-count" id="introCount">0 / 50자</div>
                     <p class="form-help">모임원들에게 보여지는 한줄 소개입니다.</p>
@@ -266,8 +257,8 @@
                 <h3 class="section-title"><span>❓</span><span>가입 질문</span></h3>
                 <p class="form-help" style="margin-bottom:20px;">모임장이 설정한 질문에 답변해주세요. 답변은 모임장에게만 공개됩니다.</p>
                 <div class="question-item">
-                    <div class="question-text">Q1. 어떤 프로그래밍 언어를 주로 사용하시나요?</div>
-                    <textarea class="form-input form-textarea question-answer" name="questionAnswer" placeholder="답변을 입력해주세요" style="min-height:80px;"></textarea>
+                    <div class="question-text">${groupQuestionRule.question }</div>
+                    <textarea class="form-input form-textarea question-answer" name="answer" placeholder="답변을 입력해주세요" style="min-height:80px;"></textarea>
                 </div>
             </div>
 
@@ -276,11 +267,7 @@
                 <h3 class="section-title"><span>📜</span><span>모임 규칙</span></h3>
                 <div style="background:#f8faf8; padding:20px; border-radius:8px; line-height:1.8; color:#666;">
                     <p><strong style="color:#333;">다음 규칙을 확인하고 동의해주세요:</strong></p><br>
-                    1. 매주 최소 3문제 이상 풀이하고 공유하기<br>
-                    2. 무단 결석 금지 (사전 공지 필수)<br>
-                    3. 다른 사람의 풀이를 존중하고 건설적인 피드백 제공하기<br>
-                    4. 질문은 언제든 환영! 모르는 것은 부끄러운 게 아닙니다<br>
-                    5. 상호 존중과 배려하는 분위기 만들기<br><br>
+                    	${groupQuestionRule.rule }
                     <label style="display:flex; align-items:center; gap:10px; cursor:pointer;">
                         <input type="checkbox" id="agreeRules" style="width:18px; height:18px;">
                         <span style="color:#333; font-weight:600;">위 규칙을 확인했으며 이를 준수하겠습니다.</span>
@@ -290,7 +277,7 @@
             
             <div class="application-form">
             <input type="hidden" id="userCodeInput" name="userCode" value="${userCode}">
-            <input type="hidden" id="groupJoinCodeInput" name="groupJoinCode" value="${groupJoinCode}">
+            <input type="hidden" id="groupJoinCodeInput" name="groupApplyCode" value="${groupApplyCode}">
             <div class="section">
                 </div>
 
@@ -303,3 +290,19 @@
     </div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

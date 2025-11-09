@@ -1,6 +1,7 @@
 package com.test.mybatis.dao;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -34,4 +35,16 @@ public interface IGroupDAO
 	
 	// 특정 회원이 특정 모임의 모임원인지 검증하는 메소드
 	public int checkMember(@Param("groupApplyCode") String groupApplyCode, @Param("userCode") String userCode);
+	
+	// 특정 그룹의 비밀번호만 조회하는  메서드
+	public String groupPassword(String groupApplyCode);
+			
+	// 특정 모임의 모임원 리스트(닉네임, 한줄 자기소개) 프로필 빼고
+	public List<GroupDTO> groupUserList(String groupApplyCode);
+		
+	// 특정 모임의 가입질문과 규칙
+	public GroupDTO groupQuestionRule(@Param("groupApplyCode") String groupApplyCode);
+	
+	// 누적 활동 수 구하기
+	public int countActivity(@Param("groupApplyCode") String groupApplyCode);
 }
