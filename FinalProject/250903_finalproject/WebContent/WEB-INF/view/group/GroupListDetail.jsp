@@ -1,960 +1,542 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
-
-<!-- 모임원 과 게시물은 아직 안 한 미완성본 -->
-<!-- 모임 모집글 화면 생성 -->
 <%@ page language="java"%>
-
-<!DOCTYPE html>
-
-<html lang="ko">
-
-<head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<% 
+    request.setCharacterEncoding("UTF-8");
+    String cp = request.getContextPath();
+%>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- CSS 파일 로드 -->
+<link rel="stylesheet" href="<%=cp%>/css_new/common_sample.css">
+<link rel="stylesheet" href="<%=cp%>/css_new/grouplist_sample.css">
 
 <title>공모자들 - 모임 상세보기</title>
-
 <style>
-* {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-}
-
-body {
-	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-	background: #f5f7fa;
-}
-
-/* 네비게이션 */
-.navbar {
-	background: #a8d5a1;
-	display: flex;
-	align-items: center;
-	padding: 0 20px;
-	height: 48px;
-	position: sticky;
-	top: 0;
-	z-index: 1000;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-	gap: 4px;
-}
-
-.nav-left {
-	display: flex;
-	align-items: center;
-	gap: 4px;
-	flex: 1;
-}
-
-.nav-right {
-	display: flex;
-	align-items: center;
-	margin-left: auto;
-}
-
-.logo-tab {
-	background: #8bc683;
-	color: white;
-	padding: 0 20px;
-	height: 36px;
-	border-radius: 8px 8px 0 0;
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	font-weight: bold;
-	font-size: 16px;
-	cursor: pointer;
-}
-
-.tab {
-	background: #8bc683;
-	color: white;
-	border: none;
-	padding: 0 24px;
-	height: 36px;
-	border-radius: 8px 8px 0 0;
-	cursor: pointer;
-	font-size: 14px;
-	font-weight: 500;
-	text-decoration: none;
-	display: flex;
-	align-items: center;
-}
-
-.tab.active {
-	background: #f5f7fa;
-	color: #2d5a29;
-	height: 40px;
-}
-
-.login-btn {
-	background: #2d5a29;
-	color: white;
-	border: none;
-	padding: 8px 20px;
-	border-radius: 6px;
-	cursor: pointer;
-	font-size: 14px;
-	font-weight: 500;
-	text-decoration: none;
-	display: flex;
-	align-items: center;
-	gap: 6px;
-}
-
-/* 컨테이너 */
-.container {
-	max-width: 1200px;
-	margin: 30px auto;
-	padding: 0 20px;
-}
-
-.back-btn {
-	display: inline-flex;
-	align-items: center;
-	gap: 8px;
-	padding: 10px 20px;
-	background: white;
-	border: 1px solid #ddd;
-	border-radius: 8px;
-	color: #666;
-	text-decoration: none;
-	margin-bottom: 20px;
-	transition: all 0.2s;
-}
-
-.back-btn:hover {
-	background: #f5f7fa;
-	border-color: #8bc683;
-	color: #2d5a29;
-}
-
-/* 모임 헤더 */
+/* 모임 상세 페이지 전용 스타일 */
 .group-header {
-	background: white;
-	border-radius: 12px;
-	padding: 30px;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-	margin-bottom: 20px;
-	display: flex;
-	gap: 30px;
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: var(--spacing-xl);
+    display: grid;
+    grid-template-columns: 280px 1fr auto;
+    gap: var(--spacing-2xl);
+    align-items: start;
 }
 
-.group-image {
-	width: 200px;
-	height: 200px;
-	border-radius: 12px;
-	object-fit: cover;
-	background: #e0e0e0;
-	flex-shrink: 0;
+.group-image-container {
+    width: 280px;
+    height: 280px;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(135deg, var(--color-primary-lighter), var(--color-secondary-lighter));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 120px;
+    overflow: hidden;
+    flex-shrink: 0;
 }
 
-.group-info {
-	flex: 1;
+.group-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.group-main-info {
+    flex: 1;
+    min-width: 0;
 }
 
 .group-title-row {
-	display: flex;
-	align-items: center;
-	gap: 15px;
-	margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+    flex-wrap: wrap;
 }
 
 .group-title {
-	font-size: 28px;
-	color: #2d5a29;
-	font-weight: bold;
+    font-size: 32px;
+    color: var(--color-primary-dark);
+    font-weight: 700;
+    margin-right: var(--spacing-sm);
 }
 
-.badge {
-	padding: 6px 12px;
-	border-radius: 20px;
-	font-size: 12px;
-	font-weight: 600;
-	background: #e3f2fd;
-	color: #1565c0;
-}
-
-.badge.category {
-	background: #f3e5f5;
-	color: #7b1fa2;
-}
-
-.badge.status {
-	background: #e8f5e9;
-	color: #2e7d32;
+.badge-large {
+    padding: 8px 16px;
+    border-radius: var(--radius-full);
+    font-size: 14px;
+    font-weight: 700;
 }
 
 .group-meta {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 20px;
-	margin-bottom: 20px;
-	color: #666;
-	font-size: 14px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-xl);
+    background: var(--color-base);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-md);
 }
 
 .meta-item {
-	display: flex;
-	align-items: center;
-	gap: 6px;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: 15px;
+    color: var(--color-text-primary);
+}
+
+.meta-item .meta-icon {
+    font-size: 20px;
 }
 
 .meta-item strong {
-	color: #333;
+    font-weight: 700;
+    color: var(--color-primary-dark);
+    min-width: 70px;
 }
 
 .group-stats {
-	display: flex;
-	gap: 30px;
-	padding: 20px 0;
-	border-top: 1px solid #e0e0e0;
-	border-bottom: 1px solid #e0e0e0;
-	margin: 20px 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-lg);
+    padding: var(--spacing-lg);
+    background: var(--color-primary-lighter);
+    border-radius: var(--radius-md);
 }
 
 .stat-item {
-	text-align: center;
+    text-align: center;
 }
 
 .stat-value {
-	font-size: 24px;
-	font-weight: bold;
-	color: #2d5a29;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--color-primary-dark);
+    display: block;
 }
 
 .stat-label {
-	font-size: 12px;
-	color: #999;
-	margin-top: 5px;
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    margin-top: var(--spacing-xs);
+    display: block;
 }
 
 .action-buttons {
-	display: flex;
-	gap: 10px;
-	margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    width: 200px;
 }
 
-.btn {
-	padding: 12px 30px;
-	border: none;
-	border-radius: 8px;
-	font-size: 15px;
-	font-weight: 600;
-	cursor: pointer;
-	transition: all 0.3s;
-	text-decoration: none;
-	display: inline-flex;
-	align-items: center;
-	gap: 8px;
+.action-buttons .btn {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 20px;
+    font-size: 14px;
 }
 
-.btn-primary {
-	background: #4CAF50;
-	color: white;
+.intro-section {
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: var(--spacing-xl);
 }
 
-.btn-primary:hover {
-	background: #45a049;
-	transform: translateY(-2px);
-	box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
-}
-
-.btn-outline {
-	background: white;
-	color: #2d5a29;
-	border: 2px solid #2d5a29;
-}
-
-.btn-outline:hover {
-	background: #2d5a29;
-	color: white;
-}
-
-.btn-favorite {
-	background: white;
-	color: #ff6b6b;
-	border: 2px solid #ff6b6b;
-}
-
-.btn-favorite:hover {
-	background: #ff6b6b;
-	color: white;
-}
-
-/* 탭 */
-.detail-tabs {
-	background: white;
-	border-radius: 12px;
-	padding: 0;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-	margin-bottom: 20px;
-	overflow: hidden;
-}
-
-.tab-buttons {
-	display: flex;
-	border-bottom: 2px solid #e0e0e0;
-}
-
-.tab-button {
-	flex: 1;
-	padding: 18px;
-	background: white;
-	border: none;
-	color: #666;
-	font-size: 15px;
-	font-weight: 600;
-	cursor: pointer;
-	transition: all 0.3s;
-	border-bottom: 3px solid transparent;
-}
-
-.tab-button:hover {
-	background: #f5f7fa;
-}
-
-.tab-button.active {
-	color: #2d5a29;
-	border-bottom-color: #2d5a29;
-}
-
-.tab-content {
-	padding: 30px;
-	display: none;
-}
-
-/* 모임 소개 */
 .intro-section h3 {
-	color: #2d5a29;
-	margin-bottom: 15px;
-	font-size: 18px;
+    color: var(--color-primary-dark);
+    margin-bottom: var(--spacing-lg);
+    font-size: 22px;
+    padding-bottom: var(--spacing-md);
+    border-bottom: 2px solid var(--color-primary-lighter);
 }
 
-.intro-section p {
-	color: #666;
-	line-height: 1.8;
-	white-space: pre-wrap;
+.intro-section .description {
+    color: var(--color-text-secondary);
+    line-height: 1.8;
+    white-space: pre-wrap;
+    margin-bottom: var(--spacing-2xl);
+    font-size: 15px;
 }
 
-.info-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-	gap: 15px;
-	margin-top: 20px;
+.member-list-section {
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    box-shadow: var(--shadow-sm);
 }
 
-.info-box {
-	background: #f8faf8;
-	padding: 15px;
-	border-radius: 8px;
-	border-left: 4px solid #8bc683;
+.member-list-section h3 {
+    color: var(--color-primary-dark);
+    margin-bottom: var(--spacing-lg);
+    font-size: 22px;
+    padding-bottom: var(--spacing-md);
+    border-bottom: 2px solid var(--color-primary-lighter);
 }
 
-.info-box-title {
-	font-size: 13px;
-	color: #999;
-	margin-bottom: 8px;
-}
-
-.info-box-value {
-	font-size: 15px;
-	color: #333;
-	font-weight: 600;
-}
-
-/* 멤버 리스트 */
-.member-list {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-	gap: 15px;
+.member-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-lg);
 }
 
 .member-card {
-	background: #f8faf8;
-	padding: 20px;
-	border-radius: 8px;
-	text-align: center;
-	transition: all 0.3s;
-	cursor: pointer;
+    background: var(--color-base);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-base);
+    cursor: pointer;
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: center;
 }
 
 .member-card:hover {
-	background: #e8f5e9;
-	transform: translateY(-2px);
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background: var(--color-primary-lighter);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
 }
 
 .member-avatar {
-	width: 60px;
-	height: 60px;
-	border-radius: 50%;
-	background: #8bc683;
-	color: white;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: 24px;
-	margin: 0 auto 10px;
+    width: 60px;
+    height: 60px;
+    border-radius: var(--radius-full);
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.member-info {
+    flex: 1;
+    min-width: 0;
 }
 
 .member-name {
-	font-weight: 600;
-	color: #333;
-	margin-bottom: 5px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    font-size: 16px;
+    margin-bottom: var(--spacing-xs);
 }
 
 .member-role {
-	font-size: 12px;
-	color: #999;
-	background: #e0e0e0;
-	padding: 4px 8px;
-	border-radius: 12px;
-	display: inline-block;
+    font-size: 12px;
+    color: var(--color-text-inverse);
+    background: var(--color-primary-dark);
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
+    display: inline-block;
+    margin-bottom: var(--spacing-xs);
 }
 
 .member-intro {
-	font-size: 13px;
-	color: #666;
-	margin-top: 10px;
-	line-height: 1.4;
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
 
-/* 게시글 */
-.post-preview {
-	background: #f8faf8;
-	padding: 15px;
-	border-radius: 8px;
-	margin-bottom: 10px;
-	cursor: pointer;
-	transition: all 0.3s;
-	border-left: 4px solid #8bc683;
-}
-
-.post-preview:hover {
-	background: #e8f5e9;
-	transform: translateX(5px);
-}
-
-.post-tag {
-	display: inline-block;
-	padding: 4px 8px;
-	background: #2d5a29;
-	color: white;
-	font-size: 11px;
-	border-radius: 4px;
-	margin-right: 8px;
-}
-
-.post-title {
-	font-size: 15px;
-	color: #333;
-	font-weight: 600;
-	margin: 8px 0;
-}
-
-.post-meta {
-	font-size: 12px;
-	color: #999;
-}
-
-.empty-message {
-	text-align: center;
-	padding: 40px;
-	color: #999;
-}
-
-/* 모달 */
 .modal-bg {
-	display: none;
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background: rgba(0, 0, 0, 0.5);
-	align-items: center;
-	justify-content: center;
-	z-index: 2000;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
 }
 
 .modal {
-	background: white;
-	padding: 30px;
-	border-radius: 12px;
-	max-width: 500px;
-	width: 90%;
-	position: relative;
+    background: var(--color-white);
+    padding: var(--spacing-xl);
+    border-radius: var(--radius-lg);
+    max-width: 500px;
+    width: 90%;
+    position: relative;
+    box-shadow: var(--shadow-xl);
 }
 
 .modal-close {
-	position: absolute;
-	top: 10px;
-	right: 10px;
-	cursor: pointer;
-	font-size: 18px;
-	font-weight: bold;
+    position: absolute;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    cursor: pointer;
+    font-size: 24px;
+    color: var(--color-text-tertiary);
+    background: none;
+    border: none;
+    transition: color var(--transition-fast);
 }
 
-@media ( max-width :768px) {
-	.group-header {
-		flex-direction: column;
-	}
-	.group-image {
-		width: 100%;
-		height: 250px;
-	}
-	.group-stats {
-		flex-wrap: wrap;
-		gap: 15px;
-	}
-	.action-buttons {
-		flex-direction: column;
-	}
-	.btn {
-		width: 100%;
-		justify-content: center;
-	}
+.modal-close:hover {
+    color: var(--color-text-primary);
+}
+
+@media (max-width: 1024px) {
+    .group-header {
+        grid-template-columns: 1fr;
+    }
+    
+    .group-image-container {
+        width: 100%;
+        max-width: 280px;
+        margin: 0 auto;
+    }
+    
+    .action-buttons {
+        width: 100%;
+    }
+    
+    .group-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .member-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .group-meta {
+        grid-template-columns: 1fr;
+    }
 }
 </style>
 
 <script>
-        function switchTab(tabName){
+function toggleFavorite() {
+    const btn = document.querySelector('.btn-favorite');
+    if (btn.textContent.includes('즐겨찾기')) {
+        btn.innerHTML = '⭐ 즐겨찾기 해제';
+        alert('즐겨찾기에 추가되었습니다!');
+    } else {
+        btn.innerHTML = '☆ 즐겨찾기';
+        alert('즐겨찾기에서 제거되었습니다!');
+    }
+}
 
-            const buttons = document.querySelectorAll('.tab-button');
-
-            const contents = document.querySelectorAll('.tab-content');
-
-
-
-            buttons.forEach(btn=>btn.classList.remove('active'));
-
-            contents.forEach(content=>content.style.display='none');
-
-
-
-            document.querySelector(`[onclick*="${tabName}"]`).classList.add('active');
-
-            document.getElementById(tabName).style.display='block';
-
+function joinGroup() {
+    const groupCode = "${groupDetail.groupApplyCode}";
+    if (confirm('이 모임에 가입 신청하시겠습니까?')) {
+        if (groupCode) {
+            window.location.href = 'apply.do?groupCode=' + groupCode;
+        } else {
+            alert("모임 코드가 유효하지 않습니다.");
         }
+    }
+}
 
+function openModal(title, subtitle, content) {
+    document.getElementById('modal-title').textContent = title;
+    document.getElementById('modal-subtitle').textContent = subtitle;
+    document.getElementById('modal-content').textContent = content;
+    document.getElementById('modal-bg').style.display = 'flex';
+}
 
+function closeModal() {
+    document.getElementById('modal-bg').style.display = 'none';
+}
 
-        function toggleFavorite(){
-
-            const btn = document.querySelector('.btn-favorite');
-
-            if(btn.textContent.includes('즐겨찾기')){
-
-                btn.innerHTML='⭐ 즐겨찾기 해제';
-
-                alert('즐겨찾기에 추가되었습니다!');
-
-            } else {
-
-                btn.innerHTML='☆ 즐겨찾기';
-
-                alert('즐겨찾기에서 제거되었습니다!');
-
-            }
-
-        }
-
-
-
-        function joinGroup(){
-
-			const groupCode = "${groupDetail.groupApplyCode}";
-            if(confirm('이 모임에 가입 신청하시겠습니까?')){
-				
-            	 if (groupCode) {
-                     window.location.href = 'apply.do?groupCode=' + groupCode;
-                 } else {
-                     alert("모임 코드가 유효하지 않습니다.");
-                 }
-             }
-            }
-
-        
-
-
-
-        function openModal(title, subtitle, content){
-
-            document.getElementById('modal-title').textContent=title;
-
-            document.getElementById('modal-subtitle').textContent=subtitle;
-
-            document.getElementById('modal-content').textContent=content;
-
-            document.getElementById('modal-bg').style.display='flex';
-
-        }
-
-
-
-        function closeModal(){
-
-            document.getElementById('modal-bg').style.display='none';
-
-        }
-
-
-
-        window.onload=function(){
-
-            // 처음 모임 소개 탭 보이기
-
-            document.getElementById('intro').style.display='block';
-
-            document.querySelector('.tab-button').classList.add('active');
-
-
-
-            // 게시글 클릭 이벤트 (이벤트 위임)
-
-            document.getElementById('posts').addEventListener('click', function(e){
-
-                const post = e.target.closest('.post-preview');
-
-                if(!post) return;
-
-                const title = post.querySelector('.post-title').textContent;
-
-                const meta = post.querySelector('.post-meta').textContent;
-
-                const content = '게시글 상세 내용을 여기에 표시합니다.';
-
-                openModal(title, meta, content);
-
-            });
-
-
-
-            // 멤버 클릭 이벤트 (이벤트 위임)
-
-            document.getElementById('members').addEventListener('click', function(e){
-
-                const member = e.target.closest('.member-card');
-
-                if(!member) return;
-
-                const name = member.querySelector('.member-name').textContent;
-
-                const role = member.querySelector('.member-role').textContent;
-
-                const intro = member.querySelector('.member-intro').textContent;
-
-                openModal(name, role, intro);
-
-            });
-
-        }
-
-    </script>
-
+window.onload = function() {
+    // 멤버 클릭 이벤트
+    document.querySelectorAll('.member-card').forEach(card => {
+        card.addEventListener('click', function() {
+            const name = this.querySelector('.member-name').textContent;
+            const role = this.querySelector('.member-role') ? this.querySelector('.member-role').textContent : '';
+            const intro = this.querySelector('.member-intro') ? this.querySelector('.member-intro').textContent : '';
+            openModal(name, role, intro);
+        });
+    });
+}
+</script>
 </head>
 
 <body>
-
-	<nav class="navbar">
-
-		<div class="nav-left">
-
-			<div class="logo-tab">
-				<span>로고</span>
-			</div>
-
-			<a href="?page=notice" class="tab">공지사항</a> <a href="?page=groups"
-				class="tab active">모임구경</a> <a href="?page=creategroup" class="tab">모임
-				개설</a> <a href="?page=mygroups" class="tab">내 모임</a>
-
-		</div>
-
-		<div class="nav-right">
-
-			<a href="login.jsp" class="login-btn">🔐 로그인</a>
-
-		</div>
-
-	</nav>
-
-
-
-	<div class="container">
-
-		<!-- <a href="/grouplist.do" class="back-btn">← 모임 목록으로</a> -->
-		<button class="back-btn" onclick="location.href='grouplist.do'">←
-			모임 목록으로</button>
-
-
-
-		<!-- 모임 헤더 -->
-
-		<div class="group-header">
-
-			<img src="https://via.placeholder.com/200" alt="모임 이미지"
-				class="group-image">
-
-			<div class="group-info">
-
-				<div class="group-title-row">
-
-					<h1 class="group-title">${groupDetail.groupTitle}</h1>
-
-					<span class="badge category">${groupDetail.topic }</span> 
-					<span>
-					<c:choose>
-							<c:when test="${groupDetail.currentMemberCount < groupDetail.headCount}">
-									<span class="badge badge-recruiting badge-absolute">모집중</span>
-							</c:when>
-									<c:otherwise>
-										<span class="badge badge-closed badge-absolute">모집완료</span>
-									</c:otherwise>
-						</c:choose>
-					
-					</span> 
-						
-						<span class="badge">Lv.${groupDetail.groupLevel}</span>
-
-				</div>
-
-				<div class="group-meta">
-
-					<div class="meta-item">
-						<span>👤</span><strong>모임장:</strong>
-						<c:set var="leaderFound" value="false" />
-						<%-- memberList를 순회하며 position이 '모임장'인 사람을 찾습니다 --%>
-						<c:forEach var="member" items="${memberList}">
-							<c:if test="${member.position eq '모임장'}">
-								<c:out value="${member.nickname}" />
-								<c:set var="leaderFound" value="true" />
-								<%-- 모임장은 한 명이라고 가정하고 찾았으면 반복문을 중단합니다 --%>
-								<c:if test="${leaderFound}">
-								</c:if>
-							</c:if>
-						</c:forEach>
-						<%-- 만약 모임장을 찾지 못했다면 기본값 출력 (선택 사항) --%>
-						<c:if test="${!leaderFound}">
-       					 (정보 없음)
-    </c:if>
-					</div>
-
-					<div class="meta-item">
-						<span>📅</span><strong>개설일:</strong> ${groupDetail.openDate}
-					</div>
-
-					<div class="meta-item">
-						<span>📍</span><strong>지역:</strong> ${groupDetail.region}
-					</div>
-
-					<div class="meta-item">
-						<span>⏰</span><strong>주기:</strong> ${groupDetail.frequency}
-					</div>
-
-				</div>
-
-				<div class="group-stats">
-
-					<div class="stat-item">
-						<div class="stat-value">${groupDetail.currentMemberCount}/${groupDetail.maxCount}</div>
-						<div class="stat-label">모임원</div>
-					</div>
-
-					<div class="stat-item">
-						<div class="stat-value">85%</div>
-						<div class="stat-label">평균 출석률</div>
-					</div>
-
-					<div class="stat-item">
-						<div class="stat-value">${activityCount }회</div>
-						<div class="stat-label">누적 활동</div>
-					</div>
-
-					<div class="stat-item">
-						<div class="stat-value">${groupDetail.difficulty}</div>
-						<div class="stat-label">학습 난이도</div>
-					</div>
-
-				</div>
-
-				<div class="action-buttons">
-
-					<button class="btn btn-primary" onclick="joinGroup()">✅ 가입
-						신청하기</button>
-
-					<button class="btn btn-favorite" onclick="toggleFavorite()">☆
-						즐겨찾기</button>
-
-					<!-- 모임 홈으로 이동 버튼 추가 -->
-					<button class="btn btn-outline" onclick="location.href='home.do?groupApplyCode=${groupDetail.groupApplyCode}'">🏠 모임 홈으로
-						이동</button>
-
-				</div>
-
-			</div>
-
-		</div>
-
-
-
-		<!-- 탭 네비게이션 -->
-
-		<div class="detail-tabs">
-
-			<div class="tab-buttons">
-
-				<button class="tab-button active" onclick="switchTab('intro')">📝
-					모임 소개</button>
-
-
-
-			</div>
-
-
-
-			<div id="intro" class="tab-content">
-
-				<div class="intro-section">
-
-					<h3>모임 소개</h3>
-
-					<p>${groupDetail.groupContent}</p>
-
-					<div class="info-grid">
-
-						<div class="info-box">
-							<div class="info-box-title">참여 가능 인원</div>
-							<div class="info-box-value">10명</div>
-						</div>
-
-						<div class="info-box">
-							<div class="info-box-title">난이도</div>
-							<div class="info-box-value">${groupDetail.difficulty}</div>
-						</div>
-
-						<div class="info-box">
-							<div class="info-box-title">활동 방식</div>
-							<div class="info-box-value">${groupDetail.onOff}</div>
-						</div>
-
-						<div class="info-box">
-							<div class="info-box-title">기간</div>
-							<div class="info-box-value">3개월</div>
-						</div>
-
-					</div>
-
-					<h3 style="margin-top: 30px;">모임원 한 줄 소개</h3>
-					<div class="member-preview"
-						style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 10px;">
-
-						<c:forEach var="member" items="${memberList}" begin="0" end="4"
-							varStatus="status">
-							<div class="member-card"
-								style="flex: 0 0 120px; padding: 10px; text-align: center;">
-								<div class="member-avatar"
-									style="width: 50px; height: 50px; font-size: 18px;">
-									<c:out value="${fn:substring(member.nickname, 0, 1)}"
-										default="?" />
-								</div>
-								<div class="member-name"
-									style="font-size: 14px; font-weight: 600;">${member.nickname}</div>
-								<div class="member-intro" style="font-size: 12px; color: #666;">${member.selfIntroduction}</div>
-							</div>
-						</c:forEach>
-
-						<c:if test="${empty memberList}">
-							<div class="empty-message" style="padding: 10px;">아직 가입된
-								모임원이 없습니다.</div>
-						</c:if>
-					</div>
-
-					<%-- 
-            <div id="members" class="tab-content">
-
-                <div class="member-list">
-
-                    <div class="member-card"><div class="member-avatar">코</div><div class="member-name">${memberList[0].nickname }</div><div class="member-role">모임장</div><div class="member-intro">${memberList[0].selfIntroduction}</div></div>
-
-                    <div class="member-card"><div class="member-avatar">민</div><div class="member-name">민수</div><div class="member-role">일반</div><div class="member-intro">문제를 같이 풀며 성장하고 싶습니다.</div></div>
-
-                    <div class="member-card"><div class="member-avatar">지</div><div class="member-name">지연</div><div class="member-role">일반</div><div class="member-intro">매주 성실하게 참여합니다.</div></div>
-
-                    <!-- 나머지 멤버 카드 추가 가능 -->
-
+    <!-- 상단 메뉴바 -->
+    <c:import url="/WEB-INF/view/common/TopMenuBar.jsp" />
+
+    <div class="content">
+        <!-- 뒤로가기 버튼 -->
+        <button class="btn btn-ghost" onclick="location.href='grouplist.do'" style="margin-bottom: var(--spacing-lg);">
+            ← 모임 목록으로
+        </button>
+
+        <!-- 모임 헤더 -->
+        <div class="group-header">
+            <!-- 모임 이미지 (카테고리별 이모티콘 지원) -->
+            <div class="group-image-container">
+                <c:choose>
+                    <c:when test="${groupDetail.savePath != null}">
+                        <img src="<%=cp%>/img/group/${groupDetail.savePath}" alt="모임 이미지" />
+                    </c:when>
+                    <c:when test="${groupDetail.topicType eq '1'}"> 📖 </c:when>
+                    <c:when test="${groupDetail.topicType eq '2'}"> 🌐 </c:when>
+                    <c:when test="${groupDetail.topicType eq '3'}"> 💻 </c:when>
+                    <c:when test="${groupDetail.topicType eq '4'}"> 🚀 </c:when>
+                    <c:when test="${groupDetail.topicType eq '5'}"> 📜 </c:when>
+                    <c:when test="${groupDetail.topicType eq '6'}"> 📝 </c:when>
+                    <c:when test="${groupDetail.topicType eq '7'}"> 🎨 </c:when>
+                    <c:otherwise>📌</c:otherwise>
+                </c:choose>
+            </div>
+            
+            <!-- 모임 정보 -->
+            <div class="group-main-info">
+                <div class="group-title-row">
+                    <h1 class="group-title">${groupDetail.groupTitle}</h1>
+                    <span class="badge badge-secondary badge-large">${groupDetail.topic}</span>
+                    <c:choose>
+                        <c:when test="${groupDetail.currentMemberCount < groupDetail.headCount}">
+                            <span class="badge badge-primary badge-large">모집중</span>
+                        </c:when>
+                        <c:otherwise>
+                            <span class="badge badge-accent badge-large">모집완료</span>
+                        </c:otherwise>
+                    </c:choose>
+                    <span class="badge badge-primary badge-large">Lv.${groupDetail.groupLevel}</span>
                 </div>
 
+                <div class="group-meta">
+                    <div class="meta-item">
+                        <span class="meta-icon">👤</span>
+                        <strong>모임장</strong>
+                        <span>
+                            <c:set var="leaderFound" value="false" />
+                            <c:forEach var="member" items="${memberList}">
+                                <c:if test="${member.position eq '모임장'}">
+                                    <c:out value="${member.nickname}" />
+                                    <c:set var="leaderFound" value="true" />
+                                </c:if>
+                            </c:forEach>
+                            <c:if test="${!leaderFound}">
+                                (정보 없음)
+                            </c:if>
+                        </span>
+                    </div>
+
+                    <div class="meta-item">
+                        <span class="meta-icon">📅</span>
+                        <strong>개설일</strong>
+                        <span>${groupDetail.openDate}</span>
+                    </div>
+
+                    <div class="meta-item">
+                        <span class="meta-icon">📍</span>
+                        <strong>지역</strong>
+                        <span>${groupDetail.region}</span>
+                    </div>
+
+                    <div class="meta-item">
+                        <span class="meta-icon">⏰</span>
+                        <strong>주기</strong>
+                        <span>${groupDetail.frequency}</span>
+                    </div>
+                </div>
+
+                <div class="group-stats">
+                    <div class="stat-item">
+                        <span class="stat-value">${groupDetail.currentMemberCount}/${groupDetail.maxCount}</span>
+                        <span class="stat-label">모임원</span>
+                    </div>
+
+                    <div class="stat-item">
+                        <span class="stat-value">85%</span>
+                        <span class="stat-label">평균 출석률</span>
+                    </div>
+
+                    <div class="stat-item">
+                        <span class="stat-value">${activityCount}회</span>
+                        <span class="stat-label">누적 활동</span>
+                    </div>
+
+                    <div class="stat-item">
+                        <span class="stat-value">${groupDetail.difficulty}</span>
+                        <span class="stat-label">학습 난이도</span>
+                    </div>
+                </div>
             </div>
 
-
-
-            <div id="posts" class="tab-content">
-
-                <div class="post-preview">
-
-                    <span class="post-tag">공지</span>
-
-                    <div class="post-title">다음 주 문제 풀이 자료 공유</div>
-
-                    <div class="post-meta">2025-10-01 | ${memberList[0].nickname }</div>
-
-                </div>
-
-                <div class="post-preview">
-
-                    <span class="post-tag">일반</span>
-
-                    <div class="post-title">오늘 풀이 질문</div>
-
-                    <div class="post-meta">2025-10-05 | 민수</div>
-
-                </div>
-
-                <div class="empty-message">추가 게시글이 없습니다.</div>
-
+            <!-- 액션 버튼 (오른쪽 세로 배치) -->
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="joinGroup()">
+                   	 ✅ 가입 신청하기
+                </button>
+                <button class="btn btn-accent btn-favorite" onclick="toggleFavorite()">
+                    ☆ 즐겨찾기
+                </button>
+                <button class="btn btn-outline" onclick="location.href='home.do?groupApplyCode=${groupDetail.groupApplyCode}'">
+                    	👀 모임 구경하기
+                </button>
             </div>
-
         </div>
-        
 
-    </div> --%>
+        <!-- 모임 소개 -->
+        <div class="intro-section">
+            <h3>📝 모임 소개</h3>
+            <div class="description">${groupDetail.groupContent}</div>
+        </div>
 
+        <!-- 모임원 한 줄 소개 -->
+        <div class="member-list-section">
+            <h3>👥 모임원 한 줄 소개</h3>
+            <c:choose>
+                <c:when test="${not empty memberList}">
+                    <div class="member-grid">
+                        <c:forEach var="member" items="${memberList}">
+                            <div class="member-card">
+                                <div class="member-avatar">
+                                    <c:out value="${fn:substring(member.nickname, 0, 1)}" default="?" />
+                                </div>
+                                <div class="member-info">
+                                    <div class="member-name">${member.nickname}</div>
+                                    <div class="member-role">${member.position}</div>
+                                    <div class="member-intro">${member.selfIntroduction}</div>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="empty-state">
+                        <div class="empty-state-icon">👥</div>
+                        <div class="empty-state-description">아직 가입된 모임원이 없습니다.</div>
+                    </div>
+                </c:otherwise>
+            </c:choose>
+        </div>
+    </div>
 
-
-					<!-- 모달 -->
-
-					<div id="modal-bg" class="modal-bg" onclick="closeModal()">
-
-						<div class="modal" onclick="event.stopPropagation();">
-
-							<span class="modal-close" onclick="closeModal()">×</span>
-
-							<h2 id="modal-title"></h2>
-
-							<h4 id="modal-subtitle" style="color: #666; margin: 10px 0;"></h4>
-
-							<p id="modal-content"></p>
-
-						</div>
-
-					</div>
+    <!-- 모달 -->
+    <div id="modal-bg" class="modal-bg" onclick="closeModal()">
+        <div class="modal" onclick="event.stopPropagation();">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <h2 id="modal-title" style="color: var(--color-primary-dark); margin-bottom: var(--spacing-sm);"></h2>
+            <h4 id="modal-subtitle" style="color: var(--color-text-secondary); margin-bottom: var(--spacing-md);"></h4>
+            <p id="modal-content" style="color: var(--color-text-secondary); line-height: 1.6;"></p>
+        </div>
+    </div>
 </body>
-
 </html>
-
-
-
-
-
-
-
-

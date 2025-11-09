@@ -17,12 +17,12 @@ public class NoticeController {
 	@Autowired
 	private SqlSession sqlSession;
 
-	@RequestMapping(value = "/list.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/announcelist.do", method = RequestMethod.GET)
 	public String list(Model model) {
 		return "/WEB-INF/view/notice/List.jsp";
 	}
 
-	@RequestMapping(value = "/detail.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/announcedetail.do", method = RequestMethod.GET)
 	public String detail(Model model) {
 		return "/WEB-INF/view/notice/Detail.jsp";
 	}

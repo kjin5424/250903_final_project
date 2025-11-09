@@ -1,0 +1,333 @@
+/* ================================================
+   멤버 리스트 페이지 전용 스타일
+   ================================================ */
+
+/* 멤버 리스트 그리드 */
+.members-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-xl);
+}
+
+/* 멤버 카드 (meeting-card 기반) */
+.member-card {
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-base);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+}
+
+.member-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+}
+
+.member-header {
+    position: relative;
+    height: 120px;
+    background: linear-gradient(135deg, var(--color-primary-lighter), var(--color-secondary-lighter));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.member-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: var(--radius-full);
+    background: var(--color-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--color-primary-dark);
+    border: 4px solid var(--color-white);
+    box-shadow: var(--shadow-md);
+}
+
+.member-role-badge {
+    position: absolute;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    padding: 6px 14px;
+    border-radius: var(--radius-full);
+    font-size: 12px;
+    font-weight: 700;
+    color: white;
+    box-shadow: var(--shadow-sm);
+}
+
+.member-role-badge.leader {
+    background: var(--color-accent);
+}
+
+.member-role-badge.sub-leader {
+    background: var(--color-secondary);
+}
+
+.member-role-badge.helper {
+    background: var(--color-primary);
+}
+
+.member-role-badge.member {
+    background: var(--color-primary-dark);
+}
+
+.member-info {
+    padding: var(--spacing-lg);
+    text-align: center;
+}
+
+.member-name {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.member-intro {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ================================================
+   모달 스타일
+   ================================================ */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    animation: fadeIn var(--transition-base);
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-content {
+    background: var(--color-white);
+    border-radius: var(--radius-xl);
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-xl);
+    position: relative;
+    animation: slideInUp var(--transition-base);
+}
+
+.modal-close {
+    position: absolute;
+    top: var(--spacing-lg);
+    right: var(--spacing-lg);
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-full);
+    background: var(--color-base);
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: var(--color-text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    z-index: 1;
+}
+
+.modal-close:hover {
+    background: var(--color-accent-light);
+    color: var(--color-accent-dark);
+    transform: rotate(90deg);
+}
+
+.modal-header {
+    padding: var(--spacing-2xl) var(--spacing-xl) var(--spacing-lg);
+    text-align: center;
+    background: linear-gradient(135deg, var(--color-primary-lighter), var(--color-secondary-lighter));
+}
+
+.modal-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: var(--radius-full);
+    background: var(--color-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    font-weight: 700;
+    color: var(--color-primary-dark);
+    margin: 0 auto var(--spacing-md);
+    border: 4px solid var(--color-white);
+    box-shadow: var(--shadow-lg);
+}
+
+.modal-name {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-xs);
+}
+
+.modal-role {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: var(--radius-full);
+    font-size: 13px;
+    font-weight: 700;
+    color: white;
+}
+
+.modal-role.leader {
+    background: var(--color-accent);
+}
+
+.modal-role.sub-leader {
+    background: var(--color-secondary);
+}
+
+.modal-role.helper {
+    background: var(--color-primary);
+}
+
+.modal-role.member {
+    background: var(--color-primary-dark);
+}
+
+.modal-body {
+    padding: var(--spacing-xl);
+}
+
+.modal-intro {
+    font-size: 15px;
+    color: var(--color-text-secondary);
+    line-height: 1.8;
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+    padding: var(--spacing-lg);
+    background: var(--color-base);
+    border-radius: var(--radius-md);
+}
+
+/* 모달 액션 버튼 - 기본 2칸 (프로필, 신고) */
+.modal-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md);
+}
+
+/* 모임원인 경우 3칸 (프로필, 쪽지, 신고) */
+.modal-actions.member-only {
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+/* 쪽지 버튼이 없을 때 프로필 2칸, 신고 1칸 */
+.modal-actions.no-message {
+    grid-template-columns: 2fr 1fr;
+}
+
+.modal-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-lg);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-white);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+}
+
+.modal-btn-icon {
+    font-size: 28px;
+}
+
+.modal-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.modal-btn.profile {
+    border-color: var(--color-primary);
+    color: var(--color-primary-dark);
+}
+
+.modal-btn.profile:hover {
+    background: var(--color-primary-lighter);
+}
+
+.modal-btn.message {
+    border-color: var(--color-secondary);
+    color: var(--color-secondary-dark);
+}
+
+.modal-btn.message:hover {
+    background: var(--color-secondary-lighter);
+}
+
+.modal-btn.report {
+    border-color: var(--color-accent);
+    color: var(--color-accent-dark);
+}
+
+.modal-btn.report:hover {
+    background: var(--color-accent-light);
+}
+
+/* ================================================
+   반응형 디자인
+   ================================================ */
+@media (max-width: 768px) {
+    .members-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: var(--spacing-md);
+    }
+    
+    .modal-content {
+        width: 95%;
+    }
+    
+    .modal-actions,
+    .modal-actions.member-only,
+    .modal-actions.no-message {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .members-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .member-name {
+        font-size: 18px;
+    }
+    
+    .member-intro {
+        font-size: 13px;
+    }
+}
