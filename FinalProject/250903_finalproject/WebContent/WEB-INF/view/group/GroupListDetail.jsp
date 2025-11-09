@@ -526,7 +526,6 @@ body {
 </style>
 
 <script>
-
         function switchTab(tabName){
 
             const buttons = document.querySelectorAll('.tab-button');
@@ -573,12 +572,18 @@ body {
 
         function joinGroup(){
 
+			const groupCode = "${groupDetail.groupApplyCode}";
             if(confirm('이 모임에 가입 신청하시겠습니까?')){
 				
-            	window.location.href = '<%=request.getContextPath()%>/apply.do';
+            	 if (groupCode) {
+                     window.location.href = 'apply.do?groupCode=' + groupCode;
+                 } else {
+                     alert("모임 코드가 유효하지 않습니다.");
+                 }
+             }
             }
 
-        }
+        
 
 
 
@@ -703,10 +708,22 @@ body {
 
 				<div class="group-title-row">
 
-					<h1 class="group-title">모임 제목 확인 : ${groupDetail.groupTitle}</h1>
+					<h1 class="group-title">${groupDetail.groupTitle}</h1>
 
-					<span class="badge category">${groupDetail.topic }</span> <span
-						class="badge status">모집중</span> <span class="badge">Lv.${groupDetail.groupLevel}</span>
+					<span class="badge category">${groupDetail.topic }</span> 
+					<span>
+					<c:choose>
+							<c:when test="${groupDetail.currentMemberCount < groupDetail.headCount}">
+									<span class="badge badge-recruiting badge-absolute">모집중</span>
+							</c:when>
+									<c:otherwise>
+										<span class="badge badge-closed badge-absolute">모집완료</span>
+									</c:otherwise>
+						</c:choose>
+					
+					</span> 
+						
+						<span class="badge">Lv.${groupDetail.groupLevel}</span>
 
 				</div>
 
@@ -758,7 +775,7 @@ body {
 					</div>
 
 					<div class="stat-item">
-						<div class="stat-value">12회</div>
+						<div class="stat-value">${activityCount }회</div>
 						<div class="stat-label">누적 활동</div>
 					</div>
 
@@ -778,7 +795,7 @@ body {
 						즐겨찾기</button>
 
 					<!-- 모임 홈으로 이동 버튼 추가 -->
-					<button class="btn btn-outline" onclick="home()">🏠 모임 홈으로
+					<button class="btn btn-outline" onclick="location.href='home.do?groupApplyCode=${groupDetail.groupApplyCode}'">🏠 모임 홈으로
 						이동</button>
 
 				</div>

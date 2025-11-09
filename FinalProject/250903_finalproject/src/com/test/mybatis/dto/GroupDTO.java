@@ -35,7 +35,34 @@ public class GroupDTO
 	private String checkChallenge;	// 모임의 도전과제 총 달성률
 	private String totalAttendance;	// 모임의 총 출석률
 	private int currentMemberCount;	// 현재 멤버 인원수
+	private String nickname;
+	private String selfIntroduction;
+	private String position;
 	
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+	public String getSelfIntroduction() {
+		return selfIntroduction;
+	}
+
+	public void setSelfIntroduction(String selfIntroduction) {
+		this.selfIntroduction = selfIntroduction;
+	}
+
+	public String getPosition() {
+		return position;
+	}
+
+	public void setPosition(String position) {
+		this.position = position;
+	}
+
 	public String getTotalActivity()
 	{
 		return totalActivity;

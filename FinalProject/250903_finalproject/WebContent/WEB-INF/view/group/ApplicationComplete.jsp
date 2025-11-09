@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -227,53 +228,75 @@
 </head>
 <body>
     <div class="success-container">
-        <div class="success-icon">✅</div>
+        <!-- 성공/실패 아이콘 -->
+        <c:choose>
+            <c:when test="${success == true}">
+                <div class="success-icon" style="background: linear-gradient(135deg, #8bc683 0%, #6ba562 100%);">✅</div>
+                <h1 class="success-title">가입 신청 완료!</h1>
+            </c:when>
+            <c:otherwise>
+                <div class="success-icon" style="background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);">❌</div>
+                <h1 class="success-title" style="color: #d32f2f;">가입 신청 실패</h1>
+            </c:otherwise>
+        </c:choose>
         
-        <h1 class="success-title">${message }</h1>
-        
+        <!-- 메시지 출력 -->
         <p class="success-message">
-            아래 모임에 가입 신청이 성공적으로 제출되었습니다.
+            <c:choose>
+                <c:when test="${not empty msg}">
+                    ${msg}
+                </c:when>
+                <c:otherwise>
+                    처리 결과를 확인할 수 없습니다.
+                </c:otherwise>
+            </c:choose>
         </p>
         
-        <div class="group-name">
-            📚 알고리즘 정복 스터디
-        </div>
-        
-        <div class="info-box">
-            <div class="info-box-title">
-                <span>⏰</span>
-                <span>다음 단계 안내</span>
+        <!-- 성공 시에만 안내 표시 -->
+        <c:if test="${success == true}">
+            <div class="info-box">
+                <div class="info-box-title">
+                    <span>⏰</span>
+                    <span>다음 단계 안내</span>
+                </div>
+                <div class="info-box-content">
+                    모임장의 승인 후 모임에 참여하실 수 있습니다.<br>
+                    승인 결과는 알림으로 전송되며, 마이페이지에서 확인하실 수 있습니다.
+                </div>
             </div>
-            <div class="info-box-content">
-                모임장의 승인 후 모임에 참여하실 수 있습니다.<br>
-                승인 결과는 알림으로 전송되며, 마이페이지에서 확인하실 수 있습니다.
-            </div>
-        </div>
 
-        <div class="steps">
-            <div class="steps-title">진행 단계</div>
-            <div class="step-item">
-                <div class="step-number">1</div>
-                <div class="step-text">가입 신청 제출 완료 ✓</div>
+            <div class="steps">
+                <div class="steps-title">진행 단계</div>
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-text">가입 신청 제출 완료 ✓</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-text">모임장 검토 중...</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-text">승인 시 모임 활동 시작</div>
+                </div>
             </div>
-            <div class="step-item">
-                <div class="step-number">2</div>
-                <div class="step-text">모임장 검토 중...</div>
-            </div>
-            <div class="step-item">
-                <div class="step-number">3</div>
-                <div class="step-text">승인 시 모임 활동 시작</div>
-            </div>
-        </div>
+        </c:if>
 
+        <!-- 버튼 -->
         <div class="button-group">
             <button class="btn btn-primary" onclick="location.href='grouplist.do'">
                 모임 리스트 보기
             </button>
-            <button class="btn btn-secondary" onclick="location.href='mypage.do?tab=pending-groups'">
-                마이페이지 보기
+            <button class="btn btn-secondary" onclick="location.href='mainpage.do'">
+                메인으로
             </button>
         </div>
     </div>
+    
+    <!-- 디버깅용 콘솔 로그 -->
+    <script>
+        console.log('msg:', '${msg}');
+        console.log('success:', '${success}');
+    </script>
 </body>
 </html>

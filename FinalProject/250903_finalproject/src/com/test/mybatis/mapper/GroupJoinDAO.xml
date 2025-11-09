@@ -5,19 +5,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.test.mybatis.dao.IGroupJoinDAO">
 
 	<!-- insert 유저가 특정 모임에 가입 신청 -->
-	<insert id="insertGroupJoin" parameterType="com.test.mybatis.dto.GroupJoinDTO">
-		EXEC PRC_JOIN_TABLE_INSERT(
-			#{userCode jdbcType=VARCHAR}
-			, #{groupJoinCode}
-			, #{selfIntro}
-			, #{answer}
-			)
+	<insert id="insertGroupJoin" parameterType="com.test.mybatis.dto.GroupJoinDTO" statementType="CALLABLE">
+		 {CALL PRC_JOIN_TABLE_INSERT(#{userCode, jdbcType=VARCHAR}, #{groupApplyCode, jdbcType=VARCHAR},#{introduce, jdbcType=VARCHAR},#{answer, jdbcType=VARCHAR})}
 	</insert>
 	
 	<!-- 가입 신청 상세 조회 -->
-	<select id="selectGroupJoinById" resultType="com.test.mybatis.dto.GroupJoinDTO">
-		SELECT UI.NICKNAME AS NICKNAME, J.CREATED_DATE AS REQUESTDATE
-	     , J.INTRODUCE AS INTRODUCE, G.GROUP_APPLY_CODE AS GROUPCODE
+	<select id="selectGroupJoinById" parameterType="string" resultType="com.test.mybatis.dto.GroupJoinDTO">
+		SELECT UI.NICKNAME AS NICKNAME, J.CREATED_DATE AS joinDate
+	     , J.INTRODUCE AS INTRODUCE, G.GROUP_APPLY_CODE AS groupApplyCode
 	     , J.JOIN_CODE AS JOINCODE
 	FROM GROUP_APPLY G
 	JOIN JOIN_TABLE J ON G.GROUP_APPLY_CODE = J.GROUP_APPLY_CODE
@@ -30,7 +25,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	WHERE RA.ANSWER_TYPE IS NULL
 	AND RI.JOIN_CODE IS NULL
 	AND RJR.JOIN_CODE IS NULL
-	AND G.GROUP_APPLY_CODE = #{groupApplyCode}
+	AND G.GROUP_APPLY_CODE = #{groupApplyCode, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="countWaitingGroupMember" resultType="java.lang.Integer">
+	SELECT COUNT(*) AS waitingCount
+    FROM JOIN_TABLE JT
+    JOIN REQUEST_ANSWER RA
+        ON JT.JOIN_CODE = RA.JOIN_CODE
+    WHERE JT.GROUP_APPLY_CODE = #{groupApplyCode, jdbcType=VARCHAR}
+      AND RA.ANSWER_TYPE IS NULL
 	</select>
 	
 	

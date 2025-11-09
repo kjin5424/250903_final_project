@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <!-- 모임 참여 신청자 리스트 화면 -->
 <%@ page language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 
@@ -900,7 +901,7 @@
 
                 <h1 class="page-title">📋 참여 신청자 관리</h1>
 
-                <div class="applicant-count">대기 중 3명</div>
+                <div class="applicant-count">대기 중 ${waitingCount }명</div>
 
             </div>
 
@@ -929,11 +930,11 @@
 
                         <div class="applicant-avatar">👤</div>
 
-                        <div class="appli 	cant-info">
+                        <div class="applicant-info">
 
                             <div class="applicant-name-row">
 
-                                <span class="applicant-name">${applicant.user.name }</span>
+                                <span class="applicant-name">${applicant.nickname }</span>
 
                                 <span class="applicant-badge">신규 신청</span>
 
@@ -945,7 +946,7 @@
 
                                     <span>📅</span>
 
-                                    <span>신청일: ${applicant.joinDate }</span>
+                                    <span>신청일: ${applicant.requestDate }</span>
 
                                 </div>
 
@@ -953,7 +954,7 @@
 
                                     <span>📍</span>
 
-                                    <span>${applicant.user.location }</span>
+                                    <span>${applicant.location }</span>
 
                                 </div>
 
@@ -979,47 +980,13 @@
 
 
 
-                    <div class="applicant-body">
-
-                        <div class="info-section">
-
-                            <div class="info-section-title">✍️ 한줄 자기소개</div>
-
-                            <div class="info-content">
-
-                                ${applicant.selfIntro }
-
-                            </div>
-
-                        </div>
-
-
-
-                      
-
-                        <div class="info-section">
-
-                            <div class="info-section-title">❓ 가입 질문 답변</div>
-
-                            <div class="question-answer">
-
-                                <div class="qa-item">
-
-                                    <div class="question">Q1. 어떤 프로그래밍 언어를 주로 사용하시나요?</div>
-
-                                    <div class="answer">${applicant.questionAnswer }</div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
+  ]
 
 				
 
                         <div class="applicant-actions" style="margin-top: 20px;">
 
-                            <button class="btn btn-approve" onclick="approveApplicant(1, '백엔드개발자')">
+                            <button class="btn btn-approve" onclick="approveApplicant('${applicant.groupJoinCode}', '${applicant.nickName}')">
 
                                 ✅ 승인
 
@@ -1039,303 +1006,12 @@
 
 
                 </c:forEach>
-
-                <!-- 신청자 2 -->
-
-                <div class="applicant-card">
-
-                    <div class="applicant-header">
-
-                        <div class="applicant-avatar">👤</div>
-
-                        <div class="applicant-info">
-
-                            <div class="applicant-name-row">
-
-                                <span class="applicant-name">프론트개발러</span>
-
-                                <span class="applicant-badge">신규 신청</span>
-
-                            </div>
-
-                            <div class="applicant-meta">
-
-                                <div class="applicant-meta-item">
-
-                                    <span>📅</span>
-
-                                    <span>신청일: 2024-10-11</span>
-
-                                </div>
-
-                                <div class="applicant-meta-item">
-
-                                    <span>📍</span>
-
-                                    <span>서울 강남구</span>
-
-                                </div>
-
-                                <div class="applicant-meta-item">
-
-                                   <!--  <span>🎂</span> -->
-
-                                  <!--   <span>20대</span> -->
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                        <div class="applicant-actions">
-
-                            <button class="btn btn-profile" onclick="location.href='profileforgroupmanager.do'">상세 프로필</button>
-
-                        </div>
-
-                    </div>
-
-
-
-                    <div class="applicant-body">
-
-                        <div class="info-section">
-
-                            <div class="info-section-title">✍️ 한줄 자기소개</div>
-
-                            <div class="info-content">
-
-                                프론트엔드 개발자이지만 알고리즘 실력을 키우고 싶어서 지원했습니다!
-
-                            </div>
-
-                        </div>
-
-
-
-                        <div class="info-section">
-
-                            <div class="info-section-title">📊 활동 이력</div>
-
-                            <div class="activity-history">
-
-                                <div class="history-item">
-
-                                    <div>
-
-                                        <div class="history-group">React 스터디</div>
-
-                                        <div class="history-period">2024.06 ~ 현재 (4개월)</div>
-
-                                    </div>
-
-                                    <div class="history-stats">
-
-                                        출석률: <span class="stat-good">92%</span>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-
-                        <div class="info-section">
-
-                            <div class="info-section-title">❓ 가입 질문 답변</div>
-
-                            <div class="question-answer">
-
-                                <div class="qa-item">
-
-                                    <div class="question">Q1. 어떤 프로그래밍 언어를 주로 사용하시나요?</div>
-
-                                    <div class="answer">JavaScript/TypeScript를 주로 사용하고, Python도 조금 할 수 있습니다.</div>
-
-                                </div>
-
-
-                            </div>
-
-                        </div>
-
-
-
-                        <div class="applicant-actions" style="margin-top: 20px;">
-
-                            <button class="btn btn-approve" onclick="approveApplicant(2, '프론트개발러')">
-
-                                ✅ 승인
-
-                            </button>
-
-                            <button class="btn btn-reject" onclick="rejectApplicant(2, '프론트개발러')">
-
-                                ❌ 거절
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
                 </div>
-
-
-
-                <!-- 신청자 3 -->
-
-                <div class="applicant-card">
-
-                    <div class="applicant-header">
-
-                        <div class="applicant-avatar">👤</div>
-
-                        <div class="applicant-info">
-
-                            <div class="applicant-name-row">
-
-                                <span class="applicant-name">알고리즘마스터</span>
-
-                                <span class="applicant-badge">신규 신청</span>
-
-                            </div>
-
-                            <div class="applicant-meta">
-
-                                <div class="applicant-meta-item">
-
-                                    <span>📅</span>
-
-                                    <span>신청일: 2024-10-10</span>
-
-                                </div>
-
-                                <div class="applicant-meta-item">
-
-                                    <span>📍</span>
-
-                                    <span>서울 역삼동</span>
-
-                                </div>
-
-                                <div class="applicant-meta-item">
-
-                                    <!-- <span>🎂</span> -->
-
-                                  <!--   <span>20대</span> -->
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                        <div class="applicant-actions">
-
-                            <button class="btn btn-profile" onclick="location.href='profileforgroupmanager.do'">상세 프로필</button>
-
-                        </div>
-
-                    </div>
-
-
-
-                    <div class="applicant-body">
-
-                        <div class="info-section">
-
-                            <div class="info-section-title">✍️ 한줄 자기소개</div>
-
-                            <div class="info-content">
-
-                                매일 1문제씩 풀고 있습니다. 함께 공부하면서 동기부여 받고 싶어요!
-
-                            </div>
-
-                        </div>
-
-
-
-                        <div class="info-section">
-
-                            <div class="info-section-title">📊 활동 이력</div>
-
-                            <div class="activity-history">
-
-                                <div class="history-item">
-
-                                    <div>
-
-                                        <div class="history-group">첫 모임입니다</div>
-
-                                        <div class="history-period">-</div>
-
-                                    </div>
-
-                                    <div class="history-stats">
-
-                                        <span style="color: #999;">활동 이력 없음</span>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-
-                        <div class="info-section">
-
-                            <div class="info-section-title">❓ 가입 질문 답변</div>
-
-                            <div class="question-answer">
-
-                                <div class="qa-item">
-
-                                    <div class="question">Q1. 어떤 프로그래밍 언어를 주로 사용하시나요?</div>
-
-                                    <div class="answer">C++을 주로 사용합니다.</div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-
-                        <div class="applicant-actions" style="margin-top: 20px;">
-
-                            <button class="btn btn-approve" onclick="approveApplicant(3, '알고리즘마스터')">
-
-                                ✅ 승인
-
-                            </button>
-
-                            <button class="btn btn-reject" onclick="rejectApplicant(3, '알고리즘마스터')">
-
-                                ❌ 거절
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
                 </div>
+               
 
-            </div>
 
-        </div>
 
-    </div>
 
 </body>
 

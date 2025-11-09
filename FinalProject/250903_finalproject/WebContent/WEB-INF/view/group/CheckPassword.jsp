@@ -3,16 +3,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	request.setCharacterEncoding("UTF-8");
-String cp = request.getContextPath();
+	String cp = request.getContextPath();
+	String errorMsg = request.getParameter("error");
 %>
 <%@ page language="java"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>공모자들 - 비공개 모임</title>
 <style>
 * {
@@ -121,6 +120,7 @@ body {
 	margin-bottom: 20px;
 	transition: all 0.2s;
 	font-size: 14px;
+	text-decoration: none;
 }
 
 .back-btn:hover {
@@ -239,32 +239,12 @@ body {
 	animation: shake 0.5s;
 }
 
-@
-keyframes shake { 0%, 100% {
-	transform: translateX(0);
+@keyframes shake { 
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
 }
 
-25%
-{
-transform
-
-
-:translateX(-10px)
-
-
-;
-}
-75%
-{
-transform
-
-
-:translateX(10px)
-
-
-;
-}
-}
 .toggle-password {
 	position: absolute;
 	right: 15px;
@@ -334,14 +314,6 @@ transform
 	color: white;
 }
 
-.help-text {
-	font-size: 12px;
-	color: #999;
-	text-align: center;
-	margin-top: 20px;
-	line-height: 1.6;
-}
-
 @media ( max-width :768px) {
 	.container {
 		margin: 30px auto;
@@ -369,93 +341,36 @@ transform
             }
         }
 
-        function validatePassword() {
-            const passwordInput = document.getElementById('passwordInput');
-            const errorMessage = document.getElementById('errorMessage');
-            const password = passwordInput.value.trim();
-            const groupCode = '<%=request.getParameter("groupCode")%>';
-
-            if (!password) {
+        // 에러 메시지가 있으면 표시
+        window.onload = function() {
+            const errorParam = '<%=errorMsg%>';
+            if (errorParam && errorParam !== 'null') {
+                const passwordInput = document.getElementById('passwordInput');
+                const errorMessage = document.getElementById('errorMessage');
+                
                 passwordInput.classList.add('error');
-                errorMessage.textContent = '비밀번호를 입력해주세요.';
+                errorMessage.textContent = '비밀번호가 일치하지 않습니다.';
                 errorMessage.classList.add('show');
-                passwordInput.focus();
-                return false;
+                
+                setTimeout(() => {
+                    passwordInput.classList.remove('error');
+                }, 500);
             }
+            
+            document.getElementById('passwordInput').focus();
+        };
 
-            // 서버로 비밀번호 검증 요청
-            fetch('<%=cp%>/checkpassword.do', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: 'groupCode=' + encodeURIComponent(groupCode) + '&password=' + encodeURIComponent(password)
-            })
-            .then(response => response.json())
-            .then(response => {
-    // 응답 상태가 200 OK가 아니면 에러 처리 (선택 사항이지만 안전함)
-    if (!response.ok) {
-        throw new Error('HTTP status ' + response.status);
-    }
-    
-    // 응답 텍스트를 먼저 확인
-    return response.text().then(text => {
-        console.log("Raw Response Text: ", text); // 👈 응답 원본 로그 출력
-        
-        try {
-            return JSON.parse(text); // 텍스트를 JSON 객체로 수동 파싱 시도
-        } catch (e) {
-            console.error("JSON Parsing Error on Text:", text); // 👈 파싱 실패 시 원본 출력
-            throw e; // 다시 catch 블록으로 에러 던짐
-        }
-    });
-})
-            .then(data => {
-                if (data.success) {
-                    // 비밀번호 일치 시 상세 페이지로 이동
-                	window.location.href = '<%=cp%>/grouplistdetail.do?groupCode=' + groupCode;
-                } else {
-                    passwordInput.classList.add('error');
-                    errorMessage.textContent = '비밀번호가 일치하지 않습니다.';
-                    errorMessage.classList.add('show');
-                    passwordInput.value = '';
-                    passwordInput.focus();
-
-                    setTimeout(() => {
-                        passwordInput.classList.remove('error');
-                    }, 500);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                errorMessage.textContent = '오류가 발생했습니다. 다시 시도해주세요.';
-                errorMessage.classList.add('show');
-            });
-        }
-
-        function goBack() {
-            window.location.href = '<%=cp%>/mainpage.do';
-        }
-
+        // 입력 시 에러 제거
         document.addEventListener('DOMContentLoaded', function() {
             const passwordInput = document.getElementById('passwordInput');
             const errorMessage = document.getElementById('errorMessage');
-
-            passwordInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    validatePassword();
-                }
-            });
 
             passwordInput.addEventListener('input', function() {
                 passwordInput.classList.remove('error');
                 errorMessage.classList.remove('show');
             });
-
-            passwordInput.focus();
         });
-        
-    </script>
+</script>
 </head>
 <body>
 	<nav class="navbar">
@@ -463,9 +378,10 @@ transform
 			<div class="logo-tab">
 				<span>로고</span>
 			</div>
-			<a href="?page=notice" class="tab">공지사항</a> <a href="?page=groups"
-				class="tab active">모임구경</a> <a href="?page=creategroup" class="tab">모임
-				개설</a> <a href="?page=mygroups" class="tab">내 모임</a>
+			<a href="?page=notice" class="tab">공지사항</a> 
+			<a href="?page=groups" class="tab active">모임구경</a> 
+			<a href="?page=creategroup" class="tab">모임 개설</a> 
+			<a href="?page=mygroups" class="tab">내 모임</a>
 		</div>
 		<div class="nav-right">
 			<a href="login.jsp" class="login-btn">🔐 로그인</a>
@@ -473,7 +389,7 @@ transform
 	</nav>
 
 	<div class="container">
-		<button class="back-btn" onclick="goBack()">← 모임q 목록으로</button>
+		<a href="<%=cp%>/mainpage.do" class="back-btn">← 모임 목록으로</a>
 
 		<div class="password-card">
 			<div class="lock-icon">🔒</div>
@@ -486,25 +402,29 @@ transform
 			<div class="group-info-box">
 				<div class="group-name">📚 ${groupTitle}</div>
 				<div class="group-meta">
-					<span class="badge">🔒 비공개</span> <span class="badge category">${topic}</span>
+					<span class="badge">🔒 비공개</span> 
+					<span class="badge category">${topic}</span>
 				</div>
 			</div>
 
-			<form onsubmit="event.preventDefault(); validatePassword();">
+			<!-- 일반 form submit 방식 -->
+			<form action="<%=cp%>/checkpassword.do" method="post">
+				<input type="hidden" name="groupCode" value="<%=request.getParameter("groupCode")%>">
+				
 				<div class="form-group">
 					<label class="form-label" for="passwordInput">비밀번호</label>
 					<div class="password-input-wrapper">
-						<input type="password" id="passwordInput" class="form-input"
-							placeholder="비밀번호를 입력하세요" autocomplete="off"> <span
-							class="toggle-password" id="toggleIcon"
-							onclick="togglePassword()">👁️‍🗨️</span>
+						<input type="password" id="passwordInput" name="password" 
+							   class="form-input" placeholder="비밀번호를 입력하세요" 
+							   autocomplete="off" required> 
+						<span class="toggle-password" id="toggleIcon" onclick="togglePassword()">👁️‍🗨️</span>
 					</div>
 					<div class="error-message" id="errorMessage"></div>
 				</div>
 
 				<div class="button-group">
 					<button type="submit" class="btn btn-primary">🔓 확인</button>
-					<button type="button" class="btn btn-outline" onclick="goBack()">취소</button>
+					<a href="<%=cp%>/mainpage.do" class="btn btn-outline" style="text-align:center; line-height:40px; text-decoration:none;">취소</a>
 				</div>
 			</form>
 		</div>

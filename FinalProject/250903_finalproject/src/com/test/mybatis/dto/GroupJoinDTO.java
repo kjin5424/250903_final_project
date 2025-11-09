@@ -8,16 +8,13 @@ public class GroupJoinDTO
 	private String groupJoinCode;		// 모임 가입 신청 Code
 	private String groupApplyCode;		// 어떤 모임에 신청했는지
 	private String userCode;			// 누가 신청했는지
+	private String nickName;
+	private String groupName;			// 신청한 모임 이름
 
-	private String selfIntro;			// 한 줄 자기소개
+	private String introduce;			// 한 줄 자기소개
 	private String questionCode;		// 가입 질문 코드
-	private String questionAnswer;		// 가입 질문 답변
-	
-	// 신청 상태 	
-	private String status;				// 신청 상태
-	private String joinDate;			// 신청 날짜
-	private String AnswerDate;			// 가입 처리 날짜
-	
+	private String answer;		// 가입 질문 답변
+	private int waitingCount;		// 몇 명 신청했는지
 	
 	// 추가 속성
 	private UserDTO user;				// 신청한 유저 정보
@@ -28,6 +25,31 @@ public class GroupJoinDTO
 	private String groupTitle;
 	private String quitDate;			// 모임 탈퇴 날짜
 	private String quitReason;			// 모임 탈퇴 사유
+	
+	// 신청 상태 	
+	private String status;				// 신청 상태
+	private String joinDate;			// 신청 날짜
+	private String insertDatae;			// 가입 처리 날짜
+	private String location;
+	
+	public String getNickName() {
+		return nickName;
+	}
+	public int getWaitingCount() {
+		return waitingCount;
+	}
+	public void setWaitingCount(int waitingCount) {
+		this.waitingCount = waitingCount;
+	}
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
+	public String getLocation() {
+		return location;
+	}
+	public void setLocation(String location) {
+		this.location = location;
+	}
 	
 	public String getQuitReason()
 	{
@@ -118,13 +140,12 @@ public class GroupJoinDTO
 	{
 		this.userCode = userCode;
 	}
-	public String getSelfIntro()
-	{
-		return selfIntro;
+	
+	public String getIntroduce() {
+		return introduce;
 	}
-	public void setSelfIntro(String selfIntro)
-	{
-		this.selfIntro = selfIntro;
+	public void setIntroduce(String introduce) {
+		this.introduce = introduce;
 	}
 	public String getQuestionCode()
 	{
@@ -134,13 +155,19 @@ public class GroupJoinDTO
 	{
 		this.questionCode = questionCode;
 	}
-	public String getQuestionAnswer()
-	{
-		return questionAnswer;
+	
+	public String getGroupName() {
+		return groupName;
 	}
-	public void setQuestionAnswer(String questionAnswer)
-	{
-		this.questionAnswer = questionAnswer;
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
+	
+	public String getAnswer() {
+		return answer;
+	}
+	public void setAnswer(String answer) {
+		this.answer = answer;
 	}
 	public String getStatus()
 	{
@@ -158,13 +185,13 @@ public class GroupJoinDTO
 	{
 		this.joinDate = joinDate;
 	}
-	public String getAnswerDate()
-	{
-		return AnswerDate;
+	
+	
+	public String getInsertDatae() {
+		return insertDatae;
 	}
-	public void setAnswerDate(String answerDate)
-	{
-		AnswerDate = answerDate;
+	public void setInsertDatae(String insertDatae) {
+		this.insertDatae = insertDatae;
 	}
 	public UserDTO getUser()
 	{
