@@ -547,44 +547,30 @@
             }
         }
     </style>
-    <script>
+     <script>
         let selectedItems = new Set();
 
         function toggleTab(tabName) {
-            document.querySelectorAll('.nav-tab-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
+            document.querySelectorAll('.nav-tab-btn').forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
-            
             selectedItems.clear();
             updateSelectionCount();
-            
-            console.log('Tab switched to:', tabName);
         }
 
         function toggleSelectAll() {
             const selectAll = document.getElementById('selectAll');
             const checkboxes = document.querySelectorAll('.item-checkbox');
-            
             checkboxes.forEach(checkbox => {
                 checkbox.checked = selectAll.checked;
-                if (selectAll.checked) {
-                    selectedItems.add(checkbox.value);
-                } else {
-                    selectedItems.delete(checkbox.value);
-                }
+                if (selectAll.checked) selectedItems.add(checkbox.value);
+                else selectedItems.delete(checkbox.value);
             });
-            
             updateSelectionCount();
         }
 
         function toggleSelect(id) {
-            if (selectedItems.has(id)) {
-                selectedItems.delete(id);
-            } else {
-                selectedItems.add(id);
-            }
+            if (selectedItems.has(id)) selectedItems.delete(id);
+            else selectedItems.add(id);
             updateSelectionCount();
         }
 
@@ -594,19 +580,15 @@
         }
 
         function deleteSingle(id, title) {
-            if (confirm(`"${title}"을(를) 삭제하시겠습니까?\n\n이 작업은 되돌릴 수 없습니다.`)) {
+            if(confirm(`"${title}"을(를) 삭제하시겠습니까?\n\n이 작업은 되돌릴 수 없습니다.`)){
                 alert('삭제되었습니다.');
                 location.reload();
             }
         }
 
         function bulkDelete() {
-            if (selectedItems.size === 0) {
-                alert('삭제할 항목을 선택해주세요.');
-                return;
-            }
-            
-            if (confirm(`선택한 ${selectedItems.size}개의 항목을 삭제하시겠습니까?\n\n이 작업은 되돌릴 수 없습니다.`)) {
+            if(selectedItems.size === 0){ alert('삭제할 항목을 선택해주세요.'); return; }
+            if(confirm(`선택한 ${selectedItems.size}개의 항목을 삭제하시겠습니까?\n\n이 작업은 되돌릴 수 없습니다.`)){
                 alert(`${selectedItems.size}개의 항목이 삭제되었습니다.`);
                 selectedItems.clear();
                 updateSelectionCount();
@@ -617,66 +599,36 @@
         function searchContent() {
             const searchType = document.getElementById('searchType').value;
             const keyword = document.getElementById('searchKeyword').value;
-            
-            if (!keyword.trim()) {
-                alert('검색어를 입력해주세요.');
-                return;
-            }
-            
+            if(!keyword.trim()){ alert('검색어를 입력해주세요.'); return; }
             console.log('Searching:', searchType, keyword);
         }
 
-        function goBack() {
-            window.history.back();
-        }
+        function goBack() { window.history.back(); }
 
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('searchKeyword').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    searchContent();
-                }
+                if(e.key === 'Enter') searchContent();
             });
         });
     </script>
 </head>
 <body>
-    <!-- 상단 네비게이션 -->
     <nav class="navbar">
         <div class="navbar-inner">
-            <a href="#" class="navbar-logo">
-                <span class="logo-icon">🌱</span>
-                <span class="logo-text">공모자들</span>
-            </a>
-            
+            <a href="#" class="navbar-logo"><span class="logo-icon">🌱</span>공모자들</a>
             <div class="navbar-menu">
-                <a href="?page=notice" class="menu-tab">
-                    <span class="menu-icon">📢</span>
-                    공지사항
-                </a>
-                <a href="?page=groups" class="menu-tab">
-                    <span class="menu-icon">👥</span>
-                    모임구경
-                </a>
-                <a href="?page=creategroup" class="menu-tab">
-                    <span class="menu-icon">➕</span>
-                    모임 개설
-                </a>
-                <a href="?page=mygroups" class="menu-tab active">
-                    <span class="menu-icon">📚</span>
-                    내 모임
-                </a>
+                <a href="?page=notice" class="menu-tab">📢 공지사항</a>
+                <a href="?page=groups" class="menu-tab">👥 모임구경</a>
+                <a href="?page=creategroup" class="menu-tab">➕ 모임 개설</a>
+                <a href="?page=mygroups" class="menu-tab active">📚 내 모임</a>
             </div>
-            
             <div class="navbar-actions">
-                <a href="mypage.jsp" class="profile-button">
-                    <span class="profile-icon">👤</span>
-                </a>
+                <a href="mypage.jsp" class="profile-button">👤</a>
             </div>
         </div>
     </nav>
 
     <div class="management-container">
-        <!-- 페이지 헤더 -->
         <div class="page-header-section">
             <div class="header-left-side">
                 <button class="back-button" onclick="goBack()">←</button>
@@ -684,12 +636,10 @@
             </div>
         </div>
 
-        <!-- 탭 네비게이션 -->
         <div class="tab-navigation">
             <button class="nav-tab-btn active" onclick="toggleTab('posts')">게시물</button>
         </div>
 
-        <!-- 필터 바 -->
         <div class="filter-section">
             <select id="boardType" class="filter-dropdown">
                 <option value="all">전체 게시판</option>
@@ -715,162 +665,75 @@
                     <option value="content">내용</option>
                 </select>
                 <input type="text" id="searchKeyword" class="search-field" placeholder="검색어를 입력하세요">
-                <button class="search-button" onclick="searchContent()">
-                    <span>🔍</span>
-                    <span>검색</span>
-                </button>
+                <button class="search-button" onclick="searchContent()">🔍 검색</button>
             </div>
         </div>
 
-        <!-- 테이블 컨테이너 -->
         <div class="content-table-container">
-            <!-- 일괄 작업 바 -->
             <div class="bulk-action-bar">
-                <div class="selection-info">
-                    선택된 항목: <span id="selectionCount" class="selection-count">0</span>개
-                </div>
+                <div class="selection-info">선택된 항목: <span id="selectionCount" class="selection-count">0</span>개</div>
                 <div class="bulk-actions">
-                    <button id="bulkDeleteBtn" class="bulk-delete-btn" onclick="bulkDelete()" disabled>
-                        선택 항목 삭제
-                    </button>
+                    <button id="bulkDeleteBtn" class="bulk-delete-btn" onclick="bulkDelete()" disabled>선택 항목 삭제</button>
                 </div>
             </div>
 
-            <!-- 테이블 -->
             <table class="content-table">
                 <thead>
                     <tr>
-                        <th style="width: 50px;">
-                            <input type="checkbox" id="selectAll" class="select-checkbox" onchange="toggleSelectAll()">
-                        </th>
-                        <th style="width: 100px;">게시판</th>
+                        <th><input type="checkbox" id="selectAll" class="select-checkbox" onchange="toggleSelectAll()"></th>
+                        <th>게시판</th>
                         <th>제목</th>
-                        <th style="width: 120px;">작성자</th>
-                        <th style="width: 120px;">작성일</th>
-                        <th style="width: 100px;">관리</th>
+                        <th>작성자</th>
+                        <th>작성일</th>
+                        <th>댓글 수</th>
+                        <th>관리</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- 게시물 1 -->
-                    <tr>
-                        <td>
-                            <input type="checkbox" class="item-checkbox select-checkbox" value="1" onchange="toggleSelect('1')">
-                        </td>
-                        <td>
-                            <span class="board-category-badge badge-activity">활동</span>
-                        </td>
-                        <td class="title-cell">
-                            <a href="board_detail.jsp?id=1" class="post-link">
-                                백준 1234번 풀이 공유합니다
-                            </a>
-                        </td>
-                        <td>개발자지망생</td>
-                        <td>2024-10-12</td>
-                        <td>
-                            <button class="action-button delete-single-btn" onclick="deleteSingle('1', '백준 1234번 풀이 공유합니다')">
-                                삭제
-                            </button>
-                        </td>
-                    </tr>
+    <c:forEach var="post" items="${postList}">
+        <tr>
+            <td>
+                <input type="checkbox" class="item-checkbox select-checkbox" value="${post.postCode}" onchange="toggleSelect('${post.postCode}')">
+            </td>
+            <td>
+                <c:choose>
+                    <c:when test="${post.boardCategory == '공지'}">
+                        <span class="board-category-badge badge-notice">${post.boardCategory}</span>
+                    </c:when>
+                    <c:when test="${post.boardCategory == '활동'}">
+                        <span class="board-category-badge badge-activity">${post.boardCategory}</span>
+                    </c:when>
+                    <c:when test="${post.boardCategory == '질문'}">
+                        <span class="board-category-badge badge-question">${post.boardCategory}</span>
+                    </c:when>
+                    <c:when test="${post.boardCategory == '자료'}">
+                        <span class="board-category-badge badge-resource">${post.boardCategory}</span>
+                    </c:when>
+                    <c:otherwise>
+                        <span class="board-category-badge badge-free">${post.boardCategory}</span>
+                    </c:otherwise>
+                </c:choose>
+            </td>
+            <td class="title-cell">
+                <a href="postDetail.jsp?postCode=${post.postCode}" class="post-link">${post.subject}</a>
+            </td>
+            <td>${post.nickName}</td>
+            <td>${post.createdDate}</td>
+            <td>${post.commentCount}</td>
+            <td>
+                <button class="action-button delete-single-btn" onclick="deleteSingle('${post.postCode}', '${post.subject}')">삭제</button>
+            </td>
+        </tr>
+    </c:forEach>
+</tbody>
 
-                    <!-- 게시물 2 -->
-                    <tr>
-                        <td>
-                            <input type="checkbox" class="item-checkbox select-checkbox" value="2" onchange="toggleSelect('2')">
-                        </td>
-                        <td>
-                            <span class="board-category-badge badge-question">질문</span>
-                        </td>
-                        <td class="title-cell">
-                            <a href="board_detail.jsp?id=2" class="post-link">
-                                DP 문제 접근 방법 질문드립니다
-                            </a>
-                        </td>
-                        <td>알고리즘초보</td>
-                        <td>2024-10-11</td>
-                        <td>
-                            <button class="action-button delete-single-btn" onclick="deleteSingle('2', 'DP 문제 접근 방법 질문드립니다')">
-                                삭제
-                            </button>
-                        </td>
-                    </tr>
-
-                    <!-- 게시물 3 -->
-                    <tr>
-                        <td>
-                            <input type="checkbox" class="item-checkbox select-checkbox" value="3" onchange="toggleSelect('3')">
-                        </td>
-                        <td>
-                            <span class="board-category-badge badge-resource">자료</span>
-                        </td>
-                        <td class="title-cell">
-                            <a href="board_detail.jsp?id=3" class="post-link">
-                                유용한 알고리즘 사이트 모음
-                            </a>
-                        </td>
-                        <td>코드러버</td>
-                        <td>2024-10-10</td>
-                        <td>
-                            <button class="action-button delete-single-btn" onclick="deleteSingle('3', '유용한 알고리즘 사이트 모음')">
-                                삭제
-                            </button>
-                        </td>
-                    </tr>
-
-                    <!-- 게시물 4 -->
-                    <tr>
-                        <td>
-                            <input type="checkbox" class="item-checkbox select-checkbox" value="4" onchange="toggleSelect('4')">
-                        </td>
-                        <td>
-                            <span class="board-category-badge badge-free">자유</span>
-                        </td>
-                        <td class="title-cell">
-                            <a href="board_detail.jsp?id=4" class="post-link">
-                                오늘 스터디 너무 재밌었어요!
-                            </a>
-                        </td>
-                        <td>자바마스터</td>
-                        <td>2024-10-10</td>
-                        <td>
-                            <button class="action-button delete-single-btn" onclick="deleteSingle('4', '오늘 스터디 너무 재밌었어요!')">
-                                삭제
-                            </button>
-                        </td>
-                    </tr>
-
-                    <!-- 게시물 5 -->
-                    <tr>
-                        <td>
-                            <input type="checkbox" class="item-checkbox select-checkbox" value="5" onchange="toggleSelect('5')">
-                        </td>
-                        <td>
-                            <span class="board-category-badge badge-activity">활동</span>
-                        </td>
-                        <td class="title-cell">
-                            <a href="board_detail.jsp?id=5" class="post-link">
-                                프로그래머스 레벨 2 문제 풀이
-                            </a>
-                        </td>
-                        <td>파이썬러버</td>
-                        <td>2024-10-09</td>
-                        <td>
-                            <button class="action-button delete-single-btn" onclick="deleteSingle('5', '프로그래머스 레벨 2 문제 풀이')">
-                                삭제
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
             </table>
 
-            <!-- 페이지네이션 -->
             <div class="pagination-section">
                 <button class="page-button" disabled>◀</button>
-                <button class="page-button active">1</button>
-                <button class="page-button">2</button>
-                <button class="page-button">3</button>
-                <button class="page-button">4</button>
-                <button class="page-button">5</button>
+                <c:forEach begin="1" end="${totalPages}" var="i">
+                    <button class="page-button ${i == currentPage ? 'active' : ''}">${i}</button>
+                </c:forEach>
                 <button class="page-button">▶</button>
             </div>
         </div>

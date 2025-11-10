@@ -228,7 +228,7 @@
             <div class="limit-notice-content">
                 현재 2개 모임에 참여 중입니다. 최대 3개까지 가입할 수 있습니다.
                 <div class="limit-bar"><div class="limit-fill" style="width:66.6%;"></div></div>
-                <div class="limit-text">남은 가입 가능 횟수: ${count }</div>
+                <div class="limit-text">남은 가입 가능 횟수: </div>
             </div>
         </div>
 
@@ -253,14 +253,19 @@
             </div>
 
             <!-- 가입 질문 -->
-            <div class="section">
-                <h3 class="section-title"><span>❓</span><span>가입 질문</span></h3>
-                <p class="form-help" style="margin-bottom:20px;">모임장이 설정한 질문에 답변해주세요. 답변은 모임장에게만 공개됩니다.</p>
-                <div class="question-item">
-                    <div class="question-text">${groupQuestionRule.question }</div>
-                    <textarea class="form-input form-textarea question-answer" name="answer" placeholder="답변을 입력해주세요" style="min-height:80px;"></textarea>
-                </div>
-            </div>
+<c:if test="${not empty groupQuestionRule.question}">
+    <div class="section">
+        <h3 class="section-title"><span>❓</span><span>가입 질문</span></h3>
+        <p class="form-help" style="margin-bottom:20px;">모임장이 설정한 질문에 답변해주세요. 답변은 모임장에게만 공개됩니다.</p>
+        <div class="question-item">
+            <div class="question-text">${groupQuestionRule.question}</div>
+            <textarea class="form-input form-textarea question-answer" 
+                      name="answer" 
+                      placeholder="답변을 입력해주세요" 
+                      style="min-height:80px;"></textarea>
+        </div>
+    </div>
+</c:if>
 
             <!-- 모임 규칙 확인 -->
             <div class="section">

@@ -342,9 +342,11 @@ public class HomeController
 	        
 	        // DTO 생성 및 데이터 설정
 	     
+	        String userCode = user.getUserCode();
+	        System.out.println("✅ 로그인 유저 userCode: " + userCode);
+	        
 	        
 	     // 파라미터 추출
-	        String userCode = request.getParameter("userCode");
 	        String groupApplyCode = request.getParameter("groupJoinCode"); // ✅ 이름 확인
 	        String introduce = request.getParameter("introduce");
 	        String answer = request.getParameter("answer");
@@ -360,7 +362,7 @@ public class HomeController
 	        dto.setUserCode(userCode);
 	        dto.setGroupApplyCode(groupApplyCode);
 	        dto.setIntroduce(introduce);
-	        dto.setAnswer(answer != null ? answer : ""); // null 방지
+	        dto.setAnswer(answer != null && !answer.trim().isEmpty() ? answer.trim() : ""); // null 방지
 	        
 	        System.out.println("========== DTO 확인 ==========");
 	        System.out.println("DTO.getUserCode(): " + dto.getUserCode());

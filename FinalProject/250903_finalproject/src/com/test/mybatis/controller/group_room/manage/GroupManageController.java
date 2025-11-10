@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.test.mybatis.dao.IGroupDAO;
 import com.test.mybatis.dao.IGroupJoinDAO;
+import com.test.mybatis.dao.IGroupPostDAO;
 import com.test.mybatis.dto.GroupDTO;
 import com.test.mybatis.dto.GroupJoinDTO;
 import com.test.mybatis.dto.UserDTO;
+import com.test.util.Paging;
 
 @Controller
 public class GroupManageController
@@ -145,6 +147,91 @@ public class GroupManageController
         
         return viewPath;
     }
+    
+	
+	@RequestMapping(value="/groupedit.do", method=RequestMethod.GET)
+	public String groupEdit(
+		@RequestParam("groupApplyCode") String groupApplyCode,
+		HttpSession session, 
+		Model model)
+	{
+		// 🚨 1. 로그인 체크
+		UserDTO user = (UserDTO)session.getAttribute("user");
+		if(user == null) {
+			return "redirect:loginpage.do";
+		}
+		
+		IGroupDAO dao = sqlSession.getMapper(IGroupDAO.class);
+		
+		try {
+			// 2. 그룹 상세 정보 조회 (기존 데이터 로드)
+			GroupDTO groupDetail = dao.groupDetail(groupApplyCode);
+			
+			
+		
+			
+			// 4. 질문 및 규칙 정보 로드
+			GroupDTO questionRule = dao.groupQuestionRule(groupApplyCode);
+			
+			// 5. Model에 데이터 추가
+			model.addAttribute("groupDetail", groupDetail);
+		
+			
+			// 6. View 반환
+			return "/WEB-INF/view/group_room/manage/EditGroup.jsp";
+			
+		} catch (Exception e) {
+			System.out.println("❌ groupEdit() 예외 발생: " + e.getMessage());
+			e.printStackTrace();
+			model.addAttribute("msg", "모임 정보를 불러오는 중 오류가 발생했습니다.");
+			return "redirect:mainpage.do";
+		}
+	}
+
+	
+	// 전체 리스트 가져오기
+	@RequestMapping(value="/post2.do", method=RequestMethod.GET)
+	public String postList(String groupApplyCode, HttpServletRequest request, Model model, String pageNum)
+	{
+		// sqlSession 가져오기
+		IGroupPostDAO dao = sqlSession.getMapper(IGroupPostDAO.class);
+		 
+
+		// 페이지 번호 초기화
+		int currentPage = 1;	// 기본값
+		if (pageNum != null)
+			currentPage = Integer.parseInt(pageNum);
+		
+		// 전체 데이터 개수 구하기
+		int dataCount = dao.listCount(groupApplyCode);
+		int numPerPage = 10;	// 한 페이지에 표시할 데이터 개수
+		
+		Paging paging = new Paging();
+		int totalPage = paging.getPageCount(numPerPage, dataCount);
+		
+		if (currentPage > totalPage)
+			currentPage = totalPage;
+		
+		int start = (currentPage - 1) * numPerPage + 1;
+		int end = currentPage * numPerPage;
+			
+		// url 생성
+		String cp = request.getContextPath();
+		String listUrl = cp + "/post2.do?groupApplyCode=" + groupApplyCode;
+		String pageIndexList = paging.pageIndexList(currentPage, totalPage, listUrl);
+		
+		// model에 데이터 담기
+		model.addAttribute("list", dao.list(groupApplyCode, start, end));
+		model.addAttribute("noticeList", dao.noticeList(groupApplyCode));
+		model.addAttribute("pageIndexList", pageIndexList);
+		model.addAttribute("start", start);
+		
+		// 주소 구성
+		String articleUrl = "/WEB-INF/view/group_room/board/Post2.jsp";
+		articleUrl += "?pageNum=" + currentPage;
+		
+		return articleUrl;
+	}
     
     
     

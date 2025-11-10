@@ -2,6 +2,7 @@ package com.test.mybatis.dao;
 
 import java.util.List;
 
+import com.test.mybatis.dto.GroupDTO;
 import com.test.mybatis.dto.GroupMemberDTO;
 
 public interface IGroupMemberDAO
@@ -82,7 +83,8 @@ public interface IGroupMemberDAO
 	// 모임장 자동 이양(한달 미접속 시)
 	public int updateLeaderTransfer(String groupApplyCode, String newLeaderCode);
 	
-	
+	// 모임 정보 수정
+	public void updateGroup(GroupDTO dto);
 }
 
 
