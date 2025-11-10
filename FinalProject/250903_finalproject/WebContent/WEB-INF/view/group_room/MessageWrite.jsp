@@ -78,7 +78,7 @@
 			</div>
 		</div>
 		
-		<form action="messagewriteOk.do" id="messageForm" method="GET" >
+		<form action="messagewriteOk.do" id="messageForm" method="POST" >
 				<!-- 
 				모임 선택
 				<div class="form-group">
