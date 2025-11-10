@@ -49,19 +49,17 @@ $(function()
 
 		<!-- 본문 -->
 		<div class="main">
-			<h1 style="font-size: 1.5rem; font-weight: bold;">${challengeDetail.title }</h1>
+			<h1 style="font-size: 1.5rem; font-weight: bold;">제목 : ${challengeDetail.title }</h1>
 
 			<div class="btn-group">
-				<a href="ChallengeModify.jsp">
-				<button class="btn-yellow">수정</button></a>
 				<button class="btn-red">삭제</button>
 				<button class="btn-gray">신고</button>
 			</div>
 
 			<h2
 				style="font-size: 1.125rem; font-weight: 600; margin-top: 24px; margin-bottom: 8px;">
-				${challengeDetail.startDate }</h2> <br>
-			<h2>${challengeDetail.content }</h2>
+				기간 : ${challengeDetail.startDate } ~ ${challengeDetail.endDate }</h2> <br>
+			<h2>내용   : ${challengeDetail.content }</h2>
 			<table>
 				<thead>
 					<tr>
@@ -76,7 +74,7 @@ $(function()
 							<c:forEach var="challenge" items="${challengeContentList }">
 								<tr>
 									<td>${challenge.round }일차</td>
-									<td>${challenge.content }</td>
+									<td>${challenge.contentDetail }</td>
 									<td style="text-align: center;"><input type="checkbox"
 										class="checkbox" checked></td>
 								</tr>
@@ -86,7 +84,7 @@ $(function()
 							<c:forEach var="challenge" items="${challengeContentList }">
 								<tr>
 									<td>${challenge.round }주차</td>
-									<td>${challenge.content }</td>
+									<td>${challenge.contentDetail }</td>
 									<td style="text-align: center;"><input type="checkbox"
 										class="checkbox" checked></td>
 								</tr>

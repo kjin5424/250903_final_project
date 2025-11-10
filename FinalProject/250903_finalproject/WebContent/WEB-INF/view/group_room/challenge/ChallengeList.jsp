@@ -31,7 +31,7 @@
 					<span class="board-title-icon">🏆</span> 도전 과제
 				</h2>
 				<div class="board-actions">
-					<a href="CreateChallenge.jsp" class="btn btn-primary"> <span>📝</span>
+					<a href="challengecreatepage.do" class="btn btn-primary"> <span>📝</span>
 						<span>도전과제 작성하기</span>
 					</a>
 				</div>
@@ -58,158 +58,160 @@
 			</div>
 
 			<!-- 도전 과제 카드 그리드 -->
-			<c:forEach var="challenge" items="${challengeList }">
-				<c:choose>
-					<%-- 대기중인 도전 과제 --%>
-					<c:when test="${challenge.status eq 1 }">
-						<div class="challenge-card ready" data-status="ready"
-							onclick="location.href='challengedetailpage.do?challengeCode=${challenge.challengeCode}'">
-							<div class="card-header">
-								<div class="card-title-section">
-									<h3 class="card-title">${challenge.title }📚</h3>
-								</div>
-								<span class="status-badge ready">
-									<span>⏱️</span>
-									<span>대기중</span>
-								</span>
-							</div>
-
-							<div class="card-info">
-								<div class="info-row">
-									<div class="info-label">
-										<span>📅</span> <span>기간</span>
+			<div class="challenge-grid">
+				<c:forEach var="challenge" items="${challengeList }">
+					<c:choose>
+						<%-- 대기중인 도전 과제 --%>
+						<c:when test="${challenge.status eq 1 }">
+							<div class="challenge-card ready" data-status="ready"
+								onclick="location.href='challengedetailpage.do?challengeCode=${challenge.challengeCode}'">
+								<div class="card-header">
+									<div class="card-title-section">
+										<h3 class="card-title">${challenge.title }📚</h3>
 									</div>
-									<div class="info-value">${challenge.startDate }~
-										${challenge.endDate }
-									</div>
+									<span class="status-badge ready">
+										<span>⏱️</span>
+										<span>대기중</span>
+									</span>
 								</div>
-								<div class="info-row">
-									<div class="info-label">
-										<span>🎯</span> <span>타입</span>
+	
+								<div class="card-info">
+									<div class="info-row">
+										<div class="info-label">
+											<span>📅</span> <span>기간</span>
+										</div>
+										<div class="info-value">${challenge.startDate }~
+											${challenge.endDate }
+										</div>
 									</div>
-									<div class="info-value">
-										<c:choose>
-											<c:when test="${challenge.challengeType eq 1}">
-												<span class="type-badge daily">☀️ 일간과제</span>
-											</c:when>
-											<c:otherwise>
-												<span class="type-badge monthly">🌙 월간과제</span>
-											</c:otherwise>
-										</c:choose>
-									</div>
-								</div>
-							</div>
-
-							<div class="card-footer">
-								<div class="card-author">
-									<div class="author-avatar">A</div>
-									<span>userA</span>
-								</div>
-								<div class="card-date">${challenge.createdDate }</div>
-							</div>
-						</div>
-					</c:when>
-					
-					<%-- 진행중인 도전 과제 --%>
-					<c:when test="${challenge.status eq 2 }">
-						<div class="challenge-card started" data-status="started" 
-							onclick="location.href='challengedetailpage.do?challengeCode=${challenge.challengeCode}'">
-							<div class="card-header">
-								<div class="card-title-section">
-									<h3 class="card-title">${challenge.title }📚</h3>
-								</div>
-								<span class="status-badge started">
-									<span>🔥</span>
-									<span>진행중</span>
-								</span>
-							</div>
-
-							<div class="card-info">
-								<div class="info-row">
-									<div class="info-label">
-										<span>📅</span> <span>기간</span>
-									</div>
-									<div class="info-value">${challenge.startDate }~
-										${challenge.endDate }
+									<div class="info-row">
+										<div class="info-label">
+											<span>🎯</span> <span>타입</span>
+										</div>
+										<div class="info-value">
+											<c:choose>
+												<c:when test="${challenge.challengeType eq 1}">
+													<span class="type-badge daily">☀️ 일간과제</span>
+												</c:when>
+												<c:otherwise>
+													<span class="type-badge monthly">🌙 월간과제</span>
+												</c:otherwise>
+											</c:choose>
+										</div>
 									</div>
 								</div>
-								<div class="info-row">
-									<div class="info-label">
-										<span>🎯</span> <span>타입</span>
+	
+								<div class="card-footer">
+									<div class="card-author">
+										<div class="author-avatar">A</div>
+										<span>userA</span>
 									</div>
-									<div class="info-value">
-										<c:choose>
-											<c:when test="${challenge.challengeType eq 1}">
-												<span class="type-badge daily">☀️ 일간과제</span>
-											</c:when>
-											<c:otherwise>
-												<span class="type-badge monthly">🌙 월간과제</span>
-											</c:otherwise>
-										</c:choose>
-									</div>
+									<div class="card-date">${challenge.createdDate }</div>
 								</div>
 							</div>
-
-							<div class="card-footer">
-								<div class="card-author">
-									<div class="author-avatar">A</div>
-									<span>userA</span>
-								</div>
-								<div class="card-date">${challenge.createdDate }</div>
-							</div>
-						</div>
-					</c:when>
-					<%-- 종료된 도전과제 --%>
-					<c:otherwise>
-						<div class="challenge-card ended" data-status="ended"
-							onclick="location.href='challengedetailpage.do?challengeCode=${challenge.challengeCode}'">
-							<div class="card-header">
-								<div class="card-title-section">
-									<h3 class="card-title">${challenge.title }📚</h3>
-								</div>
-								<span class="status-badge ended">
-									<span>✓</span>
-									<span>종료</span>
-								</span>
-							</div>
-
-							<div class="card-info">
-								<div class="info-row">
-									<div class="info-label">
-										<span>📅</span> <span>기간</span>
+						</c:when>
+						
+						<%-- 진행중인 도전 과제 --%>
+						<c:when test="${challenge.status eq 2 }">
+							<div class="challenge-card started" data-status="started" 
+								onclick="location.href='challengedetailpage.do?challengeCode=${challenge.challengeCode}'">
+								<div class="card-header">
+									<div class="card-title-section">
+										<h3 class="card-title">${challenge.title }📚</h3>
 									</div>
-									<div class="info-value">${challenge.startDate }~
-										${challenge.endDate }
-									</div>
+									<span class="status-badge started">
+										<span>🔥</span>
+										<span>진행중</span>
+									</span>
 								</div>
-								<div class="info-row">
-									<div class="info-label">
-										<span>🎯</span> <span>타입</span>
+	
+								<div class="card-info">
+									<div class="info-row">
+										<div class="info-label">
+											<span>📅</span> <span>기간</span>
+										</div>
+										<div class="info-value">${challenge.startDate }~
+											${challenge.endDate }
+										</div>
 									</div>
-									<div class="info-value">
-										<c:choose>
-											<c:when test="${challenge.challengeType eq 1}">
-												<span class="type-badge daily">☀️ 일간과제</span>
-											</c:when>
-											<c:otherwise>
-												<span class="type-badge monthly">🌙 월간과제</span>
-											</c:otherwise>
-										</c:choose>
+									<div class="info-row">
+										<div class="info-label">
+											<span>🎯</span> <span>타입</span>
+										</div>
+										<div class="info-value">
+											<c:choose>
+												<c:when test="${challenge.challengeType eq 1}">
+													<span class="type-badge daily">☀️ 일간과제</span>
+												</c:when>
+												<c:otherwise>
+													<span class="type-badge monthly">🌙 월간과제</span>
+												</c:otherwise>
+											</c:choose>
+										</div>
 									</div>
 								</div>
-							</div>
-
-							<div class="card-footer">
-								<div class="card-author">
-									<div class="author-avatar">A</div>
-									<span>userA</span>
+	
+								<div class="card-footer">
+									<div class="card-author">
+										<div class="author-avatar">A</div>
+										<span>userA</span>
+									</div>
+									<div class="card-date">${challenge.createdDate }</div>
 								</div>
-								<div class="card-date">${challenge.createdDate }</div>
 							</div>
-						</div>
-					</c:otherwise>
-				</c:choose>
-			</c:forEach>
+						</c:when>
+						<%-- 종료된 도전과제 --%>
+						<c:otherwise>
+							<div class="challenge-card ended" data-status="ended"
+								onclick="location.href='challengedetailpage.do?challengeCode=${challenge.challengeCode}'">
+								<div class="card-header">
+									<div class="card-title-section">
+										<h3 class="card-title">${challenge.title }📚</h3>
+									</div>
+									<span class="status-badge ended">
+										<span>✓</span>
+										<span>종료</span>
+									</span>
+								</div>
+	
+								<div class="card-info">
+									<div class="info-row">
+										<div class="info-label">
+											<span>📅</span> <span>기간</span>
+										</div>
+										<div class="info-value">${challenge.startDate }~
+											${challenge.endDate }
+										</div>
+									</div>
+									<div class="info-row">
+										<div class="info-label">
+											<span>🎯</span> <span>타입</span>
+										</div>
+										<div class="info-value">
+											<c:choose>
+												<c:when test="${challenge.challengeType eq 1}">
+													<span class="type-badge daily">☀️ 일간과제</span>
+												</c:when>
+												<c:otherwise>
+													<span class="type-badge monthly">🌙 월간과제</span>
+												</c:otherwise>
+											</c:choose>
+										</div>
+									</div>
+								</div>
+	
+								<div class="card-footer">
+									<div class="card-author">
+										<div class="author-avatar">A</div>
+										<span>userA</span>
+									</div>
+									<div class="card-date">${challenge.createdDate }</div>
+								</div>
+							</div>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
+			</div>
 
 			<!-- 
 			도전 과제 카드 그리드

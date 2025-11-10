@@ -45,7 +45,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		AND GA.GROUP_APPLY_CODE = #{groupApplyCode}
 	</select>
 	
-	<select id="getJoinCode" resultType="com.test.mybatis.dto.ChallengeDTO">
+	<select id="getJoinCodes" resultType="com.test.mybatis.dto.ChallengeDTO">
 		SELECT
 			JOIN_CODE AS joinCode
 			, GROUP_APPLY_CODE AS groupApplyCode
@@ -89,11 +89,41 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="getChallengeContent" resultType="com.test.mybatis.dto.ChallengeContentDTO">
 		SELECT
 			ROUND AS round
-			, CONTENT AS content
+			, CONTENT AS contentDetail
 		FROM
 			CHALLENGE_DETAIL 
 		WHERE
 			CHALLENGE_CODE=#{challengeCode}
 	</select>
+	
+	<insert id="challengeCreate">
+		{ CALL PRC_CHALLENGE_INSERT (
+        	#{joinCode, mode=IN, jdbcType=VARCHAR}
+        	, #{challengeType, mode=IN, jdbcType=NUMERIC}
+        	, #{title, mode=IN, jdbcType=VARCHAR}
+        	, #{startDate, mode=IN, jdbcType=DATE}
+        	, #{content, mode=IN, jdbcType=VARCHAR}
+        	<choose>
+        		<when test="challengeType == 1">
+        			, #{day1, mode=IN, jdbcType=VARCHAR}
+        			, #{day2, mode=IN, jdbcType=VARCHAR}
+        			, #{day3, mode=IN, jdbcType=VARCHAR}
+        			, #{day4, mode=IN, jdbcType=VARCHAR}
+        			, #{day5, mode=IN, jdbcType=VARCHAR}
+        			, #{day6, mode=IN, jdbcType=VARCHAR}
+        			, #{day7, mode=IN, jdbcType=VARCHAR}
+        		</when>
+        		<otherwise>
+        			, #{week1, mode=IN, jdbcType=VARCHAR}
+        			, #{week2, mode=IN, jdbcType=VARCHAR}
+        			, #{week3, mode=IN, jdbcType=VARCHAR}
+        			, #{week4, mode=IN, jdbcType=VARCHAR}
+        			, #{week5, mode=IN, jdbcType=VARCHAR}
+        			, null
+        			, null
+        		</otherwise>
+        	</choose>
+    	) }
+	</insert>
 
 </mapper>

@@ -17,7 +17,7 @@ public interface IChallengeDAO
 	public List<ChallengeDTO> challengeForGroup(@Param("groupApplyCode") String groupApplyCode);
 	
 	// joinCode 가져오기.
-	public ArrayList<ChallengeDTO> getJoinCode(String userCode);
+	public ArrayList<ChallengeDTO> getJoinCodes(String userCode);
 	
 	// 모임에 맞는 challenge 가져오기.
 	public ArrayList<ChallengeDTO> challengeList(String groupApplyCode);
@@ -27,4 +27,7 @@ public interface IChallengeDAO
 	
 	// 도전과제 세부 사항 > 내용 가져오기.
 	public ArrayList<ChallengeContentDTO> getChallengeContent(String challengeCode);
+	
+	// 도전과제 등록하기
+	public void challengeCreate(ChallengeContentDTO dto);
 }
