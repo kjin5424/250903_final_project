@@ -13,10 +13,10 @@
 	
 	String ageRange = "";
 	
-	if (ssn2>=2)
-		ageRange = (((currentYear - (ssn1+1900))/10)*10) + "대";
-	else
+	if (ssn2>2)
 		ageRange = (((currentYear - (ssn1+2000))/10)*10) + "대";
+	else
+		ageRange = (((currentYear - (ssn1+1900))/10)*10) + "대";
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -427,17 +427,9 @@
                         </div>
                     </div>
                     <div class="profile-actions">
-                        <button class="btn btn-primary">
-                            	✉️ 쪽지 보내기
-                        </button>
                         <button class="btn btn-danger">
                             	🚨 신고하기
                         </button>
-                        <c:if test="${not empty relation && relation == 2}">
-                        <button class="btn btn-danger" id="kickOut">
-                            	🚫 강제퇴장
-                        </button>
-                        </c:if>
                     </div>
                 </div>
             </div>
@@ -502,7 +494,7 @@
         </div>
         </c:if>
       	
-      	<c:if test="${not empty quitGroup}">
+      <c:if test="${not empty quitGroup}">
        <div class="section">
             <h2 class="section-title">📜 이전 모임 이력</h2>
             <div class="history-list">
@@ -527,10 +519,20 @@
                             </div>
                             <div class="stat-item-label">도전과제</div>
                         </div>
+                        
+                        <c:if test="${relation == 2 }">
                         <div class="stat-item">
                             <div class="stat-item-value">${quitGroupDTO.quitReason }</div>
                             <div class="stat-item-label">탈퇴 사유</div>
                         </div>
+                        </c:if>
+                        <c:if test="${relation != 2 }">
+                        	<div class="stat-item">
+                            <div class="stat-item-value">모임장만 열람 가능</div>
+                            <div class="stat-item-label">탈퇴 사유</div>
+                        </div>
+                        </c:if>
+                        
                     </div>
                 </div>
                 </c:forEach>

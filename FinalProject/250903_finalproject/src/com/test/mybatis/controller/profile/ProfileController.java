@@ -87,6 +87,13 @@ public class ProfileController
 					sqlSession.selectList("com.test.mybatis.dao.IUserDAO.quitGroupList", targetUserCode));
 			model.addAttribute("relation", relationCheck);
 			break;
+		case 4: 
+			model.addAttribute("profile", dao.otherProfile(targetUserCode));
+			model.addAttribute("currentGroup",
+					sqlSession.selectList("com.test.mybatis.dao.IUserDAO.currentGroupList", targetUserCode));
+			model.addAttribute("quitGroup",
+					sqlSession.selectList("com.test.mybatis.dao.IUserDAO.quitGroupList", targetUserCode));
+			model.addAttribute("relation", relationCheck);
 		default:
 			break;
 		}
