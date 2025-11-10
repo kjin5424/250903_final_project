@@ -59,5 +59,7 @@ public interface IGroupDAO
 	public GroupDTO myPageRequestApplyGroup(@Param("userCode") String userCode);
 	
 	public GroupDTO myPageFavoriteGroup(@Param("userCode") String userCode);
+	
+	public List<GroupDTO> groupManageMemberList(@Param("groupApplyCode") String groupApplyCode);
 
 }
