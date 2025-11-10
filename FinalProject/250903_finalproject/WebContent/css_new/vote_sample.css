@@ -454,3 +454,13 @@
         width: 100%;
     }
 }
+
+/* 투표 종료 시 비활성화 스타일 */
+.vote-card.ended .vote-option-label { opacity: 0.5; cursor: not-allowed; }
+.vote-card.ended .vote-option input[type="radio"] { cursor: not-allowed; }
+.vote-card.ended .vote-btn:disabled { 
+    opacity: 0.5; 
+    cursor: not-allowed; 
+    background: #e0e0e0;
+    color: #999;
+}

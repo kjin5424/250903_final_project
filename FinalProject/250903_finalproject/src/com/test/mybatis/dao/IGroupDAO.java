@@ -34,7 +34,7 @@ public interface IGroupDAO
 	public GroupDTO groupHomeGroupInfo(@Param("userCode") String userCode,@Param("groupApplyCode") String groupApplyCode);
 	
 	// 특정 회원이 특정 모임의 모임원인지 검증하는 메소드
-	public int checkMember(@Param("groupApplyCode") String groupApplyCode, @Param("userCode") String userCode);
+	public Integer checkMember(@Param("groupApplyCode") String groupApplyCode, @Param("userCode") String userCode);
 	
 	// 특정 그룹의 비밀번호만 조회하는  메서드
 	public String groupPassword(String groupApplyCode);

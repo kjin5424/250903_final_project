@@ -8,12 +8,38 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>비정기 투표 등록</title>
-<link
-	href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
-	rel="stylesheet">
-<link rel="stylesheet" href="<%=cp%>/css/css_vote/votecreate.css">
-<link rel="stylesheet" href="<%=cp%>/css/topsidecontent.css" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>투표 등록</title>
+<link rel="stylesheet" href="<%=cp %>/css_new/common_sample.css" />
+<link rel="stylesheet" href="<%=cp %>/css_new/board_sample.css" />
+<link rel="stylesheet" href="<%=cp %>/css_new/vote_sample.css" />
+<link rel="stylesheet" href="<%=cp %>/css_new/home_sample.css" />
+
+<style>
+/* 폼 그룹 스타일 */
+.form-group { margin-bottom: 24px; }
+.form-label { 
+    display: block; 
+    margin-bottom: 8px; 
+    font-weight: 600; 
+    color: var(--color-text-primary); 
+    font-size: 14px; 
+}
+.form-control { width: 100%; }
+input[type="date"], input[type="time"] {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    transition: all var(--transition-fast);
+}
+.radio-group { display: flex; gap: 20px; margin-top: 8px; }
+.radio-label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.button-group { display: flex; gap: 12px; margin-top: 32px; }
+.button-group .btn { flex: 1; }
+</style>
+
 <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
 <script type="text/javascript">
 $(function()
@@ -36,7 +62,6 @@ $(function()
 	
 	$("#progress-time").keyup(function()
 	{
-		//alert("확인");
 		if(parseInt($(this).val()) <= 0)
 		{
 			alert("활동 시간은 최소 1 이상 입력해야 합니다.");
@@ -45,11 +70,6 @@ $(function()
 	
 	$("#submitBtn").click(function()
 	{
-		
-		alert($("#start-time").val());
-		
-		
-		//alert("확인");
 		const inputDateString = $("#date").val();
 		
 		if(!$("#date").val())
@@ -83,7 +103,6 @@ $(function()
 				alert("화상회의 주소를 입력해주세요.");
 				return false;
 			}
-			const address = $("#uri").val();
 		}
 		else
 		{
@@ -92,7 +111,6 @@ $(function()
 				alert("활동 장소를 입력해주세요.");
 				return false;
 			}
-			const address = $("#location").val();	
 		}
 		
 		if(!$("#content").val())
@@ -102,88 +120,159 @@ $(function()
 		}
 		
 		return true;
-		
 	});
-	
-	
 });
 </script>
 </head>
 <body>
-	<!-- 상단 메뉴바 -->
-	<div class="topmenubar">
-		<c:import url="/WEB-INF/view/common/TopMenuBar.jsp"></c:import>
-	</div>
+<!-- 상단 메뉴바 -->
+<c:import url="/WEB-INF/view/common/TopMenuBar.jsp"/>
 
-	<!-- 좌측 메뉴바 + 본문 -->
-	<div class="container">
-		<div class="sidebar">
-			<c:import url="/WEB-INF/view/group_room/SideBar.jsp"></c:import>
+<!-- 사이드바 -->
+<c:import url="/WEB-INF/view/common/GroupSideBar.jsp"/>
+
+<!-- 메인 콘텐츠 -->
+<div class="main-container">
+	<div class="board-container">
+		<!-- 게시판 헤더 -->
+		<div class="board-header">
+			<h2 class="board-title">
+				<span class="board-title-icon">🗳️</span>
+				새 투표 만들기
+			</h2>
 		</div>
-
-		<div class="main">
-			<form action="voteinsert.do" method="get">
-				<input type="hidden" name="groupApplyCode" value="${groupApplyCode }"/>
-				<input type="hidden" name="joinCode" value="${joinCode}"/>
-				<div class="input-group">
-					<label for="date">일자</label> <input type="date" id="date"
-						name="date" required="required">
-				</div>
-				<div class="input-group">
-					<label for="start-time">시작 시간</label> <input type="time"
-						id="start-time" name="start-time">
-				</div>
-				
-				<div class="input-group">
-					<label>
-						활동 내용
-						<input type="text" name="content" id="content" placeholder="이번 활동의 주제를 적어주세요!"/>	
+		
+		<!-- 투표 생성 폼 -->
+		<form action="voteinsert.do" method="get">
+			<input type="hidden" name="groupApplyCode" value="${groupApplyCode}"/>
+			<input type="hidden" name="joinCode" value="${joinCode}"/>
+			
+			<!-- 활동 내용 -->
+			<div class="form-group">
+				<label class="form-label" for="content">
+					<span>📝</span> 활동 내용
+				</label>
+				<input type="text" 
+				       id="content" 
+				       name="content" 
+				       class="form-control" 
+				       placeholder="이번 활동의 주제를 적어주세요!" 
+				       required/>
+			</div>
+			
+			<!-- 활동 일자 -->
+			<div class="form-group">
+				<label class="form-label" for="date">
+					<span>📅</span> 활동 일자
+				</label>
+				<input type="date" 
+				       id="date" 
+				       name="date" 
+				       class="form-control" 
+				       required/>
+			</div>
+			
+			<!-- 시작 시간 -->
+			<div class="form-group">
+				<label class="form-label" for="start-time">
+					<span>🕐</span> 시작 시간
+				</label>
+				<input type="time" 
+				       id="start-time" 
+				       name="start-time" 
+				       class="form-control" 
+				       required/>
+			</div>
+			
+			<!-- 진행 시간 -->
+			<div class="form-group">
+				<label class="form-label" for="progress-time">
+					<span>⏱️</span> 진행 시간
+				</label>
+				<select id="progress-time" 
+				        name="progress-time" 
+				        class="form-control" 
+				        required>
+					<option value="">선택하세요</option>
+					<option value="1">1시간</option>
+					<option value="1.5">1시간 30분</option>
+					<option value="2">2시간</option>
+					<option value="2.5">2시간 30분</option>
+					<option value="3">3시간</option>
+					<option value="3.5">3시간 30분</option>
+					<option value="4">4시간</option>
+					<option value="4.5">4시간 30분</option>
+					<option value="5">5시간</option>
+					<option value="5.5">5시간 30분</option>
+					<option value="6">6시간</option>
+					<option value="6.5">6시간 30분</option>
+				</select>
+			</div>
+			
+			<!-- 진행 방식 -->
+			<div class="form-group">
+				<label class="form-label">
+					<span>🌐</span> 진행 방식
+				</label>
+				<div class="radio-group">
+					<label class="radio-label">
+						<input type="radio" 
+						       name="on_off" 
+						       id="offline" 
+						       value="offline" 
+						       checked/>
+						<span>오프라인</span>
+					</label>
+					<label class="radio-label">
+						<input type="radio" 
+						       name="on_off" 
+						       id="online" 
+						       value="online"/>
+						<span>온라인</span>
 					</label>
 				</div>
-				
-				<div class="input-group">
-					<label for="progress-time">진행 시간</label> 
-					
-					<select id="progress-time" name="progress-time" required="required">
-						<option value="1">1시간</option>
-						<option value="1.5">1시간 30분</option>
-						<option value="2">2시간</option>
-						<option value="2.5">2시간 30분</option>
-						<option value="3">3시간</option>
-						<option value="3.5">3시간 30분</option>
-						<option value="4">4시간</option>
-						<option value="4.5">4시간 30분</option>
-						<option value="5">5시간</option>
-						<option value="5.5">5시간 30분</option>
-						<option value="6">6시간</option>
-						<option value="7.5">6시간 30분</option>						
-					</select>
-				</div>
-
-					<!-- <input type="number" id="progress-time" name="progress-time" required="required"> -->
-
-				<div class="input-group input-radio">
-					<label for="offline">
-						<input type="radio" name="on_off" id="offline" value="offline" checked="checked"/> 오프라인
-					</label> 
-					<label for="online"> 
-						<input type="radio" name="on_off"id="online" value="online" /> 온라인
-					</label>
-				</div>
-
-				<div class="input-group input-location">
-					<label>지역<input type="text" id="location" name="location" placeholder="지역 입력"></label>
-				</div>
-				<div class="input-group input-uri">
-					<label>링크<input type="text" id="uri" name="uri"placeholder="온라인 주소 입력"></label>
-				</div>
-				<div class="button-group">
-					<button type="submit" class="btn-submit" id="submitBtn">등록 하기</button>
-					<a href="VoteList.jsp">
-					<button type="button" class="btn-back">돌아가기</button></a>
-				</div>
-			</form>
-		</div>
+			</div>
+			
+			<!-- 오프라인 장소 -->
+			<div class="form-group input-location">
+				<label class="form-label" for="location">
+					<span>📍</span> 활동 장소
+				</label>
+				<input type="text" 
+				       id="location" 
+				       name="location" 
+				       class="form-control" 
+				       placeholder="오프라인 활동 장소를 입력하세요"/>
+			</div>
+			
+			<!-- 온라인 링크 -->
+			<div class="form-group input-uri">
+				<label class="form-label" for="uri">
+					<span>🔗</span> 화상회의 링크
+				</label>
+				<input type="text" 
+				       id="uri" 
+				       name="uri" 
+				       class="form-control" 
+				       placeholder="온라인 회의 주소를 입력하세요 (예: Zoom, Google Meet)"/>
+			</div>
+			
+			<!-- 버튼 그룹 -->
+			<div class="button-group">
+				<button type="submit" class="btn btn-primary" id="submitBtn">
+					<span>✓</span>
+					<span>투표 등록하기</span>
+				</button>
+				<a href="votelist.do?groupApplyCode=${groupApplyCode}" style="flex: 1;">
+					<button type="button" class="btn btn-ghost" style="width: 100%;">
+						<span>←</span>
+						<span>돌아가기</span>
+					</button>
+				</a>
+			</div>
+		</form>
 	</div>
+</div>
+
 </body>
 </html>

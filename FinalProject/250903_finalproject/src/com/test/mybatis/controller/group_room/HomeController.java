@@ -62,16 +62,6 @@ public class HomeController
 		return "/WEB-INF/view/group_room/Home.jsp";
 	}
 
-
-
-	
-	@RequestMapping(value="/challengelist.do", method=RequestMethod.GET)
-	public String challengeList(Model model)
-	{
-		return "/WEB-INF/view/group_room/challenge/ChallengeList.jsp";
-	}
-	
-	
 	// 히스토리 페이지
 	@RequestMapping(value="/history.do", method=RequestMethod.GET)
 	public String histroy(Model model, @RequestParam("groupApplyCode") String groupApplyCode)
@@ -107,11 +97,6 @@ public class HomeController
 	{
 		return "/WEB-INF/view/group_room/MemberList.jsp";
 	}
-	@RequestMapping(value="/messagelist.do", method=RequestMethod.GET)
-	public String messagelist(Model model)
-	{
-		return "/WEB-INF/view/group_room/MessageList.jsp";
-	}
 	
 	@RequestMapping(value="/managelist.do", method=RequestMethod.GET)
 	public String manageList(@RequestParam("groupApplyCode") String groupApplyCode, Model model)
@@ -122,43 +107,39 @@ public class HomeController
 	}
 	
 	@RequestMapping(value="/grouplistdetail.do", method=RequestMethod.GET)
-	public String groupListDetail(@RequestParam("groupCode") String groupCode, 
+	public String groupListDetail(@RequestParam("groupCode") String groupCode,
 	                              Model model,
 	                              HttpServletRequest request)
 	{
 	    IGroupDAO dao = sqlSession.getMapper(IGroupDAO.class);
-
 	    try {
 	        GroupDTO groupDetail = dao.groupDetail(groupCode);
-	        if (groupDetail == null) {
-	            return "redirect:/mainpage.do"; 
+	        if (groupDetail == null) 
+	        {
+	            return "redirect:/mainpage.do";
 	        }
-
 	        List<GroupDTO> memberList = dao.groupUserList(groupCode);
 	        if (!memberList.isEmpty()) {
 	            String groupApplyCode = memberList.get(0).getGroupApplyCode();
 	            int memberCount = dao.groupMemberCount(groupApplyCode);
 	            groupDetail.setCurrentMemberCount(memberCount);
+	           
+	            Integer activityCount = dao.countActivity(groupApplyCode);
 	            
-	            // 활동 수 
-	            int activityCount = dao.countActivity(groupApplyCode);
-	            model.addAttribute("activityCount", activityCount);
+	            // 활동수
+	            model.addAttribute("activityCount", (activityCount == null) ? 0 : activityCount);
 	        }
-
 	        HttpSession session = request.getSession();
 	        Boolean isAuthenticated = (Boolean) session.getAttribute("authenticatedGroup_" + groupCode);
-
 	        if ((groupDetail.getPassword() != null && !groupDetail.getPassword().isEmpty())
 	                && (isAuthenticated == null || !isAuthenticated)) {
 	            model.addAttribute("groupTitle", groupDetail.getGroupTitle());
 	            model.addAttribute("topic", groupDetail.getTopic());
 	            return "/WEB-INF/view/group/CheckPassword.jsp";
 	        }
-
 	        model.addAttribute("groupDetail", groupDetail);
 	        model.addAttribute("memberList", memberList);
 	        return "/WEB-INF/view/group/GroupListDetail.jsp";
-
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	        return "redirect:/mainpage.do";
@@ -261,19 +242,11 @@ public class HomeController
 			      
 			}
 
-
-	
 	
 	@RequestMapping(value="/level.do", method=RequestMethod.GET)
 	public String level(Model model)
 	{
 		return "/WEB-INF/view/group_room/Level.jsp";
-	}
-
-	@RequestMapping(value="/membermanage.do", method=RequestMethod.GET)
-	public String memberManage(Model model)
-	{
-		return "/WEB-INF/view/group_room/manage/MemberManage.jsp";
 	}
 	
 	@RequestMapping(value="/groupcreate.do", method=RequestMethod.GET)
