@@ -63,12 +63,6 @@ public class HomeController
 		return "/WEB-INF/view/group_room/Home.jsp";
 	}
 	
-	@RequestMapping(value="/challengelist.do", method=RequestMethod.GET)
-	public String challengeList(Model model)
-	{
-		return "/WEB-INF/view/group_room/challenge/ChallengeList.jsp";
-	}
-	
 	@RequestMapping(value="/history.do", method=RequestMethod.GET)
 	public String histroy(Model model)
 	{

@@ -49,7 +49,7 @@ $(function()
 
 		<!-- 본문 -->
 		<div class="main">
-			<h1 style="font-size: 1.5rem; font-weight: bold;">도전 과제 제목</h1>
+			<h1 style="font-size: 1.5rem; font-weight: bold;">${challengeDetail.title }</h1>
 
 			<div class="btn-group">
 				<a href="ChallengeModify.jsp">
@@ -60,7 +60,8 @@ $(function()
 
 			<h2
 				style="font-size: 1.125rem; font-weight: 600; margin-top: 24px; margin-bottom: 8px;">
-				도전 과제 시작 날짜(yy-mm-dd)</h2>
+				${challengeDetail.startDate }</h2> <br>
+			<h2>${challengeDetail.content }</h2>
 			<table>
 				<thead>
 					<tr>
@@ -70,48 +71,28 @@ $(function()
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td>1일차(yy-mm-dd)</td>
-						<td>영단어 외우기</td>
-						<td style="text-align: center;"><input type="checkbox"
-							class="checkbox" checked></td>
-					</tr>
-					<tr>
-						<td>2일차(yy-mm-dd+1)</td>
-						<td>영단어 외우기</td>
-						<td style="text-align: center;"><input type="checkbox"
-							class="checkbox" checked></td>
-					</tr>
-					<tr>
-						<td>3일차(yy-mm-dd+2)</td>
-						<td>영단어 외우기</td>
-						<td style="text-align: center;"><input type="checkbox"
-							class="checkbox" checked></td>
-					</tr>
-					<tr>
-						<td>4일차(yy-mm-dd+3)</td>
-						<td>영단어 외우기</td>
-						<td style="text-align: center;"><input type="checkbox"
-							class="checkbox"></td>
-					</tr>
-					<tr>
-						<td>5일차(yy-mm-dd+4)</td>
-						<td>영단어 외우기</td>
-						<td style="text-align: center;"><input type="checkbox"
-							class="checkbox"></td>
-					</tr>
-					<tr>
-						<td>6일차(yy-mm-dd+5)</td>
-						<td>외운 영단어 복기</td>
-						<td style="text-align: center;"><input type="checkbox"
-							class="checkbox"></td>
-					</tr>
-					<tr>
-						<td>7일차(yy-mm-dd+6)</td>
-						<td>영어 책 읽기(30p이상)</td>
-						<td style="text-align: center;"><input type="checkbox"
-							class="checkbox"></td>
-					</tr>
+					<c:choose>
+						<c:when test="${challengeDetail.challengeType eq 1}">
+							<c:forEach var="challenge" items="${challengeContentList }">
+								<tr>
+									<td>${challenge.round }일차</td>
+									<td>${challenge.content }</td>
+									<td style="text-align: center;"><input type="checkbox"
+										class="checkbox" checked></td>
+								</tr>
+							</c:forEach>
+						</c:when>
+						<c:otherwise>
+							<c:forEach var="challenge" items="${challengeContentList }">
+								<tr>
+									<td>${challenge.round }주차</td>
+									<td>${challenge.content }</td>
+									<td style="text-align: center;"><input type="checkbox"
+										class="checkbox" checked></td>
+								</tr>
+							</c:forEach>
+						</c:otherwise>
+					</c:choose>
 				</tbody>
 			</table>
 

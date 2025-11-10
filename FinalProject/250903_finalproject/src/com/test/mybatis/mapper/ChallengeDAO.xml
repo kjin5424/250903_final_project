@@ -44,5 +44,55 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE UT.USER_CODE = #{userCode}
 		AND GA.GROUP_APPLY_CODE = #{groupApplyCode}
 	</select>
+	
+	<select id="getJoinCode" resultType="java.lang.String">
+		SELECT
+			JOIN_CODE
+		FROM
+			JOIN_TABLE
+		WHERE
+			USER_CODE=${userCode}
+	</select>
+	
+	<select id="challengeList" resultType="com.test.mybatis.dto.ChallengeDTO">
+		SELECT
+			CHALLENGE_CODE AS challengeCode
+			, JT.JOIN_CODE AS joinCode
+			, CHALLENGE_TYPE AS challengeType
+			, TITLE AS title
+			, TO_CHAR(START_DATE, 'YYYY-MM-DD') AS startDate
+			, CONTENT AS content
+			, TO_CHAR(CH.CREATED_DATE, 'YYYY-MM-DD') AS createdDate
+		FROM
+			CHALLENGE CH
+			LEFT JOIN JOIN_TABLE JT ON JT.JOIN_CODE=CH.JOIN_CODE
+		WHERE
+			GROUP_APPLY_CODE=#{groupApplyCode}
+	</select>
+	
+	<select id="getChallengeDetail" resultType="com.test.mybatis.dto.ChallengeDTO">
+		SELECT
+			CHALLENGE_CODE AS challengeCode
+			, JOIN_CODE AS joinCode
+			, CHALLENGE_TYPE AS challengeType
+			, TITLE AS title
+			, TO_CHAR(START_DATE, 'YYYY-MM-DD') AS startDate
+			, CONTENT AS content
+			, CREATED_DATE AS createdDate
+		FROM
+			CHALLENGE
+		WHERE
+			CHALLENGE_CODE=#{challengeCode}
+	</select>
+	
+	<select id="getChallengeContent" resultType="com.test.mybatis.dto.ChallengeContentDTO">
+		SELECT
+			ROUND AS round
+			, CONTENT AS content
+		FROM
+			CHALLENGE_DETAIL 
+		WHERE
+			CHALLENGE_CODE=#{challengeCode}
+	</select>
 
 </mapper>
