@@ -11,7 +11,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -36,24 +35,25 @@ public class ChanllengeController {
 		
 		// 유저의 joinCode 기반으로 GroupApplyCode 뽑은 후 도전과제 리스트 출력
 		// 회원이 아닐 때
+		user = new UserDTO();
 		/*
 		if (user==null)
 		{
 			return "redirect:loginpage.do";
 		}
 		*/
-		user.setUserCode("UC00000093");
+		user.setUserCode("UC00000093");	//-- 테스트용
 		
 		// 이전 페이지로(group/home.jsp, common/GroupSideBar.jsp, ...)부터 받는 groupApplyCode
 		String groupApplyCode = request.getParameter("GroupApplyCode");
-		if ("".equals(groupApplyCode))
-			groupApplyCode = "16";		//-- 테스트용
+		if ("".equals(groupApplyCode) || groupApplyCode==null)
+			groupApplyCode = "91";		//-- 테스트용
 		
 		boolean flag = false;
 		
 		// user통해 joinCode 얻기
 		// + joinCode로 groupApplyCode 비교 + nickname도 얻어야함
-		for (ChallengeDTO userGroup : dao.getJoinCode(user.getUserCode()) )
+		for (ChallengeDTO userGroup : dao.getJoinCodes(user.getUserCode()) )
 		{
 			if (groupApplyCode.equals(userGroup.getGroupApplyCode()))
 			{
@@ -126,34 +126,8 @@ public class ChanllengeController {
 	// 도전과제 등록 프로세스
 	@RequestMapping(value="/challengecreate.do", method=RequestMethod.POST)
 	public String createChallenge(HttpSession session, HttpServletRequest request
-			, ChallengeDTO dto)
+			, ChallengeDTO challengeDto)
 	{
-		/*
-		System.out.println(dto.getTitle());
-		System.out.println(dto.getStartDate());
-		System.out.println(dto.getContent());
-		System.out.println(dto.getChallengeType());
-		if (dto.getChallengeType().equals("daily"))
-		{
-			System.out.println(request.getParameter("day1"));
-			System.out.println(request.getParameter("day2"));
-			System.out.println(request.getParameter("day3"));
-			System.out.println(request.getParameter("day4"));
-			System.out.println(request.getParameter("day5"));
-			System.out.println(request.getParameter("day6"));
-			System.out.println(request.getParameter("day7"));
-		}
-		else
-		{
-			System.out.println("week1");
-			System.out.println("week2");
-			System.out.println("week3");
-			System.out.println("week4");
-			System.out.println("week5");
-		}
-		// challengeType (1 → daily, 2 → weekly)
-		*/
-		
 		IChallengeDAO dao = sqlSession.getMapper(IChallengeDAO.class);
 		
 		// 기존 dto에 있는 정보
@@ -162,37 +136,76 @@ public class ChanllengeController {
 		UserDTO user = (UserDTO)session.getAttribute("user");
 		//String joinCode = dao.getJoinCode(user.getUserCode());
 		//dto.setJoinCode(joinCode);
+		user = new UserDTO();
+		user.setUserCode("UC00000093");
 		
-		// 도전과제 세부 내용 입력용 DTO
-		ChallengeContentDTO contentDTO = new ChallengeContentDTO();
-		String type = request.getParameter(dto.getChallengeType());
+		String groupApplyCode = request.getParameter("groupApplyCode");
+		String joinCode = "";
 		
-		if ("".equals(type) || type==null)
+		if ("".equals(groupApplyCode) || groupApplyCode==null)
 		{
-			throw new NullPointerException();
+			groupApplyCode = "91";
 		}
 		
-		if (type.equals("daily"))
+		boolean flag = false;
+		
+		for (ChallengeDTO list : dao.getJoinCodes(user.getUserCode()) )
 		{
-			contentDTO.setDay1(request.getParameter("day1"));
-			contentDTO.setDay2(request.getParameter("day2"));
-			contentDTO.setDay3(request.getParameter("day3"));
-			contentDTO.setDay4(request.getParameter("day4"));
-			contentDTO.setDay5(request.getParameter("day5"));
-			contentDTO.setDay6(request.getParameter("day6"));
-			contentDTO.setDay7(request.getParameter("day7"));
+			if (groupApplyCode.equals(list.getGroupApplyCode()))
+			{
+				flag = true;
+				joinCode = list.getJoinCode();
+				break;
+			}
+		}
+		
+		if (!flag)
+		{
+			System.out.println("null 문제 발생");
+		}
+		
+		
+		// 도전과제 세부 내용 입력용 DTO 생성 및 데이터 이전
+		ChallengeContentDTO contentDto = new ChallengeContentDTO();
+		
+		contentDto.setJoinCode(joinCode);
+		contentDto.setTitle(challengeDto.getTitle());
+		contentDto.setContent(challengeDto.getContent());
+		contentDto.setChallengeType(challengeDto.getChallengeType());
+		contentDto.setStartDate(challengeDto.getStartDate());
+		
+		// challengeType (1 → daily, 2 → weekly)
+		if ("daily".equals(contentDto.getChallengeType()))
+		{
+			contentDto.setChallengeType("1");
+			contentDto.setDay1(request.getParameter("day1"));
+			contentDto.setDay2(request.getParameter("day2"));
+			contentDto.setDay3(request.getParameter("day3"));
+			contentDto.setDay4(request.getParameter("day4"));
+			contentDto.setDay5(request.getParameter("day5"));
+			contentDto.setDay6(request.getParameter("day6"));
+			contentDto.setDay7(request.getParameter("day7"));
 		}
 		else
 		{
-			contentDTO.setWeek1(request.getParameter("week1"));
-			contentDTO.setWeek2(request.getParameter("week2"));
-			contentDTO.setWeek3(request.getParameter("week3"));
-			contentDTO.setWeek4(request.getParameter("week4"));
-			contentDTO.setWeek5(request.getParameter("week5"));
+			contentDto.setChallengeType("2");
+			contentDto.setWeek1(request.getParameter("week1"));
+			contentDto.setWeek2(request.getParameter("week2"));
+			contentDto.setWeek3(request.getParameter("week3"));
+			contentDto.setWeek4(request.getParameter("week4"));
+			contentDto.setWeek5(request.getParameter("week5"));
 		}
 		
+		System.out.println(contentDto.getJoinCode());
+		System.out.println(contentDto.getTitle());
+		System.out.println(contentDto.getContent());
+		System.out.println(contentDto.getChallengeType());
+		System.out.println(contentDto.getStartDate());
+		System.out.println(contentDto.getDay4());
 		
-		return "/WEB-INF/view/group_room/challenge/ChallengeList.jsp";
+		dao.challengeCreate(contentDto);
+		
+		return "redirect:challengelist.do";
 	}
 	
 	
@@ -207,10 +220,22 @@ public class ChanllengeController {
 		//UserDTO user = (UserDTO)session.getAttribute("user");
 		String challengeCode = request.getParameter("challengeCode");
 		if ("".equals(challengeCode) || challengeCode==null)
-			challengeCode = "2";		// 테스트용
+			challengeCode = "4";		// 테스트용
 		
 		// 도전과제 출력
 		ChallengeDTO challengeDetail = dao.getChallengeDetail(challengeCode);
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		// 종료 날짜 구하기
+		LocalDate startDate = LocalDate.parse(challengeDetail.getStartDate(), formatter);
+		LocalDate endDate=null;
+		
+		if ("1".equals(challengeDetail.getChallengeType()))			// 주간 과제
+			endDate = startDate.plusDays(7);
+		else if ("2".equals(challengeDetail.getChallengeType()))	// 월간 과제
+			endDate = startDate.plusDays(35);
+		
+		challengeDetail.setEndDate(endDate.format(formatter));
 		
 		// 도전과제 내용 출력
 		ArrayList<ChallengeContentDTO> challengeContentList = dao.getChallengeContent(challengeCode);
@@ -218,7 +243,7 @@ public class ChanllengeController {
 		model.addAttribute("challengeDetail", challengeDetail);
 		model.addAttribute("challengeContentList", challengeContentList);
 		
-		return "/WEB-INF/view/group_room/challenge/ChallengeDetail.jsp";
+		return "WEB-INF/view/group_room/challenge/ChallengeDetail.jsp";
 	}
 	
 }
