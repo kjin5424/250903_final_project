@@ -45,13 +45,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		AND GA.GROUP_APPLY_CODE = #{groupApplyCode}
 	</select>
 	
-	<select id="getJoinCode" resultType="java.lang.String">
+	<select id="getJoinCode" resultType="com.test.mybatis.dto.ChallengeDTO">
 		SELECT
-			JOIN_CODE
+			JOIN_CODE AS joinCode
+			, GROUP_APPLY_CODE AS groupApplyCode
 		FROM
 			JOIN_TABLE
 		WHERE
-			USER_CODE=${userCode}
+			USER_CODE=#{userCode}
 	</select>
 	
 	<select id="challengeList" resultType="com.test.mybatis.dto.ChallengeDTO">
