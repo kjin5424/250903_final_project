@@ -91,11 +91,13 @@ public class MessageController
 		return "/WEB-INF/view/group_room/MessageWrite.jsp";
 	}
 	
-	@RequestMapping(value="/messagewriteOk.do", method=RequestMethod.GET)
+	@RequestMapping(value="/messagewriteOk.do", method=RequestMethod.POST)
 	public String writeMessageOk(Model model, HttpServletRequest request)
 	{
 		String receiver = request.getParameter("receiver");
 		String content = request.getParameter("content");
+		System.out.println(receiver);
+		System.out.println(content);
 		
 		HttpSession session = request.getSession();
 		UserDTO user = (UserDTO)session.getAttribute("user");
@@ -112,6 +114,6 @@ public class MessageController
 		IMessageDAO daom = sqlSession.getMapper(IMessageDAO.class);
 		daom.sendMessage(dto);
 		
-		return "/messagelist.do";
+		return "redirect:/messagelist.do";
 	}
 }
