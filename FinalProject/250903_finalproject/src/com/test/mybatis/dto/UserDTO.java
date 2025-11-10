@@ -5,7 +5,7 @@ public class UserDTO
 	// USER_INFO 테이블 속성
 	private String userId, password, userName, nickname, userCode
 	, ssn1, ssn2, email, address, zipCode, savePath, createdDate
-	, myGroup, joinGroup;
+	, myGroup, joinGroup, requestJoin, requestApply, quitGroup;
 
 	// getter / setter 구성
 	public String getUserId()
@@ -146,5 +146,35 @@ public class UserDTO
 	public void setJoinGroup(String joinGroup)
 	{
 		this.joinGroup = joinGroup;
+	}
+
+	public String getRequestJoin()
+	{
+		return requestJoin;
+	}
+
+	public void setRequestJoin(String requestJoin)
+	{
+		this.requestJoin = requestJoin;
+	}
+
+	public String getRequestApply()
+	{
+		return requestApply;
+	}
+
+	public void setRequestApply(String requestApply)
+	{
+		this.requestApply = requestApply;
+	}
+
+	public String getQuitGroup()
+	{
+		return quitGroup;
+	}
+
+	public void setQuitGroup(String quitGroup)
+	{
+		this.quitGroup = quitGroup;
 	}
 }

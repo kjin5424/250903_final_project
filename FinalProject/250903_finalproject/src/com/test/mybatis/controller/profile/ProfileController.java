@@ -1,6 +1,5 @@
 package com.test.mybatis.controller.profile;
 
-
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.test.mybatis.dao.IGroupDAO;
 import com.test.mybatis.dao.IUserDAO;
 import com.test.mybatis.dto.UserDTO;
 
@@ -20,73 +20,94 @@ import com.test.mybatis.dto.UserDTO;
 ======================== */
 
 @Controller
-public class ProfileController {
-	
+public class ProfileController
+{
+
 	@Autowired
 	private SqlSession sqlSession;
 
 	@RequestMapping(value = "/calendar.do", method = RequestMethod.GET)
-	public String calendar(Model model) {
+	public String calendar(Model model)
+	{
 		return "/WEB-INF/view/profile/Calendar.jsp";
 	}
 
 	@RequestMapping(value = "/mypage.do", method = RequestMethod.GET)
-	public String mypage(Model model, HttpSession session) {
-		
-		UserDTO user = (UserDTO)session.getAttribute("user");
+	public String mypage(Model model, HttpSession session)
+	{
+
+		UserDTO user = (UserDTO) session.getAttribute("user");
 		IUserDAO userDao = sqlSession.getMapper(IUserDAO.class);
 		String userCode = "UC00000010";
-		
-		if(user!=null)
+		IGroupDAO groupDao = sqlSession.getMapper(IGroupDAO.class);
+
+		if (user != null)
 		{
 			userCode = user.getUserCode();
 		}
-		
-		model.addAttribute("user", userDao.inMyPage(userCode));
-		model.addAttribute("currentJoinGroup", sqlSession.selectList("com.test.mybatis.dao.IGroupDAO.myPageJoinGroup", userCode));
-		model.addAttribute("currentMyGroup", sqlSession.selectList("com.test.mybatis.dao.IGroupDAO.myPageMyGroup", userCode));
-		
-		
+
+		model.addAttribute("myGroup", sqlSession.selectList("com.test.mybatis.dao.IGroupDAO.myPageMyGroup", userCode));
+		model.addAttribute("joinGroup", sqlSession.selectList("com.test.mybatis.dao.IGroupDAO.myPageJoinGroup", userCode));
+		model.addAttribute("myInfo", userDao.inMyPage(userCode));
+		model.addAttribute("requestJoinGroup", sqlSession.selectList("com.test.mybatis.dao.IGroupDAO.myPageRequestJoinGroup", userCode));
+		model.addAttribute("requestApplyGroup", groupDao.myPageRequestApplyGroup(userCode));
+		model.addAttribute("quitGroup", sqlSession.selectList("com.test.mybatis.dao.IGroupJoinDAO.myPageQuitGroup", userCode));
+		model.addAttribute("favoriteGroup", sqlSession.selectList("com.test.mybatis.dao.IGroupDAO.myPageFavoriteGroup", userCode));
+
 		return "/WEB-INF/view/profile/Mypage.jsp";
 	}
 
 	@RequestMapping(value = "/profile.do", method = RequestMethod.GET)
-	public String profile(Model model,@RequestParam("readerUserCode") String readerUserCode,@RequestParam("targetUserCode") String targetUserCode) {
+	public String profile(Model model, @RequestParam("readerUserCode") String readerUserCode,
+			@RequestParam("targetUserCode") String targetUserCode)
+	{
 		IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
-		
+
 		int relationCheck = dao.relationCheck(readerUserCode, targetUserCode);
-		
+
 		System.out.println("RELATION_CHECK : " + relationCheck);
-		
+
 		switch (relationCheck)
 		{
-			case 1: return "redirect:/profilemodify.do";
-			case 2: model.addAttribute("profile", dao.otherProfile(targetUserCode)); 
-					model.addAttribute("currentGroup", sqlSession.selectList("com.test.mybatis.dao.IUserDAO.currentGroupList", targetUserCode)); 
-					model.addAttribute("quitGroup", sqlSession.selectList("com.test.mybatis.dao.IUserDAO.quitGroupList", targetUserCode)); 
-					model.addAttribute("relation", relationCheck); break;
-			case 3: model.addAttribute("profile", dao.otherProfile(targetUserCode)); 
-					model.addAttribute("currentGroup", sqlSession.selectList("com.test.mybatis.dao.IUserDAO.currentGroupList", targetUserCode)); 
-					model.addAttribute("quitGroup", sqlSession.selectList("com.test.mybatis.dao.IUserDAO.quitGroupList", targetUserCode)); 
-					model.addAttribute("relation", relationCheck); break;
-			default: break;
+		case 1:
+			return "redirect:/profilemodify.do";
+		case 2:
+			model.addAttribute("profile", dao.otherProfile(targetUserCode));
+			model.addAttribute("currentGroup",
+					sqlSession.selectList("com.test.mybatis.dao.IUserDAO.currentGroupList", targetUserCode));
+			model.addAttribute("quitGroup",
+					sqlSession.selectList("com.test.mybatis.dao.IUserDAO.quitGroupList", targetUserCode));
+			model.addAttribute("relation", relationCheck);
+			break;
+		case 3:
+			model.addAttribute("profile", dao.otherProfile(targetUserCode));
+			model.addAttribute("currentGroup",
+					sqlSession.selectList("com.test.mybatis.dao.IUserDAO.currentGroupList", targetUserCode));
+			model.addAttribute("quitGroup",
+					sqlSession.selectList("com.test.mybatis.dao.IUserDAO.quitGroupList", targetUserCode));
+			model.addAttribute("relation", relationCheck);
+			break;
+		default:
+			break;
 		}
-		
-		//sqlSession.selectList("com.example.mapper.UserMapper.getUserById", userId)
-		// Map<String, User> userMap = sqlSession.selectMap("com.example.mapper.UserMapper.getAllUsers", "userCode");
-		
-		
+
+		// sqlSession.selectList("com.example.mapper.UserMapper.getUserById", userId)
+		// Map<String, User> userMap =
+		// sqlSession.selectMap("com.example.mapper.UserMapper.getAllUsers",
+		// "userCode");
+
 		return "/WEB-INF/view/profile/Profile.jsp";
 	}
 
 	@RequestMapping(value = "/profileforgroupmanager.do", method = RequestMethod.GET)
-	public String profileForGroupManager(Model model) {
+	public String profileForGroupManager(Model model)
+	{
 		return "/WEB-INF/view/profile/ProfileForGroupManager.jsp";
 	}
-	
+
 	/*
-	@RequestMapping(value = "/profilemodify.do", method = RequestMethod.GET)
-	public String ProfileModify(Model model) {
-		return "/WEB-INF/view/profile/ProfileModify.jsp";
-	}*/
+	 * @RequestMapping(value = "/profilemodify.do", method = RequestMethod.GET)
+	 * public String ProfileModify(Model model) { return
+	 * "/WEB-INF/view/profile/ProfileModify.jsp"; }
+	 */
 }

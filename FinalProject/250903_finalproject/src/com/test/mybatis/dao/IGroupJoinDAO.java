@@ -50,6 +50,10 @@ public interface IGroupJoinDAO
 	public GroupJoinDTO getSelfIntro(@Param("groupApplyCode") String groupApplyCode, @Param("userCode") String userCode);
 	
 	// update -> Home.jsp 에서 한 줄 자기소개 수정하는 페이지
-	public String updateIntroduce(@Param("joinCode") String joinCode, @Param("introduce") String introduce);
+	public void updateIntroduce(@Param("joinCode") String joinCode, @Param("introduce") String introduce);
+	
+	public GroupJoinDTO myPageQuitGroup(@Param("userCode") String userCode);
+
+
 }
  
