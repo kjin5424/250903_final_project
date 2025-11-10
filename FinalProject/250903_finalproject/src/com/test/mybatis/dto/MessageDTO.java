@@ -12,6 +12,7 @@ public class MessageDTO
 	private String fdeleteDate;		// 발신자 메세지 삭제일자
 	private String rdeleteDate;		// 수신자 메세지 삭제일자
 	private String position;		// Order By용 position
+	private String savePath;		// 프사
 	
 	public String getMessageCode()
 	{
@@ -92,5 +93,13 @@ public class MessageDTO
 	public void setRdeleteDate(String rdeleteDate)
 	{
 		this.rdeleteDate = rdeleteDate;
+	}
+	public String getSavePath()
+	{
+		return savePath;
+	}
+	public void setSavePath(String savePath)
+	{
+		this.savePath = savePath;
 	}
 }
