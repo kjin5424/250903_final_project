@@ -1,0 +1,60 @@
+@charset "UTF-8";
+
+/* 글쓰기 페이지 전용 스타일 */
+.write-container {
+    max-width: 900px;
+    margin: var(--spacing-2xl) auto;
+    padding: 0 var(--spacing-lg);
+}
+
+.write-form {
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    padding: var(--spacing-xl);
+}
+
+.write-title {
+    font-size: 24px;
+    color: var(--color-text-primary);
+    font-weight: 700;
+    margin-bottom: var(--spacing-xl);
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-xl);
+}
+
+#content{
+	min-height:300px;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+    .write-container {
+        padding: 0 var(--spacing-md);
+        margin: var(--spacing-lg) auto;
+    }
+
+    .write-form {
+        padding: var(--spacing-lg);
+    }
+
+    .write-title {
+        font-size: 20px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .form-actions .btn {
+        width: 100%;
+    }
+}

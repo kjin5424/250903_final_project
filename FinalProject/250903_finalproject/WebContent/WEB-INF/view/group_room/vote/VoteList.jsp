@@ -84,7 +84,7 @@
 					전체 <span style="color: var(--color-primary);">●</span>
 				</button>
 				<button class="vote-filter-tab" onclick="filterVotes('ongoing', event)">
-					진행중 <span style="color: var(--color-primary);">●</span>
+					투표중 <span style="color: var(--color-primary);">●</span>
 				</button>
 				<button class="vote-filter-tab" onclick="filterVotes('ended', event)">
 					종료 <span style="color: #999;">●</span>
@@ -96,16 +96,17 @@
 				<c:when test="${not empty activityList}">
 					<div class="vote-grid">
 						<c:forEach var="activityDTO" items="${activityList}">
-							<div class="vote-card ${activityDTO.status == '진행중' ? 'ongoing' : 'ended'}" 
-							     data-status="${activityDTO.status == '진행중' ? 'ongoing' : 'ended'}">
+							<c:set var="isEnded" value="${activityDTO.status != '투표중'}" />
+							<div class="vote-card ${activityDTO.status == '투표중' ? 'ongoing' : 'ended'}" 
+							     data-status="${activityDTO.status == '투표중' ? 'ongoing' : 'ended'}">
 								
 								<!-- 카드 헤더 -->
 								<div class="vote-card-header">
 									<div class="vote-title-section">
 										<h3 class="vote-title">${activityDTO.content}</h3>
 									</div>
-									<span class="vote-status-badge ${activityDTO.status == '진행중' ? 'ongoing' : 'ended'}">
-										<span>${activityDTO.status == '진행중' ? '🔥' : '✓'}</span>
+									<span class="vote-status-badge ${activityDTO.status == '투표중' ? 'ongoing' : 'ended'}">
+										<span>${activityDTO.status == '투표중' ? '🔥' : '✓'}</span>
 										<span>${activityDTO.status}</span>
 									</span>
 								</div>
@@ -156,7 +157,7 @@
 									<div class="vote-option">
 										<div class="vote-option-header">
 											<label class="vote-option-label">
-												<input type="radio" name="vote_${activityDTO.activityCode}" value="1">
+												<input type="radio" name="vote_${activityDTO.activityCode}" value="1" ${isEnded ? 'disabled' : ''}>
 												<span>✅ 참여</span>
 											</label>
 											<span class="vote-option-percentage">
@@ -174,7 +175,7 @@
 									<div class="vote-option">
 										<div class="vote-option-header">
 											<label class="vote-option-label">
-												<input type="radio" name="vote_${activityDTO.activityCode}" value="0">
+												<input type="radio" name="vote_${activityDTO.activityCode}" value="0" ${isEnded ? 'disabled' : ''}>
 												<span>❌ 미참</span>
 											</label>
 											<span class="vote-option-percentage">
@@ -191,17 +192,23 @@
 								
 								<!-- 버튼 그룹 -->
 								<div class="vote-button-group">
-									<button class="vote-btn vote-btn-submit" onclick="submitVote('${activityDTO.activityCode}')">
+									<button class="vote-btn vote-btn-submit" 
+									        onclick="submitVote('${activityDTO.activityCode}')"
+									        ${isEnded ? 'disabled' : ''}>
 										<span>✓</span>
 										<span>제출</span>
 									</button>
 									<a href="VoteModify.jsp?activityCode=${activityDTO.activityCode}" style="flex: 1;">
-										<button class="vote-btn vote-btn-edit" style="width: 100%;">
+										<button class="vote-btn vote-btn-edit" 
+										        style="width: 100%;"
+										        ${isEnded ? 'disabled' : ''}>
 											<span>✏️</span>
 											<span>수정</span>
 										</button>
 									</a>
-									<button class="vote-btn vote-btn-delete" onclick="deleteVote('${activityDTO.activityCode}')">
+									<button class="vote-btn vote-btn-delete" 
+									        onclick="deleteVote('${activityDTO.activityCode}')"
+									        ${isEnded ? 'disabled' : ''}>
 										<span>🗑️</span>
 										<span>삭제</span>
 									</button>
