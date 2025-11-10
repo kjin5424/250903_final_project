@@ -33,20 +33,40 @@ public class ChanllengeController {
 	{
 		IChallengeDAO dao = sqlSession.getMapper(IChallengeDAO.class);
 		UserDTO user = (UserDTO)session.getAttribute("user");
-		String groupApplyCode = request.getParameter("GroupApplyCode");
-		
 		
 		// 유저의 joinCode 기반으로 GroupApplyCode 뽑은 후 도전과제 리스트 출력
 		// 회원이 아닐 때
+		/*
 		if (user==null)
 		{
 			return "redirect:loginpage.do";
 		}
+		*/
+		user.setUserCode("UC00000093");
+		
+		// 이전 페이지로(group/home.jsp, common/GroupSideBar.jsp, ...)부터 받는 groupApplyCode
+		String groupApplyCode = request.getParameter("GroupApplyCode");
+		if ("".equals(groupApplyCode))
+			groupApplyCode = "16";		//-- 테스트용
+		
+		boolean flag = false;
 		
 		// user통해 joinCode 얻기
-		// + joinCode로 groupApplyCode 얻기 + nickname도 얻어야함
-		String joinCode = "38";
-		groupApplyCode = "16";
+		// + joinCode로 groupApplyCode 비교 + nickname도 얻어야함
+		for (ChallengeDTO userGroup : dao.getJoinCode(user.getUserCode()) )
+		{
+			if (groupApplyCode.equals(userGroup.getGroupApplyCode()))
+			{
+				flag = true;
+				break;
+			}
+		}
+		
+		// 모임원이 아니라면 메인페이지로
+		if (!flag)
+		{
+			return "redirect:mainpage.do";
+		}
 		
 		try
 		{
@@ -58,20 +78,30 @@ public class ChanllengeController {
 			// 필요한 속성
 			// → endDate, status + nickname
 			
-			// 종료 날짜 구하기
+			// 필요 속성 구하기
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 			for (ChallengeDTO dto : challengeList)
 			{
-				LocalDate start = LocalDate.parse(dto.getStartDate(), formatter);
-				LocalDate end=null;
+				// 종료 날짜 구하기
+				LocalDate startDate = LocalDate.parse(dto.getStartDate(), formatter);
+				LocalDate endDate=null;
 				
 				if ("1".equals(dto.getChallengeType()))			// 주간 과제
-					end = start.plusDays(7);
+					endDate = startDate.plusDays(7);
 				else if ("2".equals(dto.getChallengeType()))	// 월간 과제
-					end = start.plusDays(35);
+					endDate = startDate.plusDays(35);
 				
-				dto.setEndDate(end.format(formatter));
-				dto.setStatus("1");
+				dto.setEndDate(endDate.format(formatter));
+				
+				// 진행상태 구하기
+				// 1 → 대기, 2 → 진행중, 3 → 종료
+				LocalDate currentDate = LocalDate.now();
+				if (currentDate.isBefore(startDate))
+					dto.setStatus("1");
+				else if (currentDate.isBefore(endDate))
+					dto.setStatus("2");
+				else
+					dto.setStatus("3");
 			}
 			
 			model.addAttribute("challengeList", challengeList);
@@ -160,7 +190,6 @@ public class ChanllengeController {
 			contentDTO.setWeek4(request.getParameter("week4"));
 			contentDTO.setWeek5(request.getParameter("week5"));
 		}
-		
 		
 		
 		return "/WEB-INF/view/group_room/challenge/ChallengeList.jsp";

@@ -7,7 +7,6 @@ import org.apache.ibatis.annotations.Param;
 
 import com.test.mybatis.dto.ChallengeContentDTO;
 import com.test.mybatis.dto.ChallengeDTO;
-import com.test.mybatis.dto.GroupJoinDTO;
 
 public interface IChallengeDAO
 {
@@ -18,7 +17,7 @@ public interface IChallengeDAO
 	public List<ChallengeDTO> challengeForGroup(@Param("groupApplyCode") String groupApplyCode);
 	
 	// joinCode 가져오기.
-	public ArrayList<String> getJoinCode(String userCode);
+	public ArrayList<ChallengeDTO> getJoinCode(String userCode);
 	
 	// 모임에 맞는 challenge 가져오기.
 	public ArrayList<ChallengeDTO> challengeList(String groupApplyCode);
