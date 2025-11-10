@@ -43,6 +43,8 @@ public class MessageController
 					IMessageDAO daom = sqlSession.getMapper(IMessageDAO.class);
 					ArrayList<MessageDTO> receivedMessage = daom.getReceivedMessage(groupApplyCode, joinCode);
 					ArrayList<MessageDTO> forwardedMessage = daom.getForwardedMessage(groupApplyCode, joinCode);
+					model.addAttribute("receivedMessage", receivedMessage);
+					model.addAttribute("forwardedMessage", forwardedMessage);
 					return "/WEB-INF/view/group_room/MessageList.jsp";
 				}
 				else
