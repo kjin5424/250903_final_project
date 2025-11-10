@@ -81,7 +81,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="quitGroupList" resultType="com.test.mybatis.dto.GroupJoinDTO" parameterType="java.lang.String">
-		SELECT CGV.GROUPAPPLYCODE
+		SELECT DISTINCT CGV.GROUPAPPLYCODE
 		     , CGV.TITLE AS GROUPTITLE
 		     , QMV.JOINDATE AS JOINDATE
 		     , QMV.QUITDATE AS QUITDATE
@@ -131,27 +131,44 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="relationCheck" resultType="java.lang.Integer">
-		SELECT CASE WHEN #{readerUserCode} = #{targetUserCode} THEN 1  
-            WHEN EXISTS (
-                        SELECT 1
-                        FROM CURRENT_MEMBER_VIEW V_LEADER
-                        JOIN CURRENT_MEMBER_VIEW V_TARGET ON V_LEADER.GROUPAPPLYCODE = V_TARGET.GROUPAPPLYCODE
-                        JOIN 
-                        (
-                            SELECT JOIN_CODE, POSITION_TYPE, GRANT_TYPE
-                            FROM 
-                            (
-                                SELECT JOIN_CODE, POSITION_TYPE, GRANT_TYPE,
-                                       ROW_NUMBER() OVER (PARTITION BY JOIN_CODE ORDER BY CREATED_DATE DESC) AS RN
-                                FROM MEMBER_POSITION
-                            ) WHERE RN = 1
-                        ) MP ON MP.JOIN_CODE = V_LEADER.JOINCODE
-                        WHERE V_LEADER.USERCODE = #{readerUserCode}
-                        AND V_TARGET.USERCODE = #{targetUserCode}
-                        AND MP.POSITION_TYPE = 1
-                        AND MP.GRANT_TYPE = 1
+		SELECT CASE WHEN #{readerUserCode} = #{targetUserCode} THEN 1
+		            WHEN EXISTS (
+		                        SELECT 1
+		                        FROM CURRENT_MEMBER_VIEW V_LEADER
+		                        JOIN CURRENT_MEMBER_VIEW V_TARGET ON V_LEADER.GROUPAPPLYCODE = V_TARGET.GROUPAPPLYCODE
+		                        JOIN 
+		                        (
+		                            SELECT JOIN_CODE, POSITION_TYPE, GRANT_TYPE
+		                            FROM 
+		                            (
+		                                SELECT JOIN_CODE, POSITION_TYPE, GRANT_TYPE,
+		                                       ROW_NUMBER() OVER (PARTITION BY JOIN_CODE ORDER BY CREATED_DATE DESC) AS RN
+		                                FROM MEMBER_POSITION
+		                            ) WHERE RN = 1
+		                        ) MP ON MP.JOIN_CODE = V_LEADER.JOINCODE
+		                        WHERE V_LEADER.USERCODE = #{readerUserCode}
+		                        AND V_TARGET.USERCODE = #{targetUserCode}
+		                        AND MP.POSITION_TYPE = 1
+		                        AND MP.GRANT_TYPE = 1
 		        ) THEN 2
-		        ELSE 3
+		        WHEN EXISTS (
+		                        SELECT 1
+		                        FROM CURRENT_MEMBER_VIEW V_LEADER
+		                        JOIN CURRENT_MEMBER_VIEW V_TARGET ON V_LEADER.GROUPAPPLYCODE = V_TARGET.GROUPAPPLYCODE
+		                        JOIN 
+		                        (
+		                            SELECT JOIN_CODE, POSITION_TYPE, GRANT_TYPE
+		                            FROM 
+		                            (
+		                                SELECT JOIN_CODE, POSITION_TYPE, GRANT_TYPE,
+		                                       ROW_NUMBER() OVER (PARTITION BY JOIN_CODE ORDER BY CREATED_DATE DESC) AS RN
+		                                FROM MEMBER_POSITION
+		                            ) WHERE RN = 1
+		                        ) MP ON MP.JOIN_CODE = V_LEADER.JOINCODE
+		                        WHERE V_LEADER.USERCODE = #{readerUserCode}
+		                        AND V_TARGET.USERCODE = #{targetUserCode}
+		        ) THEN 3
+		        ELSE 4
 		        END AS RELATION_TYPE
 		FROM DUAL
 	</select>
