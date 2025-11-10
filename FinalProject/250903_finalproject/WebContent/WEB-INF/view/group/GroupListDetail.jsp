@@ -427,7 +427,7 @@ window.onload = function() {
                             <c:set var="leaderFound" value="false" />
                             <c:forEach var="member" items="${memberList}">
                                 <c:if test="${member.position eq '모임장'}">
-                                    <c:out value="${member.nickname}" />
+                                    <c:out value="${member.nickName}" />
                                     <c:set var="leaderFound" value="true" />
                                 </c:if>
                             </c:forEach>
@@ -508,10 +508,10 @@ window.onload = function() {
                         <c:forEach var="member" items="${memberList}">
                             <div class="member-card">
                                 <div class="member-avatar">
-                                    <c:out value="${fn:substring(member.nickname, 0, 1)}" default="?" />
+                                    <c:out value="${fn:substring(member.nickName, 0, 1)}" default="?" />
                                 </div>
                                 <div class="member-info">
-                                    <div class="member-name">${member.nickname}</div>
+                                    <div class="member-name">${member.nickName}</div>
                                     <div class="member-role">${member.position}</div>
                                     <div class="member-intro">${member.selfIntroduction}</div>
                                 </div>

@@ -266,9 +266,6 @@
 <body>
     <!-- 상단 메뉴바 -->
     <c:import url="/WEB-INF/view/common/TopMenuBar.jsp" />
-    
-    <!-- 사이드바 -->
-    <c:import url="/WEB-INF/view/common/GroupSideBar.jsp" />
 
     <!-- 관리 페이지 컨테이너 -->
     <div class="container">
@@ -319,7 +316,7 @@
             <div class="section-title">👥 모임원 관리</div>
             <div class="section-divider"></div>
             <div class="management-grid">
-                <div class="management-card" onclick="location.href='membermanage.do'">
+                <div class="management-card" onclick="location.href='${pageContext.request.contextPath}/membermanage.do?groupApplyCode=${groupApplyCode}'">
                     <div class="card-icon">👥</div>
                     <div class="card-title">모임원 및 권한 관리</div>
                     <div class="card-description">
@@ -328,7 +325,7 @@
                     <span class="permission-badge">모임장 전용</span>
                 </div>
 
-                <div class="management-card" onclick="location.href='applicant.do'">
+                <div class="management-card" onclick="location.href='applicant.do?groupApplyCode=${groupApplyCode}'">
                     <div class="card-icon">📝</div>
                     <div class="card-title">가입 신청 관리</div>
                     <div class="card-description">
@@ -337,7 +334,7 @@
                     <span class="permission-badge">모임장 이상</span>
                 </div>
 
-                <div class="management-card" onclick="location.href='attendance.do'">
+                <div class="management-card" onclick="location.href='attendance.do?groupApplyCode=${groupApplyCode}'">
                     <div class="card-icon">📋</div>
                     <div class="card-title">출석 관리</div>
                     <div class="card-description">
@@ -369,7 +366,7 @@
             <div class="section-title">⚙️ 모임 설정</div>
             <div class="section-divider"></div>
             <div class="management-grid">
-                <div class="management-card" onclick="location.href='groupcreatemodify.do'">
+                <div class="management-card" onclick="location.href='${pageContext.request.contextPath}/groupedit.do?groupApplyCode=${groupApplyCode}'">
                     <div class="card-icon">✏️</div>
                     <div class="card-title">모임 정보 수정</div>
                     <div class="card-description">

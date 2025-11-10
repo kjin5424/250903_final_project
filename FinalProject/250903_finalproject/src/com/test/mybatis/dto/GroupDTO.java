@@ -35,16 +35,65 @@ public class GroupDTO
 	private String checkChallenge;	// 모임의 도전과제 총 달성률
 	private String totalAttendance;	// 모임의 총 출석률
 	private int currentMemberCount;	// 현재 멤버 인원수
-	private String nickname;
+	private String nickName;
 	private String selfIntroduction;
 	private String position;
+	private String email;
+	private String joinCode;
+	private int attendanceActivity;
+	private String userCode;
 	
-	public String getNickname() {
-		return nickname;
+	
+
+
+	public String getNickName()
+	{
+		return nickName;
 	}
 
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
+	public void setNickName(String nickName)
+	{
+		this.nickName = nickName;
+	}
+
+	public String getEmail()
+	{
+		return email;
+	}
+
+	public void setEmail(String email)
+	{
+		this.email = email;
+	}
+
+	public String getJoinCode()
+	{
+		return joinCode;
+	}
+
+	public void setJoinCode(String joinCode)
+	{
+		this.joinCode = joinCode;
+	}
+
+	public int getAttendanceActivity()
+	{
+		return attendanceActivity;
+	}
+
+	public void setAttendanceActivity(int attendanceActivity)
+	{
+		this.attendanceActivity = attendanceActivity;
+	}
+
+	public String getUserCode()
+	{
+		return userCode;
+	}
+
+	public void setUserCode(String userCode)
+	{
+		this.userCode = userCode;
 	}
 
 	public String getSelfIntroduction() {

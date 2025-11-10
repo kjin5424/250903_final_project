@@ -704,4 +704,69 @@ WHERE
 	</select>
 	
 	
+<select id="groupManageMemberList" parameterType="String" resultType="com.test.mybatis.dto.GroupDTO">
+    SELECT 
+        DISTINCT UT.USER_CODE AS userCode,
+        J.JOIN_CODE AS joinCode,
+        UI.NICKNAME AS nickName,
+        UI.EMAIL AS email,
+        UI.SAVEPATH AS savePath,
+        J.INTRODUCE AS selfIntroduction,
+        GA.GROUP_APPLY_CODE AS groupApplyCode,
+        
+
+        NVL(CASE WHEN MP.GRANT_TYPE = 1 THEN PST.TYPE ELSE '모임원' END, '모임원') AS position,
+        
+        TO_CHAR(J.CREATED_DATE, 'YYYY-MM-DD') AS joinDate,
+        TO_CHAR(UT.CREATED_DATE, 'YYYY-MM-DD') AS createdDate,
+        
+
+        NVL((
+            SELECT COUNT(*) 
+            FROM ACTIVITY_VOTE ACV 
+            WHERE ACV.JOIN_CODE = J.JOIN_CODE 
+        ), 0) AS totalActivity,
+        
+
+        NVL((
+            SELECT COUNT(*) 
+            FROM ACTIVITY_VOTE ACV 
+            LEFT JOIN ATTENDANCE ATT ON ATT.ACTIVITY_VOTE_CODE = ACV.ACTIVITY_VOTE_CODE 
+            WHERE ACV.JOIN_CODE = J.JOIN_CODE 
+            AND ATT.ACTIVITY_VOTE_CODE IS NOT NULL 
+        ), 0) AS attendanceActivity
+        
+    FROM REQUEST_ANSWER RA
+    JOIN JOIN_TABLE J ON RA.JOIN_CODE = J.JOIN_CODE
+    JOIN GROUP_APPLY GA ON J.GROUP_APPLY_CODE = GA.GROUP_APPLY_CODE
+    LEFT JOIN QUIT_MEMBER QM ON RA.JOIN_CODE = QM.JOIN_CODE
+    JOIN USER_TABLE UT ON UT.USER_CODE = J.USER_CODE
+    JOIN USER_INFO UI ON UI.USER_ID = UT.USER_ID
+ 
+    LEFT JOIN (
+        SELECT 
+            JOIN_CODE, POSITION_TYPE, GRANT_TYPE, 
+            ROW_NUMBER() OVER (PARTITION BY JOIN_CODE ORDER BY CREATED_DATE DESC) AS RN
+        FROM MEMBER_POSITION
+    ) MP ON RA.JOIN_CODE = MP.JOIN_CODE AND MP.RN = 1
+    
+    LEFT JOIN POSITION_TYPE PST ON MP.POSITION_TYPE = PST.POSITION_TYPE
+    
+    WHERE 
+        RA.ANSWER_TYPE = 1                 
+        AND J.GROUP_APPLY_CODE = #{groupApplyCode}
+        AND QM.JOIN_CODE IS NULL             
+        AND (MP.GRANT_TYPE IN (1, 2) OR MP.JOIN_CODE IS NULL) 
+        
+    ORDER BY 
+        CASE NVL(CASE WHEN MP.GRANT_TYPE = 1 THEN PST.TYPE ELSE '모임원' END, '모임원')
+            WHEN '모임장' THEN 1
+            WHEN '부모임장' THEN 2
+            WHEN '도우미' THEN 3
+            ELSE 4 
+        END,
+        UI.NICKNAME ASC
+</select>
+	
+	
 </mapper>
