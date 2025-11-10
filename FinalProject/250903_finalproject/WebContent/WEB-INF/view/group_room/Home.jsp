@@ -68,11 +68,11 @@
         }
 
         function editIntro() {
-            const newIntro = prompt('한줄 자기소개를 수정하세요:', '알고리즘 공부를 체계적으로 하고 싶어서 가입했습니다!');
-            if (newIntro !== null && newIntro.trim()) {
-                document.querySelector('.intro-text').textContent = newIntro;
-                alert('자기소개가 수정되었습니다.');
-            }
+        	if (confirm("한 줄 자기소개를 수정(등록)하시겠습니까?")) 
+    		{
+    			return true;
+    		}
+    		return false;
         }
     </script>
 </head>
@@ -240,36 +240,45 @@
 				</div>
 
                 <!-- 도전 과제 -->
-                <c:if test="${not empty checkMember}">
-                    <c:if test="${checkMember == 1}">
-                        <c:if test="${not empty challenge}">
-                            <div class="section-wrapper">
-                                <div class="section-header">
-                                    <h2 class="section-title">🏆 진행중인 도전과제</h2>
-                                    <button class="btn-more" onclick="location.href='challengelist.do?groupApplyCode=${groupInfo.groupApplyCode}'">
-                                        더보기 →
-                                    </button>
-                                </div>
-                                <div class="challenge-card">
-                                    <div class="challenge-title">${challenge.title}</div>
-                                    <div class="challenge-progress">
-                                        <div class="challenge-progress-text">
-                                            ${challenge.datePercent} ${challenge.status}
-                                        </div>
-                                        <div class="challenge-progress-bar">
-                                            <div class="challenge-progress-fill" style="width: <%=challengePercent %>%;"></div>
-                                        </div>
-                                    </div>
-                                    <div class="challenge-info">
-                                        <span>참여: ${challenge.challengeMember}명</span>
-                                        <span>평균 달성률: <%=challengePercent %>%</span>
-                                    </div>
-                                    <button class="btn-challenge" onclick="viewChallenge(1)">인증하기</button>
-                                </div>
-                            </div>
-                        </c:if>
-                    </c:if>
-                </c:if>
+                <div class="section-wrapper">
+				<c:if test="${not empty checkMember }">
+					<div class="challenge-section">
+						<div class="section-header">
+							<h2 class="section-title">🏆 진행중인 도전과제</h2>
+							<button class="btn-more"
+								onclick="location.href='challengelist.do?groupApplyCode=${groupInfo.groupApplyCode}'">더보기
+								→</button>
+						</div>
+
+						<div class="challenge-card">
+							<c:choose>
+								<c:when test="${not empty challenge }">
+									<div class="challenge-title">${challenge.title }</div>
+									<div class="challenge-progress">
+										<div class="challenge-progress-text">${challenge.datePercent }
+											${challenge.status }</div>
+										<div class="challenge-progress-bar">
+											<div class="challenge-progress-fill"
+												style="width: <%=challengePercent%>%;"></div>
+										</div>
+									</div>
+									<div class="challenge-info">
+										<span>참여: ${challenge.challengeMember }명</span> <span>평균
+											달성률: <%=challengePercent%>%
+										</span>
+									</div>
+									<button class="btn-challenge" onclick="viewChallenge(1)">인증하기</button>
+								</c:when>
+								<c:otherwise>
+		                        	진행중인 도전과제가 없습니다.
+		                        </c:otherwise>
+							</c:choose>
+						</div>
+
+
+					</div>
+				</c:if>
+			</div>
 
                 <!-- 알림 -->
                 <div class="section-wrapper">
@@ -300,37 +309,40 @@
                 </div>
 
                 <!-- 내 한줄소개 -->
-                <c:if test="${not empty checkMember}">
-                    <c:if test="${checkMember == 1}">
-                        <div class="section-wrapper">
-                            <div class="section-header">
-                                <h2 class="section-title">✍️ 내 한줄소개</h2>
-                            </div>
-                            <c:choose>
-                                <c:when test="${not empty selfIntro}">
-								    <div class="my-intro">
-								        <div class="intro-label">나의 소개</div>
-								        <div class="intro-text">${selfIntro.selfIntro}</div>
-								    </div>
-								    <div class="intro-actions">
-								        <button class="btn-edit-intro" onclick="editIntro()">수정하기</button>
-								    </div>
-								</c:when>
-								<c:otherwise>
-								    <div class="my-intro">
-								        <div class="intro-label">나의 소개</div>
-								        <div class="intro-text">
-								            <span style="font-size: small;">등록된 소개가 없습니다.</span>
-								        </div>
-								    </div>
-								    <div class="intro-actions">
-								        <button class="btn-edit-intro" onclick="editIntro()">등록하기</button>
-								    </div>
-								</c:otherwise>
-                            </c:choose>
-                        </div>
-                    </c:if>
-                </c:if>
+                <div class="section-wrapper">
+				<c:if test="${not empty checkMember }">
+					<div class="intro-section">
+						<div class="section-header">
+							<h2 class="section-title">✍️ 내 한줄소개</h2>
+						</div>
+						<c:choose>
+							<c:when test="${not empty selfIntro }">
+								<form action="updateIntroduce.do" onsubmit="return editIntro()"  method="post">
+									<input type="hidden" value="${checkMember }" name="joinCode">
+									<input type="hidden" value="${groupInfo.groupApplyCode}" name="groupApplyCode">
+									<div class="my-intro">
+										<div class="intro-label">나의 소개</div>
+										<input type="text" name="introduce" class="intro-text" id="comment" value="${selfIntro.introduce }">
+									</div>
+									<button type="submit" class="btn-edit-intro">수정하기</button>
+								</form>
+							</c:when>
+							<c:otherwise>
+								<form action="updateIntroduce.do" onsubmit="return editIntro()"  method="post">
+									<input type="hidden" value="${checkMember }" name="joinCode">
+									<input type="hidden" value="${groupInfo.groupApplyCode}" name="groupApplyCode">
+									<div class="my-intro">
+										<div class="intro-label">나의 소개</div>
+										<input type="text" name="introduce" class="intro-text" id="comment" value="등록된 소개가 없습니다.">
+									</div>
+									<button type="submit" class="btn-edit-intro">등록하기</button>
+								</form>
+							</c:otherwise>
+						</c:choose>
+					</div>
+				</c:if>
+				</div>
+
             </div>
         </div>
     </div>

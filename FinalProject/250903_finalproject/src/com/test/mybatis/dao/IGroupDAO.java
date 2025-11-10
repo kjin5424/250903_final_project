@@ -53,4 +53,11 @@ public interface IGroupDAO
 	
 	// 마이페이지에서 사용될 현재 활동 : 운영 모임에 대해 조회하는 쿼리문
 	public GroupDTO myPageMyGroup(@Param("userCode")String userCode);
+	
+	public GroupDTO myPageRequestJoinGroup(@Param("userCode") String userCode);
+	
+	public GroupDTO myPageRequestApplyGroup(@Param("userCode") String userCode);
+	
+	public GroupDTO myPageFavoriteGroup(@Param("userCode") String userCode);
+
 }

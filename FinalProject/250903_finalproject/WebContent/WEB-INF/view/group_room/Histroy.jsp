@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page language="java" %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -107,481 +108,168 @@
             <div id="all-tab" class="tab-content active">
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-value">45</div>
+                        <div class="stat-value">${countActivity }</div>
                         <div class="stat-label">총 활동 횟수</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">8</div>
+                        <div class="stat-value">${countChallenge }</div>
                         <div class="stat-label">도전과제 완료</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">Lv.3</div>
+                        <div class="stat-value">Lv.${groupLevel }</div>
                         <div class="stat-label">현재 레벨</div>
                     </div>
                 </div>
+                
+               <div class="timeline">
+			   <c:if test="${not empty history}">
+			       <c:forEach var="historyDTO" items="${history}">
+			           <div class="timeline-item">
+			               <div class="timeline-date">
+			                   <div class="timeline-dot"></div>
+			                   <div class="timeline-date-text">
+			                       ${historyDTO.updateDate}
+			                   </div>
+			               </div>
+			               <div class="timeline-content">
+			                   <div class="timeline-title">
+			                       <div class="timeline-content">
+			                            <div class="timeline-title">
+			                                <span>
+			                                
+			                                <c:choose>
+					                               <c:when test="${historyDTO.type eq 'JOIN'}">🥳 신규회원!</c:when>
+					                               <c:when test="${historyDTO.type eq 'LEVEL'}">🆙 레벨업!</c:when>
+					                               <c:when test="${historyDTO.type eq 'ACTIVITY'}">🗳️ 활동 등록!</c:when>
+					                               <c:when test="${historyDTO.type eq 'CHALLENGE'}">🎯 도전과제 등록!</c:when>
+					                               <c:when test="${historyDTO.type eq 'POSITION'}">👑 권한 변경</c:when>
+					                               <c:otherwise>♻️ 모임정보 변경!</c:otherwise>
+					                        </c:choose>
 
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-date">
-                            <div class="timeline-dot"></div>
-                            <div class="timeline-date-text">2024.10.20</div>
-                        </div>
-                        <div class="timeline-content">
-                            <div class="timeline-title">
-                                <span>🗳️</span>
-                                <span>10월 4주차 모임 일정 투표 완료</span>
-                                <span class="timeline-category">투표</span>
-                            </div>
-                            <div class="timeline-description">
-                                <strong>결정 사항:</strong> 10월 27일 오후 2시, 스터디 카페 A지점
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-date">
-                            <div class="timeline-dot"></div>
-                            <div class="timeline-date-text">2024.10.18</div>
-                        </div>
-                        <div class="timeline-content">
-                            <div class="timeline-title">
-                                <span>🏆</span>
-                                <span>백준 실버 문제 풀기 도전과제 완료</span>
-                                <span class="timeline-category">도전과제</span>
-                            </div>
-                            <div class="timeline-description">
-                                7명 중 6명이 도전과제를 완료했습니다. (달성률 86%)
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-date">
-                            <div class="timeline-dot"></div>
-                            <div class="timeline-date-text">2024.10.12</div>
-                        </div>
-                        <div class="timeline-content">
-                            <div class="timeline-title">
-                                <span>✏️</span>
-                                <span>모임 정보 수정</span>
-                                <span class="timeline-category">모임 수정</span>
-                            </div>
-                            <div class="timeline-description">
-                                • 모임 시간: 토요일 14:00 → 토요일 19:00<br>
-                                • 모임 장소: 스터디 카페 A지점 → 온라인/오프라인 병행
-                            </div>
-                            <div class="timeline-meta">
-                                <span>👤 수정자: 김모임장</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-date">
-                            <div class="timeline-dot"></div>
-                            <div class="timeline-date-text">2024.10.10</div>
-                        </div>
-                        <div class="timeline-content">
-                            <div class="timeline-title">
-                                <span>👥</span>
-                                <span>새로운 모임원 가입</span>
-                                <span class="timeline-category">모임원</span>
-                            </div>
-                            <div class="timeline-description">
-                                윤개발님이 모임에 참여했습니다.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-date">
-                            <div class="timeline-dot"></div>
-                            <div class="timeline-date-text">2024.10.05</div>
-                        </div>
-                        <div class="timeline-content">
-                            <div class="timeline-title">
-                                <span>🎉</span>
-                                <span>모임 레벨 업!</span>
-                                <span class="timeline-category">레벨</span>
-                                <span class="level-up-badge">LEVEL UP!</span>
-                            </div>
-                            <div class="timeline-description">
-                                Lv.2 → Lv.3 레벨업<br><br>
-                                <strong>해금된 기능:</strong><br>
-                                • 모임 정원: 7명 → 10명<br>
-                                • 부모임장 설정 가능<br>
-                                • 개인 도전과제 해금
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-date">
-                            <div class="timeline-dot"></div>
-                            <div class="timeline-date-text">2024.09.25</div>
-                        </div>
-                        <div class="timeline-content">
-                            <div class="timeline-title">
-                                <span>✏️</span>
-                                <span>모임 정보 수정</span>
-                                <span class="timeline-category">모임 수정</span>
-                            </div>
-                            <div class="timeline-description">
-                                • 모임 설명 업데이트<br>
-                                • 난이도: 하 → 중<br>
-                                • 모임 이미지 변경
-                            </div>
-                            <div class="timeline-meta">
-                                <span>👤 수정자: 김모임장</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-date">
-                            <div class="timeline-dot"></div>
-                            <div class="timeline-date-text">2024.09.15</div>
-                        </div>
-                        <div class="timeline-content">
-                            <div class="timeline-title">
-                                <span>⭐</span>
-                                <span>권한 변경</span>
-                                <span class="timeline-category">권한</span>
-                            </div>
-                            <div class="timeline-description">
-                                이부장님이 부모임장으로 임명되었습니다.
-                            </div>
-                            <div class="timeline-meta">
-                                <span>👤 변경자: 김모임장</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-date">
-                            <div class="timeline-dot"></div>
-                            <div class="timeline-date-text">2024.09.05</div>
-                        </div>
-                        <div class="timeline-content">
-                            <div class="timeline-title">
-                                <span>🏆</span>
-                                <span>자료구조 개념 정리하기 도전과제 완료</span>
-                                <span class="timeline-category">도전과제</span>
-                            </div>
-                            <div class="timeline-description">
-                                7명 모두 도전과제를 완료했습니다. (달성률 100%)
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-date">
-                            <div class="timeline-dot"></div>
-                            <div class="timeline-date-text">2024.08.28</div>
-                        </div>
-                        <div class="timeline-content">
-                            <div class="timeline-title">
-                                <span>🎉</span>
-                                <span>모임 레벨 업!</span>
-                                <span class="timeline-category">레벨</span>
-                                <span class="level-up-badge">LEVEL UP!</span>
-                            </div>
-                            <div class="timeline-description">
-                                Lv.1 → Lv.2 레벨업<br><br>
-                                <strong>해금된 기능:</strong><br>
-                                • 모임 정원: 5명 → 7명<br>
-                                • 평균 연령대 표시 기능
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-date">
-                            <div class="timeline-dot"></div>
-                            <div class="timeline-date-text">2024.08.20</div>
-                        </div>
-                        <div class="timeline-content">
-                            <div class="timeline-title">
-                                <span>✏️</span>
-                                <span>모임 정보 수정</span>
-                                <span class="timeline-category">모임 수정</span>
-                            </div>
-                            <div class="timeline-description">
-                                • 모임 이름: 알고리즘 스터디 → 알고리즘 정복 스터디<br>
-                                • 가입 질문 추가
-                            </div>
-                            <div class="timeline-meta">
-                                <span>👤 수정자: 김모임장</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-date">
-                            <div class="timeline-dot"></div>
-                            <div class="timeline-date-text">2024.08.10</div>
-                        </div>
-                        <div class="timeline-content">
-                            <div class="timeline-title">
-                                <span>⭐</span>
-                                <span>권한 변경</span>
-                                <span class="timeline-category">권한</span>
-                            </div>
-                            <div class="timeline-description">
-                                박도움님이 도우미로 임명되었습니다.
-                            </div>
-                            <div class="timeline-meta">
-                                <span>👤 변경자: 김모임장</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-date">
-                            <div class="timeline-dot"></div>
-                            <div class="timeline-date-text">2024.08.05</div>
-                        </div>
-                        <div class="timeline-content">
-                            <div class="timeline-title">
-                                <span>👥</span>
-                                <span>새로운 모임원 가입</span>
-                                <span class="timeline-category">모임원</span>
-                            </div>
-                            <div class="timeline-description">
-                                강알고, 정코딩님이 모임에 참여했습니다.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+											</span>
+			                                <span class="timeline-category">
+					                           <c:choose>
+					                               <c:when test="${historyDTO.type eq 'JOIN'}">가입</c:when>
+					                               <c:when test="${historyDTO.type eq 'LEVEL'}">레벨</c:when>
+					                               <c:when test="${historyDTO.type eq 'ACTIVITY'}">활동</c:when>
+					                               <c:when test="${historyDTO.type eq 'CHALLENGE'}">도전과제</c:when>
+					                               <c:when test="${historyDTO.type eq 'POSITION'}">역할</c:when>
+					                               <c:otherwise>모임정보 변경!</c:otherwise>
+					                        </c:choose>
+				                           </span>
+			                            </div>
+			                            <div class="timeline-description">
+					                       <span>${historyDTO.history}</span>
+			                            </div>
+			                        </div>
+			                   </div>
+			                    
+			               </div>
+			           </div>
+			       </c:forEach>
+			   </c:if>
+			    
+			   <c:if test="${empty history}">
+			       <div style="text-align: center; padding: 60px 20px; color: #999;">
+			           <div style="font-size: 48px; margin-bottom: 15px;">📭</div>
+			           <div>아직 히스토리가 없습니다.</div>
+			       </div>
+			   </c:if>
+			</div>
+		    </div>
+               
 
             <!-- 모임 및 권한 히스토리 -->
             <div id="member-tab" class="tab-content">
+            	
                 <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-date">
-                            <div class="timeline-dot"></div>
-                            <div class="timeline-date-text">2024.10.12</div>
-                        </div>
-                        <div class="timeline-content">
-                            <div class="timeline-title">
-                                <span>✏️</span>
-                                <span>모임 정보 수정</span>
-                                <span class="timeline-category">수정</span>
-                            </div>
-                            <div class="timeline-description">
-                                • 모임 시간: 토요일 14:00 → 토요일 19:00<br>
-                                • 모임 장소: 스터디 카페 A지점 → 온라인/오프라인 병행<br>
-                                • 모임 규칙 추가
-                            </div>
-                            <div class="timeline-meta">
-                                <span>👤 수정자: 김모임장</span>
-                            </div>
-                        </div>
-                    </div>
+                	<c:if test="${not empty notLevelHistory }">
+                		<c:forEach var="notLevel" items="${notLevelHistory }">
+		                   <div class="timeline-item">
+			               <div class="timeline-date">
+			                   <div class="timeline-dot"></div>
+			                   <div class="timeline-date-text">
+			                       ${notLevel.updateDate}
+			                   </div>
+			               </div>
+			               <div class="timeline-content">
+			                   <div class="timeline-title">
+			                       <div class="timeline-content">
+			                            <div class="timeline-title">
+			                                <span>
+			                                
+			                                <c:choose>
+					                               <c:when test="${notLevel.type eq 'JOIN'}">🥳 신규회원!</c:when>
+					                               <c:when test="${notLevel.type eq 'ACTIVITY'}">🗳️ 활동 등록!</c:when>
+					                               <c:when test="${notLevel.type eq 'CHALLENGE'}">🎯 도전과제 등록!</c:when>
+					                               <c:when test="${notLevel.type eq 'POSITION'}">👑 권한 변경</c:when>
+					                               <c:otherwise>♻️ 모임정보 변경!</c:otherwise>
+					                        </c:choose>
 
-                    <div class="timeline-item">
-                        <div class="timeline-date">
-                            <div class="timeline-dot"></div>
-                            <div class="timeline-date-text">2024.10.10</div>
-                        </div>
-                        <div class="timeline-content">
-                            <div class="timeline-title">
-                                <span>👥</span>
-                                <span>새로운 모임원 가입</span>
-                                <span class="timeline-category">가입</span>
-                            </div>
-                            <div class="timeline-description">
-                                윤개발님이 모임에 참여했습니다.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-date">
-                            <div class="timeline-dot"></div>
-                            <div class="timeline-date-text">2024.09.25</div>
-                        </div>
-                        <div class="timeline-content">
-                            <div class="timeline-title">
-                                <span>✏️</span>
-                                <span>모임 정보 수정</span>
-                                <span class="timeline-category">수정</span>
-                            </div>
-                            <div class="timeline-description">
-                                • 모임 설명 업데이트<br>
-                                • 난이도: 하 → 중<br>
-                                • 모임 이미지 변경
-                            </div>
-                            <div class="timeline-meta">
-                                <span>👤 수정자: 김모임장</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-date">
-                            <div class="timeline-dot"></div>
-                            <div class="timeline-date-text">2024.09.15</div>
-                        </div>
-                        <div class="timeline-content">
-                            <div class="timeline-title">
-                                <span>⭐</span>
-                                <span>권한 변경</span>
-                                <span class="timeline-category">권한</span>
-                            </div>
-                            <div class="timeline-description">
-                                이부장님이 부모임장으로 임명되었습니다.
-                            </div>
-                            <div class="timeline-meta">
-                                <span>👤 변경자: 김모임장</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-date">
-                            <div class="timeline-dot"></div>
-                            <div class="timeline-date-text">2024.08.20</div>
-                        </div>
-                        <div class="timeline-content">
-                            <div class="timeline-title">
-                                <span>✏️</span>
-                                <span>모임 정보 수정</span>
-                                <span class="timeline-category">수정</span>
-                            </div>
-                            <div class="timeline-description">
-                                • 모임 이름: 알고리즘 스터디 → 알고리즘 정복 스터디<br>
-                                • 가입 질문 추가
-                            </div>
-                            <div class="timeline-meta">
-                                <span>👤 수정자: 김모임장</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-date">
-                            <div class="timeline-dot"></div>
-                            <div class="timeline-date-text">2024.08.10</div>
-                        </div>
-                        <div class="timeline-content">
-                            <div class="timeline-title">
-                                <span>⭐</span>
-                                <span>권한 변경</span>
-                                <span class="timeline-category">권한</span>
-                            </div>
-                            <div class="timeline-description">
-                                박도움님이 도우미로 임명되었습니다.
-                            </div>
-                            <div class="timeline-meta">
-                                <span>👤 변경자: 김모임장</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-date">
-                            <div class="timeline-dot"></div>
-                            <div class="timeline-date-text">2024.08.05</div>
-                        </div>
-                        <div class="timeline-content">
-                            <div class="timeline-title">
-                                <span>👥</span>
-                                <span>새로운 모임원 가입</span>
-                                <span class="timeline-category">가입</span>
-                            </div>
-                            <div class="timeline-description">
-                                강알고, 정코딩님이 모임에 참여했습니다.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-date">
-                            <div class="timeline-dot"></div>
-                            <div class="timeline-date-text">2024.08.05</div>
-                        </div>
-                        <div class="timeline-content">
-                            <div class="timeline-title">
-                                <span>✏️</span>
-                                <span>모임 정보 수정</span>
-                                <span class="timeline-category">수정</span>
-                            </div>
-                            <div class="timeline-description">
-                                • 모임 공개 설정: 비공개 → 공개<br>
-                                • 청소년 환영 모임 설정: OFF
-                            </div>
-                            <div class="timeline-meta">
-                                <span>👤 수정자: 김모임장</span>
-                            </div>
-                        </div>
-                    </div>
+											</span>
+			                                <span class="timeline-category">
+					                           <c:choose>
+					                               <c:when test="${notLevel.type eq 'JOIN'}">가입</c:when>
+					                               <c:when test="${notLevel.type eq 'ACTIVITY'}">활동</c:when>
+					                               <c:when test="${notLevel.type eq 'CHALLENGE'}">도전과제</c:when>
+					                               <c:when test="${notLevel.type eq 'POSITION'}">역할</c:when>
+					                               <c:otherwise>모임정보 변경!</c:otherwise>
+					                        </c:choose>
+				                           </span>
+			                            </div>
+			                            <div class="timeline-description">
+					                       <span>${notLevel.history}</span>
+			                            </div>
+			                        </div>
+			                   </div>
+			                    
+			               </div>
+			           </div>
+		               </c:forEach>
+                    </c:if>
+					
+                  
                 </div>
             </div>
 
             <!-- 레벨 히스토리 -->
             <div id="level-tab" class="tab-content">
                 <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-date">
-                            <div class="timeline-dot"></div>
-                            <div class="timeline-date-text">2024.10.05</div>
-                        </div>
-                        <div class="timeline-content">
-                            <div class="timeline-title">
-                                <span>🎉</span>
-                                <span>Level 3 달성!</span>
-                                <span class="level-up-badge">LEVEL UP!</span>
-                            </div>
-                            <div class="timeline-description">
-                                Lv.2 → Lv.3 레벨업<br><br>
-                                <strong>해금된 기능:</strong><br>
-                                • 모임 정원: 7명 → 10명<br>
-                                • 부모임장 설정 가능<br>
-                                • 개인 도전과제 해금 (모임원도 도전과제 개설 가능)
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-date">
-                            <div class="timeline-dot"></div>
-                            <div class="timeline-date-text">2024.08.28</div>
-                        </div>
-                        <div class="timeline-content">
-                            <div class="timeline-title">
-                                <span>🎉</span>
-                                <span>Level 2 달성!</span>
-                                <span class="level-up-badge">LEVEL UP!</span>
-                            </div>
-                            <div class="timeline-description">
-                                Lv.1 → Lv.2 레벨업<br><br>
-                                <strong>해금된 기능:</strong><br>
-                                • 모임 정원: 5명 → 7명<br>
-                                • 평균 연령대 표시 기능
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-date">
-                            <div class="timeline-dot"></div>
-                            <div class="timeline-date-text">2024.08.03</div>
-                        </div>
-                        <div class="timeline-content">
-                            <div class="timeline-title">
-                                <span>🌱</span>
-                                <span>모임 개설</span>
-                                <span class="timeline-category">시작</span>
-                            </div>
-                            <div class="timeline-description">
-                                알고리즘 정복 스터디 모임이 개설되었습니다!
-                            </div>
-                        </div>
-                    </div>
+                	<c:if test="${not empty levelHistory }">
+                		<c:forEach var="level" items="${levelHistory }">
+		                    <div class="timeline-item">
+					               <div class="timeline-date">
+					                   <div class="timeline-dot"></div>
+					                   <div class="timeline-date-text">
+					                       ${level.updateDate}
+					                   </div>
+					               </div>
+					               <div class="timeline-content">
+					                   <div class="timeline-title">
+					                       <div class="timeline-content">
+					                            <div class="timeline-title">
+					                                <span>
+					                               	🆙 레벨업!
+													</span>
+					                                <span class="timeline-category">
+					                               레벨
+						                           </span>
+					                            </div>
+					                            <div class="timeline-description">
+							                       <span>${level.history}</span>
+					                            </div>
+					                        </div>
+					                   </div>
+					                    
+					               </div>
+					           </div>
+                    </c:forEach>
+					</c:if>
                 </div>
             </div>
+            
+            <!-- level -->
+            
         </div>
     </div>
 

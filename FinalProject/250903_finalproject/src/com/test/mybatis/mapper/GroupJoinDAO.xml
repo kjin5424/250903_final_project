@@ -90,7 +90,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="getSelfIntro" resultType="com.test.mybatis.dto.GroupJoinDTO">
-		SELECT J.JOIN_CODE AS GROUPJOINCODE, J.INTRODUCE AS SELFINTRO
+		SELECT J.JOIN_CODE AS GROUPJOINCODE, J.INTRODUCE AS INTRODUCE
 		FROM JOIN_TABLE J
 		JOIN USER_TABLE UT ON UT.USER_CODE = J.USER_CODE
 		JOIN GROUP_APPLY GA ON GA.GROUP_APPLY_CODE = J.GROUP_APPLY_CODE
@@ -98,6 +98,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE UT.USER_CODE = #{userCode}
 		AND GA.GROUP_APPLY_CODE = #{groupApplyCode}
 	</select>
+	
+	<update id="updateIntroduce">
+		UPDATE JOIN_TABLE
+		SET INTRODUCE = #{introduce}
+		WHERE JOIN_CODE = #{joinCode}
+	</update>
+	
+	<select id="myPageQuitGroup" resultType="com.test.mybatis.dto.GroupJoinDTO">
+		SELECT GROUPAPPLYCODE, TITLE AS GROUPTITLE, JOINDATE, QUITDATE, QUIT_REASON AS QUITREASON
+		FROM QUITMEMBERVIEW
+		WHERE USERCODE = #{userCode}
+	</select>
+
+
+	
 	
 </mapper>
 

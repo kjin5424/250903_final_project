@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.mybatis.dao.IHistoryDAO">
+
+	<select id="getHistory" resultType="com.test.mybatis.dto.HistoryDTO">
+		SELECT HISTORY, TYPE, TO_CHAR(UPDATEDATE, 'YYYY-MM-DD') AS UPDATEDATE
+		FROM GR_HISTORY_VIEW
+		WHERE GROUPAPPLYCODE = #{groupApplyCode}
+	</select>
+	
+	<select id="notLevelHistory" resultType="com.test.mybatis.dto.HistoryDTO">
+		SELECT HISTORY, TYPE, TO_CHAR(UPDATEDATE, 'YYYY-MM-DD') AS UPDATEDATE
+		FROM GR_HISTORY_VIEW
+		WHERE GROUPAPPLYCODE = #{groupApplyCode}
+		AND TYPE NOT IN ('LEVEL')
+	</select>
+
+	<select id="levelHistory" resultType="com.test.mybatis.dto.HistoryDTO">
+		SELECT HISTORY, TYPE, TO_CHAR(UPDATEDATE, 'YYYY-MM-DD') AS UPDATEDATE
+		FROM GR_HISTORY_VIEW
+		WHERE GROUPAPPLYCODE = #{groupApplyCode}
+		AND TYPE IN ('LEVEL')
+	</select>
+
+	<select id="countActivity" resultType="java.lang.Integer">
+		SELECT COUNT(AC.ACTIVITY_CODE) AS TOTALDATACOUNT
+		FROM ACTIVITY AC
+		JOIN JOIN_TABLE J ON J.JOIN_CODE = AC.JOIN_CODE
+		JOIN GROUP_APPLY GA ON GA.GROUP_APPLY_CODE = J.GROUP_APPLY_CODE
+		WHERE GA.GROUP_APPLY_CODE = #{groupApplyCode}
+		AND AC.ACTIVE_DATE &lt; SYSDATE
+		GROUP BY GA.GROUP_APPLY_CODE
+	</select>
+	
+	<select id="currentLevel" resultType="java.lang.String">
+		SELECT GROUPLEVEL
+		FROM CURRENT_GROUP_VIEW
+		WHERE GROUPAPPLYCODE = #{groupApplyCode}
+	</select>
+	
+	<select id="countChallenge" resultType="java.lang.Integer">
+		SELECT COUNT(C.CHALLENGE_CODE)
+		FROM CURRENT_GROUP_VIEW CGV
+		JOIN JOIN_TABLE J ON J.GROUP_APPLY_CODE = CGV.GROUPAPPLYCODE
+		JOIN CHALLENGE C ON C.JOIN_CODE = J.JOIN_CODE
+		JOIN
+		(
+		    SELECT (START_DATE + CASE CHALLENGE_TYPE WHEN 1 THEN 7 ELSE 7*5 END) AS END_DATE
+		         , CHALLENGE_CODE
+		    FROM CHALLENGE
+		) T ON C.CHALLENGE_CODE = T.CHALLENGE_CODE
+		WHERE CGV.GROUPAPPLYCODE = #{groupApplyCode}
+		AND T.END_DATE &lt; SYSDATE
+	</select>
+	
+</mapper>
