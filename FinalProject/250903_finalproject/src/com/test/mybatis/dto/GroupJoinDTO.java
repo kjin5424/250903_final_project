@@ -31,7 +31,18 @@ public class GroupJoinDTO
 	private String joinDate;			// 신청 날짜
 	private String insertDatae;			// 가입 처리 날짜
 	private String location;
+
 	
+	public String getAnswer() {
+		return answer;
+	}
+	public void setAnswer(String answer) {
+		this.answer = answer;
+	}
+	public String getStatus()
+	{
+		return status;
+	}
 	public String getNickName() {
 		return nickName;
 	}
@@ -163,16 +174,6 @@ public class GroupJoinDTO
 		this.groupName = groupName;
 	}
 	
-	public String getAnswer() {
-		return answer;
-	}
-	public void setAnswer(String answer) {
-		this.answer = answer;
-	}
-	public String getStatus()
-	{
-		return status;
-	}
 	public void setStatus(String status)
 	{
 		this.status = status;

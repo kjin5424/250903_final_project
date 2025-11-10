@@ -108,8 +108,14 @@ public class HomeController
 	            groupDetail.setCurrentMemberCount(memberCount);
 	            
 	            // 활동 수 
-	            int activityCount = dao.countActivity(groupApplyCode);
-	            model.addAttribute("activityCount", activityCount);
+	            
+	            Integer activityCount = dao.countActivity(groupApplyCode);
+	            if (activityCount == null)
+	            	model.addAttribute("activityCount", 0);
+	            else
+	            	model.addAttribute("activityCount", activityCount);
+	            	
+					
 	        }
 
 	        HttpSession session = request.getSession();
@@ -237,11 +243,6 @@ public class HomeController
 		return "/WEB-INF/view/group_room/Level.jsp";
 	}
 
-	@RequestMapping(value="/membermanage.do", method=RequestMethod.GET)
-	public String memberManage(Model model)
-	{
-		return "/WEB-INF/view/group_room/manage/MemberManage.jsp";
-	}
 	
 	@RequestMapping(value="/groupcreate.do", method=RequestMethod.GET)
 	public String groupCreate(Model model, HttpSession session)
@@ -383,6 +384,45 @@ public class HomeController
 	    }
 	    
 	    return "/WEB-INF/view/group/ApplicationComplete.jsp";
+	}
+	
+	@RequestMapping(value="/groupedit.do", method=RequestMethod.GET)
+	public String groupEdit(
+		@RequestParam("groupApplyCode") String groupApplyCode,
+		HttpSession session, 
+		Model model)
+	{
+		// 🚨 1. 로그인 체크
+		UserDTO user = (UserDTO)session.getAttribute("user");
+		if(user == null) {
+			return "redirect:loginpage.do";
+		}
+		
+		IGroupDAO dao = sqlSession.getMapper(IGroupDAO.class);
+		
+		try {
+			// 2. 그룹 상세 정보 조회 (기존 데이터 로드)
+			GroupDTO groupDetail = dao.groupDetail(groupApplyCode);
+			
+			
+		
+			
+			// 4. 질문 및 규칙 정보 로드
+			GroupDTO questionRule = dao.groupQuestionRule(groupApplyCode);
+			
+			// 5. Model에 데이터 추가
+			model.addAttribute("groupDetail", groupDetail);
+		
+			
+			// 6. View 반환
+			return "/WEB-INF/view/group_room/manage/EditGroup.jsp";
+			
+		} catch (Exception e) {
+			System.out.println("❌ groupEdit() 예외 발생: " + e.getMessage());
+			e.printStackTrace();
+			model.addAttribute("msg", "모임 정보를 불러오는 중 오류가 발생했습니다.");
+			return "redirect:mainpage.do";
+		}
 	}
 	
 	// /applicationsuccess.do (GET) - 최종 결과 페이지를 보여주는 역할
