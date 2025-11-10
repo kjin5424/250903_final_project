@@ -417,13 +417,9 @@
     </script>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-left">
-            <div class="logo-tab">
-                <span>로고 들어갈 자리</span>
-            </div>
-        </div>
-    </nav>
+
+	<!-- 상단바 -->
+	<c:import url="/WEB-INF/view/common/TopMenuBar.jsp" />
 
     <div class="container">
         <!-- 페이지 헤더 -->
@@ -449,10 +445,8 @@
         <!-- 신고 폼 -->
 <%-- <form class="report-form" method="post" action="<%= cp %>/reportmember.do" onsubmit="return validateForm()"> --%>
 
-<form class="report-form" method="POST" action="<%=cp%>/reportmember.do" onsubmit="return validateForm()">
-        
-       <%--  <form method="post" action="<%= cp %>/reportmember.do" name="reportForm" onsubmit="return validateForm()">  --%>
-        
+        		<form class="report-form" onsubmit="return validateForm()" method="post">
+  
         
             <!-- 정보 박스 -->
             <div class="info-box">

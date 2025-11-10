@@ -205,14 +205,15 @@
 
                 <div class="info-item">
                     <span class="info-label">답변 상태:</span>
-                    <span class="status-badge status-answered">답변완료</span>
+                    <span class="status-badge status-answered">처리중</span>
                 </div>
             </div>
-
-            <div class="form-group">
+			<br>
+			
+            <%-- <div class="form-group">
                 <div class="form-label">문의 제목</div>
-                <div class="inquiry-content">${inquiry.title}</div>
-            </div>
+                <div class="inquiry-content">${inquiry.content}</div>
+            </div> --%>
 
             <div class="form-group">
                 <div class="form-label">문의 내용</div>

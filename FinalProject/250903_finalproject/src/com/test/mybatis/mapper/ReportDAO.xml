@@ -5,30 +5,28 @@
 
 <mapper namespace="com.test.mybatis.dao.IReportDAO">
 
-	<!-- 모임 신고 등록 -->
-	<insert id="insertReport" parameterType="com.test.mybatis.dto.ReportDTO">
+    <!-- 모임 신고 등록 -->
+    <insert id="insertReport" parameterType="com.test.mybatis.dto.ReportDTO">
 		INSERT INTO REPORT_GROUP (REPORT_GROUP_CODE, USER_CODE, GROUP_APPLY_CODE,
 		REPORT_GROUP_TYPE, CREATED_DATE)
 		VALUES (REPORT_GROUP_SEQ.NEXTVAL, #{userCode}, #{groupApplyCode},
 		#{reportGroupType}, SYSDATE)
 	</insert>
 	
-	    <!-- 컨텐츠 신고 등록 -->
-	<insert id="insertContent" parameterType="com.test.mybatis.dto.ReportDTO">
-	        INSERT INTO REPORT_POST 
-	        (REPORT_POST_CODE, JOIN_CODE, POST_CODE, REPORT_CONTENT_TYPE, CREATED_DATE)
-	        VALUES 
-	        (REPORT_POST_SEQ.NEXTVAL, #{joinCode}, #{postCode}, #{reportContentType}, SYSDATE)
-	    </insert>
-	    
-	      <!-- 모임원 신고 등록 -->
+	<!-- 컨텐츠 신고 등록 -->
+    <insert id="insertContent" parameterType="com.test.mybatis.dto.ReportDTO">
+        INSERT INTO REPORT_POST 
+        (REPORT_POST_CODE, JOIN_CODE, POST_CODE, REPORT_CONTENT_TYPE, CREATED_DATE)
+        VALUES 
+        (REPORT_POST_SEQ.NEXTVAL, #{joinCode}, #{postCode}, #{reportContentType}, SYSDATE)
+    </insert> 
+
+    <!-- 모임원 신고 등록 -->
     <insert id="insertMember" parameterType="com.test.mybatis.dto.ReportDTO">
         INSERT INTO REPORT_MEMBER 
         (REPORT_MEMBER_CODE, REPORTER_CODE, REPORTEE_CODE, REPORT_MEMBER_TYPE, CONTENT, CREATED_DATE)
         VALUES 
         (REPORT_MEMBER_SEQ.NEXTVAL, #{reporterCode}, #{reporteeCode}, #{reportMemberType}, #{content}, SYSDATE)
-    </insert>  
-
-
-
+    </insert>    
+    
 </mapper>

@@ -438,13 +438,9 @@ textarea:focus {
 </script>
 </head>
 <body>
-	<nav class="navbar">
-		<div class="nav-left">
-			<div class="logo-tab">
-				<span>로고 들어갈 자리</span>
-			</div>
-		</div>
-	</nav>
+
+	<!-- 상단바 -->
+	<c:import url="/WEB-INF/view/common/TopMenuBar.jsp" />
 
 	<div class="container">
 		<!-- 페이지 헤더 -->
@@ -461,8 +457,17 @@ textarea:focus {
 		</div>
 
 		<!-- 신고 폼 -->
-		<!--  <form class="report-form" onsubmit="return validateForm()" method="post" action="reportafter.do"> -->
-		<form class="report-form" onsubmit="return validateForm()" method="post" action="reportgroup.do">
+<!-- 		 <form class="report-form" method="post" action="reportgroup.do" onsubmit="return validateForm()"> -->
+
+		<form class="report-form" onsubmit="return validateForm()" method="post">
+
+	<!-- 		<form id="report-form" action="reportgroup.do" method="post" onsubmit="return validateForm()"> -->
+	
+				<!-- 로그인 없이 임의 사용자 고정 -->
+			<input type="hidden" name="userCode" value="UC00000033">
+			
+			<!-- 신고 대상 모임 (예: 그룹신청코드) -->
+			<input type="hidden" name="groupApplyCode" value="12">
 
 			<!-- 정보 박스 -->
 			<div class="info-box">

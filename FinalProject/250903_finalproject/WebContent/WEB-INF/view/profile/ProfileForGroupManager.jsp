@@ -417,7 +417,7 @@
                         <button class="btn btn-primary" onclick="sendMessage()">
                             ✉️ 쪽지 보내기
                         </button>
-                        <button class="btn btn-danger" onclick="location.href='reportcontent.do'">
+                        <button class="btn btn-danger" onclick="location.href='reportmember.do'">
                             🚨 신고하기
                         </button>
                     </div>

@@ -11,6 +11,4 @@ public interface IReportDAO {
     
     // 모임원 신고 등록
     public int insertMember(ReportDTO dto);
-    
-    
 }

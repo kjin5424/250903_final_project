@@ -76,8 +76,9 @@
     
     function reportUser() {
         if (confirm('이 사용자를 신고하시겠습니까?')) {
-            alert('신고가 접수되었습니다.');
-            // 실제로는 서버로 신고 요청
+            //alert('신고가 접수되었습니다.');
+        	// 신고 페이지로 이동 (모임원 신고용)
+            window.location.href = "<%=cp%>/reportmember.do";
         }
     }
     

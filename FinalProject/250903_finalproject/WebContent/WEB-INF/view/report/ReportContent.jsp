@@ -351,16 +351,14 @@ function cancelReport() {
 </script>
 </head>
 <body>
-<nav class="navbar">
-    <div class="nav-left">
-        <div class="logo-tab">로고 들어갈 자리</div>
-    </div>
-</nav>
+
+	<!-- 상단바 -->
+	<c:import url="/WEB-INF/view/common/TopMenuBar.jsp" />
 
 <div class="container">
     <div class="page-header">
         <div class="header-top">
-            <div class="page-title"><span>🚨</span> <span>신고하기</span></div>
+            <div class="page-title"><span>🚨</span> <span>컨텐츠 신고</span></div>
         </div>
         <div class="header-description">
             부적절한 게시글이나 사용자를 신고할 수 있습니다.<br> 신고 내용은 관리자가 검토하여 조치합니다.
