@@ -8,7 +8,7 @@ import com.test.mybatis.dto.UserDTO;
 public interface IUserDAO
 {
 	// 내 프로필 열람
-	public UserDTO myProfile(String userCode);
+	public UserDTO myProfile(@Param("userCode")String userCode);
 	
 	// 모임장이 아닌 타회원이 열람하는 타회원 프로필
 	public UserDTO otherProfile(String userCode);
@@ -27,7 +27,5 @@ public interface IUserDAO
 	
 	// 마이페이지 열람시 필요한 항목(닉네임, 이메일, 사진, 현재 운영/가입중인 모임 등)
 	public UserDTO inMyPage(@Param("userCode")String userCode);
-	
-
 	
 }

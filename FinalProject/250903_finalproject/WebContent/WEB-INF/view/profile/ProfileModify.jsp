@@ -1,3 +1,4 @@
+<%@page import="com.test.mybatis.dto.UserDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -5,6 +6,28 @@
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
 	request.setAttribute("cp", cp); 
+	
+	UserDTO temp = (UserDTO)request.getAttribute("userDTO");
+	
+	int year = Integer.parseInt(temp.getSsn1().substring(0, 2));
+	int month = Integer.parseInt(temp.getSsn1().substring(2, 4));
+	int day = Integer.parseInt(temp.getSsn1().substring(4));
+	int ssn2 = Integer.parseInt(temp.getSsn1().substring(0, 1));
+	
+	String[] createdDateArr = temp.getCreatedDate().split("-");
+	String createdDate = createdDateArr[0] + "년 " + createdDateArr[1] + "월 " + createdDateArr[2] + "일";
+	
+	String birth = "";
+	
+	if(ssn2>2)
+	{
+		birth = "20" + year + "년 " + month + "월 " + day + "일";
+	}
+	else
+	{
+		birth = "19" + year + "년 " + month + "월 " + day + "일";
+	}
+	
 %>
 
 <!DOCTYPE html>
@@ -806,7 +829,12 @@ body {
 			<div class="profile-header">
 				<div class="profile-image-section">
 					<div class="profile-image" id="profileImage">
-						👤
+						<c:if test="${not empty userDTO.savePath }">
+							<img src="${userDTO.savePath }" alt="" />
+						</c:if>
+						<c:if test="${empty userDTO.savePath }">
+							👤
+						</c:if>
 					</div>
 					<div class="image-upload-btn">
 						<button class="btn-small btn-upload" onclick="uploadImage()">업로드</button>
@@ -816,11 +844,11 @@ body {
 				</div>
 				
 				<div class="profile-info-section">
-					<h2 class="profile-name">홍길동</h2>
+					<h2 class="profile-name">${userDTO.userName  }</h2>
 					<div class="profile-meta">
-						<div>📧 user123@example.com</div>
-						<div>🎂 1995년 3월 15일</div>
-						<div>📅 가입일: 2024년 1월 10일</div>
+						<div>📧 ${userDTO.email }</div>
+						<div>🎂 <%=birth %></div>
+						<div>📅 가입일: <%=createdDate %></div>
 					</div>
 				</div>
 			</div>
@@ -831,19 +859,19 @@ body {
 				<div class="info-grid">
 					<div class="info-item">
 						<span class="info-label">이름</span>
-						<div class="info-value readonly">홍길동</div>
+						<div class="info-value readonly">${userDTO.userName }</div>
 					</div>
 					<div class="info-item">
 						<span class="info-label">생년월일</span>
-						<div class="info-value readonly">1995년 3월 15일</div>
+						<div class="info-value readonly"><%=birth %></div>
 					</div>
 					<div class="info-item">
 						<span class="info-label">가입일</span>
-						<div class="info-value readonly">2024년 1월 10일</div>
+						<div class="info-value readonly"><%=createdDate %></div>
 					</div>
 					<div class="info-item">
 						<span class="info-label">회원 ID</span>
-						<div class="info-value readonly">user123</div>
+						<div class="info-value readonly">${userDTO.userId }</div>
 					</div>
 				</div>
 			</div>
@@ -859,7 +887,7 @@ body {
 							type="text" 
 							class="form-input" 
 							id="nickname"
-							value="행복한토끼99"
+							value="${userDTO.nickname }"
 							placeholder="닉네임 입력"
 						>
 						<button class="btn-check" onclick="checkNickname()">중복확인</button>
@@ -896,7 +924,7 @@ body {
 							type="email" 
 							class="form-input" 
 							id="email"
-							value="user123@example.com"
+							value="${userDTO.email }"
 						>
 						<button class="btn-send" onclick="sendEmailCode()">인증코드 발송</button>
 					</div>
@@ -924,7 +952,7 @@ body {
 							type="text" 
 							class="form-input" 
 							id="address"
-							value="서울특별시 강남구 역삼동"
+							value="${userDTO.address }"
 							readonly
 						>
 						<button class="btn-check" onclick="openAddressPopup()">주소검색</button>
@@ -1425,7 +1453,7 @@ body {
 	}
 	
 	// 엔터키로 비밀번호 확인
-	document.getElementById('confirmPassword')?.addEventListener('keypress', function(e) {
+	document.getElementById('confirmPassword').addEventListener('keypress', function(e) {
 		if (e.key === 'Enter') {
 			verifyPassword();
 		}
