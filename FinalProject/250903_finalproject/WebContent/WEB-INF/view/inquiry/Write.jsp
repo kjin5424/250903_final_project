@@ -337,8 +337,8 @@ body {
 		// }
 		
 		// 임시 사용자 정보
-		String userId = "user123";
-		String userEmail = "user123@example.com";
+		String userId = "UC00000020";
+		String userEmail = "UC00000020@gmail.com";
 	%>
 	
 	<div class="container">
@@ -452,10 +452,10 @@ body {
 			</div>
 		</form>
 		
-		<div class="faq-link">
+<!-- 		<div class="faq-link">
 			자주 묻는 질문을 먼저 확인해보세요
 			<a href="faq.jsp">FAQ 바로가기 →</a>
-		</div>
+		</div> -->
 	</div>
 	
 	<script>

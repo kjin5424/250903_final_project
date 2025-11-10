@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
     request.setCharacterEncoding("UTF-8");
     String cp = request.getContextPath();
@@ -125,23 +126,27 @@
             }
         }
     </style>
-    <script>
-        function goBack() {
+<script>
+    function goBack(reportType) {
+        if (reportType === 'group') {
+            location.href = 'reportgroup.do';
+        } else if (reportType === 'member') {
+            location.href = 'reportmember.do';
+        } else if (reportType === 'content') {
+            location.href = 'reportcontent.do';
+        } else {
             history.back();
         }
-        function goHome() {
-            window.location.href = 'groupHome.action'; // 모임 홈 페이지로 이동
-        }
-    </script>
+    }
+
+    function goHome() {
+        location.href = 'mainpage.do';
+    }
+</script>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-left">
-            <div class="logo-tab">
-                <span>로고 들어갈 자리</span>
-            </div>
-        </div>
-    </nav>
+	<!-- 상단바 -->
+	<c:import url="/WEB-INF/view/common/TopMenuBar.jsp" />
 
     <div class="container">
         <!-- 페이지 헤더 -->
@@ -165,7 +170,7 @@
             </div>
             
            <div class="button-group">
-                <button class="btn-back" onclick="location.href='reportgroup.do'">← 이전 페이지</button>
+<button class="btn-back" onclick="goBack('${reportType}')">← 이전 페이지</button>
                 <button class="btn-home" onclick="location.href='mainpage.do'">모임 홈으로</button>
             </div> 
         </div>

@@ -427,7 +427,8 @@
                         </div>
                     </div>
                     <div class="profile-actions">
-                        <button class="btn btn-danger">
+                        <!-- <button class="btn btn-danger"> -->
+                        <button class="btn btn-danger" onclick="location.href='reportmember.do'">
                             	🚨 신고하기
                         </button>
                     </div>

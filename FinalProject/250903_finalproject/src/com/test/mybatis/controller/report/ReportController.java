@@ -22,7 +22,7 @@ public class ReportController {
 		return "/WEB-INF/view/report/ReportAfter.jsp";
 	}
 
-	// 신고 작성 페이지 (GET)
+	//신고 작성 페이지 (GET)
 	@RequestMapping(value = "/reportgroup.do", method = RequestMethod.GET)
 	public String reportGroupForm() {
 		return "/WEB-INF/view/report/ReportGroup.jsp";
@@ -33,10 +33,13 @@ public class ReportController {
 	public String reportSubmit(ReportDTO dto) {
 		IReportDAO dao = sqlSession.getMapper(IReportDAO.class);
 
+		dto.setUserCode("UC00000033");
+		
 		dao.insertReport(dto);
 
 		// return "/WEB-INF/view/report/ReportGroup.jsp";
-
+		
+		// 신고완료 
 		return "redirect:reportafter.do";
 	}
 
@@ -50,13 +53,16 @@ public class ReportController {
 	@RequestMapping(value = "/reportcontent.do", method = RequestMethod.POST)
 	public String reportContentSubmit(ReportDTO dto) {
 		IReportDAO dao = sqlSession.getMapper(IReportDAO.class);
-
+		
+		dto.setUserCode("UC00000033");
+		
 		// 컨텐츠 신고만 필요한 필드를 채우고 나머지는 null로 처리
 		dao.insertContent(dto);
 
 		return "redirect:/reportafter.do";
 	}
-
+	
+	
 	// 모임원 신고 작성 페이지 (GET)
 	@RequestMapping(value = "/reportmember.do", method = RequestMethod.GET)
 	public String reportMemberForm(Model model) {
@@ -68,9 +74,10 @@ public class ReportController {
 	public String reportMemberSubmit(ReportDTO dto) {
 		IReportDAO dao = sqlSession.getMapper(IReportDAO.class);
 
+		dto.setUserCode("UC00000033");
+		
 		dao.insertMember(dto);
 
 		return "redirect:reportafter.do";
 	}
-
 }

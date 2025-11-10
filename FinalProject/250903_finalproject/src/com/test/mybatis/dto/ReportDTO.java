@@ -24,7 +24,6 @@ public class ReportDTO {
     
     private Date createdDate;        // 작성일
 
-    
     // Getter & Setter
 	public String getReportGroupCode() {
 		return reportGroupCode;

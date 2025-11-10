@@ -160,9 +160,9 @@
     }
     
     function reportUser() {
-        if(confirm('이 사용자를 신고하시겠습니까?')) {
-            alert('신고가 접수되었습니다.');
-            closeUserModal();
+        if (confirm('이 사용자를 신고하시겠습니까?')) {
+            // 🚨 신고 페이지로 이동 (임의 사용자 신고)
+            window.location.href = "<%=cp%>/reportmember.do";
         }
     }
     
