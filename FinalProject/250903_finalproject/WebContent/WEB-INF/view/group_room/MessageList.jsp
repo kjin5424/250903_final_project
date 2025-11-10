@@ -217,41 +217,47 @@
             <!-- 쪽지 리스트 -->
 			<div class="message-list">
             <!-- 받은 쪽지 -->
-            <c:forEach var="rm" items="${receivedMessage}" varStatus="loop">
-			    <div id="card-${loop.count}" class="message-card ${empty rm.readDate ? 'unread' : 'read'}" data-type="inbox">
+            <c:forEach var="fm" items="${forwardedMessage}" varStatus="loop">
+			    <div id="card-${loop.count}" class="message-card ${empty fm.readDate ? 'unread' : 'read'}" data-type="inbox">
 			
 			        <button class="message-delete-btn" onclick="deleteMessage(event, ${loop.count})">×</button>
 			
 			        <div class="message-header">
 			            <div class="message-avatar"
-			                 onclick="showUserModal(event, '${rm.nickName}', '${empty rm.savePath ? fn:substring(rm.nickName, 0, 1) : rm.savePath}')">
-			                ${empty rm.savePath ? fn:substring(rm.nickName, 0, 1) : rm.savePath}
+			                 onclick="showUserModal(event, '${fm.nickName}', '${empty fm.savePath ? fn:substring(fm.nickName, 0, 1) : fm.savePath}')">
+			                ${empty fm.savePath ? fn:substring(fm.nickName, 0, 1) : fm.savePath}
 			            </div>
 			
 			            <div class="message-info">
 			                <div class="message-sender"
-			                     onclick="showUserModal(event, '${rm.nickName}', '${empty rm.savePath ? fn:substring(rm.nickName, 0, 1) : rm.savePath}')">
-			                    ${rm.nickName}
+			                     onclick="showUserModal(event, '${fm.nickName}', '${empty fm.savePath ? fn:substring(fm.nickName, 0, 1) : fm.savePath}')">
+			                    ${fm.nickName}
 			                </div>
 			                <div class="message-meta">
-			                    <span class="message-date">${rm.createdDate}</span>
-			                    <span class="message-status unread">${empty rm.readDate ? '● 안읽음' : ''}</span>
+			                    <span class="message-date">${fm.createdDate}</span>
+			                    <span class="message-status unread">${empty fm.readDate ? '● 안읽음' : ''}</span>
 			                </div>
 			            </div>
 			        </div>
 			
 			        <div class="message-body" onclick="toggleMessage(${loop.count})">
-			            <div class="message-content">${rm.content}</div>
+			            <div class="message-content">${fm.content}</div>
 			        </div>
 			
 			        <div class="message-footer">
 			            <button class="message-reply-btn" onclick="toggleReplyForm(event, ${loop.count})">💬 답장하기</button>
-			
-			            <form action="/messagewriteOk.do" class="reply-form">
-			                <textarea name="content" class="reply-textarea" placeholder="답장 내용을 입력하세요..."></textarea>
-			                <input type="hidden" name="receiver" value="${rm.receiver }">
+
+						<!-- 답장 영역 -->
+			            <form action="<%=cp %>/messagewriteOk.do" id="reply-form-${loop.count }" method="POST">
+			                <textarea 
+			                	id="content" 
+								name="content" 	
+			                	class="reply-textarea" 
+			                	placeholder="답장 내용을 입력하세요...">
+			                </textarea>
+			                <input type="hidden" name="receiver" value="${fm.forwarder }">
 			                <div class="reply-actions">
-			                    <button type="button" class="reply-submit-btn" onclick="sendReply(event, ${loop.count}, '${rm.nickName}')">전송</button>
+			                    <button type="button" class="reply-submit-btn" onclick="sendReply(event, ${loop.count}, '${fm.nickName}')">전송</button>
 			                    <button type="button" class="reply-cancel-btn" onclick="cancelReply(event, ${loop.count})">취소</button>
 			                </div>
 			            </form>
@@ -259,26 +265,27 @@
 			    </div>
 			</c:forEach>
 			<!-- 보낸 쪽지 -->
-			<c:forEach var="fm" items="${forwardedMessage}" varStatus="loop">
+			<c:forEach var="rm" items="${receivedMessage}" varStatus="loop">
                 <div id="card-${loop.count}" class="message-card" data-type="sent" style="display: none;">
                     <button class="message-delete-btn" onclick="deleteMessage(event, ${loop.count})">×</button>
                     
                     <div class="message-header">
                         <div class="message-avatar" 
-                        	onclick="showUserModal(event, '${fm.nickName}', '${empty fm.savePath ? fn:substring(fm.nickName, 0, 1) : fm.savePath}')">
-                        	${empty fm.savePath ? fn:substring(fm.nickName, 0, 1) : fm.savePath}
+                        	onclick="showUserModal(event, '${rm.nickName}', '${empty rm.savePath ? fn:substring(rm.nickName, 0, 1) : rm.savePath}')">
+                        	${empty rm.savePath ? fn:substring(rm.nickName, 0, 1) : rm.savePath}
                         </div>
                         <div class="message-info">
-                            <div class="message-sender" onclick="showUserModal(event, '코딩마스터', '코')">
-                                ${fm.nickName } 님에게
+                            <div class="message-sender" 
+                            	onclick="showUserModal(event, '${rm.nickName}', '${empty rm.savePath ? fn:substring(rm.nickName, 0, 1) : rm.savePath}')">
+                                ${rm.nickName } 님에게
                             </div>
                             <div class="message-meta">
-                                <span class="message-date">${fm.createdDate }</span>
+                                <span class="message-date">${rm.createdDate }</span>
                             </div>
                         </div>
                     </div>
                     <div class="message-body" onclick="toggleMessage(${loop.count})">
-                        <div class="message-content">${fm.content }</div>
+                        <div class="message-content">${rm.content }</div>
                     </div>
                 </div>
 			</c:forEach>
