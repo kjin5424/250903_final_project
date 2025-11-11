@@ -815,6 +815,8 @@ WHERE
         UI.NICKNAME ASC
 </select>
 
-	
+	<update id="updateGroupInfo" parameterType="com.test.mybatis.dto.GroupDTO" statementType="CALLABLE">
+		{CALL PRC_GROUP_UPDATE(#{groupApplyCode, jdbcType=VARCHAR}, #{groupTitle, jdbcType=VARCHAR}, #{savePath, jdbcType=VARCHAR}, #{topicType, jdbcType=INTEGER}, #{groupContent, jdbcType=VARCHAR}, #{onOffType, jdbcType=INTEGER}, #{region, jdbcType=VARCHAR}, #{frequencyType, jdbcType=INTEGER}, #{youthFriendlyType, jdbcType=INTEGER}, #{genderType, jdbcType=INTEGER}, #{difficultyType, jdbcType=INTEGER}, #{question, jdbcType=VARCHAR}, #{rule, jdbcType=VARCHAR}, #{kickOut, jdbcType=INTEGER}, #{password, jdbcType=VARCHAR})}
+	</update>
 	
 </mapper>
