@@ -92,12 +92,6 @@ public class HomeController
 		return "/WEB-INF/view/group_room/Histroy.jsp";
 	}
 	
-	@RequestMapping(value="/memberlist.do", method=RequestMethod.GET)
-	public String memberList(Model model)
-	{
-		return "/WEB-INF/view/group_room/MemberList.jsp";
-	}
-	
 	@RequestMapping(value="/managelist.do", method=RequestMethod.GET)
 	public String manageList(@RequestParam("groupApplyCode") String groupApplyCode, Model model)
 	{
