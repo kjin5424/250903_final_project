@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.test.mybatis.dao.ISurveyDAO">
+
+  
+  <!-- 설문 대상 여부 확인 -->
+   <!-- 
+	<select id="checkSurveyTarget" parameterType="string" resultType="int">
+    SELECT COUNT(*) AS SURVEY_TARGET_COUNT
+    FROM GROUP_APPLY GA
+    WHERE GA.USER_CODE = #{userCode}
+      AND GA.GROUP_APPLY_CODE IN (
+          SELECT DISTINCT GROUP_APPLY_CODE FROM REPORT_GROUP
+      )
+      AND GA.USER_CODE NOT IN (
+          SELECT REPORTER_CODE FROM REPORT_GROUP
+          UNION
+          SELECT REPORTED_CODE FROM REPORT_GROUP
+      )
+	</select> -->
+
+<!-- 설문 등록 (동의/비동의) -->
+    <!-- 설문 등록 -->
+    <insert id="insertSurvey" parameterType="com.test.mybatis.dto.SurveyDTO">
+        INSERT INTO SURVEY
+        (SURVEY_CODE, USER_CODE, GROUP_APPLY_CODE, SURVEY_ANSWER_TYPE, DETAIL_CONTENT, CREATED_DATE)
+        VALUES
+        (SURVEY_SEQ.NEXTVAL,
+         #{userCode},
+         #{groupApplyCode},
+         #{surveyAnswerType},
+         #{surveyReason},
+         SYSDATE)
+    </insert>
+
+
+</mapper>
