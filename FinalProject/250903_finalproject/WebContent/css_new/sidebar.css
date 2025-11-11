@@ -119,8 +119,12 @@
 }
 
 /* 컨텐츠 여백 (사이드바 너비만큼) */
+/* 
 @media (min-width: 1025px) {
     .container {
         margin-left: 260px !important;
     }
 }
+ */
+/* 이거 있으니까 container자체가 왼쪽으로 치우치는 현상 발생 */
+/* 삭제(조경진) */

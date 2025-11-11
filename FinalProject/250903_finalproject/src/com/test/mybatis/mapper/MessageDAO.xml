@@ -23,6 +23,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 								 WHERE USER_CODE = (SELECT USER_CODE
 													FROM JOIN_TABLE
 													WHERE JOIN_CODE = M.RECEIVER))) AS savePath
+			 , (SELECT INTRODUCE
+			    FROM JOIN_TABLE
+			    WHERE JOIN_CODE = M.RECEIVER) AS introduce
 		FROM MESSAGE M
 		LEFT JOIN JOIN_TABLE J ON M.FORWARDER = J.JOIN_CODE
 		LEFT JOIN USER_TABLE UT ON UT.USER_CODE = J.USER_CODE
@@ -57,6 +60,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 								 WHERE USER_CODE = (SELECT USER_CODE
 													FROM JOIN_TABLE
 													WHERE JOIN_CODE = M.FORWARDER))) AS savePath
+			 , (SELECT INTRODUCE
+			    FROM JOIN_TABLE
+			    WHERE JOIN_CODE = M.FORWARDER) AS introduce
 		FROM MESSAGE M
 		LEFT JOIN JOIN_TABLE J ON M.FORWARDER = J.JOIN_CODE
 		LEFT JOIN USER_TABLE UT ON UT.USER_CODE = J.USER_CODE
@@ -181,4 +187,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SET READ_DATE = SYSDATE
 		WHERE MESSAGE_CODE = #{messageCode}
 	</update>
+	
+	<!-- 받은 쪽지 삭제 -->
+	<delete id="deleteReceivedMessage">
+		UPDATE MESSAGE
+		SET R_DELETE_DATE = SYSDATE
+		WHERE MESSAGE_CODE = #{messageCode}
+	</delete>
+	
+	<!-- 보낸 쪽지 삭제 -->
+	<delete id="deleteForwardedMessage">
+		UPDATE MESSAGE
+		SET F_DELETE_DATE = SYSDATE
+		WHERE MESSAGE_CODE = #{messageCode}
+	</delete>
 </mapper>

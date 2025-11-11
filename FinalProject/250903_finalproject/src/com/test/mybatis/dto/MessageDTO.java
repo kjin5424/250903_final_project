@@ -13,6 +13,7 @@ public class MessageDTO
 	private String rdeleteDate;		// 수신자 메세지 삭제일자
 	private String position;		// Order By용 position
 	private String savePath;		// 프사
+	private String introduce;		// 한줄자기소개
 	
 	public String getMessageCode()
 	{
@@ -101,5 +102,13 @@ public class MessageDTO
 	public void setSavePath(String savePath)
 	{
 		this.savePath = savePath;
+	}
+	public String getIntroduce()
+	{
+		return introduce;
+	}
+	public void setIntroduce(String introduce)
+	{
+		this.introduce = introduce;
 	}
 }

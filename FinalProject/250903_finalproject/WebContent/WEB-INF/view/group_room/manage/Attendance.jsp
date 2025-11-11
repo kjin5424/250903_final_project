@@ -1,418 +1,392 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" %>
+<%
+    request.setCharacterEncoding("UTF-8");
+    String cp = request.getContextPath();
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>공모자들 - 출석 관리</title>
+    
+    <!-- CSS Import -->
+    <link rel="stylesheet" href="<%=cp%>/css_new/common_sample.css">
+    <link rel="stylesheet" href="css_new/home_sample.css">
+    <link rel="stylesheet" href="<%=cp%>/ccss_new/manager_sample.css">
+    <link rel="stylesheet" href="<%=cp%>/css_new/grouproommanage.css">
+    
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f7fa;
-        }
-        .navbar {
-            background: #a8d5a1;
+        /* 알림 메시지 */
+        .alert-info {
+            background: var(--color-primary-lighter);
+            border-left: 4px solid var(--color-primary);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--spacing-xl);
+            font-size: 14px;
+            color: var(--color-primary-deep);
             display: flex;
             align-items: center;
-            padding: 0 20px;
-            height: 48px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            gap: 4px;
-        }
-        .nav-left {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            flex: 1;
-        }
-        .logo-tab {
-            background: #8bc683;
-            color: white;
-            padding: 0 20px;
-            height: 36px;
-            border-radius: 8px 8px 0 0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: bold;
-            font-size: 16px;
-            cursor: pointer;
+            gap: var(--spacing-sm);
         }
 
-        .container {
-            max-width: 1600px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-
-        /* 헤더 */
-        .page-header {
-            background: linear-gradient(135deg, #2d5a29 0%, #4a8a42 100%);
-            color: white;
-            padding: 40px;
-            border-radius: 12px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-        .header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .page-title {
-            font-size: 32px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .btn-back {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 2px solid white;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-        }
-        .btn-back:hover {
-            background: white;
-            color: #2d5a29;
-        }
-        .group-name {
-            font-size: 18px;
-            opacity: 0.9;
-            margin-top: 10px;
-        }
-
-        /* 필터 및 액션 바 */
-        .action-bar {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        .filter-group {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-        .filter-label {
-            font-weight: 600;
-            color: #333;
-            font-size: 14px;
-        }
-        .filter-select {
-            padding: 8px 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .filter-select:focus {
-            outline: none;
-            border-color: #8bc683;
-        }
-        .btn-save {
-            background: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .btn-save:hover {
-            background: #45a049;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
-        }
-        .btn-save:disabled {
-            background: #e0e0e0;
-            color: #999;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* 통계 카드 */
+        /* 통계 그리드 - hover 효과 제거 */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
         }
+
         .stat-card {
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            text-align: center;
+            background: var(--color-white);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
         }
-        .stat-icon {
-            font-size: 32px;
-            margin-bottom: 10px;
-        }
-        .stat-value {
-            font-size: 28px;
-            font-weight: bold;
-            color: #2d5a29;
-            margin-bottom: 5px;
-        }
+
         .stat-label {
             font-size: 14px;
-            color: #666;
+            color: var(--color-text-secondary);
+            font-weight: 500;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--color-text-primary);
+        }
+
+        .stat-value.success {
+            color: var(--color-primary-dark);
+        }
+
+        /* 활동 카드 - VoteList.jsp와 동일한 구조 */
+        .activity-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .activity-card {
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            background: var(--color-white);
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+
+        .activity-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .activity-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .activity-title {
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--color-text-primary);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            transition: all var(--transition-base);
+        }
+
+        .activity-card:hover .activity-title {
+            white-space: normal;
+            overflow: visible;
+        }
+
+        .activity-date {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+        }
+
+        .activity-info {
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .activity-info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .attendance-rate {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--color-primary-dark);
+        }
+
+        .attendance-rate.zero {
+        	font-weignt: 900;
+            color: var(--color-accent);
+        }
+
+        /* 모달 스타일 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--color-white);
+            border-radius: var(--radius-lg);
+            width: 90%;
+            max-width: 900px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-xl);
+            animation: slideInUp var(--transition-base);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+            color: white;
+            padding: var(--spacing-xl);
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-md);
+            transition: all var(--transition-fast);
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-body {
+            padding: var(--spacing-xl);
         }
 
         /* 출석 테이블 */
-        .attendance-section {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        }
-        .section-title {
-            font-size: 20px;
-            font-weight: bold;
-            color: #2d5a29;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
         .attendance-table {
             width: 100%;
             border-collapse: collapse;
         }
+
         .attendance-table thead {
-            background: #f8faf8;
+            background: var(--color-primary-lighter);
         }
+
         .attendance-table th {
-            padding: 15px 10px;
-            text-align: left;
+            padding: var(--spacing-md);
+            text-align: center;
             font-weight: 600;
-            color: #333;
-            border-bottom: 2px solid #e0e0e0;
+            color: var(--color-primary-dark);
+            border-bottom: 2px solid var(--color-primary);
             font-size: 14px;
         }
-        .attendance-table th:first-child {
-            padding-left: 20px;
-        }
+
         .attendance-table td {
-            padding: 15px 10px;
-            border-bottom: 1px solid #f0f0f0;
+            padding: var(--spacing-md);
+            border-bottom: 1px solid var(--color-border-light);
             font-size: 14px;
+            text-align: center;
         }
+
         .attendance-table td:first-child {
-            padding-left: 20px;
+            text-align: left;
         }
+
         .attendance-table tbody tr {
-            transition: background 0.3s;
+            transition: background var(--transition-fast);
         }
+
         .attendance-table tbody tr:hover {
-            background: #f8faf8;
+            background: var(--color-base);
         }
+
         .member-info {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: var(--spacing-md);
         }
+
         .member-avatar {
             width: 40px;
             height: 40px;
-            border-radius: 50%;
-            background: #8bc683;
+            border-radius: var(--radius-full);
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
+            font-weight: 700;
             font-size: 16px;
+            flex-shrink: 0;
         }
+
+        .member-details {
+            flex: 1;
+        }
+
         .member-name {
             font-weight: 600;
-            color: #333;
+            color: var(--color-text-primary);
+            margin-bottom: 2px;
         }
+
         .member-role {
             font-size: 12px;
-            color: #999;
+            color: var(--color-text-secondary);
         }
-        .attendance-status {
+
+        .attendance-status-buttons {
             display: flex;
-            gap: 8px;
+            gap: var(--spacing-sm);
+            justify-content: center;
         }
+
         .status-btn {
-            padding: 6px 16px;
-            border: 2px solid #e0e0e0;
-            border-radius: 6px;
+            padding: 8px 16px;
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-md);
             font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
-            background: white;
-            color: #666;
+            transition: all var(--transition-base);
+            background: var(--color-white);
+            color: var(--color-text-secondary);
         }
+
         .status-btn:hover {
-            border-color: #8bc683;
+            border-color: var(--color-primary);
         }
+
         .status-btn.active.present {
-            background: #4CAF50;
+            background: var(--color-primary);
             color: white;
-            border-color: #4CAF50;
+            border-color: var(--color-primary);
         }
+
         .status-btn.active.absent {
-            background: #f44336;
+            background: var(--color-accent);
             color: white;
-            border-color: #f44336;
+            border-color: var(--color-accent);
         }
-        .status-btn.active.late {
-            background: #ff9800;
-            color: white;
-            border-color: #ff9800;
-        }
+
         .rate-badge {
             display: inline-block;
-            padding: 5px 12px;
-            border-radius: 12px;
+            padding: 6px 12px;
+            border-radius: var(--radius-full);
             font-size: 13px;
             font-weight: 600;
         }
+
         .rate-high {
-            background: #e8f5e9;
-            color: #2e7d32;
+            background: var(--color-primary-lighter);
+            color: var(--color-primary-dark);
         }
+
         .rate-medium {
             background: #fff3e0;
-            color: #e65100;
+            color: #f57c00;
         }
+
         .rate-low {
-            background: #ffebee;
-            color: #c62828;
-        }
-        .memo-input {
-            width: 100%;
-            padding: 6px 10px;
-            border: 1px solid #e0e0e0;
-            border-radius: 6px;
-            font-size: 13px;
-        }
-        .memo-input:focus {
-            outline: none;
-            border-color: #8bc683;
+            background: var(--color-accent-light);
+            color: var(--color-accent-dark);
         }
 
-        /* 이력 테이블 */
-        .history-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        .history-table th,
-        .history-table td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #f0f0f0;
-            font-size: 14px;
-        }
-        .history-table th {
-            background: #f8faf8;
-            font-weight: 600;
-            color: #333;
-        }
-        .history-date {
-            font-weight: 600;
-            color: #333;
-        }
-        .history-type {
-            display: inline-block;
-            padding: 4px 10px;
-            border-radius: 10px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-        .type-regular {
-            background: #e3f2fd;
-            color: #1976d2;
-        }
-        .type-irregular {
-            background: #f3e5f5;
-            color: #7b1fa2;
-        }
-
-        /* 빈 상태 */
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #999;
-        }
-        .empty-state-icon {
-            font-size: 60px;
-            margin-bottom: 15px;
-        }
-        .empty-state-text {
-            font-size: 16px;
-        }
-
-        /* 알림 메시지 */
-        .alert-info {
-            background: #e3f2fd;
-            border-left: 4px solid #2196f3;
-            padding: 15px 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 14px;
-            color: #1565c0;
+        .modal-footer {
+            padding: var(--spacing-xl);
+            border-top: 1px solid var(--color-border-light);
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-md);
         }
 
         @media (max-width: 768px) {
-            .page-header {
-                padding: 25px 20px;
+            .activity-cards {
+                grid-template-columns: 1fr;
             }
-            .page-title {
-                font-size: 24px;
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
-            .header-top {
-                flex-direction: column;
-                gap: 15px;
-                align-items: flex-start;
+
+            .modal-content {
+                width: 95%;
+                max-height: 90vh;
             }
+
             .attendance-table {
                 font-size: 12px;
             }
-            .attendance-table th,
-            .attendance-table td {
-                padding: 10px 5px;
-            }
+
             .status-btn {
-                padding: 4px 10px;
-                font-size: 11px;
+                padding: 6px 12px;
+                font-size: 12px;
             }
         }
     </style>
+    
     <script>
-        // 출석 데이터 (서버에서 전달받아야 함)
+        // 출석 데이터
         const attendanceData = {};
         let hasChanges = false;
+
+        function openAttendanceModal(activityId, activityTitle, activityDate) {
+            const modal = document.getElementById('attendanceModal');
+            const modalTitle = document.getElementById('modalActivityDate');
+            modalTitle.textContent = activityDate + ' 활동 출석 체크';
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeAttendanceModal() {
+            const modal = document.getElementById('attendanceModal');
+            modal.classList.remove('show');
+            document.body.style.overflow = '';
+        }
 
         function setAttendance(memberId, status) {
             if (!attendanceData[memberId]) {
@@ -423,23 +397,13 @@
             // 버튼 활성화 상태 변경
             const buttons = document.querySelectorAll(`[data-member="${memberId}"]`);
             buttons.forEach(btn => {
-                btn.classList.remove('active', 'present', 'absent', 'late');
+                btn.classList.remove('active', 'present', 'absent');
                 if (btn.getAttribute('data-status') === status) {
                     btn.classList.add('active', status);
                 }
             });
             
             hasChanges = true;
-            document.getElementById('saveBtn').disabled = false;
-        }
-
-        function setMemo(memberId, memo) {
-            if (!attendanceData[memberId]) {
-                attendanceData[memberId] = {};
-            }
-            attendanceData[memberId].memo = memo;
-            hasChanges = true;
-            document.getElementById('saveBtn').disabled = false;
         }
 
         function saveAttendance() {
@@ -448,308 +412,333 @@
                 return;
             }
 
-            const meetingDate = document.getElementById('meetingSelect').value;
-            if (!meetingDate) {
-                alert('모임 일정을 선택해주세요.');
-                return;
-            }
-
             // 서버로 전송
-            console.log('저장할 데이터:', {
-                meetingDate: meetingDate,
-                attendance: attendanceData
-            });
+            console.log('저장할 데이터:', attendanceData);
 
             alert('출석이 저장되었습니다.');
             hasChanges = false;
-            document.getElementById('saveBtn').disabled = true;
-        }
-
-        function filterByStatus() {
-            const status = document.getElementById('statusFilter').value;
-            const rows = document.querySelectorAll('.attendance-table tbody tr');
+            closeAttendanceModal();
             
-            rows.forEach(row => {
-                if (status === 'all') {
-                    row.style.display = '';
-                } else {
-                    const activeBtn = row.querySelector(`.status-btn.active.${status}`);
-                    row.style.display = activeBtn ? '' : 'none';
-                }
-            });
+            // 카드 정보 업데이트
+            updateActivityCard();
         }
 
-        function loadMeetingAttendance() {
-            const meetingId = document.getElementById('meetingSelect').value;
-            if (!meetingId) return;
-            
-            // 서버에서 해당 모임의 출석 데이터를 불러옴
-            alert('모임 일정의 출석 데이터를 불러옵니다.');
-            // 실제로는 AJAX로 데이터를 불러와서 표시
+        function updateActivityCard() {
+            // 실제로는 서버에서 최신 데이터를 받아와서 카드 정보를 업데이트
+            // 여기서는 간단히 alert로 표시
         }
 
-        /* function goBack() {
-            if (hasChanges) {
-                if (confirm('저장하지 않은 변경사항이 있습니다. 정말 나가시겠습니까?')) {
-                    window.location.href = 'managelist.do';
-                }
-            } else {
-                window.location.href = 'group_management.jsp';
+        // 모달 외부 클릭 시 닫기
+        window.onclick = function(event) {
+            const modal = document.getElementById('attendanceModal');
+            if (event.target === modal) {
+                closeAttendanceModal();
             }
         }
-
-        function viewHistory(memberId) {
-            window.location.href = 'member_attendance_history.jsp?memberId=' + memberId;
-        } */
     </script>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-left">
-            <div class="logo-tab">
-                <span>로고 들어갈 자리</span>
-            </div>
-        </div>
-    </nav>
+    <!-- 상단바 -->
+	<c:import url="/WEB-INF/view/common/TopMenuBar.jsp" />
+	
+	<!-- 사이드바 -->
+	<c:import url="/WEB-INF/view/common/GroupSideBar.jsp" />
 
     <div class="container">
-        <!-- 페이지 헤더 -->
-        <div class="page-header">
-            <div class="header-top">
-                <div>
-                    <div class="page-title">
-                        <span>📋</span>
-                        <span>출석 관리</span>
-                    </div>
-                    <div class="group-name">알고리즘 정복 스터디</div>
-                </div>
-                <button class="btn-back" onclick="location.href='managelist.do'">← 관리 메뉴로</button>
-            </div>
-        </div>
+	    <!-- 페이지 헤더 -->
+	    <div class="page-header-custom">
+	        <div class="header-top">
+	            <div>
+	                <div class="page-title-custom">
+	                    <span>📋</span>
+	                    <span>출석 관리</span>
+	                    <span class="role-badge">모임장</span>
+	                </div>
+	                <div class="group-name">알고리즘 정복 스터디</div>
+	            </div>
+	            <a href="managelist.do" class="btn-back-custom">
+	                <span>←</span>
+	                <span>관리 메뉴로</span>
+	            </a>
+	        </div>
+	    </div>
+	
+	    <!-- 알림 -->
+	    <div class="alert-info">
+	        <span>ℹ️</span>
+	        <span>출석체크를 진행하지 않은 활동은 출석률이 0%로 표시됩니다.</span>
+	    </div>
+	
+	    <!-- 통계 -->
+	    <div class="stats-grid">
+	        <div class="stat-card">
+	            <div class="stat-label">👥 전체 모임원</div>
+	            <div class="stat-value">7명</div>
+	        </div>
+	        <div class="stat-card">
+	            <div class="stat-label">✅ 평균 출석률</div>
+	            <div class="stat-value success">85%</div>
+	        </div>
+	        <div class="stat-card">
+	            <div class="stat-label">📅 누적 모임 횟수</div>
+	            <div class="stat-value">12회</div>
+	        </div>
+	        <div class="stat-card">
+	            <div class="stat-label">🎯 평균 참석 인원</div>
+	            <div class="stat-value">6명</div>
+	        </div>
+	    </div>
+	
+	    <!-- 활동 카드 그리드 -->
+	    <div class="activity-cards">
+	        <!-- 활동 카드 1 -->
+	        <div class="activity-card" onclick="openAttendanceModal(1, '주간 알고리즘 문제 풀이 및 코드 리뷰', '2024-10-17 (목)')">
+	            <div class="activity-header">
+	                <span class="activity-title">주간 알고리즘 문제 풀이 및 코드 리뷰</span>
+	                <span class="activity-date">2024-10-17</span>
+	            </div>
+	            <div class="activity-info">총: 7명 | 투표자: 7명</div>
+	            <div class="activity-info">19:00 ~ 21:00</div>
+	            <div class="activity-info">장소: 강남역 스터디카페</div>
+	            
+	            <div class="activity-info-row">
+	                <span>👥 참여 응답 인원</span>
+	                <span>7명</span>
+	            </div>
+	            <div class="activity-info-row">
+	                <span>✅ 출석 확인 인원</span>
+	                <span>5명</span>
+	            </div>
+	            <div class="activity-info-row">
+	                <span>📊 출석률</span>
+	                <span class="attendance-rate">71%</span>
+	            </div>
+	        </div>
+	
+	        <!-- 활동 카드 2 -->
+	        <div class="activity-card" onclick="openAttendanceModal(2, '백준 골드 문제 집중 스터디', '2024-10-10 (목)')">
+	            <div class="activity-header">
+	                <span class="activity-title">백준 골드 문제 집중 스터디</span>
+	                <span class="activity-date">2024-10-10</span>
+	            </div>
+	            <div class="activity-info">총: 7명 | 투표자: 7명</div>
+	            <div class="activity-info">19:00 ~ 21:00</div>
+	            <div class="activity-info">장소: 강남역 스터디카페</div>
+	            
+	            <div class="activity-info-row">
+	                <span>👥 참여 응답 인원</span>
+	                <span>7명</span>
+	            </div>
+	            <div class="activity-info-row">
+	                <span>✅ 출석 확인 인원</span>
+	                <span>6명</span>
+	            </div>
+	            <div class="activity-info-row">
+	                <span>📊 출석률</span>
+	                <span class="attendance-rate">86%</span>
+	            </div>
+	        </div>
+	
+	        <!-- 활동 카드 3 -->
+	        <div class="activity-card" onclick="openAttendanceModal(3, '온라인 코딩 테스트 대비 모의고사', '2024-10-03 (목)')">
+	            <div class="activity-header">
+	                <span class="activity-title">온라인 코딩 테스트 대비 모의고사</span>
+	                <span class="activity-date">2024-10-03</span>
+	            </div>
+	            <div class="activity-info">총: 6명 | 투표자: 6명</div>
+	            <div class="activity-info">19:00 ~ 21:00</div>
+	            <div class="activity-info">장소: 온라인</div>
+	            
+	            <div class="activity-info-row">
+	                <span>👥 참여 응답 인원</span>
+	                <span>6명</span>
+	            </div>
+	            <div class="activity-info-row">
+	                <span>✅ 출석 확인 인원</span>
+	                <span>6명</span>
+	            </div>
+	            <div class="activity-info-row">
+	                <span>📊 출석률</span>
+	                <span class="attendance-rate">100%</span>
+	            </div>
+	        </div>
+	
+	        <!-- 활동 카드 4 - 출석률 0% -->
+	        <div class="activity-card" onclick="openAttendanceModal(4, '자료구조와 알고리즘 기본 복습', '2024-09-26 (목)')">
+	            <div class="activity-header">
+	                <span class="activity-title">자료구조와 알고리즘 기본 복습</span>
+	                <span class="activity-date">2024-09-26</span>
+	            </div>
+	            <div class="activity-info">총: 7명 | 투표자: 7명</div>
+	            <div class="activity-info">19:00 ~ 21:00</div>
+	            <div class="activity-info">장소: 강남역 스터디카페</div>
+	            
+	            <div class="activity-info-row">
+	                <span>👥 참여 응답 인원</span>
+	                <span>7명</span>
+	            </div>
+	            <div class="activity-info-row">
+	                <span>✅ 출석 확인 인원</span>
+	                <span>0명</span>
+	            </div>
+	            <div class="activity-info-row">
+	                <span>📊 출석률</span>
+	                <span class="attendance-rate zero">0%</span>
+	            </div>
+	        </div>
+	    </div>
+    </div>
 
-        <!-- 알림 -->
-        <div class="alert-info">
-            ℹ️ 출석 변경은 해당 모임의 종료 시간까지만 가능합니다. 모임원의 출석/결석 상태를 체크하고 저장해주세요.
-        </div>
-
-        <!-- 통계 -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon">👥</div>
-                <div class="stat-value">7명</div>
-                <div class="stat-label">전체 모임원</div>
+    <!-- 출석 체크 모달 -->
+    <div id="attendanceModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalActivityDate">출석 체크</h2>
+                <button class="modal-close" onclick="closeAttendanceModal()">×</button>
             </div>
-            <div class="stat-card">
-                <div class="stat-icon">✅</div>
-                <div class="stat-value">85%</div>
-                <div class="stat-label">평균 출석률</div>
+            <div class="modal-body">
+                <table class="attendance-table">
+                    <thead>
+                        <tr>
+                            <th>모임원</th>
+                            <th>누적 출석률</th>
+                            <th>출석 상태</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="member-info">
+                                    <div class="member-avatar">코</div>
+                                    <div class="member-details">
+                                        <div class="member-name">코딩마스터</div>
+                                        <div class="member-role">모임장</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="rate-badge rate-high">92%</span></td>
+                            <td>
+                                <div class="attendance-status-buttons">
+                                    <button class="status-btn" data-member="1" data-status="present" onclick="setAttendance(1, 'present')">출석</button>
+                                    <button class="status-btn active absent" data-member="1" data-status="absent" onclick="setAttendance(1, 'absent')">결석</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="member-info">
+                                    <div class="member-avatar">개</div>
+                                    <div class="member-details">
+                                        <div class="member-name">개발자지망생</div>
+                                        <div class="member-role">모임원</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="rate-badge rate-high">88%</span></td>
+                            <td>
+                                <div class="attendance-status-buttons">
+                                    <button class="status-btn" data-member="2" data-status="present" onclick="setAttendance(2, 'present')">출석</button>
+                                    <button class="status-btn active absent" data-member="2" data-status="absent" onclick="setAttendance(2, 'absent')">결석</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="member-info">
+                                    <div class="member-avatar">알</div>
+                                    <div class="member-details">
+                                        <div class="member-name">알고리즘초보</div>
+                                        <div class="member-role">모임원</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="rate-badge rate-medium">75%</span></td>
+                            <td>
+                                <div class="attendance-status-buttons">
+                                    <button class="status-btn" data-member="3" data-status="present" onclick="setAttendance(3, 'present')">출석</button>
+                                    <button class="status-btn active absent" data-member="3" data-status="absent" onclick="setAttendance(3, 'absent')">결석</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="member-info">
+                                    <div class="member-avatar">자</div>
+                                    <div class="member-details">
+                                        <div class="member-name">자바마스터</div>
+                                        <div class="member-role">모임원</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="rate-badge rate-high">90%</span></td>
+                            <td>
+                                <div class="attendance-status-buttons">
+                                    <button class="status-btn" data-member="4" data-status="present" onclick="setAttendance(4, 'present')">출석</button>
+                                    <button class="status-btn active absent" data-member="4" data-status="absent" onclick="setAttendance(4, 'absent')">결석</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="member-info">
+                                    <div class="member-avatar">파</div>
+                                    <div class="member-details">
+                                        <div class="member-name">파이썬러버</div>
+                                        <div class="member-role">모임원</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="rate-badge rate-high">83%</span></td>
+                            <td>
+                                <div class="attendance-status-buttons">
+                                    <button class="status-btn" data-member="5" data-status="present" onclick="setAttendance(5, 'present')">출석</button>
+                                    <button class="status-btn active absent" data-member="5" data-status="absent" onclick="setAttendance(5, 'absent')">결석</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="member-info">
+                                    <div class="member-avatar">웹</div>
+                                    <div class="member-details">
+                                        <div class="member-name">웹개발자</div>
+                                        <div class="member-role">모임원</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="rate-badge rate-low">65%</span></td>
+                            <td>
+                                <div class="attendance-status-buttons">
+                                    <button class="status-btn" data-member="6" data-status="present" onclick="setAttendance(6, 'present')">출석</button>
+                                    <button class="status-btn active absent" data-member="6" data-status="absent" onclick="setAttendance(6, 'absent')">결석</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="member-info">
+                                    <div class="member-avatar">스</div>
+                                    <div class="member-details">
+                                        <div class="member-name">스프링초보</div>
+                                        <div class="member-role">모임원</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="rate-badge rate-high">80%</span></td>
+                            <td>
+                                <div class="attendance-status-buttons">
+                                    <button class="status-btn" data-member="7" data-status="present" onclick="setAttendance(7, 'present')">출석</button>
+                                    <button class="status-btn active absent" data-member="7" data-status="absent" onclick="setAttendance(7, 'absent')">결석</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <div class="stat-card">
-                <div class="stat-icon">📅</div>
-                <div class="stat-value">12회</div>
-                <div class="stat-label">누적 모임 횟수</div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" onclick="closeAttendanceModal()">취소</button>
+                <button class="btn btn-primary" onclick="saveAttendance()">💾 저장하기</button>
             </div>
-            <div class="stat-card">
-                <div class="stat-icon">🎯</div>
-                <div class="stat-value">6명</div>
-                <div class="stat-label">평균 참석 인원</div>
-            </div>
-        </div>
-
-        <!-- 필터 및 액션 -->
-        <div class="action-bar">
-            <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-                <div class="filter-group">
-                    <span class="filter-label">모임 일정:</span>
-                    <select id="meetingSelect" class="filter-select" onchange="loadMeetingAttendance()">
-                        <option value="">선택하세요</option>
-                        <option value="2024-10-17">2024-10-17 (목) 19:00 - 활동</option>
-                        <option value="2024-10-10">2024-10-10 (목) 19:00 - 활동</option>
-                        <option value="2024-10-03">2024-10-03 (목) 19:00 - 활동</option>
-                    </select>
-                </div>
-                <div class="filter-group">
-                    <span class="filter-label">출석 상태:</span>
-                    <select id="statusFilter" class="filter-select" onchange="filterByStatus()">
-                        <option value="all">전체</option>
-                        <option value="present">출석</option>
-                        <option value="absent">결석</option>
-                        
-                    </select>
-                </div>
-            </div>
-            <button id="saveBtn" class="btn-save" onclick="saveAttendance()" disabled>💾 저장하기</button>
-        </div>
-
-        <!-- 출석 체크 -->
-        <div class="attendance-section">
-            <div class="section-title">
-                <span>출석 체크</span>
-                <span style="font-size: 14px; color: #666; font-weight: normal;">
-                    출석 상태를 선택하고 필요시 메모를 남겨주세요
-                </span>
-            </div>
-
-            <table class="attendance-table">
-                <thead>
-                    <tr>
-                        <th>모임원</th>
-                        <th>출석 상태</th>
-                        <th>누적 출석률</th>
-                        <th>메모</th>
-                        <th>이력</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <div class="member-info">
-                                <div class="member-avatar">코</div>
-                                <div>
-                                    <div class="member-name">코딩마스터</div>
-                                    <div class="member-role">모임장</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="attendance-status">
-                                <button class="status-btn" data-member="1" data-status="present" onclick="setAttendance(1, 'present')">출석</button>
-                                
-                                <button class="status-btn" data-member="1" data-status="absent" onclick="setAttendance(1, 'absent')">결석</button>
-                            </div>
-                        </td>
-                        <td><span class="rate-badge rate-high">92%</span></td>
-                        <td><input type="text" class="memo-input" placeholder="메모 입력..." onchange="setMemo(1, this.value)"></td>
-                        <td><button class="status-btn" onclick="viewHistory(1)">보기</button></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="member-info">
-                                <div class="member-avatar">개</div>
-                                <div>
-                                    <div class="member-name">개발자지망생</div>
-                                    <div class="member-role">모임원</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="attendance-status">
-                                <button class="status-btn" data-member="2" data-status="present" onclick="setAttendance(2, 'present')">출석</button>
-                                
-                                <button class="status-btn" data-member="2" data-status="absent" onclick="setAttendance(2, 'absent')">결석</button>
-                            </div>
-                        </td>
-                        <td><span class="rate-badge rate-high">88%</span></td>
-                        <td><input type="text" class="memo-input" placeholder="메모 입력..." onchange="setMemo(2, this.value)"></td>
-                        <td><button class="status-btn" onclick="viewHistory(2)">보기</button></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="member-info">
-                                <div class="member-avatar">알</div>
-                                <div>
-                                    <div class="member-name">알고리즘초보</div>
-                                    <div class="member-role">모임원</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="attendance-status">
-                                <button class="status-btn" data-member="3" data-status="present" onclick="setAttendance(3, 'present')">출석</button>
-                               
-                                <button class="status-btn" data-member="3" data-status="absent" onclick="setAttendance(3, 'absent')">결석</button>
-                            </div>
-                        </td>
-                        <td><span class="rate-badge rate-medium">75%</span></td>
-                        <td><input type="text" class="memo-input" placeholder="메모 입력..." onchange="setMemo(3, this.value)"></td>
-                        <td><button class="status-btn" onclick="viewHistory(3)">보기</button></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="member-info">
-                                <div class="member-avatar">자</div>
-                                <div>
-                                    <div class="member-name">자바마스터</div>
-                                    <div class="member-role">모임원</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="attendance-status">
-                                <button class="status-btn" data-member="4" data-status="present" onclick="setAttendance(4, 'present')">출석</button>
-                               
-                                <button class="status-btn" data-member="4" data-status="absent" onclick="setAttendance(4, 'absent')">결석</button>
-                            </div>
-                        </td>
-                        <td><span class="rate-badge rate-high">90%</span></td>
-                        <td><input type="text" class="memo-input" placeholder="메모 입력..." onchange="setMemo(4, this.value)"></td>
-                        <td><button class="status-btn" onclick="viewHistory(4)">보기</button></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="member-info">
-                                <div class="member-avatar">파</div>
-                                <div>
-                                    <div class="member-name">파이썬러버</div>
-                                    <div class="member-role">모임원</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="attendance-status">
-                                <button class="status-btn" data-member="5" data-status="present" onclick="setAttendance(5, 'present')">출석</button>
-                              
-                                <button class="status-btn" data-member="5" data-status="absent" onclick="setAttendance(5, 'absent')">결석</button>
-                            </div>
-                        </td>
-                        <td><span class="rate-badge rate-high">83%</span></td>
-                        <td><input type="text" class="memo-input" placeholder="메모 입력..." onchange="setMemo(5, this.value)"></td>
-                        <td><button class="status-btn" onclick="viewHistory(5)">보기</button></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="member-info">
-                                <div class="member-avatar">웹</div>
-                                <div>
-                                    <div class="member-name">웹개발자</div>
-                                    <div class="member-role">모임원</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="attendance-status">
-                                <button class="status-btn" data-member="6" data-status="present" onclick="setAttendance(6, 'present')">출석</button>
-                               
-                                <button class="status-btn" data-member="6" data-status="absent" onclick="setAttendance(6, 'absent')">결석</button>
-                            </div>
-                        </td>
-                        <td><span class="rate-badge rate-low">65%</span></td>
-                        <td><input type="text" class="memo-input" placeholder="메모 입력..." onchange="setMemo(6, this.value)"></td>
-                        <td><button class="status-btn" onclick="viewHistory(6)">보기</button></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="member-info">
-                                <div class="member-avatar">스</div>
-                                <div>
-                                    <div class="member-name">스프링초보</div>
-                                    <div class="member-role">모임원</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="attendance-status">
-                                <button class="status-btn" data-member="7" data-status="present" onclick="setAttendance(7, 'present')">출석</button>
-                                
-                                <button class="status-btn" data-member="7" data-status="absent" onclick="setAttendance(7, 'absent')">결석</button>
-                            </div>
-                        </td>
-                        <td><span class="rate-badge rate-high">80%</span></td>
-                        <td><input type="text" class="memo-input" placeholder="메모 입력..." onchange="setMemo(7, this.value)"></td>
-                        <td><button class="status-btn" onclick="viewHistory(7)">보기</button></td>
-                    </tr>
-                </tbody>
-            </table>
         </div>
     </div>
 </body>
