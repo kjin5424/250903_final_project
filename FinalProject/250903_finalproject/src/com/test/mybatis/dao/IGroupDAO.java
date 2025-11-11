@@ -54,12 +54,17 @@ public interface IGroupDAO
 	// 마이페이지에서 사용될 현재 활동 : 운영 모임에 대해 조회하는 쿼리문
 	public GroupDTO myPageMyGroup(@Param("userCode")String userCode);
 	
+	// 마이페이지에서 사용될 현재 참여 신청한 모임에 대해 조회하는 메소드
 	public GroupDTO myPageRequestJoinGroup(@Param("userCode") String userCode);
 	
+	// 마이페이지에서 사용될 현재 개설 신청한 모임에 대해 조회하는 메소드
 	public GroupDTO myPageRequestApplyGroup(@Param("userCode") String userCode);
 	
+	// 마이페이지에서 사용될 즐겨찾기 모임 조회 메소드
 	public GroupDTO myPageFavoriteGroup(@Param("userCode") String userCode);
 	
 	public List<GroupDTO> groupManageMemberList(@Param("groupApplyCode") String groupApplyCode);
-
+	
+	// 모임 내용 업데이트
+	public void updateGroupInfo(GroupDTO groupDTO);
 }

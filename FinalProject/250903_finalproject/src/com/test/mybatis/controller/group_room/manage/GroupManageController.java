@@ -238,6 +238,17 @@ public class GroupManageController
 		return articleUrl;
 	}
     
+	@RequestMapping(value = "/groupeditcomplete.do", method=RequestMethod.POST)
+	public String updateGroupInfo(GroupDTO groupDTO)
+	{
+		String url = "redirect:home.do?groupApplyCode=" + groupDTO.getGroupApplyCode();
+		
+		IGroupDAO groupDAO = sqlSession.getMapper(IGroupDAO.class);
+		
+		groupDAO.updateGroupInfo(groupDTO);
+		
+		return url;
+	}
     
     
 }
