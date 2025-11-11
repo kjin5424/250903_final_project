@@ -253,13 +253,6 @@ public class HomeController
 			      
 			}
 			
-
-	
-	@RequestMapping(value="/level.do", method=RequestMethod.GET)
-	public String level(Model model)
-	{
-		return "/WEB-INF/view/group_room/Level.jsp";
-	}
 	
 	@RequestMapping(value="/groupcreate.do", method=RequestMethod.GET)
 	public String groupCreate(Model model, HttpSession session)

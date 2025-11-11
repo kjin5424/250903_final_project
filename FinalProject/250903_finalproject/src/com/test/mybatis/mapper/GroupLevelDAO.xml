@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.mybatis.dao.IGroupLevelDAO">
+
+	<select id="getType" resultType="com.test.mybatis.dto.GroupLevelDTO">
+		SELECT LEVEL_TYPE AS levelType, COUNT AS inwon
+		FROM LEVEL_TYPE
+	</select>
+
+	<select id="whatLevel" resultType="java.lang.String">
+		SELECT LEVEL_TYPE AS levelType
+		FROM LEVEL_TABLE
+		WHERE GROUP_APPLY_CODE = #{groupApplyCode}
+	</select>
+</mapper>

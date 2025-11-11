@@ -4,6 +4,8 @@ public class GroupPostCommentDTO
 {
 	private String commentCode;		// 댓글 코드
 	private String nickName;		// 작성자 닉네임
+	private String joinCode;
+	private String postCode;
 	private String createdDate;		// 작성일
 	private String updatedDate;		// 수정일
 	private String content;			// 내용
@@ -65,6 +67,22 @@ public class GroupPostCommentDTO
 	public void setBlinded(boolean isBlinded)
 	{
 		this.isBlinded = isBlinded;
+	}
+	public String getJoinCode()
+	{
+		return joinCode;
+	}
+	public void setJoinCode(String joinCode)
+	{
+		this.joinCode = joinCode;
+	}
+	public String getPostCode()
+	{
+		return postCode;
+	}
+	public void setPostCode(String postCode)
+	{
+		this.postCode = postCode;
 	}
 	
 }

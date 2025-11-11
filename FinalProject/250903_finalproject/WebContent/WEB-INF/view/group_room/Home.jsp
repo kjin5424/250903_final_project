@@ -86,7 +86,7 @@
             <div class="group-header-top">
                 <div class="group-title-area">
                     <h1 class="group-title">${groupInfo.groupTitle}</h1>
-                    <button class="group-level" onclick="location.href='level.do?${groupInfo.groupApplyCode}'" title="레벨 현황을 자세히 확인할 수 있어요">
+                    <button class="group-level" onclick="location.href='level.do?groupApplyCode=${groupInfo.groupApplyCode}'" title="레벨 현황을 자세히 확인할 수 있어요">
                         Lv.${groupInfo.groupLevel}
                     </button>
                 </div>
@@ -240,8 +240,8 @@
 				</div>
 
                 <!-- 도전 과제 -->
-                <div class="section-wrapper">
 				<c:if test="${not empty checkMember }">
+                <div class="section-wrapper">
 					<div class="challenge-section">
 						<div class="section-header">
 							<h2 class="section-title">🏆 진행중인 도전과제</h2>
@@ -277,8 +277,8 @@
 
 
 					</div>
+				</div>
 				</c:if>
-			</div>
 
                 <!-- 알림 -->
                 <div class="section-wrapper">
@@ -309,8 +309,8 @@
                 </div>
 
                 <!-- 내 한줄소개 -->
-                <div class="section-wrapper">
 				<c:if test="${not empty checkMember }">
+                <div class="section-wrapper">
 					<div class="intro-section">
 						<div class="section-header">
 							<h2 class="section-title">✍️ 내 한줄소개</h2>
@@ -340,9 +340,8 @@
 							</c:otherwise>
 						</c:choose>
 					</div>
-				</c:if>
 				</div>
-
+				</c:if>
             </div>
         </div>
     </div>
