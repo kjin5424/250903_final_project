@@ -80,4 +80,7 @@ public class ReportController {
 
 		return "redirect:reportafter.do";
 	}
+	
+
+	
 }
