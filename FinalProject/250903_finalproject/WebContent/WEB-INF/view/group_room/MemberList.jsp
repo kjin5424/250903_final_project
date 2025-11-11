@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" 
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page language="java" %>
 <% 
     request.setCharacterEncoding("UTF-8");
@@ -22,9 +23,10 @@
     // 현재 사용자가 모임원인지 여부 (서버에서 전달받아야 함)
     const isGroupMember = true; // 실제로는 서버에서 값을 받아와야 합니다
     
-    function openModal(name, role, intro, avatarText) {
+    function openModal(nickName, role, intro, avatarText) {
+    	selectedNikName = nickName;
         document.getElementById('modal-avatar').textContent = avatarText;
-        document.getElementById('modal-name').textContent = name;
+        document.getElementById('modal-name').textContent = nickName;
         
         const roleElement = document.getElementById('modal-role');
         roleElement.textContent = role;
@@ -58,15 +60,15 @@
         }
         
         document.getElementById('modal-overlay').classList.add('active');
+        
     }
 
     function closeModal() {
         document.getElementById('modal-overlay').classList.remove('active');
     }
     
-    function goToProfile() {
-        alert('프로필 페이지로 이동합니다.');
-        // 실제로는 location.href = 'profile.do?userId=xxx';
+    function goToProfile(nickName) {
+        location.href = 'profile.do?nickName=' + encodeURIComponent(selectedNikName, "UTF-8");
     }
     
     function sendMessage() {
@@ -108,81 +110,38 @@
             <div class="board-header">
                 <h1 class="board-title">
                     <span class="board-title-icon">👥</span>
-                    알고리즘 정복 스터디 - 모임원
+                    ${title } - 모임원
                 </h1>
             </div>
 
             <!-- 모임원 목록 -->
             <div class="members-grid">
-                <!-- 모임장 -->
-                <div class="member-card" onclick="openModal('코딩마스터', '모임장', '알고리즘과 코딩 교육 전문가입니다. 함께 성장하는 스터디를 만들어가요!', '코')">
-                    <div class="member-header">
-                        <div class="member-role-badge leader">모임장</div>
-                        <div class="member-avatar">코</div>
-                    </div>
-                    <div class="member-info">
-                        <div class="member-name">코딩마스터</div>
-                        <div class="member-intro">알고리즘과 코딩 교육 전문가입니다. 함께 성장하는 스터디를 만들어가요!</div>
-                    </div>
-                </div>
-
-                <!-- 부모임장 -->
-                <div class="member-card" onclick="openModal('서브리더', '부모임장', '모임장을 보좌하며 스터디 운영을 돕고 있습니다.', '서')">
-                    <div class="member-header">
-                        <div class="member-role-badge sub-leader">부모임장</div>
-                        <div class="member-avatar">서</div>
-                    </div>
-                    <div class="member-info">
-                        <div class="member-name">서브리더</div>
-                        <div class="member-intro">모임장을 보좌하며 스터디 운영을 돕고 있습니다.</div>
-                    </div>
-                </div>
-
-                <!-- 도우미 -->
-                <div class="member-card" onclick="openModal('헬퍼', '도우미', '문제 해설과 자료 정리를 담당하고 있습니다.', '헬')">
-                    <div class="member-header">
-                        <div class="member-role-badge helper">도우미</div>
-                        <div class="member-avatar">헬</div>
-                    </div>
-                    <div class="member-info">
-                        <div class="member-name">헬퍼</div>
-                        <div class="member-intro">문제 해설과 자료 정리를 담당하고 있습니다.</div>
-                    </div>
-                </div>
-
-                <!-- 모임원 -->
-                <div class="member-card" onclick="openModal('민수', '모임원', '문제를 같이 풀며 성장하고 싶습니다. 열심히 참여하겠습니다!', '민')">
-                    <div class="member-header">
-                        <div class="member-role-badge member">모임원</div>
-                        <div class="member-avatar">민</div>
-                    </div>
-                    <div class="member-info">
-                        <div class="member-name">민수</div>
-                        <div class="member-intro">문제를 같이 풀며 성장하고 싶습니다. 열심히 참여하겠습니다!</div>
-                    </div>
-                </div>
-
-                <div class="member-card" onclick="openModal('지연', '모임원', '매주 성실하게 참여합니다. 함께 공부하며 좋은 인연이 되었으면 합니다.', '지')">
-                    <div class="member-header">
-                        <div class="member-role-badge member">모임원</div>
-                        <div class="member-avatar">지</div>
-                    </div>
-                    <div class="member-info">
-                        <div class="member-name">지연</div>
-                        <div class="member-intro">매주 성실하게 참여합니다. 함께 공부하며 좋은 인연이 되었으면 합니다.</div>
-                    </div>
-                </div>
-
-                <div class="member-card" onclick="openModal('하준', '모임원', 'CS 공부에 관심이 많습니다. 스터디를 통해 더 성장하고 싶어요!', '하')">
-                    <div class="member-header">
-                        <div class="member-role-badge member">모임원</div>
-                        <div class="member-avatar">하</div>
-                    </div>
-                    <div class="member-info">
-                        <div class="member-name">하준</div>
-                        <div class="member-intro">CS 공부에 관심이 많습니다. 스터디를 통해 더 성장하고 싶어요!</div>
-                    </div>
-                </div>
+            	<c:forEach var="user" items="${groupUserList }">
+	                <div class="member-card" 
+	                	onclick="openModal('${user.nickName}'
+	                					 , '${user.position }'
+	                					 , '${user.selfIntroduction }'
+	                					 , '${not empty user.savePath ? user.savePath :  fn:substring(user.nickName, 0, 1)}')">
+	                    <div class="member-header">
+	                        <c:choose>
+	                        	<c:when test="${user.position == '모임장' }">
+	                        		<div class="member-role-badge leader">${user.position }</div>
+	                        	</c:when>
+	                        	<c:when test="${user.position == '부모임장' }">
+	                        		<div class="member-role-badge sub-leader">${user.position }</div>
+	                        	</c:when>
+	                        	<c:when test="${user.position == '도우미' }">
+	                        		<div class="member-role-badge helper">${user.position }</div>
+	                        	</c:when>
+	                        </c:choose>
+	                        <div class="member-avatar">${not empty user.savePath ? user.savePath :  fn:substring(user.nickName, 0, 1)}</div>
+	                    </div>
+	                    <div class="member-info">
+	                        <div class="member-name">${user.nickName }</div>
+	                        <div class="member-intro">${user.selfIntroduction }</div>
+	                    </div>
+	                </div>
+            	</c:forEach>
             </div>
         </div>
     </div>

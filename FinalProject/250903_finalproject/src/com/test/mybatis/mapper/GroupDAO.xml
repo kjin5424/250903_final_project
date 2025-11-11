@@ -544,7 +544,8 @@ WHERE GA.GROUP_APPLY_CODE = #{groupApplyCode}
         UI.NICKNAME AS nickname,
         J.INTRODUCE AS selfIntroduction,  
         GA.GROUP_APPLY_CODE AS groupApplyCode,
-        NVL(CASE WHEN MP.GRANT_TYPE = 1 THEN PST.TYPE ELSE '모임원' END, '모임원') AS position
+        NVL(CASE WHEN MP.GRANT_TYPE = 1 THEN PST.TYPE ELSE '모임원' END, '모임원') AS position,
+        UI.SAVEPATH AS savePath
     FROM
         REQUEST_ANSWER RA
     JOIN
