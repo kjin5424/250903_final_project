@@ -33,4 +33,13 @@ public interface IUserDAO
 	
 	// 닉네임으로 회원코드 얻어내기
 	public String nickNameToUserCode(@Param("nickName") String nickName);
+	
+	// 개인 회원 정보 업데이트하기 → 비밀번호 포함
+	public void updateUserInfo(@Param("userDTO") UserDTO userDTO);
+	
+	// 개인 회원 정보 업데이트하기 → 비밀번호 제외
+	public void updateUserInfoNotPw(@Param("userDTO") UserDTO userDTO);
+	
+	// 개인 프로필 수정창 열람시 사용될 본인 확인
+	public String profileModifyCheck(@Param("userCode") String userCode);
 }

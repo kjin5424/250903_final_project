@@ -1,6 +1,15 @@
 package com.test.mybatis.controller.profile;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Collection;
+import java.util.Locale;
+
+import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
@@ -124,7 +133,81 @@ public class ProfileController
 	{
 		return "/WEB-INF/view/profile/ProfileForGroupManager.jsp";
 	}
-
+	
+	@RequestMapping(value="/profileupdate.do", method = RequestMethod.GET)
+	public String profileUpdate(HttpServletRequest request, HttpSession session)
+	{
+		String url = "redirect:profilemodify.do";
+		
+		IUserDAO userDAO = sqlSession.getMapper(IUserDAO.class);
+		
+		UserDTO user = (UserDTO)session.getAttribute("user");
+		String userCode = "UC00000010";
+		
+		if(user!=null)
+			userCode = user.getUserCode();
+		
+		UserDTO userDTO = new UserDTO();
+		userDTO.setUserCode(userCode);
+		userDTO.setNickname(request.getParameter("nickname"));
+		userDTO.setAddress(request.getParameter("address"));
+		userDTO.setEmail(request.getParameter("email"));
+		
+		String password = request.getParameter("password");
+		
+		if(password!=null && !password.equals(""))
+		{
+			userDTO.setPassword(password);
+			userDAO.updateUserInfo(userDTO);
+		}
+		else
+		{
+			userDAO.updateUserInfoNotPw(userDTO);
+		}
+		
+		return url;
+	}
+	
+	@RequestMapping(value="/profilemodifycheck.do", method=RequestMethod.POST)
+	public void profileModifyCheck(HttpSession session, HttpServletRequest request
+				, HttpServletResponse response) throws ServletException, IOException
+	{
+		String url = "";
+				
+		UserDTO user = (UserDTO)session.getAttribute("user");
+		String userCode = "UC00000010";
+		if(user!=null)
+			userCode = user.getUserCode();
+		
+		IUserDAO userDao = sqlSession.getMapper(IUserDAO.class);
+		
+		String passCheck = userDao.profileModifyCheck(userCode);
+		
+		if(passCheck.equals(request.getParameter("password")))
+			url = "/profilemodify.do";
+		else
+			url = "/profilemodifycheckpage.do?error=faild";
+		
+		
+		request.getRequestDispatcher(url).forward(request, response);
+		
+	}
+	
+	@RequestMapping(value="/profilemodifycheckpage.do", method=RequestMethod.GET)
+	public String profileModifyCheckPage(HttpSession session, @RequestParam(value="error", required = false) String error)
+	{
+		String url = "/WEB-INF/view/profile/ProfileModifyCheck.jsp";
+		UserDTO user = (UserDTO)session.getAttribute("user");
+		String userCode = "UC00000010";
+		if(user!=null)
+			userCode = user.getUserCode();
+		
+		if(error!=null)
+			return url + "?error=" + error;
+		else
+			return url;
+	}
+	
 	/*
 	 * @RequestMapping(value = "/profilemodify.do", method = RequestMethod.GET)
 	 * public String ProfileModify(Model model) { return
