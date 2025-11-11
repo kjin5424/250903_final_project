@@ -463,7 +463,7 @@ window.onload = function() {
                     </div>
 
                     <div class="stat-item">
-                        <span class="stat-value">85%</span>
+                        <span class="stat-value">${groupDetail.totalAttendance}</span>
                         <span class="stat-label">평균 출석률</span>
                     </div>
 
@@ -473,7 +473,7 @@ window.onload = function() {
                     </div>
 
                     <div class="stat-item">
-                        <span class="stat-value">${groupDetail.difficulty}</span>
+                        <span class="stat-value">${groupDetail.difficulty}%</span>
                         <span class="stat-label">학습 난이도</span>
                     </div>
                 </div>

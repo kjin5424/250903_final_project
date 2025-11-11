@@ -122,10 +122,13 @@
                 }
             }
 
-            const agree = document.getElementById('agreeRules').checked;
-            if (!agree) {
-                alert('모임 규칙에 동의해야 합니다.');
-                return;
+            const agreeCheckbox = document.getElementById('agreeRules');
+            if (agreeCheckbox) {
+                const agree = agreeCheckbox.checked;
+                if (!agree) {
+                    alert('모임 규칙에 동의해야 합니다.');
+                    return;
+                }
             }
 
             if (confirm('이 모임에 가입 신청하시겠습니까?')) {
@@ -268,6 +271,7 @@
 </c:if>
 
             <!-- 모임 규칙 확인 -->
+            <c:if test="${not empty groupQuestionRule.rule}">
             <div class="section">
                 <h3 class="section-title"><span>📜</span><span>모임 규칙</span></h3>
                 <div style="background:#f8faf8; padding:20px; border-radius:8px; line-height:1.8; color:#666;">
@@ -279,6 +283,7 @@
                     </label>
                 </div>
             </div>
+            </c:if>
             
             <div class="application-form">
             <input type="hidden" id="userCodeInput" name="userCode" value="${userCode}">
