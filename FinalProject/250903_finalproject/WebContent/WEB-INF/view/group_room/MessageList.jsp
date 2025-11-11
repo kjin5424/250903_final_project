@@ -19,8 +19,46 @@
 <link rel="stylesheet" href="<%=cp %>/css_new/board_sample.css">
 <link rel="stylesheet" href="<%=cp %>/css_new/messagelist.css">
 
+<script type="text/javascript" src="<%=cp %>/js/ajax.js"></script>
 <script>
     let currentTab = 'inbox';
+    
+ 	// 메시지가 화면에 보이면 read 처리
+    document.addEventListener("DOMContentLoaded", () => {
+        const observer = new IntersectionObserver(entries => {
+        	//  			 -------------------- 보임 여부 감지 기능
+            entries.forEach(entry => {
+                // 50% 이상 보일 때만 처리
+                if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+                    
+                    const card = entry.target;
+                    if (card.classList.contains('read')) return; // 이미 읽음이면 종료
+
+                    const messageCode = card.dataset.id;
+
+                   
+                    fetch('messageread.do', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                        body: 'messageCode=' + encodeURIComponent(messageCode)
+                    })
+                    .then(res => {
+                        card.classList.remove('unread');
+                        card.classList.add('read');
+                    })
+                    .catch(err => console.error('read update failed', err));
+                    
+                    observer.unobserve(card); // 중복 요청 방지
+                    
+                }
+            });
+        },
+        { threshold: 0.5 }); // 50% 노출 기준
+
+        document.querySelectorAll('.message-card.unread')
+            .forEach(card => observer.observe(card));
+        // → 현재 안읽음 카드들만 관찰 시작.
+    });
     
     // 탭 전환
     function showTab(tab) {
@@ -52,17 +90,6 @@
         const card = document.getElementById('card-' + cardId);
         const messageBody = card.querySelector('.message-body');
         
-        // 안읽음 상태면 읽음 처리 (애니메이션 후)
-        if(card.classList.contains('unread')) {
-            // 3초 후 unread 클래스 제거하고 read 클래스 추가
-            setTimeout(() => {
-                card.classList.remove('unread');
-                card.classList.add('read');
-                // 실제로는 서버에 읽음 처리 요청
-                // markAsRead(cardId);
-            }, 3000);
-        }
-        
         // 내용 펼치기/접기
         messageBody.classList.toggle('expanded');
     }
@@ -88,7 +115,7 @@
             replyForm.querySelector('textarea').focus();
         }
     }
-    
+
     // 답장 전송
     function sendReply(event, cardId, recipient) {
         event.preventDefault();
@@ -104,9 +131,7 @@
         
         if(confirm(recipient + '님에게 답장을 전송하시겠습니까?')) {
             alert('답장이 전송되었습니다.');
-            textarea.value = '';
             const replyForm = card.querySelector('form');
-            alert(content);
             replyForm.submit();
         }
     }
@@ -217,41 +242,46 @@
             <!-- 쪽지 리스트 -->
 			<div class="message-list">
             <!-- 받은 쪽지 -->
-            <c:forEach var="rm" items="${receivedMessage}" varStatus="loop">
-			    <div id="card-${loop.count}" class="message-card ${empty rm.readDate ? 'unread' : 'read'}" data-type="inbox">
+            <c:forEach var="fm" items="${forwardedMessage}" varStatus="loop">
+			    <div id="card-${loop.count}" class="message-card ${empty fm.readDate ? 'unread' : 'read'}" data-type="inbox" data-id="${fm.messageCode }">
 			
 			        <button class="message-delete-btn" onclick="deleteMessage(event, ${loop.count})">×</button>
 			
 			        <div class="message-header">
 			            <div class="message-avatar"
-			                 onclick="showUserModal(event, '${rm.nickName}', '${empty rm.savePath ? fn:substring(rm.nickName, 0, 1) : rm.savePath}')">
-			                ${empty rm.savePath ? fn:substring(rm.nickName, 0, 1) : rm.savePath}
+			                 onclick="showUserModal(event, '${fm.nickName}', '${empty fm.savePath ? fn:substring(fm.nickName, 0, 1) : fm.savePath}')">
+			                ${empty fm.savePath ? fn:substring(fm.nickName, 0, 1) : fm.savePath}
 			            </div>
 			
 			            <div class="message-info">
 			                <div class="message-sender"
-			                     onclick="showUserModal(event, '${rm.nickName}', '${empty rm.savePath ? fn:substring(rm.nickName, 0, 1) : rm.savePath}')">
-			                    ${rm.nickName}
+			                     onclick="showUserModal(event, '${fm.nickName}', '${empty fm.savePath ? fn:substring(fm.nickName, 0, 1) : fm.savePath}')">
+			                    ${fm.nickName}
 			                </div>
 			                <div class="message-meta">
-			                    <span class="message-date">${rm.createdDate}</span>
-			                    <span class="message-status unread">${empty rm.readDate ? '● 안읽음' : ''}</span>
+			                    <span class="message-date">${fm.createdDate}</span>
+			                    <span class="message-status unread">${empty fm.readDate ? '● 안읽음' : ''}</span>
 			                </div>
 			            </div>
 			        </div>
 			
 			        <div class="message-body" onclick="toggleMessage(${loop.count})">
-			            <div class="message-content">${rm.content}</div>
+			            <div class="message-content">${fm.content}</div>
 			        </div>
 			
 			        <div class="message-footer">
 			            <button class="message-reply-btn" onclick="toggleReplyForm(event, ${loop.count})">💬 답장하기</button>
-			
-			            <form action="/messagewriteOk.do" class="reply-form">
-			                <textarea name="content" class="reply-textarea" placeholder="답장 내용을 입력하세요..."></textarea>
-			                <input type="hidden" name="receiver" value="${rm.receiver }">
+
+						<!-- 답장 영역 -->
+			            <form action="<%=cp %>/messagewriteOk.do" id="reply-form-${loop.count }" class="reply-form" method="POST">
+			                <textarea 
+			                	id="content" 
+								name="content" 	
+			                	class="reply-textarea" 
+			                	placeholder="답장 내용을 입력하세요..."></textarea>
+			                <input type="hidden" name="receiver" value="${fm.forwarder }">
 			                <div class="reply-actions">
-			                    <button type="button" class="reply-submit-btn" onclick="sendReply(event, ${loop.count}, '${rm.nickName}')">전송</button>
+			                    <button type="button" class="reply-submit-btn" onclick="sendReply(event, ${loop.count}, '${fm.nickName}')">전송</button>
 			                    <button type="button" class="reply-cancel-btn" onclick="cancelReply(event, ${loop.count})">취소</button>
 			                </div>
 			            </form>
@@ -259,26 +289,27 @@
 			    </div>
 			</c:forEach>
 			<!-- 보낸 쪽지 -->
-			<c:forEach var="fm" items="${forwardedMessage}" varStatus="loop">
+			<c:forEach var="rm" items="${receivedMessage}" varStatus="loop">
                 <div id="card-${loop.count}" class="message-card" data-type="sent" style="display: none;">
                     <button class="message-delete-btn" onclick="deleteMessage(event, ${loop.count})">×</button>
                     
                     <div class="message-header">
                         <div class="message-avatar" 
-                        	onclick="showUserModal(event, '${fm.nickName}', '${empty fm.savePath ? fn:substring(fm.nickName, 0, 1) : fm.savePath}')">
-                        	${empty fm.savePath ? fn:substring(fm.nickName, 0, 1) : fm.savePath}
+                        	onclick="showUserModal(event, '${rm.nickName}', '${empty rm.savePath ? fn:substring(rm.nickName, 0, 1) : rm.savePath}')">
+                        	${empty rm.savePath ? fn:substring(rm.nickName, 0, 1) : rm.savePath}
                         </div>
                         <div class="message-info">
-                            <div class="message-sender" onclick="showUserModal(event, '코딩마스터', '코')">
-                                ${fm.nickName } 님에게
+                            <div class="message-sender" 
+                            	onclick="showUserModal(event, '${rm.nickName}', '${empty rm.savePath ? fn:substring(rm.nickName, 0, 1) : rm.savePath}')">
+                                ${rm.nickName } 님에게
                             </div>
                             <div class="message-meta">
-                                <span class="message-date">${fm.createdDate }</span>
+                                <span class="message-date">${rm.createdDate }</span>
                             </div>
                         </div>
                     </div>
                     <div class="message-body" onclick="toggleMessage(${loop.count})">
-                        <div class="message-content">${fm.content }</div>
+                        <div class="message-content">${rm.content }</div>
                     </div>
                 </div>
 			</c:forEach>

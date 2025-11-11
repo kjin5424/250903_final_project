@@ -3,6 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.test.mybatis.dao.IMessageDAO">
+	<!-- 내가 보낸 쪽지들 -->
 	<select id="getReceivedMessage" resultType="com.test.mybatis.dto.MessageDTO">
 		SELECT M.MESSAGE_CODE AS messageCode
 			 , M.RECEIVER AS receiver
@@ -13,7 +14,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 								 WHERE USER_CODE = (SELECT USER_CODE
 													FROM JOIN_TABLE
 													WHERE JOIN_CODE = M.RECEIVER))) AS nickName
-			 , M.READ_DATE AS readDate
 			 , M.CONTENT AS content
 			 , M.CREATED_DATE AS createdDate
 			 , (SELECT SAVEPATH
@@ -35,7 +35,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		  AND MR.MESSAGE_CODE IS NULL
 		ORDER BY M.CREATED_DATE DESC 
 	</select>
-
+	
+	<!-- 내가 받은 쪽지들 -->
 	<select id="getForwardedMessage" resultType="com.test.mybatis.dto.MessageDTO">
 		SELECT M.MESSAGE_CODE AS messageCode
 			 , M.FORWARDER AS forwarder
@@ -45,7 +46,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 								 FROM USER_TABLE
 								 WHERE USER_CODE = (SELECT USER_CODE
 													FROM JOIN_TABLE
-													WHERE JOIN_CODE = M.FORWARDER))) AS NICKNAME
+													WHERE JOIN_CODE = M.FORWARDER))) AS nickName
+			 , M.READ_DATE AS readDate
 			 , M.CONTENT AS content
 			 , M.CREATED_DATE AS createdDate
 			 , (SELECT SAVEPATH
@@ -174,5 +176,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		VALUES(MESSAGE_SEQ.NEXTVAL, #{forwarder}, #{receiver}, #{content})
 	</insert>
 	
-	
+	<update id="readMessage">
+		UPDATE MESSAGE
+		SET READ_DATE = SYSDATE
+		WHERE MESSAGE_CODE = #{messageCode}
+	</update>
 </mapper>

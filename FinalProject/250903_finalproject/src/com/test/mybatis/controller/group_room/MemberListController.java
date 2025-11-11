@@ -1,6 +1,5 @@
 package com.test.mybatis.controller.group_room;
 
-<<<<<<< Upstream, based on develop
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
