@@ -49,7 +49,7 @@ public class MessageController
 				}
 				else
 				{
-					model.addAttribute("error", "게시글을 조회하려면 모임에 가입해야 합니다.");
+					model.addAttribute("error", "쪽지를 조회하려면 모임에 가입해야 합니다.");
 			    	model.addAttribute("url", "/home.do?groupApplyCode=" + groupApplyCode);
 			    	return "redirect:/errorpage.do";
 				}
@@ -63,7 +63,7 @@ public class MessageController
 		}
 		else
 		{
-			model.addAttribute("error", "게시글을 조회하려면 모임에 가입해야 합니다.");
+			model.addAttribute("error", "쪽지를 조회하려면 모임에 가입해야 합니다.");
 	    	model.addAttribute("url", "/loginpage.do");
 	    	return "redirect:/errorpage.do";
 		}
@@ -115,5 +115,22 @@ public class MessageController
 		daom.sendMessage(dto);
 		
 		return "redirect:/messagelist.do";
+	}
+	
+	@RequestMapping(value="/messageread.do", method=RequestMethod.GET)
+	public String messageRead(Model model, String messageCode)
+	{
+		IMessageDAO dao = sqlSession.getMapper(IMessageDAO.class);
+		String result = "성공";
+		try
+		{
+			dao.readMessage(messageCode);
+			model.addAttribute("result", result);
+			
+		} catch (Exception e)
+		{
+			model.addAttribute("result", e);
+		}
+		return "/WEB-INF/view/group_room/MessageRead.jsp";
 	}
 }

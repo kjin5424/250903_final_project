@@ -21,4 +21,7 @@ public interface IMessageDAO
 	// 쪽지 DB에 작성하기
 	public int sendMessage(MessageDTO dto);
 	
+	// 쪽지 읽음 처리
+	public int readMessage(@Param("messageCode") String messageCode);
+	
 }
