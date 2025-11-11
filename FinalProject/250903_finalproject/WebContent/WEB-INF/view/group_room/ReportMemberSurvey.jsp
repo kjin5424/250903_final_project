@@ -730,10 +730,11 @@ rgba
 
 			<!-- 설문 폼 -->
 			<%-- <form action="${cp}/reportmembersurvey.do" method="post" id="surveyForm"> --%>
-			
-			<form action="<c:url value='/reportmembersurvey.do'/>" method="post" id="surveyForm">
+<%-- 			<form action="<c:url value='/reportmembersurvey.do'/>" method="post" id="surveyForm"> --%>
+
+				<form id="surveyForm">
 				<!-- 숨겨진 필드 -->
-				<input type="hidden" name="userCode" value="${userCode}">
+				<%-- <input type="hidden" name="userCode" value="${userCode}"> --%>
 				<input type="hidden" name="groupApplyCode" value="${groupApplyCode}">
 
 				<div class="section">
@@ -832,7 +833,9 @@ rgba
 					참여해주셔서 감사합니다.<br>설문 결과는 익명으로 처리됩니다.
 				</div>
 				<div class="button-group">
-					<button class="btn btn-submit" onclick="window.close()">닫기</button>
+					<!-- <button class="btn btn-submit" onclick="window.close()">닫기</button> -->
+					<button class="btn btn-submit" onclick="window.location.href='<c:url value='/mainpage.do'/>'">모임 홈으로</button>
+					
 				</div>
 			</div>
 		</div>
@@ -860,9 +863,11 @@ rgba
 		}
 	});
 
-	// ✅ 제출 시 실제로 서버로 전송되도록 수정
-	document.getElementById('surveyForm').addEventListener('submit', function() {
-		alert('설문이 제출되었습니다.');
+	// ✅ 제출 시 DB 없이 결과 화면 표시
+	document.getElementById('surveyForm').addEventListener('submit', function(e) {
+		e.preventDefault(); // 서버 전송 막기 ✅
+		document.getElementById('surveyScreen').style.display = 'none'; // 설문 화면 숨김 ✅
+		document.getElementById('resultScreen').style.display = 'block';  // 결과 화면 표시 ✅
 	});
 	</script>
 

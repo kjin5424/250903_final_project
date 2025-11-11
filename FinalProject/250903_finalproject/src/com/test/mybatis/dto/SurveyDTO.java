@@ -9,6 +9,7 @@ public class SurveyDTO {
 	private String createdDate;
 
 	// getter/setter
+	// DB없음 세팅만 유지 
 	public String getSurveyCode() {
 		return surveyCode;
 	}

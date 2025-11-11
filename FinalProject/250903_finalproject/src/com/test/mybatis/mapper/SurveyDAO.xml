@@ -5,8 +5,7 @@
 
 <mapper namespace="com.test.mybatis.dao.ISurveyDAO">
 
-  
-  <!-- 설문 대상 여부 확인 -->
+  <!-- 설문 대상 여부 확인  db 없음 세팅만 유지 -->
    <!-- 
 	<select id="checkSurveyTarget" parameterType="string" resultType="int">
     SELECT COUNT(*) AS SURVEY_TARGET_COUNT
@@ -23,18 +22,11 @@
 	</select> -->
 
 <!-- 설문 등록 (동의/비동의) -->
-    <!-- 설문 등록 -->
-    <insert id="insertSurvey" parameterType="com.test.mybatis.dto.SurveyDTO">
-        INSERT INTO SURVEY
+<!-- <insert id="insertSurvey" parameterType="com.test.mybatis.dto.SurveyDTO">
+    INSERT INTO SURVEY
         (SURVEY_CODE, USER_CODE, GROUP_APPLY_CODE, SURVEY_ANSWER_TYPE, DETAIL_CONTENT, CREATED_DATE)
-        VALUES
-        (SURVEY_SEQ.NEXTVAL,
-         #{userCode},
-         #{groupApplyCode},
-         #{surveyAnswerType},
-         #{surveyReason},
-         SYSDATE)
-    </insert>
-
+    VALUES
+        (KMJ.SURVEY_SEQ.NEXTVAL, #{userCode}, #{groupApplyCode}, #{surveyAnswerType}, #{detailContent}, SYSDATE)
+</insert> -->
 
 </mapper>
