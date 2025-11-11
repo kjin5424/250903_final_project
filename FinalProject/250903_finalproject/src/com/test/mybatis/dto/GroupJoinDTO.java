@@ -14,6 +14,26 @@ public class GroupJoinDTO
 	private String introduce;			// 한 줄 자기소개
 	private String questionCode;		// 가입 질문 코드
 	private String question;			// 가입 질문
+	// 추가 속성
+	private UserDTO user;				// 신청한 유저 정보
+	private GroupDTO group;				// 신청 대상 모임 정보
+	private String position;			// 모임 내 역할
+	private String totalActivity, attendanceActivity;	// 모임 소속 기간 내 전체 모임 활동과 참여한 활동 횟수		
+	private String totalChallenge, checkChallenge;		// 참여했던 도전과제와 완수 도전과제 개수
+	private String groupTitle;
+	private String quitDate;			// 모임 탈퇴 날짜
+	private String quitReason;			// 모임 탈퇴 사유
+	private String quitType;			// 모임 탈퇴 타
+	
+	// 신청 상태 	
+	private String status;				// 신청 상태
+	private String joinDate;			// 신청 날짜
+	private String insertDatae;			// 가입 처리 날짜
+	private String location;
+	private String email;
+	private String answer;		// 가입 질문 답변
+	private int waitingCount;		// 몇 명 신청했는지
+	
 	public String getQuestion()
 	{
 		return question;
@@ -30,25 +50,6 @@ public class GroupJoinDTO
 	{
 		this.email = email;
 	}
-	private String answer;		// 가입 질문 답변
-	private int waitingCount;		// 몇 명 신청했는지
-	
-	// 추가 속성
-	private UserDTO user;				// 신청한 유저 정보
-	private GroupDTO group;				// 신청 대상 모임 정보
-	private String position;			// 모임 내 역할
-	private String totalActivity, attendanceActivity;	// 모임 소속 기간 내 전체 모임 활동과 참여한 활동 횟수		
-	private String totalChallenge, checkChallenge;		// 참여했던 도전과제와 완수 도전과제 개수
-	private String groupTitle;
-	private String quitDate;			// 모임 탈퇴 날짜
-	private String quitReason;			// 모임 탈퇴 사유
-	
-	// 신청 상태 	
-	private String status;				// 신청 상태
-	private String joinDate;			// 신청 날짜
-	private String insertDatae;			// 가입 처리 날짜
-	private String location;
-	private String email;
 
 	
 	public String getAnswer() {
