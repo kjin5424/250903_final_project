@@ -522,12 +522,10 @@ window.onload = function() {
 
 		<div class="form-container">
 			<form action="${pageContext.request.contextPath}/groupeditcomplete.do" 
-			      method="post" 
-			      enctype="multipart/form-data" 
+			      method="post"
 			      onsubmit="return validateAndSubmit(event)">
 
 				<input type="hidden" name="groupApplyCode" value="${groupDetail.groupApplyCode}">
-				<input type="hidden" id="removeImageFlag" name="removeImageFlag" value="false">
 
 				<!-- 기본 정보 -->
 				<div class="form-section">
@@ -554,7 +552,7 @@ window.onload = function() {
 							</c:if>
 							<div>
 								<p style="font-size: 13px; color: #666; margin-bottom: 10px;">📁 새 이미지 업로드</p>
-								<input type="file" id="image" name="image" accept="image/*"
+								<input type="file" id="image" name="savePath" accept="image/*"
 									onchange="previewImage(event)" style="margin-bottom: 10px;">
 								<div class="tip" style="justify-content: center;">새 이미지를 업로드하면 기존 이미지가 교체됩니다.</div>
 							</div>
@@ -687,17 +685,6 @@ window.onload = function() {
 						</select>
 						<div class="tip-red">
 							❗ 청소년 환영 시, 모임 종료 시간은 오후 10시 이후로 설정할 수 없습니다.
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label class="form-label">현재 인원</label>
-						<div class="readonly-info">
-							현재 ${groupDetail.currentMemberCount}명 / 최대 ${groupDetail.maxCount}명
-							<br>
-							<small style="color:#f57c00; font-weight:600;">
-								💡 현재 레벨 ${groupDetail.groupLevel} - 레벨업 시 인원 상한이 증가합니다.
-							</small>
 						</div>
 					</div>
 

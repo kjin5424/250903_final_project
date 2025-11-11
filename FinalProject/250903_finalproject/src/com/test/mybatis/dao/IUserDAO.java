@@ -21,7 +21,7 @@ public interface IUserDAO
 	public GroupJoinDTO currentGroupList(@Param("userCode") String userCode);
 	
 	// 과거 운영/참여중인 모임 리스트 조회하는 메소드
-	public GroupDTO quitGroupList(@Param("userCode") String userCode);
+	public GroupJoinDTO quitGroupList(@Param("userCode") String userCode);
 	
 	// 모임 컨텐츠 생산 폼 요청 시 해당 유저가 해당 모임의 모임원인지 검증하는 메소드
 	public String checkMember(@Param("userCode") String userCode, @Param("groupApplyCode") String groupApplyCode);

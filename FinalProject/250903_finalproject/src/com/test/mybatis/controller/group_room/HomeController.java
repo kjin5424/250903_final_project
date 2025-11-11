@@ -406,12 +406,6 @@ public class HomeController
 	    return "/WEB-INF/view/group/ApplicationComplete.jsp"; 
 	}
 	
-	@RequestMapping(value="/attendance.do", method=RequestMethod.GET)
-	public String attendance(Model model)
-	{
-		return "/WEB-INF/view/group_room/manage/Attendance.jsp";
-	}
-	
 	@RequestMapping(value = "/updateIntroduce.do", method=RequestMethod.POST)
 	public String updateIntroduce(HttpSession session, @RequestParam("groupApplyCode")String groupApplyCode
 				, @RequestParam("joinCode")String joinCode, @RequestParam("introduce")String introduce)
