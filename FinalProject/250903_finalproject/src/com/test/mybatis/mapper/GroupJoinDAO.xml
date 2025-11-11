@@ -29,12 +29,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="countWaitingGroupMember" resultType="java.lang.Integer">
-	SELECT COUNT(*) AS waitingCount
-    FROM JOIN_TABLE JT
-    JOIN REQUEST_ANSWER RA
-        ON JT.JOIN_CODE = RA.JOIN_CODE
-    WHERE JT.GROUP_APPLY_CODE = #{groupApplyCode, jdbcType=VARCHAR}
-      AND RA.ANSWER_TYPE IS NULL
+		SELECT COUNT(*) AS waitingCount
+		FROM JOIN_TABLE JT
+		LEFT JOIN REQUEST_ANSWER RA
+		    ON JT.JOIN_CODE = RA.JOIN_CODE
+		WHERE JT.GROUP_APPLY_CODE = #{groupApplyCode}
+		  AND (RA.ANSWER_TYPE IS NULL)
 	</select>
 	
 	
@@ -60,7 +60,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 현재 대기 중인 신청 수 조회 -->
 	<select id="countWatingGroup" resultType="java.lang.Integer">
-		SELECT COUNT(*) AS COUNT
+		SELECT COUNT(*) AS waitingCount
 		FROM JOIN_TABLE JT
 		JOIN REQUEST_ANSWER RA
 		ON JT.JOIN_CODE = RA.JOIN_CODE
@@ -87,6 +87,39 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		ON JT.GROUP_APPLY_CODE = GCMV.GROUPAPPLYCODE
 		WHERE JT.USER_CODE = #{userCode}
 		  AND RA.ANSWER_TYPE IS NULL
+	</select>
+	
+	<!-- 모임원 신청서 리스트 보기 -->
+	<select id="selectJoinRequestByGroup" resultType="com.test.mybatis.dto.GroupJoinDTO">
+	  SELECT 
+        JT.JOIN_CODE AS groupJoinCode,
+        JT.USER_CODE AS userCode,
+        JT.GROUP_APPLY_CODE AS groupApplyCode,
+        JT.INTRODUCE AS introduce,
+        JT.CREATED_DATE AS joinDate,
+        UI.NICKNAME AS nickName,
+        UI.EMAIL AS email,
+        UI.ADDRESS AS location,
+        QA.ANSWER AS answer,
+        Q.CONTENT AS question
+    FROM JOIN_TABLE JT
+    LEFT JOIN USER_TABLE UT
+        ON JT.USER_CODE = UT.USER_CODE
+    LEFT JOIN USER_INFO UI 
+        ON UT.USER_ID = UI.USER_ID
+    LEFT JOIN QUESTION_ANSWER QA
+        ON JT.JOIN_CODE = QA.JOIN_CODE
+    LEFT JOIN GROUP_APPLY GA
+        ON JT.GROUP_APPLY_CODE = GA.GROUP_APPLY_CODE
+    LEFT JOIN QUESTION Q
+        ON GA.GROUP_APPLY_CODE = Q.GROUP_APPLY_CODE
+    WHERE JT.GROUP_APPLY_CODE =#{groupApplyCode}
+      AND NOT EXISTS (
+          SELECT 1 
+          FROM REQUEST_ANSWER S 
+          WHERE S.JOIN_CODE = JT.JOIN_CODE 
+      )
+    ORDER BY JT.CREATED_DATE DESC
 	</select>
 	
 	<select id="getSelfIntro" resultType="com.test.mybatis.dto.GroupJoinDTO">

@@ -20,6 +20,7 @@ public interface IGroupJoinDAO
 	// -> 모임장이 신청 상세 내역을 확인할 때
 	public List<GroupJoinDTO> selectGroupJoinById(@Param("groupApplyCode") String groupApplyCode);
 	
+	// 대기중인 신청 수
 	public int countWaitingGroupMember(String groupApplyCode);
 	
 	// select --> 특정 모임의 가입 신청한 사람들의 목록을 가져옴
