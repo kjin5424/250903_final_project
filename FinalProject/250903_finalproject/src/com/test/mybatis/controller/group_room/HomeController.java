@@ -1,7 +1,9 @@
 package com.test.mybatis.controller.group_room;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.annotation.MultipartConfig;
@@ -17,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.oreilly.servlet.MultipartRequest;
 import com.test.mybatis.dao.IActivityDAO;
@@ -185,25 +188,31 @@ public class HomeController
 			}
 
 			@RequestMapping(value="/apply.do", method=RequestMethod.GET)
-			public String groupApply(@RequestParam("groupCode") String groupCode, Model model)
+			public String groupApply(@RequestParam("groupCode") String groupCode, HttpSession session, Model model)
 			{
 				
 				
 				IGroupDAO dao = sqlSession.getMapper(IGroupDAO.class);
+				IGroupJoinDAO joinDao = sqlSession.getMapper(IGroupJoinDAO.class);
+				// groupApplyCode 조회 (DAO에서 그룹 코드 기준으로 가져오기)
+				model.addAttribute("groupApplyCode", groupCode);
+
 
 			    try
 			    {
 			        // groupCode → groupApplyCode 로 변환 필요 시 dao에서 처리 가능
+			    	 UserDTO user = (UserDTO)session.getAttribute("user");
 			        System.out.println("apply.do 진입 | groupCode = " + groupCode);
 
+			     
 			        GroupDTO groupDetail = dao.groupDetail(groupCode);
 			        GroupDTO groupQuestionRule = dao.groupQuestionRule(groupCode);
 			   
 			        
 			        List<GroupDTO> memberList = dao.groupUserList(groupCode);
 			        if (!memberList.isEmpty()) {
-			            String groupApplyCode = memberList.get(0).getGroupApplyCode();
-			            int memberCount = dao.groupMemberCount(groupApplyCode);
+
+			            int memberCount = dao.groupMemberCount(groupCode);
 			            groupDetail.setCurrentMemberCount(memberCount);
 			        }
 
@@ -211,6 +220,14 @@ public class HomeController
 			        {
 			            System.out.println("❌ 해당 코드의 모임이 없습니다.");
 			            return "redirect:/mainpage.do";
+			        }
+			        
+			        int duplicateCount = joinDao.checkDuplicationGroup(user.getUserCode(), groupCode);
+			        
+			        if(duplicateCount > 0) {
+			            model.addAttribute("msg", "이미 가입 신청한 모임입니다.");
+			            model.addAttribute("url", "groupdetail.do?groupCode=" + groupCode);
+			            return "/WEB-INF/view/group/CheckApply.jsp";
 			        }
 			        
 			        if (groupQuestionRule != null) {
@@ -235,6 +252,7 @@ public class HomeController
 			    }
 			      
 			}
+			
 
 	
 	@RequestMapping(value="/level.do", method=RequestMethod.GET)

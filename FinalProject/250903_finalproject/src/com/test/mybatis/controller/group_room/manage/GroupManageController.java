@@ -41,7 +41,7 @@ public class GroupManageController
         IGroupDAO groupDao = sqlSession.getMapper(IGroupDAO.class);
 
         // 해당 모임의 가입 신청자 목록 조회
-        List<GroupJoinDTO> applicantList = dao.selectGroupJoinById(groupApplyCode);
+        List<GroupJoinDTO> applicantList = dao.selectJoinRequestByGroup(groupApplyCode);
         
         int waitingCount = dao.countWaitingGroupMember(groupApplyCode);
         

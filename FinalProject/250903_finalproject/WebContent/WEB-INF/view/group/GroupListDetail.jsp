@@ -339,7 +339,7 @@ function toggleFavorite() {
 }
 
 function joinGroup() {
-    const groupCode = "${groupDetail.groupApplyCode}";
+	const groupCode = document.getElementById('groupApplyCode').value;
     if (confirm('이 모임에 가입 신청하시겠습니까?')) {
         if (groupCode) {
             window.location.href = 'apply.do?groupCode=' + groupCode;
@@ -377,7 +377,7 @@ window.onload = function() {
 <body>
     <!-- 상단 메뉴바 -->
     <c:import url="/WEB-INF/view/common/TopMenuBar.jsp" />
-
+<input type="hidden" id="groupApplyCode" value="${groupDetail.groupApplyCode}">
     <div class="content">
         <!-- 뒤로가기 버튼 -->
         <button class="btn btn-ghost" onclick="location.href='grouplist.do'" style="margin-bottom: var(--spacing-lg);">
@@ -463,7 +463,7 @@ window.onload = function() {
                     </div>
 
                     <div class="stat-item">
-                        <span class="stat-value">${groupDetail.totalAttendance}</span>
+                        <span class="stat-value">${groupDetail.totalAttendance}%</span>
                         <span class="stat-label">평균 출석률</span>
                     </div>
 
@@ -473,7 +473,7 @@ window.onload = function() {
                     </div>
 
                     <div class="stat-item">
-                        <span class="stat-value">${groupDetail.difficulty}%</span>
+                        <span class="stat-value">${groupDetail.difficulty}</span>
                         <span class="stat-label">학습 난이도</span>
                     </div>
                 </div>

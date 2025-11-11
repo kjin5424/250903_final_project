@@ -13,6 +13,23 @@ public class GroupJoinDTO
 
 	private String introduce;			// 한 줄 자기소개
 	private String questionCode;		// 가입 질문 코드
+	private String question;			// 가입 질문
+	public String getQuestion()
+	{
+		return question;
+	}
+	public void setQuestion(String question)
+	{
+		this.question = question;
+	}
+	public String getEmail()
+	{
+		return email;
+	}
+	public void setEmail(String email)
+	{
+		this.email = email;
+	}
 	private String answer;		// 가입 질문 답변
 	private int waitingCount;		// 몇 명 신청했는지
 	
@@ -31,6 +48,7 @@ public class GroupJoinDTO
 	private String joinDate;			// 신청 날짜
 	private String insertDatae;			// 가입 처리 날짜
 	private String location;
+	private String email;
 
 	
 	public String getAnswer() {

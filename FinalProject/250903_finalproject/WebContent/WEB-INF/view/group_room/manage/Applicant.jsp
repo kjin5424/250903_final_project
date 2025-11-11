@@ -854,165 +854,115 @@
     </script>
 
 </head>
-
 <body>
-
-    <nav class="navbar">
-
-        <div class="nav-left">
-
-            <div class="logo-tab">
-
-                <span>로고 들어갈 자리</span>
-
-            </div>
-
-            <a href="?page=notice" class="tab">공지사항</a>
-
-            <a href="?page=groups" class="tab">모임구경</a>
-
-            <a href="?page=creategroup" class="tab">모임 개설</a>
-
-            <a href="?page=mygroups" class="tab active">내 모임</a>
-
-        </div>
-
-        <div class="nav-right">
-
-            <a href="mypage.jsp" class="profile-btn">
-
-                <span>👤</span>
-
-                <span>마이페이지</span>
-
-            </a>
-
-        </div>
-
-    </nav>
-
-
+    <!-- 상단 메뉴바 -->
+    <c:import url="/WEB-INF/view/common/TopMenuBar.jsp" />
 
     <div class="container">
-
         <div class="page-header">
-
             <div class="header-top">
-
                 <h1 class="page-title">📋 참여 신청자 관리</h1>
-
-                <div class="applicant-count">대기 중 ${waitingCount }명</div>
-
+                <div class="applicant-count">대기 중 ${waitingCount}명</div>
             </div>
-
-            <p class="page-subtitle">알고리즘 정복 스터디의 가입 신청자 목록입니다</p>
-
+            <p class="page-subtitle">가입 신청자 목록입니다</p>
             <div class="info-alert">
-
                 <p>💡 <strong>신청자 승인 안내:</strong> 신청자의 프로필과 답변을 확인한 후 승인 또는 거절할 수 있습니다. 승인 시 자동으로 환영 메시지가 발송됩니다.</p>
-
             </div>
-
         </div>
 
-
-
         <div class="applicant-container">
-
-            <div class="applicant-list">
-
-                <!-- 신청자 1 -->
-                <c:forEach var="applicant" items="${applicantList }">
-
-                <div class="applicant-card">
-
-                    <div class="applicant-header">
-
-                        <div class="applicant-avatar">👤</div>
-
-                        <div class="applicant-info">
-
-                            <div class="applicant-name-row">
-
-                                <span class="applicant-name">${applicant.nickname }</span>
-
-                                <span class="applicant-badge">신규 신청</span>
-
-                            </div>
-
-                            <div class="applicant-meta">
-
-                                <div class="applicant-meta-item">
-
-                                    <span>📅</span>
-
-                                    <span>신청일: ${applicant.requestDate }</span>
-
-                                </div>
-
-                                <div class="applicant-meta-item">
-
-                                    <span>📍</span>
-
-                                    <span>${applicant.location }</span>
-
-                                </div>
-
-                                <div class="applicant-meta-item">
-
-                                     <span>🎂</span> 
-
-                                    <span>연령대</span> 
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                        <div class="applicant-actions">
-
-                            <button class="btn btn-profile" onclick="location.href='profileforgroupmanager.do'">상세 프로필</button>
-
-                        </div>
-
+            <c:choose>
+                <c:when test="${empty applicantList}">
+                    <!-- 신청자가 없을 때 -->
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📭</div>
+                        <div class="empty-state-text">가입 신청자가 없습니다</div>
+                        <div class="empty-state-sub">새로운 신청자가 있으면 알림으로 알려드립니다</div>
                     </div>
+                </c:when>
+                <c:otherwise>
+                    <!-- 신청자 목록 -->
+                    <div class="applicant-list">
+                        <c:forEach var="applicant" items="${applicantList}">
+                            <div class="applicant-card">
+                                <!-- 신청자 헤더 -->
+                                <div class="applicant-header">
+                                    <div class="applicant-avatar">👤</div>
+                                    <div class="applicant-info">
+                                        <div class="applicant-name-row">
+                                            <span class="applicant-name">${applicant.nickName}</span>
+                                            <span class="applicant-badge">신규 신청</span>
+                                        </div>
+                                        <div class="applicant-meta">
+                                            <div class="applicant-meta-item">
+                                                <span>📅</span>
+                                                <span>신청일: ${applicant.joinDate}</span>
+                                            </div>
+                                            <c:if test="${not empty applicant.location}">
+                                                <div class="applicant-meta-item">
+                                                    <span>📍</span>
+                                                    <span>${applicant.location}</span>
+                                                </div>
+                                            </c:if>
+                                            <c:if test="${not empty applicant.email}">
+                                                <div class="applicant-meta-item">
+                                                    <span>✉️</span>
+                                                    <span>${applicant.email}</span>
+                                                </div>
+                                            </c:if>
+                                        </div>
+                                    </div>
+                                    <div class="applicant-actions">
+                                        <button class="btn btn-profile" onclick="location.href='profileforgroupmanager.do?userCode=${applicant.userCode}'">
+                                            상세 프로필
+                                        </button>
+                                    </div>
+                                </div>
 
+                                <!-- ✅ 신청서 내용 -->
+                                <div class="applicant-body">
+                                    <!-- 한줄 자기소개 -->
+                                    <c:if test="${not empty applicant.introduce}">
+                                        <div class="info-section">
+                                            <div class="info-section-title">
+                                                <span>✍️</span>
+                                                <span>한줄 자기소개</span>
+                                            </div>
+                                            <div class="info-content">
+                                                ${applicant.introduce}
+                                            </div>
+                                        </div>
+                                    </c:if>
 
+                                    <!-- 가입 질문/답변 -->
+                                    <c:if test="${not empty applicant.question and not empty applicant.answer}">
+                                        <div class="qa-section">
+                                            <div class="question-text">
+                                                <span>❓</span>
+                                                <span>${applicant.question}</span>
+                                            </div>
+                                            <div class="answer-text">
+                                                ${applicant.answer}
+                                            </div>
+                                        </div>
+                                    </c:if>
+                                </div>
 
-  ]
-
-				
-
-                        <div class="applicant-actions" style="margin-top: 20px;">
-
-                            <button class="btn btn-approve" onclick="approveApplicant('${applicant.groupJoinCode}', '${applicant.nickName}')">
-
-                                ✅ 승인
-
-                            </button>
-
-                            <button class="btn btn-reject" onclick="rejectApplicant(1, '백엔드개발자')">
-
-                                ❌ 거절
-
-                            </button>
-
-                        </div>
-
+                                <!-- 승인/거절 버튼 -->
+                                <div class="applicant-actions">
+                                    <button class="btn btn-approve" onclick="approveApplicant('${applicant.groupJoinCode}', '${applicant.nickName}')">
+                                        ✅ 승인
+                                    </button>
+                                    <button class="btn btn-reject" onclick="rejectApplicant('${applicant.groupJoinCode}', '${applicant.nickName}')">
+                                        ❌ 거절
+                                    </button>
+                                </div>
+                            </div>
+                        </c:forEach>
                     </div>
-
-                </div>
-
-
-                </c:forEach>
-                </div>
-                </div>
-               
-
-
-
-
+                </c:otherwise>
+            </c:choose>
+        </div>
+    </div>
 </body>
-
 </html>
