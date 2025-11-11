@@ -14,7 +14,7 @@ public interface IUserDAO
 	public UserDTO otherProfile(String userCode);
 	
 	// 조회자와 조회 대상자 간 관계를 증명하는 메소드
-	public int relationCheck(@Param("readerUserCode") String readerUserCode,@Param("targetUserCode") String targetUserCode);
+	public int relationCheck(@Param("userCode") String userCode,@Param("user") String user);
 	
 	// 현재 운영/참여중인 모임 리스트 조회하는 메소드
 	public GroupDTO currentGroupList(@Param("userCode") String userCode);
@@ -28,6 +28,9 @@ public interface IUserDAO
 	// 마이페이지 열람시 필요한 항목(닉네임, 이메일, 사진, 현재 운영/가입중인 모임 등)
 	public UserDTO inMyPage(@Param("userCode")String userCode);
 	
-
+	// 아이디로 회원코드 얻어내기
+	public String idToUserCode(@Param("userId") String userId);
 	
+	// 닉네임으로 회원코드 얻어내기
+	public String nickNameToUserCode(@Param("nickName") String nickName);
 }

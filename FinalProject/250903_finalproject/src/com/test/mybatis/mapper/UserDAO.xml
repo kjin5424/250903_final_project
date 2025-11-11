@@ -133,7 +133,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="relationCheck" resultType="java.lang.Integer">
-		SELECT CASE WHEN #{readerUserCode} = #{targetUserCode} THEN 1
+		SELECT CASE WHEN #{userCode} = #{user} THEN 1
 		            WHEN EXISTS (
 		                        SELECT 1
 		                        FROM CURRENT_MEMBER_VIEW V_LEADER
@@ -148,8 +148,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		                                FROM MEMBER_POSITION
 		                            ) WHERE RN = 1
 		                        ) MP ON MP.JOIN_CODE = V_LEADER.JOINCODE
-		                        WHERE V_LEADER.USERCODE = #{readerUserCode}
-		                        AND V_TARGET.USERCODE = #{targetUserCode}
+		                        WHERE V_LEADER.USERCODE = #{userCode}
+		                        AND V_TARGET.USERCODE = #{user}
 		                        AND MP.POSITION_TYPE = 1
 		                        AND MP.GRANT_TYPE = 1
 		        ) THEN 2
@@ -167,8 +167,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		                                FROM MEMBER_POSITION
 		                            ) WHERE RN = 1
 		                        ) MP ON MP.JOIN_CODE = V_LEADER.JOINCODE
-		                        WHERE V_LEADER.USERCODE = #{readerUserCode}
-		                        AND V_TARGET.USERCODE = #{targetUserCode}
+		                        WHERE V_LEADER.USERCODE = #{userCode}
+		                        AND V_TARGET.USERCODE = #{user}
 		        ) THEN 3
 		        ELSE 4
 		        END AS RELATION_TYPE
@@ -213,6 +213,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
       FROM USER_INFO UI 
       JOIN USER_TABLE UT ON UT.USER_ID = UI.USER_ID
       WHERE UT.USER_CODE = #{userCode}
+	</select>
+	
+	<select id="idToUserCode" parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT USERCODE AS userCode
+		FROM USER_TABLE
+		WHERE USER_ID = #{userId} 
+	</select>
+	
+	<select id="nickNameToUserCode" parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT USER_CODE AS userCode
+		FROM USER_TABLE
+		WHERE USER_ID = (SELECT USER_ID
+						 FROM USER_INFO
+						 WHERE NICKNAME = #{nickName} )
 	</select>
 	
 </mapper>

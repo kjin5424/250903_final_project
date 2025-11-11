@@ -1,5 +1,6 @@
 package com.test.mybatis.controller.profile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
@@ -58,41 +59,53 @@ public class ProfileController
 	}
 
 	@RequestMapping(value = "/profile.do", method = RequestMethod.GET)
-	public String profile(Model model, @RequestParam("readerUserCode") String readerUserCode,
-			@RequestParam("targetUserCode") String targetUserCode)
+	public String profile(Model model, @RequestParam("nickName") String nickName, HttpServletRequest request)
 	{
 		IUserDAO dao = sqlSession.getMapper(IUserDAO.class);
+		
+		// 세션에서 본인 유저코드 가져오기
+		HttpSession session = request.getSession();
+		UserDTO userdto = (UserDTO)session.getAttribute("user");
+		String userCode = "";
+		
+		if (userdto==null)
+			userCode = "비회원";
+		else
+			userCode = userdto.getUserCode();
+		
+		// 회원 닉네임로 회원코드 가져오기
+		String user = dao.nickNameToUserCode(nickName);
 
-		int relationCheck = dao.relationCheck(readerUserCode, targetUserCode);
+		int relationCheck = dao.relationCheck(userCode, user);
 
 		System.out.println("RELATION_CHECK : " + relationCheck);
 
 		switch (relationCheck)
 		{
-		case 1:
+		case 1:	// 본인
 			return "redirect:/profilemodify.do";
-		case 2:
-			model.addAttribute("profile", dao.otherProfile(targetUserCode));
+		case 2:	// 모임장
+			model.addAttribute("profile", dao.otherProfile(user));
 			model.addAttribute("currentGroup",
-					sqlSession.selectList("com.test.mybatis.dao.IUserDAO.currentGroupList", targetUserCode));
+					sqlSession.selectList("com.test.mybatis.dao.IUserDAO.currentGroupList", user));
 			model.addAttribute("quitGroup",
-					sqlSession.selectList("com.test.mybatis.dao.IUserDAO.quitGroupList", targetUserCode));
+					sqlSession.selectList("com.test.mybatis.dao.IUserDAO.quitGroupList", user));
 			model.addAttribute("relation", relationCheck);
 			break;
-		case 3:
-			model.addAttribute("profile", dao.otherProfile(targetUserCode));
+		case 3:	// 모임원
+			model.addAttribute("profile", dao.otherProfile(user));
 			model.addAttribute("currentGroup",
-					sqlSession.selectList("com.test.mybatis.dao.IUserDAO.currentGroupList", targetUserCode));
+					sqlSession.selectList("com.test.mybatis.dao.IUserDAO.currentGroupList", user));
 			model.addAttribute("quitGroup",
-					sqlSession.selectList("com.test.mybatis.dao.IUserDAO.quitGroupList", targetUserCode));
+					sqlSession.selectList("com.test.mybatis.dao.IUserDAO.quitGroupList", user));
 			model.addAttribute("relation", relationCheck);
 			break;
-		case 4: 
-			model.addAttribute("profile", dao.otherProfile(targetUserCode));
+		case 4: // 무관계 
+			model.addAttribute("profile", dao.otherProfile(user));
 			model.addAttribute("currentGroup",
-					sqlSession.selectList("com.test.mybatis.dao.IUserDAO.currentGroupList", targetUserCode));
+					sqlSession.selectList("com.test.mybatis.dao.IUserDAO.currentGroupList", user));
 			model.addAttribute("quitGroup",
-					sqlSession.selectList("com.test.mybatis.dao.IUserDAO.quitGroupList", targetUserCode));
+					sqlSession.selectList("com.test.mybatis.dao.IUserDAO.quitGroupList", user));
 			model.addAttribute("relation", relationCheck);
 		default:
 			break;
