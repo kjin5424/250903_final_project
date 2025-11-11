@@ -22,7 +22,7 @@ import com.test.mybatis.dto.GroupMemberManageDTO;
 import com.test.mybatis.dto.UserDTO;
 
 @Controller
-public class GroupMemberManage
+public class GroupMemberManageController
 {
 	@Autowired
 	private SqlSession sqlSession;
@@ -44,7 +44,7 @@ public class GroupMemberManage
 		        dto.setJoinCode(joinCode);
 		        dto.setQuitReason(quitReason);
 
-		        dao.insertquitmember(dto);
+		        dao.insertquitmember(joinCode, quitReason);
 
 		        result.put("status", "success");
 		        result.put("msg", joinCode + "님이 퇴출되었습니다.");

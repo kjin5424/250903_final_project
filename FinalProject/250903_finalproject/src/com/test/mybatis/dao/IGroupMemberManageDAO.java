@@ -2,6 +2,8 @@ package com.test.mybatis.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.test.mybatis.dto.GroupMemberManageDTO;
 
 public interface IGroupMemberManageDAO
@@ -10,5 +12,6 @@ public interface IGroupMemberManageDAO
 	public List<GroupMemberManageDTO> quitReason(String quitType);
 	
 	// 탈퇴 회원 insert
-	public int insertquitmember(GroupMemberManageDTO dto);
+	public int insertquitmember(@Param("joinCode") String joinCode,
+            @Param("quitReason") String quitReason);
 }
