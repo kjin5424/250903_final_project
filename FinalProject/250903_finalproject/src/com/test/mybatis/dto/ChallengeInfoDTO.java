@@ -1,6 +1,6 @@
 package com.test.mybatis.dto;
 
-public class ChallengeDTO
+public class ChallengeInfoDTO
 {
 	// 주요 속성 구성
 	private String challengeCode;	// 도전과제 코드
@@ -17,32 +17,9 @@ public class ChallengeDTO
 	private String content;			// 도전과제 내용
 	private String status;			// 도전과제 상태(진행중, 종료, 진행예정)
 	private String datePercent;		// 도전과제 날짜 진행도
+	private String nickname;
 	
 	// getter / setter 구성
-	public String getChallengeDetail()
-	{
-		return challengeDetail;
-	}
-	public void setChallengeDetail(String challengeDetail)
-	{
-		this.challengeDetail = challengeDetail;
-	}
-	public String getStatus()
-	{
-		return status;
-	}
-	public void setStatus(String status)
-	{
-		this.status = status;
-	}
-	public String getDatePercent()
-	{
-		return datePercent;
-	}
-	public void setDatePercent(String datePercent)
-	{
-		this.datePercent = datePercent;
-	}
 	public String getChallengeCode()
 	{
 		return challengeCode;
@@ -123,6 +100,14 @@ public class ChallengeDTO
 	{
 		this.challengeCheck = challengeCheck;
 	}
+	public String getChallengeDetail()
+	{
+		return challengeDetail;
+	}
+	public void setChallengeDetail(String challengeDetail)
+	{
+		this.challengeDetail = challengeDetail;
+	}
 	public String getContent()
 	{
 		return content;
@@ -131,5 +116,28 @@ public class ChallengeDTO
 	{
 		this.content = content;
 	}
-	
+	public String getStatus()
+	{
+		return status;
+	}
+	public void setStatus(String status)
+	{
+		this.status = status;
+	}
+	public String getDatePercent()
+	{
+		return datePercent;
+	}
+	public void setDatePercent(String datePercent)
+	{
+		this.datePercent = datePercent;
+	}
+	public String getNickname()
+	{
+		return nickname;
+	}
+	public void setNickname(String nickname)
+	{
+		this.nickname = nickname;
+	}
 }

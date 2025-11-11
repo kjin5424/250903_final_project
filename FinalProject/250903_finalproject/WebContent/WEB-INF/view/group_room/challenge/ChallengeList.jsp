@@ -31,7 +31,8 @@
 					<span class="board-title-icon">🏆</span> 도전 과제
 				</h2>
 				<div class="board-actions">
-					<a href="challengecreatepage.do" class="btn btn-primary"> <span>📝</span>
+					<a href="challengecreatepage.do?groupApplyCode=${param.groupApplyCode }" 
+					class="btn btn-primary"> <span>📝</span>
 						<span>도전과제 작성하기</span>
 					</a>
 				</div>
@@ -103,10 +104,10 @@
 	
 								<div class="card-footer">
 									<div class="card-author">
-										<div class="author-avatar">A</div>
-										<span>userA</span>
+										<!-- <div class="author-avatar">A</div> -->
+										<span>작성자 : ${challenge.nickname }</span>
 									</div>
-									<div class="card-date">${challenge.createdDate }</div>
+									<div class="card-date">작성일 : ${challenge.createdDate }</div>
 								</div>
 							</div>
 						</c:when>
@@ -153,10 +154,10 @@
 	
 								<div class="card-footer">
 									<div class="card-author">
-										<div class="author-avatar">A</div>
-										<span>userA</span>
+										<!-- <div class="author-avatar">A</div> -->
+										<span>작성자 : ${challenge.nickname }</span>
 									</div>
-									<div class="card-date">${challenge.createdDate }</div>
+									<div class="card-date">작성일 : ${challenge.createdDate }</div>
 								</div>
 							</div>
 						</c:when>
@@ -202,10 +203,10 @@
 	
 								<div class="card-footer">
 									<div class="card-author">
-										<div class="author-avatar">A</div>
-										<span>userA</span>
+										<!-- <div class="author-avatar">A</div> -->
+										<span>작성자 : ${challenge.nickname }</span>
 									</div>
-									<div class="card-date">${challenge.createdDate }</div>
+									<div class="card-date">작성일 : ${challenge.createdDate }</div>
 								</div>
 							</div>
 						</c:otherwise>

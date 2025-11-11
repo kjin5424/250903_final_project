@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.test.mybatis.dao.IChallengeDAO">
 
-	<select id="challengeAtHome" resultType="com.test.mybatis.dto.ChallengeDTO">
+	<select id="challengeAtHome" resultType="com.test.mybatis.dto.ChallengeInfoDTO">
 		SELECT C.CHALLENGE_CODE AS CHALLENGECODE, C.START_DATE AS STARTDATE, T.END_DATE AS ENDDATE
 		     , C.TITLE AS TITLE, C.JOIN_CODE AS JOINCODE
 		     , C.CONTENT AS CONTENT, C.CHALLENGE_TYPE AS CHALLENGETYPE, C.CREATED_DATE AS CREATEDDATE
@@ -52,18 +52,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                                            WHERE UT2.USER_CODE = UT.USER_CODE
                                            AND J2.GROUP_APPLY_CODE = GA.GROUP_APPLY_CODE)
 	</select>
-	
-	<select id="getJoinCodes" resultType="com.test.mybatis.dto.ChallengeDTO">
-		SELECT
-			JOIN_CODE AS joinCode
-			, GROUP_APPLY_CODE AS groupApplyCode
-		FROM
-			JOIN_TABLE
-		WHERE
-			USER_CODE=#{userCode}
-	</select>
-	
-	<select id="challengeList" resultType="com.test.mybatis.dto.ChallengeDTO">
+		
+	<select id="challengeList" resultType="com.test.mybatis.dto.ChallengeInfoDTO">
 		SELECT
 			CHALLENGE_CODE AS challengeCode
 			, JT.JOIN_CODE AS joinCode
@@ -79,32 +69,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			GROUP_APPLY_CODE=#{groupApplyCode}
 	</select>
 	
-	<select id="getChallengeDetail" resultType="com.test.mybatis.dto.ChallengeDTO">
+	<select id="getJoinCodeFromUCGA" resultType="java.lang.String">
 		SELECT
-			CHALLENGE_CODE AS challengeCode
-			, JOIN_CODE AS joinCode
-			, CHALLENGE_TYPE AS challengeType
-			, TITLE AS title
-			, TO_CHAR(START_DATE, 'YYYY-MM-DD') AS startDate
-			, CONTENT AS content
-			, CREATED_DATE AS createdDate
+			MAX(JOIN_CODE) AS joinCode
 		FROM
-			CHALLENGE
+			JOIN_TABLE
 		WHERE
-			CHALLENGE_CODE=#{challengeCode}
+			USER_CODE=#{userCode}
+			AND GROUP_APPLY_CODE=#{groupApplyCode}
 	</select>
 	
-	<select id="getChallengeContent" resultType="com.test.mybatis.dto.ChallengeContentDTO">
+	<select id="getGroupApplyCodes" resultType="java.lang.String">
 		SELECT
-			CHALLENGE_DETAIL_CODE AS challengeDetailCode
-			, ROUND AS round
-			, CONTENT AS contentDetail
+			GROUPAPPLYCODE
 		FROM
-			CHALLENGE_DETAIL 
+			CURRENT_MEMBER_VIEW
 		WHERE
-			CHALLENGE_CODE=#{challengeCode}
-		ORDER BY
-			ROUND
+			USERCODE=#{userCode}
+	</select>
+	
+	<select id="getNickname" resultType="java.lang.String">
+		SELECT
+			NICKNAME AS nickname
+		FROM
+			JOIN_TABLE JT
+			LEFT JOIN USER_TABLE UT ON UT.USER_CODE=JT.USER_CODE
+			LEFT JOIN USER_INFO UI ON UI.USER_ID=UT.USER_ID
+		WHERE
+			JOIN_CODE=#{joinCode}
 	</select>
 	
 	<insert id="challengeCreate">
@@ -136,5 +128,60 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         	</choose>
     	) }
 	</insert>
+
+	<select id="getChallengeDetail" resultType="com.test.mybatis.dto.ChallengeInfoDTO">
+		SELECT
+			CHALLENGE_CODE AS challengeCode
+			, JOIN_CODE AS joinCode
+			, CHALLENGE_TYPE AS challengeType
+			, TITLE AS title
+			, TO_CHAR(START_DATE, 'YYYY-MM-DD') AS startDate
+			, CONTENT AS content
+			, CREATED_DATE AS createdDate
+		FROM
+			CHALLENGE
+		WHERE
+			CHALLENGE_CODE=#{challengeCode}
+	</select>
+	
+	<select id="getChallengeContent" resultType="com.test.mybatis.dto.ChallengeContentDTO">
+		SELECT
+			CHALLENGE_DETAIL_CODE AS challengeDetailCode
+			, ROUND AS round
+			, CONTENT AS contentDetail
+		FROM
+			CHALLENGE_DETAIL 
+		WHERE
+			CHALLENGE_CODE=#{challengeCode}
+		ORDER BY
+			ROUND
+	</select>
+	
+	<select id="getMemberCount" resultType="java.lang.Integer">
+		SELECT
+			COUNT(*)
+		FROM
+			CHALLENGE C
+			LEFT JOIN CHALLENGE_MEMBER CM ON C.CHALLENGE_CODE=CM.CHALLENGE_CODE
+		WHERE
+			C.CHALLENGE_CODE=${challengeCode}
+	</select>
+	
+	<select id="getChallengeMember">
+		SELECT
+			CHALLENGE_MEMBER_CODE
+			, JT.JOIN_CODE
+			, JT.GROUP_APPLY_CODE
+			, UT.USER_CODE
+			, UI.NICKNAME
+		FROM
+			CHALLENGE C
+			LEFT JOIN CHALLENGE_MEMBER CM ON C.CHALLENGE_CODE=CM.CHALLENGE_CODE
+			LEFT JOIN JOIN_TABLE JT ON CM.JOIN_CODE=JT.JOIN_CODE
+			LEFT JOIN USER_TABLE UT ON JT.USER_CODE=UT.USER_CODE
+			LEFT JOIN USER_INFO UI ON UT.USER_ID=UI.USER_ID
+		WHERE
+			C.CHALLENGE_CODE=#{challengeCode}
+	</select>
 
 </mapper>

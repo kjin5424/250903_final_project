@@ -121,6 +121,7 @@
 
 		<div class="main">
 			<form action="challengecreate.do" method="post">
+				<input type="hidden" name="groupApplyCode" value="${param.groupApplyCode }">
 				<div class="input-field">
 					<label for="title">제목</label> <input type="text" id="title"
 						name="title" placeholder="제목을 입력하세요" required="required">

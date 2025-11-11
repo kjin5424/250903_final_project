@@ -1,4 +1,4 @@
-<%@page import="com.test.mybatis.dto.ChallengeDTO"%>
+<%@page import="com.test.mybatis.dto.ChallengeInfoDTO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.test.mybatis.dto.ActivityDTO"%>
 <%@page import="com.test.mybatis.dto.GroupDTO"%>
@@ -11,7 +11,7 @@
 	float totalAttendance = Float.valueOf(group.getTotalAttendance());
 	float checkChallenge = Float.valueOf(group.getCheckChallenge());	
 	
-	ChallengeDTO challenge = (ChallengeDTO)request.getAttribute("challenge");
+	ChallengeInfoDTO challenge = (ChallengeInfoDTO)request.getAttribute("challenge");
 	
 	String challengePercent = "";
 	
