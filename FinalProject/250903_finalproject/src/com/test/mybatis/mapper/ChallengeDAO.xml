@@ -53,6 +53,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                                            AND J2.GROUP_APPLY_CODE = GA.GROUP_APPLY_CODE)
 	</select>
 		
+	<select id="getGroupApplyCodes" resultType="java.lang.String">
+		SELECT
+			GROUPAPPLYCODE
+		FROM
+			CURRENT_MEMBER_VIEW
+		WHERE
+			USERCODE=#{userCode}
+	</select>
+	
 	<select id="challengeList" resultType="com.test.mybatis.dto.ChallengeInfoDTO">
 		SELECT
 			CHALLENGE_CODE AS challengeCode
@@ -69,25 +78,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			GROUP_APPLY_CODE=#{groupApplyCode}
 	</select>
 	
-	<select id="getJoinCodeFromUCGA" resultType="java.lang.String">
-		SELECT
-			MAX(JOIN_CODE) AS joinCode
-		FROM
-			JOIN_TABLE
-		WHERE
-			USER_CODE=#{userCode}
-			AND GROUP_APPLY_CODE=#{groupApplyCode}
-	</select>
-	
-	<select id="getGroupApplyCodes" resultType="java.lang.String">
-		SELECT
-			GROUPAPPLYCODE
-		FROM
-			CURRENT_MEMBER_VIEW
-		WHERE
-			USERCODE=#{userCode}
-	</select>
-	
 	<select id="getNickname" resultType="java.lang.String">
 		SELECT
 			NICKNAME AS nickname
@@ -99,6 +89,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			JOIN_CODE=#{joinCode}
 	</select>
 	
+	<select id="getJoinCodeFromUCGA" resultType="java.lang.String">
+		SELECT
+			MAX(JOIN_CODE) AS joinCode
+		FROM
+			JOIN_TABLE
+		WHERE
+			USER_CODE=#{userCode}
+			AND GROUP_APPLY_CODE=#{groupApplyCode}
+	</select>
+
 	<insert id="challengeCreate">
 		{ CALL PRC_CHALLENGE_INSERT (
         	#{joinCode, mode=IN, jdbcType=VARCHAR}
@@ -157,31 +157,38 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			ROUND
 	</select>
 	
-	<select id="getMemberCount" resultType="java.lang.Integer">
-		SELECT
-			COUNT(*)
+	<select id="getChallengerInfo" resultType="com.test.mybatis.dto.ChallengerDTO">
+		SELECT 
+		    CM.JOIN_CODE AS joinCode
+		    , COUNT(CC.CHALLENGE_CHECK_CODE) AS successedCount
+		    , CASE 
+		        WHEN C.CHALLENGE_TYPE = '1' AND COUNT(CC.CHALLENGE_CHECK_CODE) = 7 THEN '달성'
+		        WHEN C.CHALLENGE_TYPE = '1' AND COUNT(CC.CHALLENGE_CHECK_CODE) &lt;&gt; 7 THEN '미달성'
+		        WHEN C.CHALLENGE_TYPE = '2' AND COUNT(CC.CHALLENGE_CHECK_CODE) = 5 THEN '달성'
+		        WHEN C.CHALLENGE_TYPE = '2' AND COUNT(CC.CHALLENGE_CHECK_CODE) &lt;&gt; 5 THEN '미달성'
+		        ELSE '오류 발생'
+		      END AS successed
 		FROM
-			CHALLENGE C
-			LEFT JOIN CHALLENGE_MEMBER CM ON C.CHALLENGE_CODE=CM.CHALLENGE_CODE
+			CHALLENGE_MEMBER CM
+			JOIN CHALLENGE C ON CM.CHALLENGE_CODE = C.CHALLENGE_CODE
+			LEFT JOIN CHALLENGE_CHECK CC ON CM.CHALLENGE_MEMBER_CODE = CC.CHALLENGE_MEMBER_CODE
+			LEFT JOIN CHALLENGE_DETAIL CD ON C.CHALLENGE_CODE = CD.CHALLENGE_CODE
+					AND CC.CHALLENGE_DETAIL_CODE = CD.CHALLENGE_DETAIL_CODE
 		WHERE
-			C.CHALLENGE_CODE=${challengeCode}
+			C.CHALLENGE_CODE = #{challengeCode}
+		GROUP
+			BY CM.JOIN_CODE, C.CHALLENGE_TYPE
 	</select>
 	
-	<select id="getChallengeMember">
+	<select id="getSuccessDate" resultType="java.lang.String">
 		SELECT
-			CHALLENGE_MEMBER_CODE
-			, JT.JOIN_CODE
-			, JT.GROUP_APPLY_CODE
-			, UT.USER_CODE
-			, UI.NICKNAME
+			TO_CHAR(MAX(CC.CREATED_DATE), 'YYYY-MM-DD') AS 
 		FROM
-			CHALLENGE C
-			LEFT JOIN CHALLENGE_MEMBER CM ON C.CHALLENGE_CODE=CM.CHALLENGE_CODE
-			LEFT JOIN JOIN_TABLE JT ON CM.JOIN_CODE=JT.JOIN_CODE
-			LEFT JOIN USER_TABLE UT ON JT.USER_CODE=UT.USER_CODE
-			LEFT JOIN USER_INFO UI ON UT.USER_ID=UI.USER_ID
+			CHALLENGE_MEMBER CM
+			LEFT JOIN CHALLENGE_CHECK CC ON CM.CHALLENGE_MEMBER_CODE=CC.CHALLENGE_MEMBER_CODE
 		WHERE
-			C.CHALLENGE_CODE=#{challengeCode}
+			CM.JOIN_CODE=#{joinCode}
+			AND CM.CHALLENGE_CODE=#{challengeCode}
 	</select>
 
 </mapper>
