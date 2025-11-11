@@ -685,7 +685,6 @@ WHERE
 	JOIN JOIN_TABLE J ON J.JOIN_CODE = AC.JOIN_CODE
 	JOIN GROUP_APPLY GA ON GA.GROUP_APPLY_CODE = J.GROUP_APPLY_CODE
 	WHERE GA.GROUP_APPLY_CODE =#{groupApplyCode}
-	GROUP BY GA.GROUP_APPLY_CODE
 </select>
 
 	<select id="myPageJoinGroup" resultType="com.test.mybatis.dto.GroupDTO">

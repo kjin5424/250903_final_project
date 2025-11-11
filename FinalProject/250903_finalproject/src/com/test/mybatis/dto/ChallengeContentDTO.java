@@ -7,7 +7,7 @@ public class ChallengeContentDTO
 	private String week1, week2, week3, week4, week5;
 	
 	// 도전과제 호출 시 담을 속성
-	private String round, contentDetail;
+	private String challengeDetailCode, round, contentDetail;
 	
 	// 도전과제 등록 시 담을 요소
 	private String title, joinCode, content, startDate, challengeType;
@@ -130,6 +130,16 @@ public class ChallengeContentDTO
 	public void setWeek5(String week5)
 	{
 		this.week5 = week5;
+	}
+
+	public String getChallengeDetailCode()
+	{
+		return challengeDetailCode;
+	}
+
+	public void setChallengeDetailCode(String challengeDetailCode)
+	{
+		this.challengeDetailCode = challengeDetailCode;
 	}
 
 	public String getRound()

@@ -82,7 +82,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		JOIN JOIN_TABLE J ON J.JOIN_CODE = AC.JOIN_CODE
 		JOIN GROUP_APPLY GA ON GA.GROUP_APPLY_CODE = J.GROUP_APPLY_CODE
 		WHERE GA.GROUP_APPLY_CODE = #{groupApplyCode}
-		GROUP BY GA.GROUP_APPLY_CODE
 	</select>
 	
 	<insert id="addActivity" parameterType="com.test.mybatis.dto.ActivityDTO" statementType="CALLABLE">

@@ -53,18 +53,24 @@ public class LoginController
 	public String login(HttpSession session, Model model, UserDTO user)
 	{
 		ILoginDAO dao = sqlSession.getMapper(ILoginDAO.class);
-		UserDTO findUser = dao.loginProcess(user);
 
-		// userCode.equals("")하게 되면
-		// null.equals("")이렇게 돼서 NullPointerException 발생.
-		if (findUser == null)
+		try
 		{
-			model.addAttribute("error", true);			
-			return "redirect:/loginpage.do";
+			UserDTO findUser = dao.loginProcess(user);
+			// userCode.equals("")하게 되면
+			// null.equals("")이렇게 돼서 NullPointerException 발생.
+			if (findUser == null)		// 로그인 실패
+			{
+				model.addAttribute("error", true);			
+				return "redirect:/loginpage.do";
+			}
+			else						// 로그인 성공
+				session.setAttribute("user", findUser);
+			
+		} catch (Exception e)
+		{
+			System.out.println(e.toString());
 		}
-		else
-			session.setAttribute("user", findUser);
-		
 		return "redirect:mainpage.do";
 	}
 	
@@ -81,8 +87,14 @@ public class LoginController
 	public String ValidateUniqueId(Model model, String uid)
 	{
 		ILoginDAO dao = sqlSession.getMapper(ILoginDAO.class);
-		int idCount = dao.validId(uid);
-		model.addAttribute("idCount", idCount);
+		try
+		{
+			int idCount = dao.validId(uid);
+			model.addAttribute("idCount", idCount);
+		} catch (Exception e)
+		{
+			System.out.println(e.toString());
+		}
 		
 		return "/WEB-INF/view/authorization/ajax/ValidId.jsp";
 	}
@@ -92,8 +104,14 @@ public class LoginController
 	public String validateUniqueNickname(Model model, String nickname)
 	{
 		ILoginDAO dao = sqlSession.getMapper(ILoginDAO.class);
-		int nicknameCount = dao.validNickname(nickname);
-		model.addAttribute("nicknameCount", nicknameCount);
+		try
+		{
+			int nicknameCount = dao.validNickname(nickname);
+			model.addAttribute("nicknameCount", nicknameCount);
+		} catch (Exception e)
+		{
+			System.out.println(e.toString());
+		}
 		
 		return "/WEB-INF/view/authorization/ajax/ValidNickname.jsp";
 	}
@@ -103,13 +121,19 @@ public class LoginController
 	public String validateUniqueEmail(Model model, String email)
 	{
 		ILoginDAO dao = sqlSession.getMapper(ILoginDAO.class);
-		int emailCount = dao.validEmail(email);
-		model.addAttribute("emailCount", emailCount);
-		
+		try
+		{
+			int emailCount = dao.validEmail(email);
+			model.addAttribute("emailCount", emailCount);
+		} catch (Exception e)
+		{
+			System.out.println(e.toString());
+		}
+			
 		// 나중에 API 엮을 부분
+		//a 못엮
 		
 		return "/WEB-INF/view/authorization/ajax/ValidEmail.jsp";
-		
 	}
 	
 	// 회원가입

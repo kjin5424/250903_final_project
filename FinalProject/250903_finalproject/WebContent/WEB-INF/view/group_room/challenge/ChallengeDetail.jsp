@@ -75,8 +75,8 @@ $(function()
 								<tr>
 									<td>${challenge.round }일차</td>
 									<td>${challenge.contentDetail }</td>
-									<td style="text-align: center;"><input type="checkbox"
-										class="checkbox" checked></td>
+									<td><input type="checkbox" class="checkbox"
+										value="${challenge.challengeDetailCode }"></td>
 								</tr>
 							</c:forEach>
 						</c:when>
@@ -85,8 +85,8 @@ $(function()
 								<tr>
 									<td>${challenge.round }주차</td>
 									<td>${challenge.contentDetail }</td>
-									<td style="text-align: center;"><input type="checkbox"
-										class="checkbox" checked></td>
+									<td><input type="checkbox" class="checkbox"
+										value="${challenge.challengeDetailCode }"></td>
 								</tr>
 							</c:forEach>
 						</c:otherwise>
