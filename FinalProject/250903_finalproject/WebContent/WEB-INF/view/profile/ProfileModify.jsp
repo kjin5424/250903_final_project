@@ -12,7 +12,7 @@
 	int year = Integer.parseInt(temp.getSsn1().substring(0, 2));
 	int month = Integer.parseInt(temp.getSsn1().substring(2, 4));
 	int day = Integer.parseInt(temp.getSsn1().substring(4));
-	int ssn2 = Integer.parseInt(temp.getSsn1().substring(0, 1));
+	int ssn2 = Integer.parseInt(temp.getSsn2().substring(0, 1));
 	
 	String[] createdDateArr = temp.getCreatedDate().split("-");
 	String createdDate = createdDateArr[0] + "년 " + createdDateArr[1] + "월 " + createdDateArr[2] + "일";
@@ -29,7 +29,6 @@
 	}
 	
 %>
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -71,92 +70,7 @@ body {
 	color: #666;
 }
 
-/* 비밀번호 확인 모달 오버레이 */
-.modal-overlay {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background: rgba(0, 0, 0, 0.5);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	z-index: 1000;
-}
 
-.modal-overlay.hidden {
-	display: none;
-}
-
-.password-modal {
-	background: white;
-	border-radius: 16px;
-	padding: 40px;
-	max-width: 400px;
-	width: 90%;
-	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-}
-
-.modal-title {
-	font-size: 24px;
-	font-weight: bold;
-	color: #2d5a29;
-	margin-bottom: 10px;
-	text-align: center;
-}
-
-.modal-description {
-	font-size: 14px;
-	color: #666;
-	text-align: center;
-	margin-bottom: 30px;
-	line-height: 1.6;
-}
-
-.modal-input {
-	width: 100%;
-	padding: 14px 16px;
-	border: 2px solid #e0e0e0;
-	border-radius: 8px;
-	font-size: 15px;
-	margin-bottom: 20px;
-}
-
-.modal-input:focus {
-	outline: none;
-	border-color: #a8d5a1;
-}
-
-.modal-buttons {
-	display: flex;
-	gap: 10px;
-}
-
-.modal-btn {
-	flex: 1;
-	padding: 14px;
-	border: none;
-	border-radius: 8px;
-	font-size: 15px;
-	font-weight: 600;
-	cursor: pointer;
-	transition: all 0.2s ease;
-}
-
-.modal-btn-cancel {
-	background: #f0f0f0;
-	color: #666;
-}
-
-.modal-btn-confirm {
-	background: #2d5a29;
-	color: white;
-}
-
-.modal-btn:hover {
-	transform: translateY(-2px);
-}
 
 /* 탭 네비게이션 */
 .tab-navigation {
@@ -768,6 +682,12 @@ body {
 	}
 }
 </style>
+<link rel="stylesheet" href="<%=cp%>/css/cssAuthorization/SignUp.css">
+<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script type="text/javascript" src="<%=cp%>/js/jsAuthorization/SignUp.js"></script>
+<link rel="stylesheet" href="<%=cp%>/css/cssAuthorization/Login.css">
+<script type="text/javascript" src="<%=cp%>/js/jsAuthorization/Login.js"></script>
 </head>
 <body>
 	<!-- 상단바 -->
@@ -775,38 +695,7 @@ body {
 		<jsp:include page="/common/TopMenuBar.jsp" />
 	</div>
 	 --%>
-	<%
-		// 세션에서 사용자 정보 가져오기
-		String userId = "user123"; // 실제로는 session.getAttribute()
-		boolean isAuthenticated = false; // 비밀번호 확인 여부
-		
-		// 파라미터로 인증 상태 확인
-		String auth = request.getParameter("auth");
-		if ("true".equals(auth)) {
-			isAuthenticated = true;
-		}
-	%>
 	
-	<!-- 비밀번호 확인 모달 -->
-	<div class="modal-overlay <%= isAuthenticated ? "hidden" : "" %>" id="passwordModal">
-		<div class="password-modal">
-			<h2 class="modal-title">🔒 본인 확인</h2>
-			<p class="modal-description">
-				개인정보 보호를 위해<br>
-				비밀번호를 다시 한 번 입력해주세요.
-			</p>
-			<input 
-				type="password" 
-				class="modal-input" 
-				id="confirmPassword"
-				placeholder="비밀번호 입력"
-			>
-			<div class="modal-buttons">
-				<button class="modal-btn modal-btn-cancel" onclick="goBack()">취소</button>
-				<button class="modal-btn modal-btn-confirm" onclick="verifyPassword()">확인</button>
-			</div>
-		</div>
-	</div>
 	
 	<div class="container">
 		<div class="header">
@@ -853,6 +742,7 @@ body {
 				</div>
 			</div>
 			
+			
 			<!-- 읽기 전용 정보 -->
 			<div class="section">
 				<h3 class="section-title">기본 정보 (변경 불가)</h3>
@@ -877,94 +767,73 @@ body {
 			</div>
 			
 			<!-- 수정 가능 정보 -->
+			<form action="profileupdate.do" onsubmit="return checkSubmit()" method="get">
 			<div class="section">
 				<h3 class="section-title">수정 가능 정보</h3>
 				
 				<div class="form-group">
-					<label class="form-label">닉네임</label>
+					<label class="form-label"> 닉네임<span class="required">*</span>
+					</label>
 					<div class="input-with-button">
-						<input 
-							type="text" 
-							class="form-input" 
-							id="nickname"
-							value="${userDTO.nickname }"
-							placeholder="닉네임 입력"
-						>
-						<button class="btn-check" onclick="checkNickname()">중복확인</button>
+						<input type="text" id="nickname" name="nickname" class="form-input" value="${userDTO.nickname }" maxlength="12" required>
+						<button type="button" class="btn-check" id="check-nickname">중복확인</button>
 					</div>
 					<p class="form-help" id="nicknameHelp">2-12자의 한글, 영문, 숫자</p>
+					<p class="form-help" id="validNicknameCheck"></p>
+				</div>
+					
 				</div>
 				
 				<div class="form-group">
 					<label class="form-label">비밀번호 변경</label>
-					<input 
-						type="password" 
-						class="form-input" 
-						id="newPassword"
-						placeholder="새 비밀번호 (영문, 숫자, ! 만 사용 가능)"
-					>
-					<p class="form-help">8-20자의 영문, 숫자, 특수문자(!) 조합</p>
+					<div class="form-group">
+					<label class="form-label"> 비밀번호<span class="required">*</span>
+					</label> <input type="password" id="password" name="password"
+						class="form-input" placeholder="8-20자의 영문, 숫자, 특수문자(!)"
+						maxlength="20" >
+					<div class="password-strength" id="passwordStrength"
+						style="display: none;">
+						<div class="strength-bar">
+							<div class="strength-fill" id="strengthFill"></div>
+						</div>
+						<p class="strength-text" id="strengthText"></p>
+					</div>
+					<p class="form-help" id="password-help">영문, 숫자, 특수문자(~,!,@,#,$) 조합 8-20자</p>
+					</div>
+				</div>
+				
+				<!-- 비밀번호 확인 -->
+				<div class="form-group">
+					<label class="form-label"> 비밀번호 확인<span class="required">*</span>
+					</label> <input type="password" id="passwordConfirm" name="passwordConfirm"
+						class="form-input" placeholder="비밀번호를 다시 입력하세요" maxlength="20">
+					<p class="form-help" id="passwordConfirmHelp"></p>
 				</div>
 				
 				<div class="form-group">
-					<label class="form-label">비밀번호 확인</label>
-					<input 
-						type="password" 
-						class="form-input" 
-						id="confirmNewPassword"
-						placeholder="새 비밀번호 확인"
-					>
-					<p class="form-help" id="passwordHelp"></p>
+					<label class="form-label"> 이메일<span class="required">*</span>
+					</label> 
+					<input type="email" id="email" name="email" class="form-input" value="${userDTO.email }" required>
+					<p class="form-help" id="emailHelp">이메일 형식으로 입력해주세요</p>
 				</div>
 				
+				<!-- 주소 -->
 				<div class="form-group">
-					<label class="form-label">이메일</label>
+					<label class="form-label"> 주소<span class="required">*</span>
+					</label>
 					<div class="input-with-button">
-						<input 
-							type="email" 
-							class="form-input" 
-							id="email"
-							value="${userDTO.email }"
-						>
-						<button class="btn-send" onclick="sendEmailCode()">인증코드 발송</button>
+						<input type="text" id="address" name="address" class="form-input"
+							value="${userDTO.address }" readonly required>
+						<button type="button" class="btn-address" id="check-addr">🔍 주소검색</button>
 					</div>
-					<p class="form-help" id="emailHelp">이메일 변경 시 인증이 필요합니다</p>
 				</div>
-				
-				<div class="form-group" id="emailCodeSection" style="display: none;">
-					<label class="form-label">인증코드</label>
-					<div class="input-with-button">
-						<input 
-							type="text" 
-							class="form-input" 
-							id="emailCode"
-							placeholder="이메일로 받은 인증코드 입력"
-						>
-						<button class="btn-check" onclick="verifyEmailCode()">인증확인</button>
-					</div>
-					<p class="form-help">인증코드는 5분간 유효합니다</p>
-				</div>
-				
-				<div class="form-group">
-					<label class="form-label">주소</label>
-					<div class="input-with-button">
-						<input 
-							type="text" 
-							class="form-input" 
-							id="address"
-							value="${userDTO.address }"
-							readonly
-						>
-						<button class="btn-check" onclick="openAddressPopup()">주소검색</button>
-					</div>
-					<p class="form-help">시/군/구 - 읍/면/동까지 입력됩니다</p>
-				</div>
-			</div>
 			
 			<div class="save-button-container">
-				<button class="btn-save" onclick="saveProfile()">변경사항 저장</button>
+				<button class="btn-save" type="submit">변경사항 저장</button>
 			</div>
+		</form>
 		</div>
+		
 		
 		<!-- 설정 탭 -->
 		<div class="profile-container" id="tab-settings">
@@ -984,82 +853,12 @@ body {
 			</div>
 			
 			<div class="save-button-container">
-				<button class="btn-save" onclick="saveSettings()">설정 저장</button>
+				<button type="submit" class="btn-save" onclick="saveSettings()">설정 저장</button>
 			</div>
 		</div>
 		
-		<!-- 공개 범위 탭 -->
-		<!-- 
-		<div class="profile-container" id="tab-privacy">
-			<div class="section">
-				<h3 class="section-title">프로필 공개 설정</h3>
-				
-				<div style="background: #fff9e6; padding: 16px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #ffc107;">
-					<p style="font-size: 14px; color: #666; line-height: 1.6;">
-						<strong style="color: #f57c00;">ℹ️ 안내:</strong><br>
-						참여 신청한 모임 또는 참여 중인 모임의 모임장에게는<br>
-						설정과 관계없이 항상 공개됩니다.
-					</p>
-				</div>
-				
-				<div class="toggle-item">
-					<div class="toggle-info">
-						<div class="toggle-title">모임 참여 이력 공개</div>
-						<div class="toggle-description">내가 참여한 모임 목록을 다른 사용자에게 공개합니다</div>
-					</div>
-					<label class="toggle-switch">
-						<input type="checkbox" class="toggle-input" id="showParticipatedMeetings" onchange="updatePreview()" checked>
-						<span class="toggle-slider"></span>
-					</label>
-				</div>
-				
-				<div class="toggle-item">
-					<div class="toggle-info">
-						<div class="toggle-title">모임 운영 이력 공개</div>
-						<div class="toggle-description">내가 운영하는 모임 목록을 다른 사용자에게 공개합니다</div>
-					</div>
-					<label class="toggle-switch">
-						<input type="checkbox" class="toggle-input" id="showManagedMeetings" onchange="updatePreview()" checked>
-						<span class="toggle-slider"></span>
-					</label>
-				</div>
-			</div>
-			
-			프로필 미리보기
-			<div class="preview-box">
-				<div class="preview-title">
-					<span>👁️</span>
-					<span>다른 사용자에게 보이는 내 프로필 미리보기</span>
-				</div>
-				<div class="preview-content" id="profilePreview">
-					<div class="preview-item">
-						<span class="preview-label">닉네임</span>
-						<span class="preview-value">행복한토끼99</span>
-					</div>
-					
-					<div class="preview-item">
-						<span class="preview-label">가입일</span>
-						<span class="preview-value">2024년 1월</span>
-					</div>
-					
-					<div class="preview-item">
-						<span class="preview-label">참여 중인 모임</span>
-						<span class="preview-value" id="previewParticipated">3개 모임</span>
-					</div>
-					
-					<div class="preview-item">
-						<span class="preview-label">운영 중인 모임</span>
-						<span class="preview-value" id="previewManaged">1개 모임</span>
-					</div>
-				</div>
-			</div>
-			
-			<div class="save-button-container">
-			<button class="btn-save" onclick="savePrivacy()">설정 저장</button>
-		</div>
-	</div>
-	 -->
-	 
+		
+		
 	<!-- 문의 내역 탭 -->
 	<div class="profile-container" id="tab-inquiry">
 		<div class="section">
@@ -1182,26 +981,12 @@ body {
 			</button>
 		</div>
 	</div>
-</div>
+
 
 <%-- <!-- 하단바 -->
 <jsp:include page="/common/UnderMenuBar.jsp"></jsp:include>
  --%>
 <script>
-	// 비밀번호 확인
-	function verifyPassword() {
-		const password = document.getElementById('confirmPassword').value;
-		
-		if (!password) {
-			alert('비밀번호를 입력해주세요.');
-			return;
-		}
-		
-		// 실제로는 서버로 비밀번호 확인 요청
-		// 임시로 바로 인증 처리
-		window.location.href = '?auth=true';
-	}
-	
 	function goBack() {
 		window.history.back();
 	}
@@ -1247,158 +1032,17 @@ body {
 		}
 	}
 	
-	// 닉네임 중복 확인
-	function checkNickname() {
-		const nickname = document.getElementById('nickname').value.trim();
-		const help = document.getElementById('nicknameHelp');
-		
-		if (!nickname) {
-			alert('닉네임을 입력해주세요.');
-			return;
-		}
-		
-		const nicknamePattern = /^[가-힣a-zA-Z0-9]{2,12}$/;
-		if (!nicknamePattern.test(nickname)) {
-			help.textContent = '닉네임은 2-12자의 한글, 영문, 숫자만 사용 가능합니다.';
-			help.className = 'form-help error';
-			return;
-		}
-		
-		// 서버로 중복 확인 요청
-		// TODO: 서버 API 호출
-		
-		// 임시 처리
-		help.textContent = '사용 가능한 닉네임입니다.';
-		help.className = 'form-help success';
-	}
-	
-	// 비밀번호 확인
-	document.getElementById('confirmNewPassword').addEventListener('input', function() {
-		const password = document.getElementById('newPassword').value;
-		const confirmPassword = this.value;
-		const help = document.getElementById('passwordHelp');
-		
-		if (!confirmPassword) {
-			help.textContent = '';
-			return;
-		}
-		
-		if (password === confirmPassword) {
-			help.textContent = '비밀번호가 일치합니다.';
-			help.className = 'form-help success';
-		} else {
-			help.textContent = '비밀번호가 일치하지 않습니다.';
-			help.className = 'form-help error';
-		}
-	});
-	
-	// 비밀번호 유효성 검사
-	document.getElementById('newPassword').addEventListener('input', function() {
-		const password = this.value;
-		const help = document.getElementById('passwordHelp');
-		
-		if (!password) return;
-		
-		const passwordPattern = /^[a-zA-Z0-9!]{8,20}$/;
-		if (!passwordPattern.test(password)) {
-			help.textContent = '비밀번호는 8-20자의 영문, 숫자, 특수문자(!)만 사용 가능합니다.';
-			help.className = 'form-help error';
-		}
-	});
-	
 	// 이메일 인증코드 발송
 	function sendEmailCode() {
-		const email = document.getElementById('email').value.trim();
-		const help = document.getElementById('emailHelp');
 		
-		if (!email) {
-			alert('이메일을 입력해주세요.');
-			return;
-		}
-		
-		const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		if (!emailPattern.test(email)) {
-			help.textContent = '올바른 이메일 형식이 아닙니다.';
-			help.className = 'form-help error';
-			return;
-		}
-		
-		// 서버로 인증코드 발송 요청
-		// TODO: 서버 API 호출
-		
-		alert('인증코드가 이메일로 발송되었습니다.');
-		document.getElementById('emailCodeSection').style.display = 'block';
-		help.textContent = '인증코드를 입력해주세요.';
-		help.className = 'form-help';
 	}
 	
 	// 이메일 인증코드 확인
 	function verifyEmailCode() {
-		const code = document.getElementById('emailCode').value.trim();
-		const help = document.getElementById('emailHelp');
 		
-		if (!code) {
-			alert('인증코드를 입력해주세요.');
-			return;
-		}
-		
-		// 서버로 인증코드 확인 요청
-		// TODO: 서버 API 호출
-		
-		// 임시 처리
-		alert('이메일 인증이 완료되었습니다.');
-		help.textContent = '이메일 인증 완료';
-		help.className = 'form-help success';
 	}
 	
-	// 주소 검색 팝업
-	function openAddressPopup() {
-		window.open(
-			'address_popup.jsp',
-			'addressPopup',
-			'width=500,height=600,scrollbars=yes,resizable=yes'
-		);
-	}
-	
-	// 주소 설정 (팝업에서 호출)
-	function setAddress(address) {
-		document.getElementById('address').value = address;
-	}
-	
-	// 프로필 미리보기 업데이트
-	function updatePreview() {
-		const showParticipated = document.getElementById('showParticipatedMeetings').checked;
-		const showManaged = document.getElementById('showManagedMeetings').checked;
-		
-		const participatedEl = document.getElementById('previewParticipated');
-		const managedEl = document.getElementById('previewManaged');
-		
-		if (showParticipated) {
-			participatedEl.textContent = '3개 모임';
-			participatedEl.classList.remove('hidden');
-		} else {
-			participatedEl.textContent = '비공개';
-			participatedEl.classList.add('hidden');
-		}
-		
-		if (showManaged) {
-			managedEl.textContent = '1개 모임';
-			managedEl.classList.remove('hidden');
-		} else {
-			managedEl.textContent = '비공개';
-			managedEl.classList.add('hidden');
-		}
-	}
-	
-	// 프로필 저장
-	function saveProfile() {
-		if (confirm('변경사항을 저장하시겠습니까?')) {
-			// 서버로 데이터 전송
-			// TODO: 서버 API 호출
-			
-			alert('프로필이 저장되었습니다.');
-		}
-	}
+
 	
 	// 설정 저장
 	function saveSettings() {
@@ -1409,16 +1053,7 @@ body {
 			alert('설정이 저장되었습니다.');
 		}
 	}
-	
-	// 공개 범위 저장
-	function savePrivacy() {
-		if (confirm('공개 범위 설정을 저장하시겠습니까?')) {
-			// 서버로 데이터 전송
-			// TODO: 서버 API 호출
-			
-			alert('공개 범위가 저장되었습니다.');
-		}
-	}
+
 	
 	// 문의 내역 보기
 	function viewInquiry(id) {
@@ -1452,12 +1087,85 @@ body {
 		}
 	}
 	
-	// 엔터키로 비밀번호 확인
-	document.getElementById('confirmPassword').addEventListener('keypress', function(e) {
-		if (e.key === 'Enter') {
-			verifyPassword();
-		}
-	});
+	// 폼 제출 전 유효성 확인
+	function checkSubmit() {
+		
+		if(confirm("변경사항을 저장하시겠습니까?"))
+		{
+			const nicknameHelp = document.querySelector('#nicknameHelp');
+		    const validNicknameCheck = document.querySelector('#validNicknameCheck');
+
+		    // 요소가 존재하지 않을 경우 안전 처리
+		    if (!nicknameHelp || !validNicknameCheck) {
+		        console.warn('닉네임 관련 요소를 찾을 수 없습니다.');
+		        return false;
+		    }
+
+		    const nicknameHelpText = nicknameHelp.textContent.trim();
+		    const validNicknameText = validNicknameCheck.textContent.trim();
+		    const validNicknameDisplay = window.getComputedStyle(validNicknameCheck).display;
+
+		    // ① nicknameHelp가 기본 문구와 다르면 실패
+		    if (nicknameHelpText !== '2-12자의 한글, 영문, 숫자') {
+		        alert('닉네임 형식을 다시 확인해주세요.');
+		        return false;
+		    }
+
+		    if (!(validNicknameText === '' || validNicknameText === '사용 가능한 닉네임입니다.')) {
+		        alert('닉네임 중복을 다시 확인해주세요.');
+		        return false;
+		    }
+		
+		    const password = document.querySelector('#password');
+		    const passwordConfirm = document.querySelector('#passwordConfirm');
+		    const passwordHelp = document.querySelector('#password-help');
+
+		    // 요소 유효성 검사
+		    if (!password || !passwordConfirm || !passwordHelp) {
+		        console.warn('비밀번호 관련 요소를 찾을 수 없습니다.');
+		        return false;
+		    }
+
+		    const pw = password.value.trim();
+		    const pwConfirm = passwordConfirm.value.trim();
+		    const pwHelpText = passwordHelp.textContent.trim();
+
+		    // 비밀번호가 일치하지 않으면 false
+		    if (pw !== pwConfirm) {
+		        alert('비밀번호가 일치하지 않습니다.');
+		        return false;
+		    }
+
+		    // password-help의 문구 검사
+		    if (pwHelpText === '영문, 숫자, 특수문자(~,!,@,#,$)만 사용 가능합니다.') {
+		    	alert("비밀번호는 영문, 숫자, 특수문자(~,!,@,#,$)로만 구성 가능합니다.")
+		        return false; 
+		    }
+		
+		    const emailHelp = document.querySelector('#emailHelp');
+
+		    // 요소가 존재하지 않을 경우 안전 처리
+		    if (!emailHelp) {
+		        console.warn('이메일 관련 요소를 찾을 수 없습니다.');
+		        return false;
+		    }
+
+		    const emailHelpText = emailHelp.textContent.trim();
+
+		    // 부적합한 이메일 문구 확인
+		    if (emailHelpText === '이미 존재하는 이메일입니다.' || 
+		        emailHelpText === '올바른 이메일 형식이 아닙니다.') {
+		        alert('이메일을 다시 확인해주세요.');
+		        return false;
+		    }
+		
+		    // 모든 조건 통과
+		    return true;
+	}
+	return false;
+}
+	
+	
 </script>
 </body>
 </html>

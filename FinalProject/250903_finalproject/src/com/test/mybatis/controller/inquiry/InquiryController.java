@@ -23,9 +23,9 @@ public class InquiryController {
 
 	 @Autowired
 	    private SqlSession sqlSession;
-	   	    
+	   	
 	    // 문의 내역 리스트 출력
-	    @RequestMapping(value = "/profilemodify.do", method = RequestMethod.GET)
+	    @RequestMapping(value = "/profilemodify.do", method = RequestMethod.POST)
 	    public String inquiryList(Model model, HttpSession session) 
 	    {
 	    	IInquiryDAO dao = sqlSession.getMapper(IInquiryDAO.class);
