@@ -3,15 +3,7 @@
 	pageEncoding="UTF-8"%>
 <%
 	String cp = request.getContextPath();
-
-	// 현재 페이지 파라미터 받기 (기본값: meetings)
-	/* 
-	String currentPage = request.getParameter("page");
-	if (currentPage == null || currentPage.isEmpty())
-	{
-		currentPage = "meetings";
-	}
-	*/
+	String uri = request.getRequestURI();
 %>
 
 <link rel="stylesheet" href="css_new/common_sample.css">
@@ -28,19 +20,21 @@
 
 		<!-- 메뉴 탭 -->
 		<div class="navbar-menu">
-               <a href="announcelist.do" class="menu-tab">
+               <a href="announcelist.do" class="menu-tab <%= uri.contains("/notice/") ? "active" : "" %>">
                    <span class="menu-icon">📢</span>
                    공지사항
                </a>
-               <a href="mainpage.do" class="menu-tab active">
+               <a href="mainpage.do" class="menu-tab <%= uri.contains("/group/")||!uri.contains("BeforGroupCreate") ? "active" : "" %>">
+               <!-- Apply, ApplicationComplete, CheckPassword, GroupList, SearchList -->
                    <span class="menu-icon">👥</span>
                    모임 구경
                </a>
-               <a href="beforegroupcreate.do" class="menu-tab">
+               <a href="beforegroupcreate.do" class="menu-tab <%= uri.contains("BeforeGroupCreate") ? "active" : "" %>">
+               <!-- BeforeGroupCreate, GroupCreate -->
                    <span class="menu-icon">➕</span>
                    모임 개설
                </a>
-               <a href="?page=mygroups" class="menu-tab">
+               <a href="mypage.do" class="menu-tab <%= uri.contains("Mypage") ? "active" : "" %>">
                    <span class="menu-icon">📚</span>
                    내 모임
                </a>
@@ -72,7 +66,7 @@
                     <span class="profile-icon">👤</span>
                 </div>
                 <div class="dropdown-menu">
-                    <a href="<%=cp%>/user/Profile/MyProfile.jsp" class="dropdown-item">
+                    <a href="profilemodify.do" class="dropdown-item">
                         <span>👤</span>
                         <span>내 프로필</span>
                     </a>

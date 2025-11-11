@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.test.mybatis.dao.IGroupDAO;
+import com.test.mybatis.dao.IGroupMemberDAO;
 import com.test.mybatis.dto.GroupDTO;
 import com.test.mybatis.dto.UserDTO;
 
@@ -30,11 +31,20 @@ public class MemberListController
 		
 		String groupApplyCode = (String)session.getAttribute("groupApplyCode");
 		UserDTO user = (UserDTO)session.getAttribute("user");
-		String nickName = "";
+		
+		// 유저를 세션에서 가져와서
+		// 그룹아이디코드를 가지고 해당 그룹에 참여중인지 확인이 필요함
+		// 참여중이라면? 모임장인지 아닌지 확인이 필요함
+		String position = "";
+		
 		if (user!=null)
 		{
-			nickName = user.getUserName();	// 접속자의 닉네임
+			String userCode = user.getUserCode();
+			IGroupMemberDAO dao2 = sqlSession.getMapper(IGroupMemberDAO.class);
+			position = dao2.checkMemberGroup(userCode, groupApplyCode);
 		}
+		else
+			position = "비회원";
 		
 		List<GroupDTO> groupUserList = dao.groupUserList(groupApplyCode);
 		GroupDTO group = dao.groupDetail(groupApplyCode);
@@ -42,7 +52,7 @@ public class MemberListController
 		
 		model.addAttribute("groupUserList", groupUserList);
 		model.addAttribute("title", title);
-		model.addAttribute("nickName", nickName);
+		model.addAttribute("position", position);
 		
 		return "/WEB-INF/view/group_room/MemberList.jsp";
 	}

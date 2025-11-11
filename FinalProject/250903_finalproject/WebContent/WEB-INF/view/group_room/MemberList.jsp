@@ -21,8 +21,7 @@
 
 <script>
     // 현재 사용자가 모임원인지 여부 (서버에서 전달받아야 함)
-    const isGroupMember = true;
-    const isGroupLeader = true;
+    const position = "${position}";
     
     function openModal(nickName, role, intro, avatarText) {
     	selectedNickName = nickName;
@@ -50,14 +49,14 @@
         const actionsContainer = document.getElementById('modal-actions');
         const messageBtn = document.getElementById('message-btn');
         
-        if (isGroupMember) {
-            // 모임원이면 3칸 레이아웃
-            actionsContainer.className = 'modal-actions member-only';
-            messageBtn.style.display = 'flex';
-        } else {
+        if (position == '모임장' || position == '비회원') {
             // 모임원 아니면 2칸 레이아웃 (프로필 2, 신고 1)
             actionsContainer.className = 'modal-actions no-message';
             messageBtn.style.display = 'none';
+        } else {
+            // 모임원이면 3칸 레이아웃
+            actionsContainer.className = 'modal-actions member-only';
+            messageBtn.style.display = 'flex';
         }
         
         document.getElementById('modal-overlay').classList.add('active');
@@ -69,7 +68,7 @@
     }
     
     function goToProfile(nickName) {
-        location.href = 'profile.do?nickName=' + encodeURIComponent(selectedNikName, "UTF-8");
+        location.href = 'profile.do?nickName=' + encodeURIComponent(selectedNickName, "UTF-8");
     }
     
     function sendMessage() {
