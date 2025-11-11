@@ -235,7 +235,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<insert id="insertComment">
-		
+		INSERT INTO POST_COMMENT(COMMENT_CODE, JOIN_CODE, POST_CODE, CONTENT)
+		VALUES(POST_COMMENT_SEQ.NEXTVAL, #{joinCode}, #{postCode}, #{content})
 	</insert>
 	
 	<update id="updateComment">

@@ -54,10 +54,8 @@
             alert('댓글 내용을 입력해주세요.');
             return;
         }
-        
-        // 실제로는 서버에 댓글 등록 요청
-        alert('댓글이 등록되었습니다.');
-        textarea.value = '';
+		
+        document.getElementById("form-comment").submit();
     }
 
     function deleteComment(commentId) {
@@ -149,17 +147,18 @@
                 </h3>
 
                 <!-- 댓글 작성 -->
-                <form action=""></form>
+                <form action="commentinsertOk.do?postCode=${post.postCode }" id="form-comment">
                 <div class="comment-write">
-                    <textarea id="commentText" class="comment-textarea" 
+                    <textarea id="commentText" name="content" class="comment-textarea" 
                               placeholder="댓글을 입력하세요..."></textarea>
                     <div class="comment-submit-area">
-                        <button class="btn-submit-comment" onclick="submitComment()">
+                        <button type="button" class="btn-submit-comment" onclick="submitComment()">
                          	   💬 댓글 작성
                         </button>
                     </div>
                 </div>
-
+				</form>
+				
                 <!-- 댓글 리스트 -->
                 <div class="comment-list">
                 	<c:forEach var="dto" items="${commentList}">

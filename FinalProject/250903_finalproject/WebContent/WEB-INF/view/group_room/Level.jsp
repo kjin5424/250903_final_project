@@ -11,100 +11,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>공모자들 - 모임 레벨</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f7fa;
-        }
-        .navbar {
-            background: #a8d5a1;
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            height: 48px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            gap: 4px;
-        }
-        .nav-left {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            flex: 1;
-        }
-        .nav-right {
-            display: flex;
-            align-items: center;
-            margin-left: auto;
-        }
-        .logo-tab {
-            background: #8bc683;
-            color: white;
-            padding: 0 20px;
-            height: 36px;
-            border-radius: 8px 8px 0 0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: bold;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        .tab {
-            background: #8bc683;
-            color: white;
-            border: none;
-            padding: 0 24px;
-            height: 36px;
-            border-radius: 8px 8px 0 0;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-        }
-        .tab.active {
-            background: #f5f7fa;
-            color: #2d5a29;
-            height: 40px;
-        }
-        .profile-btn {
-            background: #2d5a29;
-            color: white;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
 
         /* 현재 레벨 헤더 */
-        .current-level-header {
-            background: linear-gradient(135deg, #2d5a29 0%, #4a8a42 100%);
+        .group-header {
             color: white;
             padding: 40px;
-            border-radius: 12px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             text-align: center;
         }
         .current-level-title {
@@ -130,6 +41,9 @@
             justify-content: space-between;
             margin-bottom: 10px;
             font-size: 14px;
+        }
+        .progress-label > span{
+            color: var(--color-primary-light)
         }
         .progress-bar {
             height: 20px;
@@ -369,6 +283,14 @@
             }
         }
     </style>
+    
+    <!-- CSS 파일 임포트 -->
+    <link rel="stylesheet" href="css_new/common_sample.css">
+    <link rel="stylesheet" href="css_new/home_sample.css"> 
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>   
+    
 </head>
 <body>
 <!-- 상단바 -->
@@ -379,9 +301,9 @@
 
     <div class="container">
         <!-- 현재 레벨 헤더 -->
-        <div class="current-level-header">
+        <div class="group-header">
             <div class="current-level-title">알고리즘 정복 스터디 현재 레벨</div>
-            <div class="current-level-display">Level 3</div>
+            <div class="current-level-display">Level ${whatLevel }</div>
             <div class="current-level-name">🌟 성장하는 모임</div>
             <div class="level-progress-section">
                 <div class="progress-label">
@@ -392,10 +314,10 @@
                     <div class="progress-fill" style="width: 60%;">60%</div>
                 </div>
                 <div class="next-level-info">
-                    Level 4까지 투표 성사 8회, 도전과제 2회 남았습니다
+                    Level ${whatLevel+1 }까지 투표 성사 8회, 도전과제 2회 남았습니다
                 </div>
             </div>
-        </div>
+        </div><!-- .current-level-header -->
 
         <!-- 레벨 시스템 설명 -->
         <div class="level-info">
@@ -465,7 +387,7 @@
                     <div class="benefits-title">🎁 제공 혜택</div>
                     <div class="benefit-item">
                         <span class="benefit-icon">✓</span>
-                        <span>모임원 수 7명으로 확대</span>
+                        <span>모임원 상한수 7명으로 확대</span>
                     </div>
                     <div class="benefit-item">
                         <span class="benefit-icon">✓</span>
@@ -501,7 +423,7 @@
                     <div class="benefits-title">🎁 제공 혜택</div>
                     <div class="benefit-item">
                         <span class="benefit-icon">✓</span>
-                        <span>모임원 수 10명으로 확대</span>
+                        <span>모임원 상한수 10명으로 확대</span>
                     </div>
                     <div class="benefit-item">
                         <span class="benefit-icon">✓</span>
@@ -509,7 +431,7 @@
                     </div>
                     <div class="benefit-item">
                         <span class="benefit-icon">✓</span>
-                        <span>개인 도전 과제 해금 (모든 모임원)</span>
+                        <span>개인 도전 과제 작성 권한 해금 (모임장 → 모든 모임원)</span>
                     </div>
                 </div>
             </div>
@@ -541,7 +463,7 @@
                     <div class="benefits-title">🎁 제공 혜택</div>
                     <div class="benefit-item">
                         <span class="benefit-icon">✓</span>
-                        <span>모임원 수 15명으로 확대</span>
+                        <span>모임원 상한수 15명으로 확대</span>
                     </div>
                 </div>
             </div>
@@ -578,15 +500,11 @@
                     <div class="benefits-title">🎁 제공 혜택</div>
                     <div class="benefit-item">
                         <span class="benefit-icon">✓</span>
-                        <span>모임원 수 20명으로 확대</span>
+                        <span>모임원 상한수 20명으로 확대</span>
                     </div>
                     <div class="benefit-item">
                         <span class="benefit-icon">✓</span>
                         <span>도우미 2명 설정 가능</span>
-                    </div>
-                    <div class="benefit-item">
-                        <span class="benefit-icon">✓</span>
-                        <span>모임 뱃지 획득</span>
                     </div>
                 </div>
             </div>

@@ -3,6 +3,7 @@ package com.test.mybatis.controller.group_room.board;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.test.mybatis.dao.IGroupPostDAO;
+import com.test.mybatis.dto.GroupPostCommentDTO;
 import com.test.mybatis.dto.GroupPostDTO;
 import com.test.mybatis.dto.UserDTO;
 import com.test.util.Paging;
@@ -335,10 +337,29 @@ public class PostController
 	    }
 	}
 	
-	public String insertComment()
+	@RequestMapping(value="/commentinsertOk.do", method=RequestMethod.GET)
+	public String insertComment(HttpServletRequest request, @RequestParam("postCode") String postCode)
 	{
-		String result = "";
-		return null;
+		HttpSession session =  request.getSession();
+		UserDTO user = (UserDTO)session.getAttribute("user");
+		String userCode = user.getUserCode();
+		String groupApplyCode = (String)session.getAttribute("groupApplyCode");
+		
+		IGroupPostDAO dao = sqlSession.getMapper(IGroupPostDAO.class);
+		String joinCode = dao.getJoinCode(groupApplyCode, userCode);
+		
+		String content = request.getParameter("content");
+		
+		GroupPostCommentDTO dto = new GroupPostCommentDTO();
+		dto.setJoinCode(joinCode);
+		dto.setPostCode(postCode);
+		dto.setContent(content);
+		System.out.println(joinCode);
+		System.out.println(postCode);
+		System.out.println(content);
+		dao.insertComment(dto);
+		
+		return "redirect:/postdetail.do?postCode=" + postCode;
 	}
 	
 	public String updateComment()
