@@ -106,16 +106,28 @@
 					        <c:if test="${user.receiver ne forwarder}">
 					            <c:choose>
 					                <c:when test="${user.position eq '모임장'}">
-					                    <option value="${user.receiver}"> ${user.nickName}👑</option>
+					                    <option value="${user.receiver}" 
+					                    ${not empty nickName && nickName eq user.nickName ? 'selected' : ''}> 
+						                    ${user.nickName}👑
+					                  	</option>
 					                </c:when>
 					                <c:when test="${user.position eq '부모임장'}">
-					                    <option value="${user.receiver}"> ${user.nickName}⭐</option>
+					                    <option value="${user.receiver}" 
+					                    ${not empty nickName && nickName eq user.nickName ? 'selected' : ''}> 
+					                    	${user.nickName}⭐
+					                    </option>
 					                </c:when>
 					                <c:when test="${user.position eq '도우미'}">
-					                    <option value="${user.receiver}"> ${user.nickName}🤝</option>
+					                    <option value="${user.receiver}" 
+					                    ${not empty nickName && nickName eq user.nickName ? 'selected' : ''}>
+					                    	${user.nickName}🤝
+					                    </option>
 					                </c:when>
 					                <c:otherwise>
-					                    <option value="${user.receiver}">${user.nickName}</option>
+					                    <option value="${user.receiver}" 
+					                    ${not empty nickName && nickName eq user.nickName ? 'selected' : ''}>
+					                    	${user.nickName}
+					                    </option>
 					                </c:otherwise>
 					            </c:choose>
 					        </c:if>

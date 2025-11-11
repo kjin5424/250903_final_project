@@ -72,7 +72,6 @@ public class MessageController
 	@RequestMapping(value="/writemessage.do", method=RequestMethod.GET)
 	public String writeMessage(Model model, HttpServletRequest request)
 	{
-		
 		HttpSession session = request.getSession();
 		IMessageDAO dao1 = sqlSession.getMapper(IMessageDAO.class);
 		IGroupPostDAO dao2 = sqlSession.getMapper(IGroupPostDAO.class);
@@ -87,7 +86,10 @@ public class MessageController
 		model.addAttribute("forwarder", joinCode);
 		model.addAttribute("groupApplyCode", groupApplyCode);
 		model.addAttribute("userList", userList);
-		
+		String nickName = request.getParameter("nickName");
+		if (nickName!=null)
+			model.addAttribute("nickName", nickName);
+			
 		return "/WEB-INF/view/group_room/MessageWrite.jsp";
 	}
 	

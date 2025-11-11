@@ -21,10 +21,11 @@
 
 <script>
     // 현재 사용자가 모임원인지 여부 (서버에서 전달받아야 함)
-    const isGroupMember = true; // 실제로는 서버에서 값을 받아와야 합니다
+    const isGroupMember = true;
+    const isGroupLeader = true;
     
     function openModal(nickName, role, intro, avatarText) {
-    	selectedNikName = nickName;
+    	selectedNickName = nickName;
         document.getElementById('modal-avatar').textContent = avatarText;
         document.getElementById('modal-name').textContent = nickName;
         
@@ -72,8 +73,8 @@
     }
     
     function sendMessage() {
-        alert('쪽지 작성 페이지로 이동합니다.');
-        // 실제로는 location.href = 'message.do?userId=xxx';
+    	var nickName = document.getElementById('modal-name').textContent;
+        location.href = 'writemessage.do?nickName=' + encodeURIComponent(nickName, "UTF-8");
     }
     
     function reportUser() {

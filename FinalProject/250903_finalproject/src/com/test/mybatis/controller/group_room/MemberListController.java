@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.test.mybatis.dao.IGroupDAO;
 import com.test.mybatis.dto.GroupDTO;
+import com.test.mybatis.dto.UserDTO;
 
 @Controller
 public class MemberListController
@@ -28,6 +29,12 @@ public class MemberListController
 		HttpSession session = request.getSession();
 		
 		String groupApplyCode = (String)session.getAttribute("groupApplyCode");
+		UserDTO user = (UserDTO)session.getAttribute("user");
+		String nickName = "";
+		if (user!=null)
+		{
+			nickName = user.getUserName();	// 접속자의 닉네임
+		}
 		
 		List<GroupDTO> groupUserList = dao.groupUserList(groupApplyCode);
 		GroupDTO group = dao.groupDetail(groupApplyCode);
@@ -35,13 +42,7 @@ public class MemberListController
 		
 		model.addAttribute("groupUserList", groupUserList);
 		model.addAttribute("title", title);
-		System.out.println(title);
-		System.out.println(groupUserList);
-		for (GroupDTO dto : groupUserList)
-		{
-			System.out.println(dto.getNickName());
-		}
-		
+		model.addAttribute("nickName", nickName);
 		
 		return "/WEB-INF/view/group_room/MemberList.jsp";
 	}

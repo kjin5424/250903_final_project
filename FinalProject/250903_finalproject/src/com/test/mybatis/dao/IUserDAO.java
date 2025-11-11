@@ -3,6 +3,7 @@ package com.test.mybatis.dao;
 import org.apache.ibatis.annotations.Param;
 
 import com.test.mybatis.dto.GroupDTO;
+import com.test.mybatis.dto.GroupJoinDTO;
 import com.test.mybatis.dto.UserDTO;
 
 public interface IUserDAO
@@ -17,7 +18,7 @@ public interface IUserDAO
 	public int relationCheck(@Param("userCode") String userCode,@Param("user") String user);
 	
 	// 현재 운영/참여중인 모임 리스트 조회하는 메소드
-	public GroupDTO currentGroupList(@Param("userCode") String userCode);
+	public GroupJoinDTO currentGroupList(@Param("userCode") String userCode);
 	
 	// 과거 운영/참여중인 모임 리스트 조회하는 메소드
 	public GroupDTO quitGroupList(@Param("userCode") String userCode);
