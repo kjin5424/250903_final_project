@@ -2,6 +2,8 @@ package com.test.mybatis.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.test.mybatis.dto.GroupDTO;
 import com.test.mybatis.dto.GroupMemberDTO;
 
@@ -37,8 +39,9 @@ public interface IGroupMemberDAO
 	public GroupMemberDTO selectHelperGroup(String groupApplyCode);
 	
 	// select -> 유저가 특정 모임의 모임원인지
-	// 삭제
-	public int checkMemberGroup(String userCode, String groupApplyCode);
+	// 유저가 특정 모임의 모임원인지(POSITION을 반환)
+	public String checkMemberGroup(@Param("userCode") String userCode
+							  	 , @Param("groupApplyCode") String groupApplyCode);
 	
 	// select -> 특정 모임의 총 인원 수
 	// 삭제

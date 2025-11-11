@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
     String pageNum = request.getParameter("NoticeListPage");
     if(pageNum == null) pageNum = "1";
@@ -40,6 +41,8 @@ a { text-decoration: none; color: inherit; }
 </style>
 </head>
 <body>
+<!-- 상단 메뉴바 -->
+<c:import url="/WEB-INF/view/common/TopMenuBar.jsp" />
 <div class="container">
 	<div class="header">
 		<h1 class="page-title">📢 공지사항</h1>
