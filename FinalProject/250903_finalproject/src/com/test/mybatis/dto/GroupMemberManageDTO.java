@@ -6,6 +6,7 @@ public class GroupMemberManageDTO
 	private String quitReason;	// 강퇴 사유
 	private String joinCode;
 	private String groupApplyCode;
+	private String userCode;
 	
 	// getter / setter 
 	public String getQuitType()
