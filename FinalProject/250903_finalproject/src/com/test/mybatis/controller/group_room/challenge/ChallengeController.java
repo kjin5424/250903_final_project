@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.test.mybatis.dao.IChallengeDAO;
 import com.test.mybatis.dto.ChallengeContentDTO;
 import com.test.mybatis.dto.ChallengeInfoDTO;
-import com.test.mybatis.dto.ChallengeMemberDTO;
+import com.test.mybatis.dto.ChallengerDTO;
 import com.test.mybatis.dto.UserDTO;
 
 @Controller
@@ -226,12 +226,14 @@ public class ChallengeController
 			UserDTO user = (UserDTO) session.getAttribute("user");
 			String challengeCode = request.getParameter("challengeCode");
 
+			/*
 			// 회원이 아닐 때
 			if (user == null)
 			{
 				String msg = URLEncoder.encode("로그인이 필요합니다.", StandardCharsets.UTF_8.toString());
 				return "redirect:errorpage.do?error=" + msg + "&url=loginpage.do";
 			}
+			*/
 
 			// 도전과제 정보 출력
 			// (도전과제코드, 작성자, 제목, 내용, 유형, 시작일, 작성일)
@@ -258,16 +260,19 @@ public class ChallengeController
 			 */
 			
 			// 도전과제 참가자 정보
-			// ArrayList(닉네임, challengeMemberCode, joinCode, 성공일)
-			// 참가자 수, 달성자 수, 달성률
-			
-			ChallengeMemberDTO members = new ChallengeMemberDTO();
-			
-			
-			
+			// ArrayList(joinCode, 달성수, 달성여부, 닉네임, 성공일)
+			ArrayList<ChallengerDTO> members = new ArrayList<ChallengerDTO>();
+			members = dao.getChallengerInfo(challengeCode);				// joinCode, 달성수, 달성여부
+			for (ChallengerDTO member : members)
+			{
+				member.setNickname(dao.getNickname(member.getJoinCode()));
+				if ("달성".equals(member.getSuccessed()))
+					member.setSuccessedDate(dao.getSuccessDate(member.getJoinCode(), challengeCode));
+			}
 
 			model.addAttribute("challengeDetail", challengeDetail);
 			model.addAttribute("challengeContentList", challengeContentList);
+			model.addAttribute("members", members);
 
 		} catch (Exception e)
 		{

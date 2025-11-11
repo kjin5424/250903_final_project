@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%
 	request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
@@ -94,10 +95,26 @@ $(function()
 				</tbody>
 			</table>
 
+			<!-- 통계 전처리 -->
+			<c:set var="successCount" value="0" />
+			<c:forEach var="member" items="${members}">
+				<c:if test="${member.successed == '달성'}">
+					<c:set var="successCount" value="${successCount+1}"/>
+				</c:if>
+			</c:forEach>
+			<c:choose>
+				<c:when test="${members.size() > 0}">
+				    <c:set var="ratio" value="${successCount / members.size() * 100}"/>
+				</c:when>
+				<c:otherwise>
+				    <c:set var="ratio" value="0"/>
+				</c:otherwise>
+			</c:choose>
+			
 			<div style="margin-bottom: 1.5rem;">
-				<p>참가자 : 8 명</p>
-				<p>달성자 : 5 명</p>
-				<p>달성률 : 62.5 %</p>
+				<p>참가자 : ${members.size() }명</p>
+				<p>달성자 : ${successCount } 명</p>
+				<p>달성률 : <fmt:formatNumber value="${ratio}" pattern="#.00" /> %</p>
 			</div>
 
 			<h2 id="participantTitle" class="toggle-button">참가자 리스트 ▼(펼치기)</h2>
@@ -111,6 +128,14 @@ $(function()
 					</tr>
 				</thead>
 				<tbody>
+					<c:forEach var="challenger" items="${members}">
+						<tr>
+							<td><strong>${challenger.nickname }</strong></td>
+							<td>${challenger.successed }</td>
+							<td>${challenger.successedDate == null ? "-" : challenger.successedDate }</td>
+						</tr>					
+					</c:forEach>
+					<!--
 					<tr>
 						<td><strong>userA</strong></td>
 						<td>달성</td>
@@ -131,6 +156,7 @@ $(function()
 						<td>달성</td>
 						<td>yy-mm-dd</td>
 					</tr>
+					-->
 				</tbody>
 			</table>
 
