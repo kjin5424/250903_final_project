@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.test.mybatis.dao.IGroupDAO;
 import com.test.mybatis.dao.IGroupJoinDAO;
+import com.test.mybatis.dao.IGroupMemberManageDAO;
 import com.test.mybatis.dao.IGroupPostDAO;
 import com.test.mybatis.dto.GroupDTO;
 import com.test.mybatis.dto.GroupJoinDTO;
+import com.test.mybatis.dto.GroupMemberManageDTO;
 import com.test.mybatis.dto.UserDTO;
 import com.test.util.Paging;
 
@@ -78,6 +80,7 @@ public class GroupManageController
         System.out.println("✅ 로그인 됨 - UserCode: " + user.getUserCode());
         
         IGroupDAO dao = sqlSession.getMapper(IGroupDAO.class);
+        IGroupMemberManageDAO quitDao = sqlSession.getMapper(IGroupMemberManageDAO.class);
         System.out.println("✅ DAO 매퍼 생성 완료");
         
         try {
@@ -98,6 +101,8 @@ public class GroupManageController
             // 4. 모임 멤버 목록 조회
             System.out.println("\n▶ memberList 조회 시작...");
             List<GroupDTO> memberList = dao.groupManageMemberList(groupApplyCode);
+            List<GroupMemberManageDTO> quitReasonList = quitDao.quitReason("2");
+            model.addAttribute("quitReasonList", quitReasonList);
             System.out.println("▶ memberList 조회 완료");
             
             System.out.println("\n========== 멤버 리스트 결과 ==========");

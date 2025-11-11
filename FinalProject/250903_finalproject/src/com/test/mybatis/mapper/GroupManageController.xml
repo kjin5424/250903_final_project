@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.mybatis.dao.IGroupMemberManageDAO">
+
+	<select id="quitReason" parameterType="String" resultType="com.test.mybatis.dto.GroupMemberManageDTO">
+		SELECT TYPE AS quitReason
+		FROM QUIT_REASON
+		WHERE QUIT_TYPE = #{quitType}
+	</select>
+	
+	<insert id="insertquitmember" parameterType="com.test.mybatis.dto.GroupMemberManageDTO">
+	    INSERT INTO QUIT_MEMBER (
+	    JOIN_CODE,      
+	    QUIT_REASON    
+	    
+	    )
+	    VALUES (
+	        #{joinCode}    
+	        #{quitType}
+	    )
+	</insert>
+
+</mapper>

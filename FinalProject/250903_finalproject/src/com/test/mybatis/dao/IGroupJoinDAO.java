@@ -21,7 +21,7 @@ public interface IGroupJoinDAO
 	public List<GroupJoinDTO> selectGroupJoinById(@Param("groupApplyCode") String groupApplyCode);
 	
 	// 대기중인 신청 수
-	public int countWaitingGroupMember(String groupApplyCode);
+	public int countWaitingGroupMember(String quitType);
 	
 	// select --> 특정 모임의 가입 신청한 사람들의 목록을 가져옴
 	// -> 모임장이 가입신청 대기자 목록을 가져올 때 -> 모임홈에서 관리에서 신청서 관리할 때 
@@ -30,6 +30,9 @@ public interface IGroupJoinDAO
 	// 가입 상태 업데이트(승락 / 거절)
 	// -> 모임장이 승인/거절을 처리할 때
 	public int statusGroupJoin(GroupJoinDTO dto);
+	
+	// 모임 탈토 사유
+	public List<String> quitReason();
 	
 	// select 중복 신청 체크 
 	// 이미 신청한 유저가 또 신청하지 못하게
@@ -56,5 +59,5 @@ public interface IGroupJoinDAO
 	public GroupJoinDTO myPageQuitGroup(@Param("userCode") String userCode);
 
 
-}
+}	
  
