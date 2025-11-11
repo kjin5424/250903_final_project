@@ -24,4 +24,9 @@ public interface IMessageDAO
 	// 쪽지 읽음 처리
 	public int readMessage(@Param("messageCode") String messageCode);
 	
+	// 받은 쪽지 삭제 처리
+	public int deleteReceivedMessage(@Param("messageCode") String messageCode);
+	
+	// 보낸 쪽지 삭제 처리
+	public int deleteForwardedMessage(@Param("messageCode") String messageCode);
 }

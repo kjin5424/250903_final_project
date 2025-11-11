@@ -117,20 +117,39 @@ public class MessageController
 		return "redirect:/messagelist.do";
 	}
 	
-	@RequestMapping(value="/messageread.do", method=RequestMethod.GET)
-	public String messageRead(Model model, String messageCode)
+	@RequestMapping(value="/messageread.do", method=RequestMethod.POST)
+	public String messageRead(String messageCode)
 	{
 		IMessageDAO dao = sqlSession.getMapper(IMessageDAO.class);
-		String result = "성공";
 		try
 		{
 			dao.readMessage(messageCode);
-			model.addAttribute("result", result);
+			return "success";
 			
 		} catch (Exception e)
 		{
-			model.addAttribute("result", e);
+			e.printStackTrace();
+			return "false";
 		}
-		return "/WEB-INF/view/group_room/MessageRead.jsp";
+	}
+	
+	@RequestMapping(value="/receivedmessagedelete.do", method=RequestMethod.GET)
+	public String deleteReceMessage(String messageCode)
+	{
+		IMessageDAO dao = sqlSession.getMapper(IMessageDAO.class);
+		
+		dao.deleteReceivedMessage(messageCode);
+		
+		return "redirect:/messagelist.do";
+	}
+
+	@RequestMapping(value="/forwardedmessagedelete.do", method=RequestMethod.GET)
+	public String deleteMessage(String messageCode)
+	{
+		IMessageDAO dao = sqlSession. getMapper(IMessageDAO.class);
+		
+		dao.deleteForwardedMessage(messageCode);
+		
+		return "redirect:/messagelist.do";
 	}
 }

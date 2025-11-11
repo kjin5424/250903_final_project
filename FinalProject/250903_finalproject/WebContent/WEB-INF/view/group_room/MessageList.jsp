@@ -151,27 +151,31 @@
         card.querySelector('.reply-form').classList.remove('active');
     }
     
-    // 쪽지 삭제
-    function deleteMessage(event, cardId) {
+    // 받은 쪽지 삭제
+    function deleteReceivedMessage(event, messageCode) {
         event.stopPropagation();
         
         if(confirm('이 쪽지를 삭제하시겠습니까?')) {
-            alert('쪽지가 삭제되었습니다.');
-            // 실제로는 서버로 삭제 요청
-            // location.href = 'messageDelete.do?id=' + cardId;
-            
-            // 임시로 카드 제거
-            document.getElementById('card-' + cardId).remove();
+        	location.href = 'receivedmessagedelete.do?messageCode=' + messageCode;
+        }
+    }
+    
+    // 보낸 쪽지 삭제
+    function deleteForwardedMessage(event, messageCode) {
+        event.stopPropagation();
+        
+        if(confirm('이 쪽지를 삭제하시겠습니까?')) {
+        	location.href = 'forwardedmessagedelete.do?messageCode=' + messageCode;
         }
     }
     
     // 사용자 정보 모달
-    function showUserModal(event, name, avatar) {
+    function showUserModal(event, name, avatar, introduce) {
         event.stopPropagation();
         
         document.getElementById('user-modal-avatar').textContent = avatar;
         document.getElementById('user-modal-name').textContent = name;
-        document.getElementById('user-modal-intro').textContent = name + '님의 프로필입니다.';
+        document.getElementById('user-modal-intro').textContent = introduce;
         
         document.getElementById('user-modal-overlay').classList.add('active');
     }
@@ -181,15 +185,13 @@
     }
     
     function goToProfile() {
-        alert('프로필 페이지로 이동합니다.');
-        // location.href = 'profile.do?userId=xxx';
+        var nickName = document.getElementById("user-modal-name").textContent;
+        window.location.href = 'profile.do?nickName=' + encodeURIComponent(nickName);
     }
     
     function reportUser() {
-        if (confirm('이 사용자를 신고하시겠습니까?')) {
-            // 🚨 신고 페이지로 이동 (임의 사용자 신고)
-            window.location.href = "<%=cp%>/reportmember.do";
-        }
+    	var nickName = document.getElementById("user-modal-name").textContent;
+		window.location.href = "<%=cp%>/reportmember.do";
     }
     
     // 페이지 로드 시
@@ -245,22 +247,22 @@
             <c:forEach var="fm" items="${forwardedMessage}" varStatus="loop">
 			    <div id="card-${loop.count}" class="message-card ${empty fm.readDate ? 'unread' : 'read'}" data-type="inbox" data-id="${fm.messageCode }">
 			
-			        <button class="message-delete-btn" onclick="deleteMessage(event, ${loop.count})">×</button>
+			        <button class="message-delete-btn" onclick="deleteReceivedMessage(event, ${fm.messageCode})">×</button>
 			
 			        <div class="message-header">
 			            <div class="message-avatar"
-			                 onclick="showUserModal(event, '${fm.nickName}', '${empty fm.savePath ? fn:substring(fm.nickName, 0, 1) : fm.savePath}')">
+			                 onclick="showUserModal(event, '${fm.nickName}', '${empty fm.savePath ? fn:substring(fm.nickName, 0, 1) : fm.savePath}', '${fm.introduce }')">
 			                ${empty fm.savePath ? fn:substring(fm.nickName, 0, 1) : fm.savePath}
 			            </div>
 			
 			            <div class="message-info">
 			                <div class="message-sender"
-			                     onclick="showUserModal(event, '${fm.nickName}', '${empty fm.savePath ? fn:substring(fm.nickName, 0, 1) : fm.savePath}')">
+			                     onclick="showUserModal(event, '${fm.nickName}', '${empty fm.savePath ? fn:substring(fm.nickName, 0, 1) : fm.savePath}', '${fm.introduce }')">
 			                    ${fm.nickName}
 			                </div>
 			                <div class="message-meta">
 			                    <span class="message-date">${fm.createdDate}</span>
-			                    <span class="message-status unread">${empty fm.readDate ? '● 안읽음' : ''}</span>
+			                    ${empty fm.readDate ? '<span class="message-status unread">● 안읽음</span>' : ''}
 			                </div>
 			            </div>
 			        </div>
@@ -291,16 +293,16 @@
 			<!-- 보낸 쪽지 -->
 			<c:forEach var="rm" items="${receivedMessage}" varStatus="loop">
                 <div id="card-${loop.count}" class="message-card" data-type="sent" style="display: none;">
-                    <button class="message-delete-btn" onclick="deleteMessage(event, ${loop.count})">×</button>
+                    <button class="message-delete-btn" onclick="deleteForwardedMessage(event, ${rm.messageCode})">×</button>
                     
                     <div class="message-header">
                         <div class="message-avatar" 
-                        	onclick="showUserModal(event, '${rm.nickName}', '${empty rm.savePath ? fn:substring(rm.nickName, 0, 1) : rm.savePath}')">
+                        	onclick="showUserModal(event, '${rm.nickName}', '${empty rm.savePath ? fn:substring(rm.nickName, 0, 1) : rm.savePath}', '${fm.introduce }')">
                         	${empty rm.savePath ? fn:substring(rm.nickName, 0, 1) : rm.savePath}
                         </div>
                         <div class="message-info">
                             <div class="message-sender" 
-                            	onclick="showUserModal(event, '${rm.nickName}', '${empty rm.savePath ? fn:substring(rm.nickName, 0, 1) : rm.savePath}')">
+                            	onclick="showUserModal(event, '${rm.nickName}', '${empty rm.savePath ? fn:substring(rm.nickName, 0, 1) : rm.savePath}, '${fm.introduce }'')">
                                 ${rm.nickName } 님에게
                             </div>
                             <div class="message-meta">
