@@ -614,40 +614,8 @@
 
 <body>
 
-
-    <nav class="navbar">
-
-        <div class="nav-left">
-
-            <div class="logo-tab">
-
-                <span>로고 들어갈 자리</span>
-
-            </div>
-
-            <a href="?page=notice" class="tab">공지사항</a>
-
-            <a href="?page=groups" class="tab">모임구경</a>
-
-            <a href="?page=creategroup" class="tab active">모임 개설</a>
-
-            <a href="?page=mygroups" class="tab">내 모임</a>
-
-        </div>
-
-        <div class="nav-right">
-
-            <a href="login.jsp" class="login-btn">
-
-                <span>🔐</span>
-
-                <span>로그인</span>
-
-            </a>
-
-        </div>
-
-    </nav>
+  <!-- 상단 메뉴바 -->
+    <c:import url="/WEB-INF/view/common/TopMenuBar.jsp" />
 
 
 
