@@ -43,6 +43,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		LEFT JOIN USER_TABLE UT ON UT.USER_CODE = CMJ.USER_CODE
 		WHERE UT.USER_CODE = #{userCode}
 		AND GA.GROUP_APPLY_CODE = #{groupApplyCode}
+        AND TO_NUMBER(C.CHALLENGE_CODE) = (SELECT MIN(TO_NUMBER(C2.CHALLENGE_CODE))
+                                           FROM CHALLENGE C2
+                                           JOIN JOIN_TABLE J2 ON J2.JOIN_CODE = C2.JOIN_CODE
+                                           LEFT JOIN CHALLENGE_MEMBER CM2 ON CM2.CHALLENGE_CODE = C2.CHALLENGE_CODE
+                                           LEFT JOIN JOIN_TABLE CMJ2 ON CMJ2.JOIN_CODE = CM2.JOIN_CODE
+                                           LEFT JOIN USER_TABLE UT2 ON UT2.USER_CODE = CMJ2.USER_CODE
+                                           WHERE UT2.USER_CODE = UT.USER_CODE
+                                           AND J2.GROUP_APPLY_CODE = GA.GROUP_APPLY_CODE)
 	</select>
 	
 	<select id="getJoinCodes" resultType="com.test.mybatis.dto.ChallengeDTO">
@@ -88,12 +96,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="getChallengeContent" resultType="com.test.mybatis.dto.ChallengeContentDTO">
 		SELECT
-			ROUND AS round
+			CHALLENGE_DETAIL_CODE AS challengeDetailCode
+			, ROUND AS round
 			, CONTENT AS contentDetail
 		FROM
 			CHALLENGE_DETAIL 
 		WHERE
 			CHALLENGE_CODE=#{challengeCode}
+		ORDER BY
+			ROUND
 	</select>
 	
 	<insert id="challengeCreate">
