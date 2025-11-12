@@ -226,14 +226,12 @@ public class ChallengeController
 			UserDTO user = (UserDTO) session.getAttribute("user");
 			String challengeCode = request.getParameter("challengeCode");
 
-			/*
 			// 회원이 아닐 때
 			if (user == null)
 			{
 				String msg = URLEncoder.encode("로그인이 필요합니다.", StandardCharsets.UTF_8.toString());
 				return "redirect:errorpage.do?error=" + msg + "&url=loginpage.do";
 			}
-			*/
 
 			// 도전과제 정보 출력
 			// (도전과제코드, 작성자, 제목, 내용, 유형, 시작일, 작성일)
