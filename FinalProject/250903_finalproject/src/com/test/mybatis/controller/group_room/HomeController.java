@@ -95,13 +95,6 @@ public class HomeController
 		return "/WEB-INF/view/group_room/Histroy.jsp";
 	}
 	
-	@RequestMapping(value="/managelist.do", method=RequestMethod.GET)
-	public String manageList(@RequestParam("groupApplyCode") String groupApplyCode, Model model)
-	{
-		 model.addAttribute("groupApplyCode", groupApplyCode);
-		
-		return "/WEB-INF/view/group_room/manage/ManageList.jsp";
-	}
 	
 	@RequestMapping(value="/grouplistdetail.do", method=RequestMethod.GET)
 	public String groupListDetail(@RequestParam("groupCode") String groupCode,
@@ -404,6 +397,12 @@ public class HomeController
 	{
 	    // model에 필요한 데이터가 있다면 세션을 통해 넘기거나, GET 파라미터로 처리합니다.
 	    return "/WEB-INF/view/group/ApplicationComplete.jsp"; 
+	}
+	
+	@RequestMapping(value="/attendance.do", method=RequestMethod.GET)
+	public String attendance(Model model)
+	{
+		return "/WEB-INF/view/group_room/manage/Attendance.jsp";
 	}
 	
 	@RequestMapping(value = "/updateIntroduce.do", method=RequestMethod.POST)

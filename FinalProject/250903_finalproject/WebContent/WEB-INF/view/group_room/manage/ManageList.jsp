@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" 
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page language="java" %>
 <% 
     request.setCharacterEncoding("UTF-8");
@@ -54,7 +55,7 @@
                         <span>모임 관리</span>
                         <span class="role-badge">모임장</span>
                     </div>
-                    <div class="group-name">알고리즘 정복 스터디</div>
+                    <div class="group-name">${list.groupTitle }</div>
                 </div>
                 <a href="home.do" class="btn-back-custom">
                     <span>←</span>
@@ -69,19 +70,21 @@
             <div class="section-divider"></div>
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-value">7/10</div>
+                    <div class="stat-value">${list.currentMemberCount }/${list.headCount }</div>
                     <div class="stat-label">현재 모임원</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">12</div>
+                    <div class="stat-value">${list.totalActivity }</div>
                     <div class="stat-label">누적 활동</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">85%</div>
+                    <div class="stat-value">
+                    	<fmt:formatNumber value="${list.totalAttendance}" type="number" maxFractionDigits="1" minFractionDigits="1" />%
+                    </div>
                     <div class="stat-label">평균 출석률</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">Lv.3</div>
+                    <div class="stat-value">Lv.${list.groupLevel }</div>
                     <div class="stat-label">모임 레벨</div>
                 </div>
             </div>
