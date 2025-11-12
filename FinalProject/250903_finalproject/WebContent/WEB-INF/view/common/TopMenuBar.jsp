@@ -66,7 +66,7 @@
                     <span class="profile-icon">👤</span>
                 </div>
                 <div class="dropdown-menu">
-                    <a href="profilemodifycheck.do" class="dropdown-item">
+                    <a href="<%=cp %>/profilemodifycheckpage.do" class="dropdown-item">
                         <span>👤</span>
                         <span>내 프로필</span>
                     </a>

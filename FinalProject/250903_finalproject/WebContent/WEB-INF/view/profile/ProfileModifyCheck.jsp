@@ -83,9 +83,7 @@
 </style>
 </head>
 <body>
-    <!-- 상단 메뉴바 -->
-    <c:import url="/WEB-INF/view/common/TopMenuBar.jsp" />
-	<form action="${pageContext.request.contextPath}/profilemodifycheck.do" method="post">
+	<form action="${pageContext.request.contextPath}/profilemodifycheck.do" method="POST">
 	<div class="modal-overlay">
 		<div class="password-modal">
 			<c:if test="${not empty error }">

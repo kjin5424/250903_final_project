@@ -168,7 +168,7 @@ public class ProfileController
 		return url;
 	}
 	
-	@RequestMapping(value="/profilemodifycheck.do", method=RequestMethod.GET)
+	@RequestMapping(value="/profilemodifycheck.do", method=RequestMethod.POST)
 	public void profileModifyCheck(HttpSession session, HttpServletRequest request
 				, HttpServletResponse response) throws ServletException, IOException
 	{
@@ -184,17 +184,15 @@ public class ProfileController
 		String passCheck = userDao.profileModifyCheck(userCode);
 		
 		if(passCheck.equals(request.getParameter("password")))
-			url = "/profilemodify.do";
+			response.sendRedirect(request.getServletContext().getContextPath() + "/profilemodify.do");
 		else
-			url = "/profilemodifycheckpage.do?error=faild";
+			response.sendRedirect(request.getServletContext().getContextPath() + "/profilemodifycheckpage.do");
 		
-		
-		request.getRequestDispatcher(url).forward(request, response);
 		
 	}
 	
 	@RequestMapping(value="/profilemodifycheckpage.do", method=RequestMethod.GET)
-	public String profileModifyCheckPage(HttpSession session, @RequestParam(value="error", required = false) String error)
+	public String profileModifyCheckPage(HttpSession session, @RequestParam(value="error", required = false) String error, Model model)
 	{
 		String url = "/WEB-INF/view/profile/ProfileModifyCheck.jsp";
 		UserDTO user = (UserDTO)session.getAttribute("user");
@@ -203,7 +201,10 @@ public class ProfileController
 			userCode = user.getUserCode();
 		
 		if(error!=null)
-			return url + "?error=" + error;
+		{
+			model.addAttribute("error", error);
+			return url;
+		}
 		else
 			return url;
 	}
