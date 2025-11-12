@@ -1268,9 +1268,7 @@
 <body>
 
 	<!-- 상단 메뉴바 -->
-	<div class="topmenubar">
-		<c:import url="/WEB-INF/view/common/TopMenuBar.jsp"/>
-	</div>
+    <c:import url="/WEB-INF/view/common/TopMenuBar.jsp" />
 
     <div class="container">
 
