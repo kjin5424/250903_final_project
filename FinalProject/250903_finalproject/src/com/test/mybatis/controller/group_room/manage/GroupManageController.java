@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.test.mybatis.dao.IGroupDAO;
 import com.test.mybatis.dao.IGroupJoinDAO;
+import com.test.mybatis.dao.IGroupMemberDAO;
 import com.test.mybatis.dao.IGroupMemberManageDAO;
 import com.test.mybatis.dao.IGroupPostDAO;
 import com.test.mybatis.dto.GroupDTO;
@@ -28,6 +29,48 @@ public class GroupManageController
 {
 	@Autowired
 	private SqlSession sqlSession;
+	
+	@RequestMapping(value="/managelist.do", method=RequestMethod.GET)
+	public String manageList(@RequestParam("groupApplyCode") String groupApplyCode
+						   , Model model
+						   , HttpServletRequest request)
+	{
+		// 모임 제목	(groupHomeGroupInfo-GROUPTITLE)
+		// maxCount		(groupHomeGroupInfo-CURRENTMEMBERCOUNT)
+		// 상한수		(groupHomeGroupInfo-HEADCOUNT)
+		// 누적활동		(groupHomeGroupInfo-TOTALACTIVITY)
+		// 평균출석률	(groupHomeGroupInfo-TOTALATTENDANCE)
+		// 모임레벨		(groupHomeGroupInfo-GROUPLEVEL)
+		HttpSession session = request.getSession();
+		UserDTO user = (UserDTO)session.getAttribute("user");
+		if (user!=null)
+		{
+			String userCode = (String)user.getUserCode();
+			IGroupMemberDAO memberdao = sqlSession.getMapper(IGroupMemberDAO.class);
+			String position = memberdao.checkMemberGroup(userCode, groupApplyCode);
+			
+			if (position.equals("모임장"))
+			{
+				IGroupDAO groupdao = sqlSession.getMapper(IGroupDAO.class);
+				GroupDTO list = groupdao.groupHomeGroupInfo(userCode, groupApplyCode);
+				model.addAttribute("list", list);
+				System.out.println(list);
+				return "/WEB-INF/view/group_room/manage/ManageList.jsp";
+			}
+			else
+			{
+				model.addAttribute("error", "잘못된 접근입니다.");
+				model.addAttribute("url", "/mainpage.do");
+				return  "/errorpage.do";
+			}
+		}
+		else
+		{
+			model.addAttribute("error", "잘못된 접근입니다.");
+			model.addAttribute("url", "/mainpage.do");
+			return  "/errorpage.do";
+		}
+	}
 	
     @RequestMapping(value="/applicant.do", method = RequestMethod.GET)
     public String groupJoinList(@RequestParam("groupApplyCode") String groupApplyCode, Model model, HttpServletRequest request)
@@ -238,17 +281,6 @@ public class GroupManageController
 		return articleUrl;
 	}
     
-	@RequestMapping(value = "/groupeditcomplete.do", method=RequestMethod.POST)
-	public String updateGroupInfo(GroupDTO groupDTO)
-	{
-		String url = "redirect:home.do?groupApplyCode=" + groupDTO.getGroupApplyCode();
-		
-		IGroupDAO groupDAO = sqlSession.getMapper(IGroupDAO.class);
-		
-		groupDAO.updateGroupInfo(groupDTO);
-		
-		return url;
-	}
     
     
 }
