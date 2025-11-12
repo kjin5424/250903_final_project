@@ -380,7 +380,7 @@ window.onload = function() {
 <input type="hidden" id="groupApplyCode" value="${groupDetail.groupApplyCode}">
     <div class="content">
         <!-- 뒤로가기 버튼 -->
-        <button class="btn btn-ghost" onclick="location.href='grouplist.do'" style="margin-bottom: var(--spacing-lg);">
+        <button class="btn btn-ghost" onclick="location.href='mainpage.do'" style="margin-bottom: var(--spacing-lg);">
             ← 모임 목록으로
         </button>
 

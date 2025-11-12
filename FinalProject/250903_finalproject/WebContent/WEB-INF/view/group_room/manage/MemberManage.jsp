@@ -302,11 +302,7 @@ body {
 </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-left">
-            <div class="logo-tab"><span>로고 들어갈 자리</span></div>
-        </div>
-    </nav>
+	<c:import url="/WEB-INF/view/common/TopMenuBar.jsp" />
 
     <div class="container">
         <div class="page-header">

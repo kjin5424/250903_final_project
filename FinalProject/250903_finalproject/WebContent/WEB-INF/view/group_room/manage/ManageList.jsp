@@ -57,7 +57,7 @@
                     </div>
                     <div class="group-name">${list.groupTitle }</div>
                 </div>
-                <a href="home.do" class="btn-back-custom">
+                <a href="home.do?groupApplyCode=${groupApplyCode}" class="btn-back-custom">
                     <span>←</span>
                     <span>뒤로 가기</span>
                 </a>
