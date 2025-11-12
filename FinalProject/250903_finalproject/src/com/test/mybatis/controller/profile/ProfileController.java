@@ -168,7 +168,7 @@ public class ProfileController
 		return url;
 	}
 	
-	@RequestMapping(value="/profilemodifycheck.do", method=RequestMethod.POST)
+	@RequestMapping(value="/profilemodifycheck.do", method=RequestMethod.GET)
 	public void profileModifyCheck(HttpSession session, HttpServletRequest request
 				, HttpServletResponse response) throws ServletException, IOException
 	{
