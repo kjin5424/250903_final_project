@@ -129,7 +129,7 @@
             <div class="section-title">📢 콘텐츠 관리</div>
             <div class="section-divider"></div>
             <div class="management-grid">
-                <div class="management-card" onclick="location.href='post2.do?groupApplyCode=${groupApplyCode}'">
+                <div class="management-card" onclick="location.href='postmanage.do?groupApplyCode=${groupApplyCode}'">
                     <div class="card-icon">📄</div>
                     <div class="card-title">게시물/댓글 관리</div>
                     <div class="card-description">

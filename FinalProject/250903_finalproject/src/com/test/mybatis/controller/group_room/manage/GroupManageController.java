@@ -238,7 +238,7 @@ public class GroupManageController
 
 	
 	// 전체 리스트 가져오기
-	@RequestMapping(value="/post2.do", method=RequestMethod.GET)
+	@RequestMapping(value="/postmanage.do", method=RequestMethod.GET)
 	public String postList(String groupApplyCode, HttpServletRequest request, Model model, String pageNum)
 	{
 		// sqlSession 가져오기
@@ -265,7 +265,7 @@ public class GroupManageController
 			
 		// url 생성
 		String cp = request.getContextPath();
-		String listUrl = cp + "/post2.do?groupApplyCode=" + groupApplyCode;
+		String listUrl = cp + "/postmanage.do?groupApplyCode=" + groupApplyCode;
 		String pageIndexList = paging.pageIndexList(currentPage, totalPage, listUrl);
 		
 		// model에 데이터 담기
@@ -275,7 +275,7 @@ public class GroupManageController
 		model.addAttribute("start", start);
 		
 		// 주소 구성
-		String articleUrl = "/WEB-INF/view/group_room/board/Post2.jsp";
+		String articleUrl = "/WEB-INF/view/group_room/manage/PostManage.jsp";
 		articleUrl += "?pageNum=" + currentPage;
 		
 		return articleUrl;
