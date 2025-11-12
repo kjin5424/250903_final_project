@@ -49,7 +49,7 @@ public class GroupManageController
 			IGroupMemberDAO memberdao = sqlSession.getMapper(IGroupMemberDAO.class);
 			String position = memberdao.checkMemberGroup(userCode, groupApplyCode);
 			
-			if (position.equals("모임장"))
+			if ("모임장".equals(position))
 			{
 				IGroupDAO groupdao = sqlSession.getMapper(IGroupDAO.class);
 				GroupDTO list = groupdao.groupHomeGroupInfo(userCode, groupApplyCode);
@@ -61,14 +61,14 @@ public class GroupManageController
 			{
 				model.addAttribute("error", "잘못된 접근입니다.");
 				model.addAttribute("url", "/mainpage.do");
-				return  "/errorpage.do";
+				return  "redirect:/errorpage.do";
 			}
 		}
 		else
 		{
 			model.addAttribute("error", "잘못된 접근입니다.");
 			model.addAttribute("url", "/mainpage.do");
-			return  "/errorpage.do";
+			return  "redirect:/errorpage.do";
 		}
 	}
 	

@@ -284,9 +284,6 @@
 
         <!-- 버튼 -->
         <div class="button-group">
-            <button class="btn btn-primary" onclick="location.href='grouplist.do'">
-                모임 리스트 보기
-            </button>
             <button class="btn btn-secondary" onclick="location.href='mainpage.do'">
                 메인으로
             </button>
