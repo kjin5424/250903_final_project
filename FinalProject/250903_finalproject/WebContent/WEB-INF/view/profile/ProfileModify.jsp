@@ -696,9 +696,10 @@ body {
 	</div>
 	 --%>
 	    <!-- 상단 메뉴바 -->
-    <c:import url="/WEB-INF/view/common/TopMenuBar.jsp" />
 	
 	<div class="container">
+    <c:import url="/WEB-INF/view/common/TopMenuBar.jsp" />
+		<br />
 		<div class="header">
 			<h1 class="page-title">내 프로필</h1>
 			<p class="page-subtitle">개인정보를 관리하고 프로필을 설정하세요</p>
