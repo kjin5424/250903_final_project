@@ -1463,7 +1463,7 @@
 
                         <div class="group-actions">
 
-                            <button class="btn-small btn-primary-small" onclick="event.stopPropagation(); location.href='group_edit.jsp'">⚙️ 관리</button>
+                            <button class="btn-small btn-primary-small" onclick="event.stopPropagation(); location.href='groupedit.jsp'">⚙️ 관리</button>
 
                             <button class="btn-small btn-outline-small" onclick="event.stopPropagation(); viewGroup(1)">👀 보기</button>
 
