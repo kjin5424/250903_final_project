@@ -695,7 +695,8 @@ body {
 		<jsp:include page="/common/TopMenuBar.jsp" />
 	</div>
 	 --%>
-	
+	    <!-- 상단 메뉴바 -->
+    <c:import url="/WEB-INF/view/common/TopMenuBar.jsp" />
 	
 	<div class="container">
 		<div class="header">

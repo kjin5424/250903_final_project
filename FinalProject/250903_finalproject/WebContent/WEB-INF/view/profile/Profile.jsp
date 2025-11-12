@@ -383,23 +383,9 @@
 </script>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-left">
-            <div class="logo-tab">
-                <span>로고 들어갈 자리</span>
-            </div>
-            <a href="?page=notice" class="tab">공지사항</a>
-            <a href="?page=groups" class="tab">모임구경</a>
-            <a href="?page=creategroup" class="tab">모임 개설</a>
-            <a href="?page=mygroups" class="tab active">내 모임</a>
-        </div>
-        <div class="nav-right">
-            <a href="mypage.jsp" class="profile-btn">
-                <span>👤</span>
-                <span>마이페이지</span>
-            </a>
-        </div>
-    </nav>
+	<!-- 상단 메뉴바 -->
+    <c:import url="/WEB-INF/view/common/TopMenuBar.jsp" />
+  
 
     <div class="container">
         <!-- 프로필 헤더 -->
