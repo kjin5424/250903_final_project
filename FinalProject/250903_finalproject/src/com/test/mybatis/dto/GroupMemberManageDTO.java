@@ -2,8 +2,10 @@ package com.test.mybatis.dto;
 
 public class GroupMemberManageDTO
 {
-	private String quitType;	// 강퇴 타입
-	private String quitReason;	// 강퇴 사유
+	private String quitType;
+	private String quitReason;
+
+	private String quitReasonCode;
 	private String joinCode;
 	private String groupApplyCode;
 	private String userCode;
@@ -41,5 +43,18 @@ public class GroupMemberManageDTO
 	{
 		this.quitReason = quitReason;
 	}
-	
+	public String getUserCode()
+	{
+		return userCode;
+	}
+	public String getQuitReasonCode() {
+		return quitReasonCode;
+	}
+	public void setQuitReasonCode(String quitReasonCode) {
+		this.quitReasonCode = quitReasonCode;
+	}
+	public void setUserCode(String userCode)
+	{
+		this.userCode = userCode;
+	}
 }
