@@ -13,5 +13,5 @@ public interface IGroupMemberManageDAO
 	
 	// 탈퇴 회원 insert
 	public int insertquitmember(@Param("joinCode") String joinCode,
-            @Param("quitReason") String quitReason);
+	 @Param("quitReasonCode") String quitReasonCode);
 }

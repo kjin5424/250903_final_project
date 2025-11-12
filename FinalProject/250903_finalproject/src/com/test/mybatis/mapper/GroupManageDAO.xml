@@ -5,9 +5,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.test.mybatis.dao.IGroupMemberManageDAO">
 
 	<select id="quitReason" parameterType="String" resultType="com.test.mybatis.dto.GroupMemberManageDTO">
-		SELECT TYPE AS quitReason
-		FROM QUIT_REASON
-		WHERE QUIT_TYPE = #{quitType}
+		SELECT 
+            QUIT_REASON AS quitReasonCode, 
+            TYPE AS quitReason
+        FROM 
+            QUIT_REASON
+        WHERE 
+            QUIT_TYPE = #{quitType}
+        ORDER BY 
+            QUIT_REASON
 	</select>
 	
 	<insert id="insertquitmember" parameterType="com.test.mybatis.dto.GroupMemberManageDTO">
@@ -18,7 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	    )
 	    VALUES (
 	        #{joinCode},
-	        #{quitReason}
+	        #{quitReasonCode}
 	    )
 	</insert>
 
