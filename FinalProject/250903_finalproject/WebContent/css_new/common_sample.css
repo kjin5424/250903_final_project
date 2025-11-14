@@ -25,12 +25,14 @@
     --color-accent-light: #FFB3BA;      /* 연한 체리 */
     --color-accent-dark: #E55563;       /* 진한 체리 */
     
+    /* 그라디언트 */
+    --color-gradient: linear-gradient(135deg, #E8F5E6, #F5F1FF);
+    
     /* 텍스트 컬러 */
     --color-text-primary: #2D3436;      /* 주요 텍스트 */
     --color-text-secondary: #636E72;    /* 보조 텍스트 */
     --color-text-tertiary: #B2BEC3;     /* 비활성 텍스트 */
-    --color-text-inverse: #FFFFFF;      /* 역색 텍스트 */
-    
+sm    
     /* 경계선 */
     --color-border: #E0E0E0;
     --color-border-light: #F0F0F0;
