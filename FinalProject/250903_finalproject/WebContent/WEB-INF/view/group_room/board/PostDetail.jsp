@@ -167,7 +167,7 @@
                             <div class="comment-author-info">
                                 <div class="author-avatar">
 	                                <c:choose>
-									    <c:when test="${not empty post.savePath}">
+									    <c:when test="${not empty dto.savePath}">
 									        ${dto.savePath}
 									    </c:when>
 									    <c:otherwise>
