@@ -2,7 +2,7 @@
 	LoginController.java
 ==========================*/
 
-package com.test.mybatis.controller.authorization;
+package com.test.mybatis.controller;
 
 import javax.servlet.http.HttpSession;
 

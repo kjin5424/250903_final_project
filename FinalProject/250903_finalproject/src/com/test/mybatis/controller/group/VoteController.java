@@ -1,4 +1,4 @@
-package com.test.mybatis.controller.group_room.vote;
+package com.test.mybatis.controller.group;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

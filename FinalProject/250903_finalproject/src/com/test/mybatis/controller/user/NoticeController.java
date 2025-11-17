@@ -1,4 +1,4 @@
-package com.test.mybatis.controller.notice;
+package com.test.mybatis.controller.user;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;

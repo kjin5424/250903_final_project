@@ -1,4 +1,4 @@
-package com.test.mybatis.controller.profile;
+package com.test.mybatis.controller.user;
 
 import java.io.IOException;
 import java.io.PrintWriter;

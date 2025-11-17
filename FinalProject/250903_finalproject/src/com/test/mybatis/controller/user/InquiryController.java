@@ -1,4 +1,4 @@
-package com.test.mybatis.controller.inquiry;
+package com.test.mybatis.controller.user;
 
 import java.util.ArrayList;
 import java.util.List;

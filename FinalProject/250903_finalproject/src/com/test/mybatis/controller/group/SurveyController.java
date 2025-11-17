@@ -1,4 +1,4 @@
-package com.test.mybatis.controller.survey;
+package com.test.mybatis.controller.group;
 
 import javax.servlet.http.HttpSession;
 

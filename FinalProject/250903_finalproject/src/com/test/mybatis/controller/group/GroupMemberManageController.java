@@ -1,4 +1,4 @@
-package com.test.mybatis.controller.group_room.manage;
+package com.test.mybatis.controller.group;
 
 import java.util.HashMap;
 import java.util.List;
