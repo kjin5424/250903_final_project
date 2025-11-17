@@ -1,4 +1,4 @@
-package com.test.mybatis.controller.group_room;
+package com.test.mybatis.controller.group;
 
 import java.util.List;
 
