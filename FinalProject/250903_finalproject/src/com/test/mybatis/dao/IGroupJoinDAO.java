@@ -1,5 +1,6 @@
 package com.test.mybatis.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -58,6 +59,8 @@ public interface IGroupJoinDAO
 	
 	public GroupJoinDTO myPageQuitGroup(@Param("userCode") String userCode);
 
+	// 매니저(관리자)가 확인하는 특정 유저 정보에서 활용될 목록 유저의 전체 활동 모임 리스트
+	public ArrayList<GroupJoinDTO> groupListForManager(@Param("userCode") String userCode);
 
 }	
  

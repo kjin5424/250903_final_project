@@ -259,7 +259,7 @@
                             </div>
                             
                             <div class="card-actions">
-                                <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); location.href='groupmanage.jsp?id=${myGroupDTO.groupApplyCode}'">⚙️ 관리</button>
+                                <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); location.href='managelist.do?groupApplyCode=${myGroupDTO.groupApplyCode}'">⚙️ 관리</button>
                                 <button class="btn btn-outline btn-sm" onclick="event.stopPropagation(); viewGroup('${myGroupDTO.groupApplyCode}')">👀 보기</button>
                             </div>
                         </div>
@@ -418,7 +418,7 @@
     }
     
     function viewGroup(groupApplyCode) {
-        window.location.href = 'group_detail.jsp?id=' + groupApplyCode;
+        window.location.href = '<%=cp %>/home.do?groupApplyCode=' + groupApplyCode;
     }
     
     function leaveGroup(groupApplyCode) {
