@@ -1,9 +1,12 @@
 package com.test.mybatis.dao;
 
+import java.util.ArrayList;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.test.mybatis.dto.GroupDTO;
 import com.test.mybatis.dto.GroupJoinDTO;
+import com.test.mybatis.dto.LoginLogDTO;
 import com.test.mybatis.dto.UserDTO;
 
 public interface IUserDAO
@@ -43,4 +46,16 @@ public interface IUserDAO
 	
 	// 개인 프로필 수정창 열람시 사용될 본인 확인
 	public String profileModifyCheck(@Param("userCode") String userCode);
+	
+	// 매니저(관리자)가 보는 유저 전체 정보 리스트
+	public ArrayList<UserDTO> userListForManager();
+	
+	// 매니저(관리자)가 보는 유저 전체 정보 리스트에서 사용될 검색 메소드
+	public ArrayList<UserDTO> searchUserListForManager(@Param("userId") String userId);
+	
+	// 매니저(관리자)가 보는 특정 유저의 정보 출력 메소드
+	public UserDTO userInfoForManager(@Param("userCode") String userCode);
+	
+	// 매니저(관리자)가 보는 특정 유저의 로그인 이력 메소드
+	public ArrayList<LoginLogDTO > loginLogListForManager(@Param("userCode")String userCode);
 }

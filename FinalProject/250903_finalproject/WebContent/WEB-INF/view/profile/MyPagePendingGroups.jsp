@@ -146,7 +146,7 @@
 
 <script>
     function viewGroup(groupApplyCode) {
-        window.location.href = 'group_detail.jsp?id=' + groupApplyCode;
+        window.location.href = '<%=cp %>/home.do?groupApplyCode=' + groupApplyCode;
     }
     
     function cancelApplication(groupApplyCode) {

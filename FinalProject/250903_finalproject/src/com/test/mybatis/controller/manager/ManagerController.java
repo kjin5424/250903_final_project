@@ -6,6 +6,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import com.test.mybatis.dao.IGroupJoinDAO;
+import com.test.mybatis.dao.IInquiryDAO;
+import com.test.mybatis.dao.IReportDAO;
+import com.test.mybatis.dao.IUserDAO;
 
 /* ========================
 	ManagerController.java
@@ -106,14 +111,39 @@ public class ManagerController
 		 */
 		
 		@RequestMapping(value="/userlist.do", method=RequestMethod.GET)
-		public String userList(Model model)
+		public String userList(Model model, @RequestParam(value="userId", required = false) String userId)
 		{
+			IUserDAO userDAO = sqlSession.getMapper(IUserDAO.class);
+
+			if(userId != null)
+			{
+				model.addAttribute("userList", userDAO.searchUserListForManager(userId));
+				model.addAttribute("searchId", userId);
+			}
+			else
+			{				
+				model.addAttribute("userList", userDAO.userListForManager());
+			}
+			
 			return "/WEB-INF/view/manager/user/UserList.jsp";
 		}
 		
 		@RequestMapping(value="/userdetail.do", method=RequestMethod.GET)
-		public String userDetail(Model model)
+		public String userDetail(Model model, @RequestParam("userCode") String userCode)
 		{
+			IGroupJoinDAO groupJoinDAO = sqlSession.getMapper(IGroupJoinDAO.class);
+			IUserDAO userDAO = sqlSession.getMapper(IUserDAO.class);
+			IReportDAO reportDAO = sqlSession.getMapper(IReportDAO.class);
+			IInquiryDAO inquiryDAO = sqlSession.getMapper(IInquiryDAO.class);
+			
+			model.addAttribute("groupList", groupJoinDAO.groupListForManager(userCode));
+			model.addAttribute("userInfo", userDAO.userInfoForManager(userCode));
+			model.addAttribute("reportedList", reportDAO.reportedListForManager(userCode));
+			model.addAttribute("reportList", reportDAO.reportListForManager(userCode));
+			model.addAttribute("inquiryList", inquiryDAO.inquiryListForManager(userCode));
+			model.addAttribute("loginLogList", userDAO.loginLogListForManager(userCode));
+			
+			
 			return "/WEB-INF/view/manager/user/UserDetail.jsp";
 		}
 		

@@ -5,12 +5,32 @@ public class UserDTO
 	// USER_INFO 테이블 속성
 	private String userId, password, userName, nickname, userCode
 	, ssn1, ssn2, email, address, zipCode, savePath, createdDate
-	, myGroup, joinGroup, requestJoin, requestApply, quitGroup;
+	, myGroup, joinGroup, requestJoin, requestApply, quitGroup, gender, age;
 
 	// getter / setter 구성
 	public String getUserId()
 	{
 		return userId;
+	}
+
+	public String getGender()
+	{
+		return gender;
+	}
+
+	public void setGender(String gender)
+	{
+		this.gender = gender;
+	}
+
+	public String getAge()
+	{
+		return age;
+	}
+
+	public void setAge(String age)
+	{
+		this.age = age;
 	}
 
 	public void setUserId(String userId)

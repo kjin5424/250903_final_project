@@ -53,4 +53,12 @@
 		)
 	</insert>
 
+	<select id="inquiryListForManager" resultType="com.test.mybatis.dto.InquiryDTO">
+		SELECT INQ.INQUIRY_CODE AS INQUIRYCODE, INQ.CONTENT, INQ.CREATED_DATE AS CREATEDDATE
+		     , INQA.CREATED_DATE AS ANSWERDATE
+		FROM INQUIRY INQ
+		LEFT JOIN INQUIRY_ANSWER INQA ON INQ.INQUIRY_CODE = INQA.INQUIRY_CODE
+		WHERE INQ.USER_CODE = #{userCode}
+	</select>
+	
 </mapper>

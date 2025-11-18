@@ -22,7 +22,30 @@ public class ReportDTO {
     private int reportMemberType;     // REPORT_MEMBER_TYPE
     private String content;           // CONTENT
     
-    private Date createdDate;        // 작성일
+    private String processType;
+    private String reportType;
+    
+    public String getReportType()
+	{
+		return reportType;
+	}
+
+	public void setReportType(String reportType)
+	{
+		this.reportType = reportType;
+	}
+
+	public String getProcessType()
+	{
+		return processType;
+	}
+
+	public void setProcessType(String processType)
+	{
+		this.processType = processType;
+	}
+
+	private Date createdDate;        // 작성일
 
     // Getter & Setter
 	public String getReportGroupCode() {

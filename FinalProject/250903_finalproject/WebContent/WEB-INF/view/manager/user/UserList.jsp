@@ -1,4 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%
     request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
@@ -231,20 +233,22 @@ tbody tr:hover {
 	<div class="header">관리자 회원 목록 조회</div>
 	<div class="container">
 		<div class="search-filter">
-			<label>아이디</label> <input type="text" id="searchId"
-				placeholder="아이디 검색"> 
-            <label>활동 정지 여부</label> 
-            <select id="statusFilter">
-				<option value="">전체</option>
-				<option value="N">정상</option>
-				<option value="Y">정지</option>
-			</select>
-
+			<label>아이디
+			
+			<c:if test="${not empty searchId }">
+				<input type="text" id="searchId" value="${searchId }">
+			</c:if>
+			<c:if test="${empty searchId }">
+				<input type="text" id="searchId" placeholder="아이디 검색">
+			</c:if>
+			</label>  
 			<button class="button" onclick="searchMembers()">검색</button>
 		</div>
 
 		<div class="result-count">
-			검색 결과: <strong>총 4명</strong>
+			검색 결과: <strong>총 
+					<c:if test="${not empty userList }">${fn:length(userList)}</c:if>
+					<c:if test="${empty userList }">0</c:if>명</strong>
 		</div>
 
 		<table>
@@ -258,59 +262,23 @@ tbody tr:hover {
 					<th>주소</th>
 					<th>성별</th>
 					<th>연령대</th>
-					<th>활동 정지 여부</th>
 					<th>가입일</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr onclick="location.href='userdetail.do?id=user001'">
-					<td>user001</td>
-					<td>홍길동123</td>
-					<td>hong@example.com</td>
-					<td>홍길동</td>
-					<td>900101</td>
-					<td>서울시 강남구</td>
-					<td>남</td>
-					<td>30대</td>
-					<td><span class="status-active">정상</span></td>
-					<td>2024-01-15</td>
+				<c:forEach var="userDTO" items="${userList }">
+				<tr onclick="location.href='<%=cp %>/userdetail.do?userCode=${userDTO.userCode }'">
+					<td>${userDTO.userId }</td>
+					<td>${userDTO.nickname }</td>
+					<td>${userDTO.email }</td>
+					<td>${userDTO.userName }</td>
+					<td>${userDTO.ssn1 }</td>
+					<td>${userDTO.address }</td>
+					<td>${userDTO.gender }</td>
+					<td>${userDTO.age }</td>
+					<td>${userDTO.createdDate }</td>
 				</tr>
-				<tr onclick="location.href='memberDetail.jsp?id=user002'">
-					<td>user002</td>
-					<td>김영희</td>
-					<td>kim@example.com</td>
-					<td>김영희</td>
-					<td>950315</td>
-					<td>서울시 마포구</td>
-					<td>여</td>
-					<td>20대</td>
-					<td><span class="status-active">정상</span></td>
-					<td>2024-02-20</td>
-				</tr>
-				<tr onclick="location.href='memberDetail.jsp?id=user003'">
-					<td>user003</td>
-					<td>이철수99</td>
-					<td>lee@example.com</td>
-					<td>이철수</td>
-					<td>880520</td>
-					<td>경기도 성남시</td>
-					<td>남</td>
-					<td>30대</td>
-					<td><span class="status-suspended">정지</span></td>
-					<td>2023-11-10</td>
-				</tr>
-				<tr onclick="location.href='memberDetail.jsp?id=user004'">
-					<td>user004</td>
-					<td>이남자</td>
-					<td>wow@example.com</td>
-					<td>이남자</td>
-					<td>860820</td>
-					<td>인천시 남동구</td>
-					<td>남</td>
-					<td>30대</td>
-					<td><span class="status-suspended">정지</span></td>
-					<td>2023-01-10</td>
-				</tr>
+				</c:forEach>
 			</tbody>
 		</table>
 	</div>
@@ -319,16 +287,9 @@ tbody tr:hover {
 		function searchMembers()
 		{
 			var searchId = document.getElementById('searchId').value;
-			var statusFilter = document.getElementById('statusFilter').value;
 
 			// 실제로는 서버에 요청을 보내야 합니다
-			console.log('검색 조건:',
-			{
-				id : searchId,
-				status : statusFilter
-			});
-
-			alert('검색 기능은 서버 연동 후 작동합니다.');
+			window.location.href = '<%=cp %>/userlist.do?userId=' + searchId;
 		}
 	</script>
 </body>

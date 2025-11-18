@@ -1,4 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%
     request.setCharacterEncoding("UTF-8");
 	String cp = request.getContextPath();
@@ -309,38 +311,40 @@ tbody tr:hover {
                 <div class="profile-section">
                     <div class="profile-img">👤</div>
                     <div>
-                        <h3 style="margin: 0;">홍길동 (user001)</h3>
-                        <p style="margin: 5px 0; color: #666;">홍길동123</p>
+                        <h3 style="margin: 0;">${userInfo.userName } (${userInfo.userId })</h3>
+                        <p style="margin: 5px 0; color: #666;">${userInfo.nickname }</p>
                     </div>
                 </div>
                 
                 <div class="info-item">
                     <span class="info-label">이메일:</span>
-                    <span>hong@example.com</span>
+                    <span>${userInfo.email }</span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">주민등록번호:</span>
-                    <span>900101-*******</span>
+                    <span>${userInfo.ssn1 }-*******</span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">주소:</span>
-                    <span>서울시 강남구 테헤란로 123</span>
+                    <span>${userInfo.address }</span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">성별:</span>
-                    <span>남</span>
+                    <span>${userInfo.gender }</span>
                 </div>
                 <div class="info-item">
                     <span class="info-label">연령대:</span>
-                    <span>30대</span>
+                    <span>${userInfo.age }</span>
                 </div>
+                <!-- 
                 <div class="info-item">
                     <span class="info-label">활동 정지 여부:</span>
                     <span style="color: #2E7D32; font-weight: bold;">정상</span>
                 </div>
+                 -->
                 <div class="info-item">
                     <span class="info-label">가입일:</span>
-                    <span>2024-01-15</span>
+                    <span>${userInfo.createdDate }</span>
                 </div>
             </div>
         </div>
@@ -355,7 +359,7 @@ tbody tr:hover {
 
         <!-- 탭 1: 가입 모임 내역 -->
         <div id="meeting-tab" class="tab-content active">
-            <h3>가입 모임 내역 (총 3개)</h3>
+            <h3>가입 모임 내역 (총 ${fn:length(groupList) }개)</h3>
             <table>
                 <thead>
                     <tr>
@@ -366,51 +370,65 @@ tbody tr:hover {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Java 스터디</td>
-                        <td>2024-01-20 ~ 현재</td>
-                        <td>모임장</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>웹 개발 모임</td>
-                        <td>2024-02-01 ~ 2024-08-15</td>
-                        <td>모임원</td>
-                        <td>개인 사정</td>
-                    </tr>
-                    <tr>
-                        <td>알고리즘 연구회</td>
-                        <td>2024-03-10 ~ 현재</td>
-                        <td>모임원</td>
-                        <td>-</td>
-                    </tr>
+                    <c:forEach var="groupJoinDTO" items="${groupList }">
+                    	<tr>
+                    		<td>${groupJoinDTO.groupTitle }</td>
+                    		<td>
+                    			${groupJoinDTO.joinDate } ~
+                    			<c:if test="${not empty groupJoinDTO.quitDate }">
+                    				${groupJoinDTO.quitDate }
+                    			</c:if> 
+                    			<c:if test="${empty groupJoinDTO.quitDate }">
+                    				현재
+                    			</c:if>
+                    		</td>
+                    		<td>	${groupJoinDTO.position }</td>
+                    		<td>
+                    			<c:if test="${not empty groupJoinDTO.quitReason }">
+	                    			${groupJoinDTO.quitReason }
+                    			</c:if>
+                    			<c:if test="${empty groupJoinDTO.quitReason }">
+                    				-
+                    			</c:if>
+                    		</td>
+                    	</tr>
+                    </c:forEach>
                 </tbody>
             </table>
         </div>
 
         <!-- 탭 2: 신고 내역 -->
         <div id="report-tab" class="tab-content">
-            <h3>신고 받은 내역 (총 1건)</h3>
+            <h3>신고 받은 내역 (총 ${fn:length(reportedList) }건)</h3>
             <table>
                 <thead>
                     <tr>
-                        <th>신고 구분</th>
+                        <th>신고 대상</th>
                         <th>신고 일자</th>
                         <th>신고 내용</th>
                         <th>신고 처리 상태</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>욕설/비방</td>
-                        <td>2024-07-15</td>
-                        <td>부적절한 댓글 작성</td>
-                        <td><span class="status-badge status-completed">처리완료</span></td>
-                    </tr>
+                	<c:forEach var="reportedDTO" items="${reportedList }">
+                		<tr>
+                			<td>${reportedDTO.content }</td>
+                			<td>${reportedDTO.createdDate}</td>
+                			<td>${reportedDTO.reportType}</td>
+                			<td>
+                				<c:if test="${not empty reportedDTO.processType }">
+	                				<span class="status-badge status-completed">처리완료</span>
+                				</c:if>
+                				<c:if test="${empty reportedDTO.processType }">
+                					<span class="status-badge status-pending">처리중</span>
+                				</c:if>
+                			</td>
+                		</tr>
+                	</c:forEach>
                 </tbody>
             </table>
 
-            <h3 style="margin-top: 30px;">신고 한 내역 (총 2건)</h3>
+            <h3 style="margin-top: 30px;">신고 한 내역 (총 ${fn:length(reportList) }건)</h3>
             <table>
                 <thead>
                     <tr>
@@ -422,112 +440,68 @@ tbody tr:hover {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>스팸/광고</td>
-                        <td>2024-06-10</td>
-                        <td>무분별한 광고 게시글</td>
-                        <td>user123</td>
-                        <td><span class="status-badge status-completed">처리완료</span></td>
-                    </tr>
-                    <tr>
-                        <td>허위정보</td>
-                        <td>2024-08-20</td>
-                        <td>거짓 정보 유포</td>
-                        <td>user456</td>
-                        <td><span class="status-badge status-pending">처리중</span></td>
-                    </tr>
+                    <c:forEach var="reportDTO" items="${reportList }">
+                    	<tr>
+                    		<td>${reportDTO.content }</td>
+                    		<td>${reportDTO.createdDate }</td>
+                    		<td>${reportDTO.reportType }</td>
+                    		<td>${reportDTO.reporteeCode }</td>
+                    		<td>${reportDTO.processType }</td>
+                    	</tr>
+                    </c:forEach>
                 </tbody>
             </table>
         </div>
 
         <!-- 탭 3: 문의 내역 -->
         <div id="inquiry-tab" class="tab-content">
-            <h3>문의 내역 (총 3건)</h3>
+            <h3>문의 내역 (총 ${fn:length(inquiryList) }건)</h3>
             <table>
                 <thead>
                     <tr>
                         <th>문의 번호</th>
-                        <th>문의 유형</th>
-                        <th>제목</th>
+                        <th>내용</th>
                         <th>문의 일자</th>
                         <th>답변 상태</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Q001</td>
-                        <td>서비스 이용</td>
-                        <td>모임 개설 방법 문의</td>
-                        <td>2024-02-05</td>
-                        <td><span class="status-badge status-completed">답변완료</span></td>
-                    </tr>
-                    <tr>
-                        <td>Q002</td>
-                        <td>결제/환불</td>
-                        <td>유료 모임 환불 문의</td>
-                        <td>2024-05-12</td>
-                        <td><span class="status-badge status-completed">답변완료</span></td>
-                    </tr>
-                    <tr>
-                        <td>Q003</td>
-                        <td>기술 지원</td>
-                        <td>로그인 오류 문의</td>
-                        <td>2024-09-01</td>
-                        <td><span class="status-badge status-pending">처리중</span></td>
-                    </tr>
+                	<c:forEach var="inquiryDTO"  items="${inquiryList }">
+                		<tr>
+                			<td>${inquiryDTO.inquiryCode }</td>
+                			<td>${inquiryDTO.content }</td>
+                			<td>${inquiryDTO.createdDate }</td>
+                			<td>
+                				<c:if test="${not empty inquiryDTO.inquiryCode }">
+                					<span class="status-badge status-completed">답변완료</span>
+                				</c:if>
+                				<c:if test="${empty inquiryDTO.inquiryCode }">
+                					<span class="status-badge status-pending">처리중</span>
+                				</c:if> 
+                			</td>
+                		</tr>
+                	</c:forEach>
                 </tbody>
             </table>
         </div>
 
         <!-- 탭 4: 로그인 이력 -->
         <div id="login-tab" class="tab-content">
-            <h3>로그인 이력 (최근 10건)</h3>
+            <h3>로그인 이력 (${fn:length(loginLogList) }건)</h3>
             <table>
                 <thead>
                     <tr>
                         <th>번호</th>
                         <th>로그인 일시</th>
-                        <th>IP 주소</th>
-                        <th>접속 기기</th>
-                        <th>브라우저</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>2024-10-03 14:25:30</td>
-                        <td>192.168.1.100</td>
-                        <td>Windows PC</td>
-                        <td>Chrome</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>2024-10-02 09:15:20</td>
-                        <td>192.168.1.100</td>
-                        <td>Android</td>
-                        <td>Chrome Mobile</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>2024-10-01 18:40:15</td>
-                        <td>192.168.1.100</td>
-                        <td>Windows PC</td>
-                        <td>Chrome</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>2024-09-30 22:30:45</td>
-                        <td>192.168.1.100</td>
-                        <td>iPhone</td>
-                        <td>Safari</td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>2024-09-29 16:20:10</td>
-                        <td>192.168.1.100</td>
-                        <td>Windows PC</td>
-                        <td>Chrome</td>
-                    </tr>
+                <c:forEach var="loginLogDTO" items="${loginLogList }">
+                	<tr>
+                		<td>${loginLogDTO.loginLogCode }</td>
+                		<td>${loginLogDTO.createdDate }</td>
+                	</tr>
+                </c:forEach>
                 </tbody>
             </table>
         </div>

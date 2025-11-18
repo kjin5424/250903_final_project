@@ -1,6 +1,10 @@
 package com.test.mybatis.dao;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.test.mybatis.dto.InquiryDTO;
 
 public interface IInquiryDAO {
@@ -22,4 +26,7 @@ public interface IInquiryDAO {
 
     // 특정 문의에 대한 답변 조회
     public List<InquiryDTO> answers(String inquiryCode);
+    
+    // 매니저가 열람할 특정 회원의 정보 페이지에서 사용될 특정 회원이 작성한 전체 문의 내역 쿼리문
+    public ArrayList<InquiryDTO> inquiryListForManager(@Param("userCode") String userCode);
 }
