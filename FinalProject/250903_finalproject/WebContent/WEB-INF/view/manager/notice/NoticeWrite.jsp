@@ -301,7 +301,7 @@ body {
 			</div>
 		</div>
 		
-		<form id="noticeForm" onsubmit="return validateForm(event)">
+		<form id="noticeForm" onsubmit="return validateForm(event)" action="noticewriteaction.do" method="post">
 			<div class="form-container">
 				<div class="form-group">
 					<label class="form-label">
@@ -309,8 +309,8 @@ body {
 					</label>
 					<input 
 						type="text" 
-						id="title" 
-						name="title" 
+						id="subject" 
+						name="subject" 
 						class="form-input" 
 						placeholder="공지사항 제목을 입력하세요"
 						maxlength="100"
@@ -335,22 +335,6 @@ body {
 					></textarea>
 					<div class="char-count">
 						<span id="contentCount">0</span> / 5,000자
-					</div>
-				</div>
-				
-				<div class="pin-section">
-					<label class="checkbox-wrapper">
-						<input 
-							type="checkbox" 
-							id="isPinned" 
-							name="isPinned" 
-							class="checkbox-input"
-							value="true"
-						>
-						<span class="checkbox-label">📌 상단 고정</span>
-					</label>
-					<div class="checkbox-description">
-						이 공지사항을 목록 상단에 고정하여 사용자가 항상 볼 수 있도록 합니다.
 					</div>
 				</div>
 				
@@ -416,31 +400,19 @@ body {
 				return false;
 			}
 			
-			const isPinned = document.getElementById('isPinned').checked;
-			
 			// 최종 확인
-			const message = isPinned 
-				? '이 공지사항을 상단에 고정하여 게시하시겠습니까?' 
-				: '공지사항을 게시하시겠습니까?';
+			const message = '공지사항을 게시하시겠습니까?';
 				
 			if (confirm(message)) {
 				// 여기서 실제 제출 처리
-				submitNotice(title, content, isPinned);
+				submitNotice(title, content);
+				return true;
 			}
 			
 			return false;
 		}
 		
-		// 공지사항 제출
-		function submitNotice(title, content, isPinned) {
-			// 실제로는 서버로 데이터 전송
-			console.log('제목:', title);
-			console.log('내용:', content);
-			console.log('상단 고정:', isPinned);
-			
-			alert('공지사항이 성공적으로 게시되었습니다!');
-			window.location.href = 'noticelist.do';
-		}
+		
 		
 		// 작성 취소
 		function cancelWrite() {

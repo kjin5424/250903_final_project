@@ -312,10 +312,10 @@ body {
 				</div>
 			</a>
 			
-			<a href="<%=cp %>/noticewrite.do" style="text-decoration: none;">
+			<a href="<%=cp %>/noticelist.do?pageNum=1" style="text-decoration: none;">
 				<div class="menu-card">
 					<span class="menu-icon">📢</span>
-					<h2 class="menu-title">공지사항 작성</h2>
+					<h2 class="menu-title">공지사항</h2>
 					<p class="menu-description">
 						공지사항 작성, 수정, 삭제<br>
 						중요 알림 및 업데이트 관리
