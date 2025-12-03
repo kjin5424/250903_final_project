@@ -28,9 +28,10 @@ public class VoteController
 	
 	// 특정 모임코드를 매개변수로 받아 활동 리스트를 한 페이지 당 10개 씩 보여주는 메소드
 	@RequestMapping(value="/votelist.do", method=RequestMethod.GET)
-	public String votelist(HttpServletRequest request, Model model, @RequestParam("groupApplyCode") String groupApplyCode, String pageNum, @RequestParam(required=false) Integer errorType)
+	public String votelist(HttpServletRequest request, Model model, @RequestParam("groupApplyCode") String groupApplyCode, String pageNum, @RequestParam(required=false) Integer errorType, HttpSession session)
 	{
 		IActivityDAO dao = sqlSession.getMapper(IActivityDAO.class);
+		IUserDAO userDAO = sqlSession.getMapper(IUserDAO.class);
 		
 		ActivityDTO activityDTO = new ActivityDTO();
 		
@@ -78,13 +79,32 @@ public class VoteController
 		activityDTO.setStart(start);
 		activityDTO.setEnd(end);
 		
+		// 활동 리스트 가져오기
+		java.util.ArrayList<ActivityDTO> activityList = dao.activityForGroup(activityDTO);
+		
+		// 현재 사용자의 투표 상태 조회
+		UserDTO user = (UserDTO)session.getAttribute("user");
+		if(user != null)
+		{
+			String userCode = user.getUserCode();
+			String joinCode = userDAO.checkMember(userCode, groupApplyCode);
+			
+			if(joinCode != null)
+			{
+				for(ActivityDTO activity : activityList)
+				{
+					Integer myVoteStatus = dao.getMyVoteStatus(activity.getActivityCode(), joinCode);
+					activity.setMyVoteStatus(myVoteStatus);
+				}
+			}
+		}
+		
+		model.addAttribute("activityList", activityList);
+		model.addAttribute("currentUserJoinCode", user != null ? userDAO.checkMember(user.getUserCode(), groupApplyCode) : null);
+		
 		// 주소 구성
 		String articleUrl = "/WEB-INF/view/group_room/vote/VoteList.jsp";
 		articleUrl += "?pageNum=" + currentPage;
-		
-		model.addAttribute("activityList"
-				, sqlSession.selectList("com.test.mybatis.dao.IActivityDAO.activityForGroup", activityDTO));
-		
 		
 		return articleUrl;
 	}//close voteList()
@@ -102,28 +122,22 @@ public class VoteController
 		if(user==null)
 		{
 			int errorType= 1;
-			// 로그인부터 말끔히 진행된다면 세션으로 접속 상태를 구분할 수 있기 때문에 추후에 주석 제거
-			//return "redirect:votelist.do?groupApplyCode=" + groupApplyCode + "&errorType=" + errorType;
+			return "redirect:votelist.do?groupApplyCode=" + groupApplyCode + "&errorType=" + errorType;
 		}
 		
-		// 로그인부터 말끔히 진행된다면 세션으로 접속 상태를 구분할 수 있기 때문에 추후에 주석 제거
-		//String userCode = user.getUserCode();
+		String userCode = user.getUserCode();
 		
 		IUserDAO userDAO = sqlSession.getMapper(IUserDAO.class);
+		String joinCode = userDAO.checkMember(userCode, groupApplyCode);
 		
-		// 로그인부터 말끔히 진행된다면 세션으로 접속 상태를 구분할 수 있기 때문에 추후에 주석 제거
-		//String joinCode = userDAO.checkMember(userCode, groupApplyCode);
-		
-		// 로그인부터 말끔히 진행된다면 세션으로 접속 상태를 구분할 수 있기 때문에 추후에 주석 제거
 		// 로그인은 했는데 해당 모임의 모임원이 아닐 때
-		//if(joinCode==null)
+		if(joinCode==null)
 		{
 			int errorType= 2;
-			// 로그인부터 말끔히 진행된다면 세션으로 접속 상태를 구분할 수 있기 때문에 추후에 주석 제거
-			//return "redirect:votelist.do?groupApplyCode=" + groupApplyCode + "&errorType=" + errorType;
+			return "redirect:votelist.do?groupApplyCode=" + groupApplyCode + "&errorType=" + errorType;
 		}
 		
-		request.setAttribute("joinCode", "228");
+		request.setAttribute("joinCode", joinCode);
 		request.setAttribute("groupApplyCode", groupApplyCode);
 		
 		return url;
@@ -158,6 +172,44 @@ public class VoteController
 		dao.addActivity(dto);
 		
 		return url;
+	}
+	
+	// 투표 제출/수정
+	@RequestMapping(value="/votesubmit.do", method=RequestMethod.POST)
+	public String submitVote(HttpSession session, @RequestParam("activityCode") String activityCode, 
+			@RequestParam("vote") String vote, @RequestParam("groupApplyCode") String groupApplyCode)
+	{
+		UserDTO user = (UserDTO)session.getAttribute("user");
+		if(user == null)
+		{
+			return "redirect:votelist.do?groupApplyCode=" + groupApplyCode + "&errorType=1";
+		}
+		
+		IUserDAO userDAO = sqlSession.getMapper(IUserDAO.class);
+		String joinCode = userDAO.checkMember(user.getUserCode(), groupApplyCode);
+		
+		if(joinCode == null)
+		{
+			return "redirect:votelist.do?groupApplyCode=" + groupApplyCode + "&errorType=2";
+		}
+		
+		IActivityDAO dao = sqlSession.getMapper(IActivityDAO.class);
+		Integer yOrNType = Integer.parseInt(vote); // 1: 참여, 0: 미참
+		
+		dao.submitVote(activityCode, joinCode, yOrNType);
+		
+		return "redirect:votelist.do?groupApplyCode=" + groupApplyCode;
+	}
+	
+	// 활동 삭제
+	@RequestMapping(value="/votedelete.do", method=RequestMethod.GET)
+	public String deleteActivity(@RequestParam("activityCode") String activityCode, 
+			@RequestParam("groupApplyCode") String groupApplyCode)
+	{
+		IActivityDAO dao = sqlSession.getMapper(IActivityDAO.class);
+		dao.deleteActivity(activityCode);
+		
+		return "redirect:votelist.do?groupApplyCode=" + groupApplyCode;
 	}
 	
 }

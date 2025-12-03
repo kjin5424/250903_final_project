@@ -23,6 +23,7 @@ public class ActivityDTO
 	private int totalDataCount;			// 특정 모임 내 전체 활동 개수
 	private int start;					// 페이징 처리를 위한 매개변수로 넣은 변수
 	private int end;					// start 와 동일
+	private Integer myVoteStatus;		// 현재 사용자의 투표 상태 (1: 참여, 0: 미참, null: 미제출)
 	
 	// getter / setter 구성
 	public String getGroupApplyCode()
@@ -168,6 +169,14 @@ public class ActivityDTO
 	public void setEnd(int end)
 	{
 		this.end = end;
+	}
+	public Integer getMyVoteStatus()
+	{
+		return myVoteStatus;
+	}
+	public void setMyVoteStatus(Integer myVoteStatus)
+	{
+		this.myVoteStatus = myVoteStatus;
 	}
 	
 }

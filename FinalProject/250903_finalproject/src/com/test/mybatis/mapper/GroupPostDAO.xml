@@ -48,7 +48,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		LEFT JOIN BOARD_CATEGORY BC ON BC.BOARD_CATEGORY = PS.BOARD_CATEGORY
 		WHERE NVL(RPSPR.PROCESS_TYPE, 0) NOT IN (4)
 		AND DPS.POST_CODE IS NULL
-		AND GA.GROUP_APPLY_CODE = '32'
+		AND GA.GROUP_APPLY_CODE = #{groupApplyCode}
 		ORDER BY PS.CREATED_DATE
 	</select>
 	
@@ -74,7 +74,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE NVL(RPSPR.PROCESS_TYPE, 0) NOT IN (4)
 		AND DPS.POST_CODE IS NULL
 		AND NP.POST_CODE IS NOT NULL
-		AND GA.GROUP_APPLY_CODE = '32'
+		AND GA.GROUP_APPLY_CODE = #{groupApplyCode}
 		ORDER BY PS.CREATED_DATE
 	</select>
 	
@@ -104,7 +104,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		LEFT JOIN BOARD_CATEGORY BC ON BC.BOARD_CATEGORY = PS.BOARD_CATEGORY
 		WHERE NVL(RPSPR.PROCESS_TYPE, 0) NOT IN (4)
 		AND DPS.POST_CODE IS NULL
-		AND GA.GROUP_APPLY_CODE = '32'
+		AND GA.GROUP_APPLY_CODE = #{groupApplyCode}
 		<choose>
             <when test="searchType == 'title'">
                 AND PS.SUBJECT LIKE '%' || #{searchKeyword} || '%'
@@ -145,7 +145,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		LEFT JOIN BOARD_CATEGORY BC ON BC.BOARD_CATEGORY = PS.BOARD_CATEGORY
 		WHERE NVL(RPSPR.PROCESS_TYPE, 0) NOT IN (4)
 		AND DPS.POST_CODE IS NULL
-		AND GA.GROUP_APPLY_CODE = '32'
+		AND GA.GROUP_APPLY_CODE = #{groupApplyCode}
 		<choose>
             <when test="searchType == 'title'">
                 AND PS.SUBJECT LIKE '%' || #{searchKeyword} || '%'
