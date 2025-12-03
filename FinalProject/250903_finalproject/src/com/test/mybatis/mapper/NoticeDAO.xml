@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.mybatis.dao.INoticeDAO">
+
+	<select id="noticeListForManager" resultType="com.test.mybatis.dto.NoticeDTO">
+		SELECT NOTICECODE, MANAGERCODE, CREATEDDATE, RN
+		FROM
+		(
+		SELECT NOTICE_CODE AS NOTICECODE, MANAGER_CODE AS MANAGERCODE
+		     , SUBJECT, TO_CHAR(CREATED_DATE, 'YYYY-MM-DD') AS CREATEDDATE
+		     , ROWNUM AS RN
+		FROM NOTICE
+		ORDER BY RN DESC
+		)
+		WHERE RN BETWEEN #{start} AND #{end}
+	</select>
+	
+	<select id="listCount" resultType="int">
+		SELECT COUNT(*) AS COUNT
+		FROM NOTICE
+	</select>
+	
+	<select id="noticeDetailForManager" resultType="com.test.mybatis.dto.NoticeDTO">
+		SELECT NOTICE_CODE AS NOTICECODE, MANAGER_CODE AS MANAGERCODE
+		     , SUBJECT, TO_CHAR(CREATED_DATE, 'YYYY-MM-DD HH24:MI:SS') AS CREATEDDATE
+		     , CONTENT
+		FROM NOTICE
+		WHERE NOTICE_CODE = #{noticecode}
+	</select>
+	
+</mapper>

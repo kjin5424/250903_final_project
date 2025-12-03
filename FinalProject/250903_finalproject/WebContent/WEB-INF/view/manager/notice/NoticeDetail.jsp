@@ -1,14 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%
-	// 페이지 정보 받기
-	String pageNum = request.getParameter("NoticeListPage");
-	
-	if(pageNum==null)
-		pageNum = "1";
-	
-	// 공지사항 게시물 번호 받기
-	String noticeNum = request.getParameter("noticeNum");
-%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -328,32 +318,19 @@ body {
 </style>
 </head>
 <body>
-	<%
-		// 공지사항 ID 받기 (예시)
-		String noticeId = request.getParameter("id");
-		if (noticeId == null) noticeId = "23";
-		
-		// 실제로는 DB에서 조회
-		boolean isPinned = true;
-		String title = "2025년 새해 맞이 서비스 업데이트 안내";
-		String author = "관리자";
-		String date = "2025-01-05";
-		int views = 1523;
-		int noticeNumber = 23;
-	%>
 	
 	<div class="container">
 		<div class="header">
 			<div class="header-left">
-				<a href="ManagerNoticeList.jsp?NoticeListPage=1" class="back-btn">←</a>
+				<a href="noticelist.do?pageNum=${pageNum }" class="back-btn">←</a>
 				<h1 class="page-title">공지사항 상세보기</h1>
 			</div>
 			<div class="action-buttons">
-				<button class="btn btn-edit" onclick="editNotice(<%= noticeId %>)">
+				<button class="btn btn-edit" onclick="editNotice(${noticeDTO.noticeCode})">
 					<span>✏️</span>
 					<span>수정</span>
 				</button>
-				<button class="btn btn-delete" onclick="deleteNotice(<%= noticeId %>)">
+				<button class="btn btn-delete" onclick="deleteNotice(${noticeDTO.noticeCode})">
 					<span>🗑️</span>
 					<span>삭제</span>
 				</button>
@@ -363,29 +340,22 @@ body {
 		<div class="notice-container">
 			<div class="notice-header">
 				<div class="notice-title-section">
-					<% if (isPinned) { %>
-					<span class="pin-badge">📌 상단고정</span>
-					<% } %>
-					<h2 class="notice-title"><%= title %></h2>
+					<h2 class="notice-title">${noticeDTO.subject}</h2>
 				</div>
 			</div>
 			
 			<div class="notice-meta">
 				<div class="meta-item">
 					<span class="meta-label">게시물 번호</span>
-					<span class="meta-value number">#<%= noticeNumber %></span>
+					<span class="meta-value number">${noticeDTO.noticeCode}</span>
 				</div>
 				<div class="meta-item">
 					<span class="meta-label">작성자</span>
-					<span class="meta-value"><%= author %></span>
+					<span class="meta-value">${noticeDTO.managerCode}</span>
 				</div>
 				<div class="meta-item">
 					<span class="meta-label">작성일</span>
-					<span class="meta-value"><%= date %></span>
-				</div>
-				<div class="meta-item">
-					<span class="meta-label">조회수</span>
-					<span class="meta-value number"><%= String.format("%,d", views) %></span>
+					<span class="meta-value">${noticeDTO.createdDate}</span>
 				</div>
 			</div>
 			
@@ -400,45 +370,12 @@ body {
 			</div>
 			
 			<div class="notice-content">
-				<p>안녕하세요, 공모자들 운영팀입니다.</p>
-				
-				<p>2025년 새해를 맞이하여 더 나은 서비스를 제공하기 위해 다음과 같은 업데이트를 진행하였습니다.</p>
-				
-				<p><strong>주요 업데이트 내용:</strong></p>
-				
-				<ul>
-					<li><strong>모임 검색 기능 개선</strong>: 키워드, 지역, 카테고리별 상세 검색이 가능해졌습니다.</li>
-					<li><strong>알림 기능 추가</strong>: 내가 참여한 모임의 새 소식을 실시간으로 받아볼 수 있습니다.</li>
-					<li><strong>프로필 커스터마이징</strong>: 프로필 사진과 소개글을 자유롭게 수정할 수 있습니다.</li>
-					<li><strong>모임 후기 시스템</strong>: 참여한 모임에 대한 후기를 작성하고 공유할 수 있습니다.</li>
-					<li><strong>UI/UX 개선</strong>: 더 직관적이고 사용하기 편한 인터페이스로 개선되었습니다.</li>
-				</ul>
-				
-				<p><strong>업데이트 일정:</strong></p>
-				<ul>
-					<li>업데이트 적용: 2025년 1월 5일 (일) 오전 6시</li>
-					<li>서비스 점검 시간: 약 2시간 예상</li>
-					<li>점검 중에는 일시적으로 서비스 이용이 제한될 수 있습니다.</li>
-				</ul>
-				
-				<p><strong>추가 안내사항:</strong></p>
-				<p>모바일 앱은 스토어에서 최신 버전으로 업데이트해주시기 바랍니다. 업데이트 후에도 문제가 지속되는 경우 고객센터로 문의해주시면 신속하게 도와드리겠습니다.</p>
-				
-				<p>앞으로도 더 나은 서비스를 제공할 수 있도록 최선을 다하겠습니다.</p>
-				
-				<p>감사합니다.</p>
-				
-				<p style="margin-top: 30px; color: #666; font-size: 14px;">
-					- 공모자들 운영팀 드림
-				</p>
+				${noticeDTO.content}
 			</div>
 			
 			<div class="notice-footer">
-				<div class="footer-info">
-					최종 수정일: 2025-01-05 14:23
-				</div>
 				<div class="footer-buttons">
-					<a href="noticelist.do" class="btn btn-list">
+					<a href="noticelist.do?pageNum=${pageNum }" class="btn btn-list">
 						<span>📋</span>
 						<span>목록으로</span>
 					</a>
@@ -466,12 +403,6 @@ body {
 				}
 			}
 		}
-		
-		// 조회수 증가 (페이지 로드시 1회)
-		window.addEventListener('load', function() {
-			// 실제로는 서버에 조회수 증가 요청
-			console.log('조회수 증가 요청: 공지사항 ID <%= noticeId %>');
-		});
 	</script>
 </body>
 </html>

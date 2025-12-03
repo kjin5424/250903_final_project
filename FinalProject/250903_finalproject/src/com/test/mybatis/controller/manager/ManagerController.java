@@ -1,5 +1,8 @@
 package com.test.mybatis.controller.manager;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.test.mybatis.dao.IGroupJoinDAO;
 import com.test.mybatis.dao.IInquiryDAO;
+import com.test.mybatis.dao.INoticeDAO;
 import com.test.mybatis.dao.IReportDAO;
 import com.test.mybatis.dao.IUserDAO;
+import com.test.util.Paging;
 
 /* ========================
 	ManagerController.java
@@ -61,16 +66,64 @@ public class ManagerController
 			return "/WEB-INF/view/manager/main/ManagerMain.jsp";
 		}
 		
-		@RequestMapping(value="/noticedetail.do", method=RequestMethod.GET)
-		public String noticeDetail(Model model)
+		@RequestMapping(value="/noticewriteaction.do", method = RequestMethod.POST)
+		public String noticeWrite(@Param("subject") String subject, @Param("content") String content)
 		{
+			
+			
+			return "redirect:noticelist.do?pageNum=1";
+		}
+		
+		@RequestMapping(value="/managernoticedetail.do", method=RequestMethod.GET)
+		public String noticeDetail(Model model, String noticecode, String pageNum)
+		{
+			INoticeDAO noticeDao = sqlSession.getMapper(INoticeDAO.class);
+			
+			model.addAttribute("noticeDTO", noticeDao.noticeDetailForManager( noticecode));
+			model.addAttribute("pageNum", pageNum);
+			
 			return "/WEB-INF/view/manager/notice/NoticeDetail.jsp";
 		}
 
 		@RequestMapping(value="/noticelist.do", method = RequestMethod.GET)
-		public String noticeList(Model model)
+		public String noticeList(Model model, String pageNum, HttpServletRequest request)
 		{
-			return "/WEB-INF/view/manager/notice/NoticeList.jsp";
+			INoticeDAO noticeDao = sqlSession.getMapper(INoticeDAO.class);
+			
+			
+			int currentPage = 1;	// 기본값
+			if (pageNum != null)
+				currentPage = Integer.parseInt(pageNum);
+			
+			// 전체 데이터 개수 구하기
+			int dataCount = noticeDao.listCount();
+			int numPerPage = 10;	// 한 페이지에 표시할 데이터 개수
+			
+			Paging paging = new Paging();
+			int totalPage = paging.getPageCount(numPerPage, dataCount);
+			
+			if (currentPage > totalPage)
+				currentPage = totalPage;
+			
+			int start = (currentPage - 1) * numPerPage + 1;
+			int end = currentPage * numPerPage;
+				
+			// url 생성
+			String cp = request.getContextPath();
+			String listUrl = cp + "/noticelist.do";
+			String pageIndexList = paging.pageIndexList(currentPage, totalPage, listUrl);
+			
+			// model에 데이터 담기
+			model.addAttribute("noticeList", noticeDao.noticeListForManager(start, end));
+			model.addAttribute("pageIndexList", pageIndexList);
+			model.addAttribute("pageNum", currentPage);
+			model.addAttribute("count", noticeDao.listCount());
+			
+			// 주소 구성
+			String articleUrl = "/WEB-INF/view/manager/notice/NoticeList.jsp";
+			articleUrl += "?pageNum=" + currentPage;
+						
+			return articleUrl;
 		}
 		
 		@RequestMapping(value="/noticemodify.do", method=RequestMethod.GET)
