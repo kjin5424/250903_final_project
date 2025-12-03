@@ -96,10 +96,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<update id="submitVote">
-		UPDATE ACTIVITY_VOTE
-		SET Y_OR_N_TYPE = #{yOrNType}
-		WHERE ACTIVITY_CODE = #{activityCode}
-		  AND JOIN_CODE = #{joinCode}
+		MERGE INTO ACTIVITY_VOTE AV
+		USING DUAL
+		ON (AV.ACTIVITY_CODE = #{activityCode} AND AV.JOIN_CODE = #{joinCode})
+		WHEN MATCHED THEN
+			UPDATE SET Y_OR_N_TYPE = #{yOrNType}
+		WHEN NOT MATCHED THEN
+			INSERT (ACTIVITY_VOTE_CODE, ACTIVITY_CODE, JOIN_CODE, Y_OR_N_TYPE)
+			VALUES (ACTIVITY_VOTE_SEQ.NEXTVAL, #{activityCode}, #{joinCode}, #{yOrNType})
 	</update>
 	
 	<delete id="deleteActivity">

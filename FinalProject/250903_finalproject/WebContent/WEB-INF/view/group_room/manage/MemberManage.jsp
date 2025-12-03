@@ -1,330 +1,332 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ page language="java" %>
+<%
+    request.setCharacterEncoding("UTF-8");
+    String cp = request.getContextPath();
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>공모자들 - 모임원 관리</title>
-<style>
-* {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공모자들 - 모임원 관리</title>
+    
+    <!-- CSS Import -->
+    <link rel="stylesheet" href="<%=cp%>/css_new/common_sample.css">
+    <link rel="stylesheet" href="<%=cp%>/css_new/topmenubar_sample.css">
+    <link rel="stylesheet" href="<%=cp%>/css_new/grouproommanage.css">
+    
+    <style>
+        /* 컨테이너 */
+        .container {
+            max-width: var(--max-width);
+            margin: 30px auto;
+            padding: 0 var(--spacing-lg);
+        }
 
-body {
-	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-	background: #f5f7fa;
-}
+        /* 탭 메뉴 */
+        .tab-menu {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 0;
+            border-bottom: 2px solid var(--color-border);
+            background: var(--color-white);
+            padding: 0 20px;
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        }
 
-.navbar {
-	background: #a8d5a1;
-	display: flex;
-	align-items: center;
-	padding: 0 20px;
-	height: 48px;
-	position: sticky;
-	top: 0;
-	z-index: 1000;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-	gap: 4px;
-}
+        .tab-item {
+            padding: 15px 25px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            border-bottom: 3px solid transparent;
+            transition: all var(--transition-base);
+            position: relative;
+            bottom: -2px;
+        }
 
-.nav-left {
-	display: flex;
-	align-items: center;
-	gap: 4px;
-	flex: 1;
-}
+        .tab-item:hover {
+            color: var(--color-primary-dark);
+        }
 
-.logo-tab {
-	background: #8bc683;
-	color: white;
-	padding: 0 20px;
-	height: 36px;
-	border-radius: 8px 8px 0 0;
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	font-weight: bold;
-	font-size: 16px;
-	cursor: pointer;
-}
+        .tab-item.active {
+            color: var(--color-primary-dark);
+            border-bottom-color: var(--color-primary-dark);
+        }
 
-.container {
-	max-width: 1400px;
-	margin: 30px auto;
-	padding: 0 20px;
-}
+        /* 콘텐츠 섹션 */
+        .content-section {
+            background: var(--color-white);
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow-sm);
+        }
 
-.page-header {
-	background: linear-gradient(135deg, #2d5a29 0%, #4a8a42 100%);
-	color: white;
-	padding: 40px;
-	border-radius: 12px;
-	margin-bottom: 30px;
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
+        .tab-content {
+            display: none;
+        }
 
-.header-top {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin-bottom: 15px;
-}
+        .tab-content.active {
+            display: block;
+        }
 
-.page-title {
-	font-size: 32px;
-	font-weight: bold;
-	display: flex;
-	align-items: center;
-	gap: 12px;
-}
+        /* 모임원 목록 */
+        .member-list {
+            display: grid;
+            gap: var(--spacing-md);
+        }
 
-.btn-back {
-	background: rgba(255, 255, 255, 0.2);
-	color: white;
-	border: 2px solid white;
-	padding: 10px 20px;
-	border-radius: 8px;
-	font-size: 14px;
-	font-weight: 600;
-	cursor: pointer;
-	transition: all 0.3s;
-	text-decoration: none;
-}
+        .member-item {
+            display: flex;
+            align-items: center;
+            padding: var(--spacing-lg);
+            background: var(--color-base);
+            border-radius: var(--radius-lg);
+            border: 2px solid transparent;
+            transition: all var(--transition-base);
+        }
 
-.btn-back:hover {
-	background: white;
-	color: #2d5a29;
-}
+        .member-item:hover {
+            border-color: var(--color-primary);
+            background: var(--color-primary-lighter);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
 
-.group-name {
-	font-size: 18px;
-	opacity: 0.9;
-}
+        .member-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--radius-full);
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-right: var(--spacing-lg);
+            flex-shrink: 0;
+            overflow: hidden;
+        }
 
-.tab-menu {
-	display: flex;
-	gap: 10px;
-	margin-bottom: 30px;
-	border-bottom: 2px solid #e0e0e0;
-	background: white;
-	padding: 0 20px;
-	border-radius: 12px 12px 0 0;
-}
+        .member-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
-.tab-item {
-	padding: 15px 25px;
-	cursor: pointer;
-	font-weight: 600;
-	color: #666;
-	border-bottom: 3px solid transparent;
-	transition: all 0.3s;
-	position: relative;
-	bottom: -2px;
-}
+        .member-info {
+            flex: 1;
+        }
 
-.tab-item:hover {
-	color: #2d5a29;
-}
+        .member-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-xs);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
 
-.tab-item.active {
-	color: #2d5a29;
-	border-bottom-color: #2d5a29;
-}
+        .member-role {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            font-size: 12px;
+            font-weight: 600;
+        }
 
-.content-section {
-	background: white;
-	border-radius: 0 0 12px 12px;
-	padding: 30px;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
+        .role-subleader {
+            background: var(--color-secondary-lighter);
+            color: var(--color-secondary-dark);
+        }
 
-.tab-content {
-	display: none;
-}
+        .role-helper {
+            background: var(--color-primary-lighter);
+            color: var(--color-primary-dark);
+        }
 
-.tab-content.active {
-	display: block;
-}
+        .role-member {
+            background: var(--color-border-light);
+            color: var(--color-text-secondary);
+        }
 
-.member-list {
-	display: grid;
-	gap: 15px;
-}
+        .member-stats {
+            display: flex;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-sm);
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            flex-wrap: wrap;
+        }
 
-.member-item {
-	display: flex;
-	align-items: center;
-	padding: 20px;
-	background: #f8faf8;
-	border-radius: 12px;
-	border: 2px solid transparent;
-	transition: all 0.3s;
-}
+        .member-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+            flex-wrap: wrap;
+            align-items: center;
+        }
 
-.member-item:hover {
-	border-color: #8bc683;
-	background: #f0f8f0;
-}
+        .action-group {
+            display: flex;
+            gap: var(--spacing-sm);
+            align-items: center;
+        }
 
-.member-avatar {
-	width: 60px;
-	height: 60px;
-	border-radius: 50%;
-	background: #8bc683;
-	color: white;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: 24px;
-	margin-right: 20px;
-	flex-shrink: 0;
-}
+        .form-select {
+            width: 160px;
+            padding: 10px 14px;
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            background: var(--color-white);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
 
-.member-info {
-	flex: 1;
-}
+        .form-select:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
 
-.member-name {
-	font-size: 18px;
-	font-weight: bold;
-	color: #333;
-	margin-bottom: 5px;
-}
+        /* 모임장 이양 카드 그리드 */
+        .transfer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: var(--spacing-lg);
+        }
 
-.member-role {
-	display: inline-block;
-	padding: 4px 10px;
-	border-radius: 12px;
-	font-size: 12px;
-	font-weight: 600;
-	margin-right: 8px;
-}
+        .transfer-card {
+            background: var(--color-white);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            text-align: center;
+            transition: all var(--transition-base);
+        }
 
-.role-subleader {
-	background: #e3f2fd;
-	color: #1565c0;
-}
+        .transfer-card:hover {
+            box-shadow: var(--shadow-md);
+        }
 
-.role-helper {
-	background: #f3e5f5;
-	color: #7b1fa2;
-}
+        .transfer-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: var(--radius-full);
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto var(--spacing-md);
+            overflow: hidden;
+            font-weight: 700;
+        }
 
-.role-member {
-	background: #e0e0e0;
-	color: #666;
-}
+        .transfer-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
-.member-stats {
-	display: flex;
-	gap: 15px;
-	margin-top: 8px;
-	font-size: 13px;
-	color: #666;
-	flex-wrap: wrap;
-}
+        .transfer-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
 
-.member-actions {
-	display: flex;
-	gap: 8px;
-	flex-wrap: wrap;
-}
+        .transfer-info {
+            font-size: 14px;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-md);
+        }
 
-.btn-small {
-	padding: 8px 15px;
-	border: none;
-	border-radius: 6px;
-	font-size: 13px;
-	font-weight: 600;
-	cursor: pointer;
-	transition: all 0.3s;
-}
+        .transfer-btn {
+            width: 100%;
+            padding: 12px 24px;
+            margin-top: var(--spacing-md);
+        }
 
-.btn-primary {
-	background: #4CAF50;
-	color: white;
-}
+        .empty-message {
+            text-align: center;
+            padding: var(--spacing-2xl);
+            color: var(--color-text-tertiary);
+            font-size: 16px;
+        }
 
-.btn-primary:hover {
-	background: #45a049;
-}
-
-.btn-secondary {
-	background: #e0e0e0;
-	color: #666;
-}
-
-.btn-secondary:hover {
-	background: #d0d0d0;
-}
-
-.btn-danger {
-	background: #f44336;
-	color: white;
-}
-
-.btn-danger:hover {
-	background: #d32f2f;
-}
-
-.form-select {
-	padding: 12px;
-	border: 2px solid #e0e0e0;
-	border-radius: 8px;
-	font-size: 14px;
-}
-
-.empty-message {
-	text-align: center;
-	padding: 40px;
-	color: #999;
-	font-size: 16px;
-}
-
-@media ( max-width : 768px) {
-	.member-item {
-		flex-direction: column;
-		text-align: center;
-	}
-	.member-avatar {
-		margin: 0 0 15px 0;
-	}
-	.member-actions {
-		margin-top: 15px;
-		justify-content: center;
-	}
-}
-</style>
+        @media (max-width: 768px) {
+            .member-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .member-avatar {
+                margin: 0 0 var(--spacing-md) 0;
+            }
+            
+            .member-actions {
+                margin-top: var(--spacing-md);
+                justify-content: center;
+                width: 100%;
+                flex-direction: column;
+            }
+            
+            .action-group {
+                width: 100%;
+                flex-direction: column;
+            }
+            
+            .form-select {
+                width: 100%;
+            }
+            
+            .transfer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-	<c:import url="/WEB-INF/view/common/TopMenuBar.jsp" />
+    <!-- 상단바 -->
+    <c:import url="/WEB-INF/view/common/TopMenuBar.jsp" />
+    
+    <!-- 사이드바 -->
+    <c:import url="/WEB-INF/view/common/GroupSideBar.jsp" />
 
     <div class="container">
-        <div class="page-header">
+        <!-- 페이지 헤더 -->
+        <div class="page-header-custom">
             <div class="header-top">
                 <div>
-                    <div class="page-title">
-                        <span>👥</span><span>모임원 관리</span>
+                    <div class="page-title-custom">
+                        <span>👥</span>
+                        <span>모임원 관리</span>
+                        <span class="role-badge">모임장</span>
                     </div>
                     <div class="group-name">${groupDetail.groupTitle}</div>
                 </div>
-                <button class="btn-back"
-                    onclick="location.href='managelist.do?groupApplyCode=${groupApplyCode}'">← 뒤로 가기</button>
+                <a href="managelist.do?groupApplyCode=${groupApplyCode}" class="btn-back-custom">
+                    <span>←</span>
+                    <span>관리 메뉴로</span>
+                </a>
             </div>
         </div>
 
+        <!-- 탭 메뉴 -->
         <div class="tab-menu">
             <div class="tab-item active" onclick="switchTab('members')">모임원 목록</div>
             <div class="tab-item" onclick="switchTab('transfer')">모임장 이양</div>
         </div>
 
+        <!-- 콘텐츠 섹션 -->
         <div class="content-section">
-            <!-- ✅ 기존 모임원 목록 탭 -->
+            <!-- 모임원 목록 탭 -->
             <div id="members-tab" class="tab-content active">
                 <div class="member-list">
                     <c:set var="hasNonLeaderMembers" value="false" />
@@ -335,9 +337,9 @@ body {
                                 <div class="member-avatar">
                                     <c:choose>
                                         <c:when test="${not empty member.savePath}">
-                                            <img src="${member.savePath}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                                            <img src="${member.savePath}" alt="${member.nickName}">
                                         </c:when>
-                                        <c:otherwise>👤</c:otherwise>
+                                        <c:otherwise>${fn:substring(member.nickName, 0, 1)}</c:otherwise>
                                     </c:choose>
                                 </div>
                                 <div class="member-info">
@@ -357,25 +359,31 @@ body {
                                     </div>
                                     <div class="member-stats">
                                         <span>📧 ${member.email}</span>
-                                        <span>📅 가입일: ${member.joinDate}</span>
+                                        <span>📅 ${member.joinDate}</span>
                                     </div>
                                 </div>
 
                                 <div class="member-actions">
-                                 
-                                    <button class="btn-small btn-primary"
-                                        onclick="changeRole('${member.joinCode}', '${member.nickName}')">권한 변경</button>
+                                    <div class="action-group">
+                                        <select id="roleSelect_${member.joinCode}" class="form-select">
+                                            <option value="부모임장" ${member.position eq '부모임장' ? 'selected' : ''}>부모임장</option>
+                                            <option value="도우미" ${member.position eq '도우미' ? 'selected' : ''}>도우미</option>
+                                            <option value="모임원" ${member.position eq '모임원' ? 'selected' : ''}>모임원</option>
+                                        </select>
+                                        <button class="btn btn-sm btn-primary"
+                                            onclick="changeRole('${member.joinCode}', '${member.nickName}')">권한 변경</button>
+                                    </div>
 
-                                    <select id="quitReason_${member.joinCode}" class="form-select"
-                                        style="width: auto; padding: 8px 12px; font-size: 13px;">
-                                        <option value="">퇴출 사유 선택</option>
-                                        <c:forEach var="reason" items="${quitReasonList}">
-                                            <option value="${reason.quitReasonCode}">${reason.quitReason}</option>
-                                        </c:forEach>
-                                    </select>
-
-                                    <button class="btn-small btn-danger"
-                                        onclick="confirmKick('${member.joinCode}', '${member.userCode}', '${member.nickName}')">퇴출</button>
+                                    <div class="action-group">
+                                        <select id="quitReason_${member.joinCode}" class="form-select">
+                                            <option value="">퇴출 사유 선택</option>
+                                            <c:forEach var="reason" items="${quitReasonList}">
+                                                <option value="${reason.quitReasonCode}">${reason.quitReason}</option>
+                                            </c:forEach>
+                                        </select>
+                                        <button class="btn btn-sm btn-accent"
+                                            onclick="confirmKick('${member.joinCode}', '${member.userCode}', '${member.nickName}')">퇴출</button>
+                                    </div>
                                 </div>
                             </div>
                         </c:if>
@@ -387,43 +395,37 @@ body {
                 </div>
             </div>
 
-            <!-- ✅ 새로 추가된: 모임장 이양 탭 -->
+            <!-- 모임장 이양 탭 -->
             <div id="transfer-tab" class="tab-content">
-                <div class="member-list">
+                <div class="transfer-grid">
                     <c:set var="hasTransferMembers" value="false" />
                     <c:forEach var="member" items="${memberList}">
                         <c:if test="${member.position ne '모임장'}">
                             <c:set var="hasTransferMembers" value="true" />
-                            <div class="member-item">
-                                <div class="member-avatar">
+                            <div class="transfer-card">
+                                <div class="transfer-avatar">
                                     <c:choose>
                                         <c:when test="${not empty member.savePath}">
-                                            <img src="${member.savePath}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                                            <img src="${member.savePath}" alt="${member.nickName}">
                                         </c:when>
-                                        <c:otherwise>👤</c:otherwise>
+                                        <c:otherwise>${fn:substring(member.nickName, 0, 1)}</c:otherwise>
                                     </c:choose>
                                 </div>
-                                <div class="member-info">
-                                    <div class="member-name">
-                                        ${member.nickName}
-                                        <span class="member-role role-member">${member.position}</span>
-                                    </div>
-                                    <div class="member-stats">
-                                        <span>📧 ${member.email}</span>
-                                        <span>📅 가입일: ${member.joinDate}</span>
-                                    </div>
+                                <div class="transfer-name">${member.nickName}</div>
+                                <span class="member-role ${member.position eq '부모임장' ? 'role-subleader' : (member.position eq '도우미' ? 'role-helper' : 'role-member')}">
+                                    ${member.position}
+                                </span>
+                                <div class="transfer-info">
+                                    <div>📧 ${member.email}</div>
+                                    <div>📅 ${member.joinDate}</div>
                                 </div>
-
-                                <div class="member-actions">
-                                    <button class="btn-small btn-primary"
-                                        onclick="confirmTransfer('${member.joinCode}', '${member.nickName}')">이양하기</button>
-                                </div>
+                                <button class="btn btn-primary transfer-btn" onclick="event.stopPropagation(); confirmTransfer('${member.joinCode}', '${member.nickName}')">모임장 이양</button>
                             </div>
                         </c:if>
                     </c:forEach>
 
                     <c:if test="${!hasTransferMembers}">
-                        <div class="empty-message">⚠️ 이양 가능한 모임원이 없습니다.</div>
+                        <div class="empty-message" style="grid-column: 1/-1;">⚠️ 이양 가능한 모임원이 없습니다.</div>
                     </c:if>
                 </div>
             </div>
@@ -438,12 +440,16 @@ body {
         event.target.classList.add('active');
     }
 
-    function viewMemberDetail(joinCode) {
-        alert('모임원 상세 정보 페이지로 이동합니다. (JoinCode: ' + joinCode + ')');
-    }
-
     function changeRole(joinCode, memberName) {
-        alert(memberName + '님의 권한 변경 기능 (개발 예정)');
+        const selectId = 'roleSelect_' + joinCode;
+        const selectedRole = document.getElementById(selectId).value;
+        
+        if (!confirm(memberName + '님의 권한을 "' + selectedRole + '"로 변경하시겠습니까?')) {
+            return;
+        }
+        
+        // TODO: 서버로 권한 변경 요청 전송
+        alert(memberName + '님의 권한이 "' + selectedRole + '"로 변경되었습니다. (개발 예정)');
     }
 
     function confirmKick(joinCode, userCode, memberName) {
@@ -483,7 +489,6 @@ body {
         });
     }
 
-    // ✅ 새로 추가된 함수: 모임장 이양 처리
     function confirmTransfer(joinCode, memberName) {
         if (!confirm(memberName + '님에게 모임장 권한을 이양하시겠습니까?')) return;
 
@@ -504,7 +509,7 @@ body {
         })
         .catch(err => {
             console.error(err);
-            alert('이양 요청 중');
+            alert('이양 요청 중 오류 발생');
         });
     }
     </script>

@@ -110,7 +110,7 @@
 			if (selected < minDate)
 			{
 				alert("시작 날짜는 오늘 기준 3일 이후여야 합니다.");
-				return;
+				//return;
 			}
 
 			// 도전과제 타입 가져오기

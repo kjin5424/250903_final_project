@@ -86,7 +86,7 @@ $(function()
      <div class="write-form">
          <h1 class="write-title">✏️ 글쓰기</h1>
 
-		<form action="postwriteOk.do" id="formAction">
+		<form action="postwriteOk.do" id="formAction" method="POST">
 	         <div class="form-group">
 	             <label for="boardCategory">카테고리</label>
 	             <select id="boardCategory" name="boardCategory">
