@@ -216,7 +216,7 @@
                                             참여: ${activityDTO.registrants}명 / 미참여: ${Integer.parseInt(activityDTO.totalMember) - Integer.parseInt(activityDTO.registrants)}명
                                         </div>
                                     </div>
-                                    <button class="btn-vote" onclick="participateVote(1)">투표하기</button>
+                                    <!-- <button class="btn-vote" onclick="participateVote(1)">투표하기</button> -->
                                 </div>
                             </c:forEach>
                         </c:when>

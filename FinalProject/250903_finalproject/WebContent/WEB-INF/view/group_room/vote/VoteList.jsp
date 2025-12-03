@@ -181,7 +181,7 @@
 											<label class="vote-option-label">
 												<input type="radio" name="vote_${activityDTO.activityCode}" value="0" 
 												       ${isEnded ? 'disabled' : ''} 
-												       ${activityDTO.myVoteStatus == 0 ? 'checked' : ''}>
+												       ${activityDTO.myVoteStatus == 2 ? 'checked' : ''}>
 												<span>❌ 미참</span>
 											</label>
 											<span class="vote-option-percentage">

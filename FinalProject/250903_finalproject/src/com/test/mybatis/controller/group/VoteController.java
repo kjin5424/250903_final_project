@@ -194,7 +194,15 @@ public class VoteController
 		}
 		
 		IActivityDAO dao = sqlSession.getMapper(IActivityDAO.class);
-		Integer yOrNType = Integer.parseInt(vote); // 1: 참여, 0: 미참
+		// vote 값: "1" = 참여, "0" = 미참
+		// Y_OR_N_TYPE 테이블: 1 = 예, 2 = 아니오
+		// 따라서 0을 2로 변환해야 함
+		Integer yOrNType = Integer.parseInt(vote);
+		if(yOrNType == 0)
+		{
+			yOrNType = 2; // 미참은 2로 변환
+		}
+		System.out.println("yOrNType" + yOrNType);
 		
 		dao.submitVote(activityCode, joinCode, yOrNType);
 		
