@@ -23,4 +23,13 @@ public interface IActivityDAO
 	// 특정 모임의 활동 한 개를 등록하는 메소드
 	public void addActivity(@Param("dto") ActivityDTO activityDTO);
 	
+	// 현재 사용자의 특정 활동에 대한 투표 상태 조회
+	public Integer getMyVoteStatus(@Param("activityCode") String activityCode, @Param("joinCode") String joinCode);
+	
+	// 투표 제출/수정
+	public void submitVote(@Param("activityCode") String activityCode, @Param("joinCode") String joinCode, @Param("yOrNType") Integer yOrNType);
+	
+	// 활동 삭제
+	public void deleteActivity(@Param("activityCode") String activityCode);
+	
 }

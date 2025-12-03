@@ -62,6 +62,7 @@ public class LoginController
 			if (findUser == null)		// 로그인 실패
 			{
 				model.addAttribute("error", true);			
+				System.out.println("실패");
 				return "redirect:/loginpage.do";
 			}
 			else						// 로그인 성공

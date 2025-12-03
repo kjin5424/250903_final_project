@@ -13,8 +13,8 @@
 <title>공모자들 - 글쓰기</title>
 
 <!-- CSS 파일 임포트 -->
-<link rel="stylesheet" href="css_new/common_sample.css">
-<link rel="stylesheet" href="css_new/writepage.css">
+<link rel="stylesheet" href="<%=cp %>/css_new/common_sample.css">
+<link rel="stylesheet" href="<%=cp %>/css_new/writepage.css">
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -47,7 +47,6 @@ $(function()
             return;
         }
         if (!subject) {
-        	alert(boardCategory);
             alert("제목을 입력해주세요.");
             $("#subject").focus();
             return;

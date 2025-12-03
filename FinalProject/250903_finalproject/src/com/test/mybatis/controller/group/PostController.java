@@ -3,7 +3,6 @@ package com.test.mybatis.controller.group;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -63,7 +62,7 @@ public class PostController
 		
 		// 주소 구성
 		String articleUrl = "/WEB-INF/view/group_room/board/PostList.jsp";
-		articleUrl += "?pageNum=" + currentPage;
+		//articleUrl += "?pageNum=" + currentPage;
 		
 		return articleUrl;
 	}
@@ -200,7 +199,7 @@ public class PostController
 	}
 	
 	// 게시글 작성 기능
-	@RequestMapping(value="/postwriteOk.do", method=RequestMethod.GET)
+	@RequestMapping(value="/postwriteOk.do", method=RequestMethod.POST)
 	public String writePostOk(HttpServletRequest request, Model model, HttpSession session)
 	{
 		String subject = request.getParameter("subject");
@@ -250,8 +249,8 @@ public class PostController
 	        	System.out.println(authority);
 	        	
 	        	// 작성자가 아니고 권한 없는 사람 거르기 완
-	        	if (author == joinCode || authority != "도우미"
-	        		|| authority != "부모임장" || authority != "모임장")
+	        	if (author.equals(joinCode) || authority.equals("도우미")
+	        		|| authority.equals("부모임장") || authority.equals("모임장"))
 				{
 	        		dto.setContent(dto.getContent().replace("<br>", "\n"));
 	        		model.addAttribute("post", dto);
@@ -289,6 +288,9 @@ public class PostController
 		String boardCategory = getBoardCategory(request.getParameter("boardCategory"));
 		System.out.println(boardCategory);
 		String savePath = "";
+
+		HttpSession session = request.getSession();
+		String groupApplyCode = (String)session.getAttribute("groupApplyCode");
 		
 		GroupPostDTO dto = new GroupPostDTO();
 		dto.setPostCode(postCode);
@@ -300,7 +302,7 @@ public class PostController
 		IGroupPostDAO dao = sqlSession.getMapper(IGroupPostDAO.class);
 		dao.updatePost(dto);
 		
-		return "redirect:postlist.do";
+		return "redirect:postlist.do?groupApplyCode=" + groupApplyCode;
 	}
 	
 	// 게시글 삭제 기능
@@ -365,12 +367,12 @@ public class PostController
 	public String updateComment()
 	{
 		String result = "";
-		return null;
+		return result;
 	}
 	
 	public String deleteComment()
 	{
 		String result = "";
-		return null;
+		return result;
 	}
 }

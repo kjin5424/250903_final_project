@@ -15,8 +15,8 @@
 
 <!-- CSS 파일 임포트 -->
 <link rel="stylesheet" href="<%=cp %>/css_new/home_sample.css" />
-<link rel="stylesheet" href="<%=cp %>/ccss_new/common_sample.css">
-<link rel="stylesheet" href="<%=cp %>/ccss_new/board_sample.css">
+<link rel="stylesheet" href="<%=cp %>/css_new/common_sample.css">
+<link rel="stylesheet" href="<%=cp %>/css_new/board_sample.css">
 
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

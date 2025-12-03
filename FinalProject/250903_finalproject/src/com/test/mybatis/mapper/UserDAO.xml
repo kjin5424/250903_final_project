@@ -175,11 +175,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM DUAL
 	</select>
 	
-	<select id="checkMember" resultType="String">
-		SELECT JOINCODE
+	<select id="checkMember" resultType="java.lang.String">
+		SELECT JOINCODE AS joinCode
 		FROM CURRENT_MEMBER_VIEW
-		WHERE GROUPAPPLYCODE = #{userCode}
-		AND USERCODE = #{groupApplyCode}
+		WHERE GROUPAPPLYCODE = #{groupApplyCode}
+		AND USERCODE = #{userCode}
 	</select>
 	
 	<select id="inMyPage" resultType="com.test.mybatis.dto.UserDTO">

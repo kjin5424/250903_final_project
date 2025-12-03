@@ -97,6 +97,8 @@
 					<div class="vote-grid">
 						<c:forEach var="activityDTO" items="${activityList}">
 							<c:set var="isEnded" value="${activityDTO.status != '투표중'}" />
+							<c:set var="isAuthor" value="${activityDTO.joinCode == currentUserJoinCode}" />
+							<c:set var="hasVoted" value="${activityDTO.myVoteStatus != null}" />
 							<div class="vote-card ${activityDTO.status == '투표중' ? 'ongoing' : 'ended'}" 
 							     data-status="${activityDTO.status == '투표중' ? 'ongoing' : 'ended'}">
 								
@@ -157,12 +159,14 @@
 									<div class="vote-option">
 										<div class="vote-option-header">
 											<label class="vote-option-label">
-												<input type="radio" name="vote_${activityDTO.activityCode}" value="1" ${isEnded ? 'disabled' : ''}>
+												<input type="radio" name="vote_${activityDTO.activityCode}" value="1" 
+												       ${isEnded ? 'disabled' : ''} 
+												       ${activityDTO.myVoteStatus == 1 ? 'checked' : ''}>
 												<span>✅ 참여</span>
 											</label>
 											<span class="vote-option-percentage">
 												${activityDTO.registrants}명 
-												(${activityDTO.totalMember > 0 ? String.format('%.1f', activityDTO.registrants * 100.0 / activityDTO.totalMember) : '0'}%)
+												(${activityDTO.totalMember > 0 ? (activityDTO.registrants * 100 / activityDTO.totalMember) : 0}%)
 											</span>
 										</div>
 										<div class="vote-progress-bar">
@@ -175,12 +179,14 @@
 									<div class="vote-option">
 										<div class="vote-option-header">
 											<label class="vote-option-label">
-												<input type="radio" name="vote_${activityDTO.activityCode}" value="0" ${isEnded ? 'disabled' : ''}>
+												<input type="radio" name="vote_${activityDTO.activityCode}" value="0" 
+												       ${isEnded ? 'disabled' : ''} 
+												       ${activityDTO.myVoteStatus == 0 ? 'checked' : ''}>
 												<span>❌ 미참</span>
 											</label>
 											<span class="vote-option-percentage">
 												${activityDTO.totalMember - activityDTO.registrants}명 
-												(${activityDTO.totalMember > 0 ? String.format('%.1f', (activityDTO.totalMember - activityDTO.registrants) * 100.0 / activityDTO.totalMember) : '0'}%)
+												(${activityDTO.totalMember > 0 ? ((activityDTO.totalMember - activityDTO.registrants) * 100 / activityDTO.totalMember) : 0}%)
 											</span>
 										</div>
 										<div class="vote-progress-bar">
@@ -192,26 +198,33 @@
 								
 								<!-- 버튼 그룹 -->
 								<div class="vote-button-group">
-									<button class="vote-btn vote-btn-submit" 
-									        onclick="submitVote('${activityDTO.activityCode}')"
-									        ${isEnded ? 'disabled' : ''}>
-										<span>✓</span>
-										<span>제출</span>
-									</button>
-									<a href="VoteModify.jsp?activityCode=${activityDTO.activityCode}" style="flex: 1;">
-										<button class="vote-btn vote-btn-edit" 
-										        style="width: 100%;"
-										        ${isEnded ? 'disabled' : ''}>
-											<span>✏️</span>
-											<span>수정</span>
-										</button>
-									</a>
-									<button class="vote-btn vote-btn-delete" 
-									        onclick="deleteVote('${activityDTO.activityCode}')"
-									        ${isEnded ? 'disabled' : ''}>
-										<span>🗑️</span>
-										<span>삭제</span>
-									</button>
+									<c:choose>
+										<c:when test="${isAuthor}">
+											<!-- 작성자: 삭제하기 버튼 있음 -->
+											<button class="vote-btn vote-btn-submit" 
+													onclick="submitVote('${activityDTO.activityCode}', '${groupApplyCode}')"
+													${isEnded ? 'disabled' : ''}
+													style="flex: 1;">
+												<span>✓</span>
+												<span>제출하기</span>
+											</button>
+											<button class="vote-btn vote-btn-delete" 
+											        onclick="deleteVote('${activityDTO.activityCode}', '${groupApplyCode}')">
+												<span>🗑️</span>
+												<span>삭제하기</span>
+											</button>
+										</c:when>
+										<c:otherwise>
+											<!-- 다른 모임원 -->
+											<button class="vote-btn vote-btn-submit" 
+													onclick="submitVote('${activityDTO.activityCode}', '${groupApplyCode}')"
+													${isEnded ? 'disabled' : ''}
+													style="flex: 1;">
+												<span>✓</span>
+												<span>제출하기</span>
+											</button>
+										</c:otherwise>
+									</c:choose>
 								</div>
 							</div>
 						</c:forEach>
@@ -234,21 +247,44 @@
 	</div>
 	
 	<script>
-	function submitVote(activityCode) {
+	function submitVote(activityCode, groupApplyCode) {
 		const selectedOption = document.querySelector('input[name="vote_' + activityCode + '"]:checked');
 		if (!selectedOption) {
 			alert('투표 옵션을 선택해주세요.');
 			return;
 		}
-		// 투표 제출 로직
-		alert('투표가 제출되었습니다.');
-		// location.href = 'votesubmit.do?activityCode=' + activityCode + '&vote=' + selectedOption.value;
+		
+		// 폼 생성하여 POST로 제출
+		const form = document.createElement('form');
+		form.method = 'POST';
+		form.action = 'votesubmit.do';
+		
+		const activityCodeInput = document.createElement('input');
+		activityCodeInput.type = 'hidden';
+		activityCodeInput.name = 'activityCode';
+		activityCodeInput.value = activityCode;
+		
+		const voteInput = document.createElement('input');
+		voteInput.type = 'hidden';
+		voteInput.name = 'vote';
+		voteInput.value = selectedOption.value;
+		
+		const groupApplyCodeInput = document.createElement('input');
+		groupApplyCodeInput.type = 'hidden';
+		groupApplyCodeInput.name = 'groupApplyCode';
+		groupApplyCodeInput.value = groupApplyCode;
+		
+		form.appendChild(activityCodeInput);
+		form.appendChild(voteInput);
+		form.appendChild(groupApplyCodeInput);
+		
+		document.body.appendChild(form);
+		form.submit();
 	}
 	
-	function deleteVote(activityCode) {
+	function deleteVote(activityCode, groupApplyCode) {
 		if (confirm('정말 삭제하시겠습니까?')) {
-			// 삭제 로직
-			// location.href = 'votedelete.do?activityCode=' + activityCode;
+			location.href = 'votedelete.do?activityCode=' + activityCode + '&groupApplyCode=' + groupApplyCode;
 		}
 	}
 	</script>

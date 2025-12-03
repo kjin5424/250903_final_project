@@ -71,8 +71,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		    LEFT JOIN GROUP_LIST_VIEW GLV ON GLV.GROUPAPPLYCODE = J.GROUP_APPLY_CODE
 		    LEFT JOIN ONOFFLINE_TYPE ONOFF ON ONOFF.ONOFFLINE_TYPE = AC.ONOFFLINE_TYPE
 		)
-		WHERE GROUPAPPLYCODE = #{groupApplyCode}
-		AND RN BETWEEN #{start} AND #{end}
+		WHERE GROUPAPPLYCODE = #{activityDTO.groupApplyCode}
+		AND RN BETWEEN #{activityDTO.start} AND #{activityDTO.end}
 		ORDER BY RN DESC
 	</select>
 	
@@ -85,7 +85,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<insert id="addActivity" parameterType="com.test.mybatis.dto.ActivityDTO" statementType="CALLABLE">
-		{CALL PRC_ACTIVITY_INSERT(#{dto.joinCode, jdbcType=VARCHAR}, TO_DATE(#{dto.activeDate, jdbcType=DATE},'YYYY-MM-DD HH24:MI:SS'), #{dto.onOffLine, jdbcType=INTEGER}, #{dto.time, jdbcType=INTEGER}, #{dto.place, jdbcType=VARCHAR}, #{dto.content, jdbcType=VARCHAR})}
+		{CALL PRC_ACTIVITY_INSERT(#{dto.joinCode, jdbcType=VARCHAR}, TO_DATE(#{dto.activeDate}, 'YYYY-MM-DD HH24:MI:SS'), #{dto.onOffLine, jdbcType=VARCHAR}, #{dto.time, jdbcType=VARCHAR}, #{dto.place, jdbcType=VARCHAR}, #{dto.content, jdbcType=VARCHAR})}
 	</insert>
+	
+	<select id="getMyVoteStatus" resultType="java.lang.Integer">
+		SELECT Y_OR_N_TYPE AS myVoteStatus
+		FROM ACTIVITY_VOTE
+		WHERE ACTIVITY_CODE = #{activityCode}
+		  AND JOIN_CODE = #{joinCode}
+	</select>
+	
+	<update id="submitVote">
+		UPDATE ACTIVITY_VOTE
+		SET Y_OR_N_TYPE = #{yOrNType}
+		WHERE ACTIVITY_CODE = #{activityCode}
+		  AND JOIN_CODE = #{joinCode}
+	</update>
+	
+	<delete id="deleteActivity">
+		DELETE FROM ACTIVITY
+		WHERE ACTIVITY_CODE = #{activityCode}
+	</delete>
 	
 </mapper>
