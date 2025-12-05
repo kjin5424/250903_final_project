@@ -339,8 +339,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE GROUPAPPLYCODE = #{groupApplyCode}
 	</select>
 	
-	<select id="checkMember" resultType="java.lang.Integer">
-		SELECT JOINCODE
+	<select id="checkMember" resultType="java.lang.String">
+		SELECT NVL(JOINCODE, 0) AS joinCode
 		FROM CURRENT_MEMBER_VIEW
 		WHERE GROUPAPPLYCODE = #{groupApplyCode}
 		AND USERCODE = #{userCode}

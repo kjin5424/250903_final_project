@@ -394,49 +394,96 @@ $(function()
     
     // 체크박스 변경 시 진행률 업데이트
     $('.checklist-checkbox').on('change', function() {
-        const $item = $(this).closest('.checklist-item');
-        $item.toggleClass('completed');
+        const $checkbox = $(this);
+        const $item = $checkbox.closest('.checklist-item');
+        const challengeDetailCode = $checkbox.val();
+        const isChecked = $checkbox.is(':checked');
+        const challengeCode = '${challengeDetail.challengeCode}';
+        const groupApplyCode = '${groupApplyCode}';
         
-        // 진행률 계산
-        updateProgress();
+        // 체크 상태 시각적 변경
+        if (isChecked) {
+            $item.addClass('completed');
+        } else {
+            $item.removeClass('completed');
+        }
         
         // DB 저장 (AJAX)
-        const challengeDetailCode = $(this).val();
-        const isChecked = $(this).is(':checked');
-        
         $.ajax({
-            url: '<%=cp%>/challenge/updateProgress.action',
+            url: '<%=cp%>/challenge/updateChecklist.do',
             type: 'POST',
             data: {
+                challengeCode: challengeCode,
                 challengeDetailCode: challengeDetailCode,
-                completed: isChecked
+                isChecked: isChecked,
+                groupApplyCode: groupApplyCode
             },
             success: function(response) {
-                console.log('진행률 업데이트 성공');
+                try {
+                    const result = JSON.parse(response);
+                    if (result.success) {
+                        // 전체 달성율 및 개인 달성율 업데이트
+                        updateAllProgress();
+                        console.log('체크리스트 업데이트 성공');
+                    } else {
+                        alert(result.message || '처리 중 오류가 발생했습니다.');
+                        // 실패 시 체크 상태 되돌리기
+                        $checkbox.prop('checked', !isChecked);
+                        if (isChecked) {
+                            $item.removeClass('completed');
+                        } else {
+                            $item.addClass('completed');
+                        }
+                    }
+                } catch (e) {
+                    console.error('응답 파싱 오류:', e);
+                    alert('처리 중 오류가 발생했습니다.');
+                    $checkbox.prop('checked', !isChecked);
+                    if (isChecked) {
+                        $item.removeClass('completed');
+                    } else {
+                        $item.addClass('completed');
+                    }
+                }
             },
             error: function() {
-                alert('진행률 업데이트에 실패했습니다.');
+                alert('체크리스트 업데이트에 실패했습니다.');
                 // 실패 시 체크 상태 되돌리기
-                $item.toggleClass('completed');
-                this.checked = !isChecked;
+                $checkbox.prop('checked', !isChecked);
+                if (isChecked) {
+                    $item.removeClass('completed');
+                } else {
+                    $item.addClass('completed');
+                }
             }
         });
     });
     
-    // 진행률 업데이트 함수
-    function updateProgress() {
+    // 전체 진행률 업데이트 함수 (서버에서 최신 데이터 받아오기)
+    function updateAllProgress() {
+        const challengeCode = '${challengeDetail.challengeCode}';
+        $.ajax({
+            url: '<%=cp%>/challengedetailpage.do',
+            type: 'GET',
+            data: {
+                challengeCode: challengeCode
+            },
+            success: function(html) {
+                // 페이지 전체를 다시 로드하는 대신 필요한 부분만 업데이트
+                // 또는 부분 업데이트를 위해 별도 API 사용
+                location.reload();
+            }
+        });
+    }
+    
+    // 개인 진행률 업데이트 (클라이언트 측 계산)
+    function updatePersonalProgress() {
         const totalItems = $('.checklist-checkbox').length;
         const checkedItems = $('.checklist-checkbox:checked').length;
         const percentage = totalItems > 0 ? Math.round((checkedItems / totalItems) * 100) : 0;
-        
-        // 진행률 바 업데이트
-        $('#progressBar').css('width', percentage + '%');
-        $('#progressText').text(percentage + '%');
-        $('#progressPercent').text(percentage);
+        // 개인 진행률은 추후 구현 시 사용
+        return percentage;
     }
-    
-    // 페이지 로드 시 초기 진행률 계산
-    updateProgress();
 });
 </script>
 </head>
@@ -450,14 +497,22 @@ $(function()
 
 	<!-- 통계 전처리 -->
 	<c:set var="successCount" value="0" />
+	<c:set var="totalCheckedItems" value="0" />
+	<c:set var="totalPossibleItems" value="0" />
+	<c:set var="members" value="${members != null ? members : []}" />
+	<c:set var="totalItemsPerPerson" value="${challengeDetail.challengeType eq 1 ? 7 : 5}" />
 	<c:forEach var="member" items="${members}">
 		<c:if test="${member.successed == '달성'}">
 			<c:set var="successCount" value="${successCount+1}"/>
 		</c:if>
+		<c:set var="memberChecked" value="${member.successedCount != null ? member.successedCount : 0}" />
+		<c:set var="totalCheckedItems" value="${totalCheckedItems + memberChecked}" />
 	</c:forEach>
 	<c:choose>
-		<c:when test="${members.size() > 0}">
-		    <c:set var="ratio" value="${successCount / members.size() * 100}"/>
+		<c:when test="${members != null && members.size() > 0}">
+			<c:set var="totalPossibleItems" value="${totalItemsPerPerson * members.size()}" />
+			<!-- 전체 진행률: (모든 참가자가 체크한 항목 수 합) / (전체 항목 수 * 참가자 수) * 100 -->
+			<c:set var="ratio" value="${totalPossibleItems > 0 ? (totalCheckedItems / totalPossibleItems * 100) : 0}"/>
 		</c:when>
 		<c:otherwise>
 		    <c:set var="ratio" value="0"/>
@@ -474,23 +529,39 @@ $(function()
 					도전과제 상세
 				</h2>
 				<div class="board-actions">
-					<!-- 작성자인 경우 삭제/신고, 그 외는 참가 버튼 -->
-					<c:choose>
-						<c:when test="${isAuthor}">
-							<button class="btn btn-accent btn-sm">삭제</button>
-							<button class="btn btn-outline btn-sm">신고</button>
-						</c:when>
-						<c:otherwise>
-							<!-- 미참가 상태인 경우만 참가 버튼 표시 -->
-							<c:if test="${!isParticipated}">
-								<button class="btn btn-primary btn-sm">참가하기</button>
-							</c:if>
-						</c:otherwise>
-					</c:choose>
+					<c:if test="${challengeDetail != null}">
+						<c:choose>
+							<c:when test="${isAuthor}">
+								<!-- 작성자는 삭제 버튼만 -->
+								<button class="btn btn-accent btn-sm">삭제</button>
+							</c:when>
+							<c:otherwise>
+								<!-- 작성자가 아닌 경우: 미참가 시 참가하기 버튼 + 신고 버튼 -->
+								<c:if test="${!isParticipated}">
+									<button class="btn btn-primary btn-sm">참가하기</button>
+									<button class="btn-report btn-sm" onclick="location.href='<%=cp%>/reportchallenge.do?challengeCode=${challengeDetail.challengeCode}'" title="신고">
+										🚨
+									</button>
+								</c:if>
+								<!-- 참가한 경우: 신고 버튼만 -->
+								<c:if test="${isParticipated}">
+									<button class="btn-report btn-sm" onclick="location.href='<%=cp%>/reportchallenge.do?challengeCode=${challengeDetail.challengeCode}'" title="신고">
+										🚨
+									</button>
+								</c:if>
+							</c:otherwise>
+						</c:choose>
+					</c:if>
 				</div>
 			</div>
 
 			<!-- 1. 챌린지 헤더 (핵심 정보 + 전체 진행률 + 참가자 목록) -->
+			<c:if test="${challengeDetail == null}">
+				<div style="padding: 20px; text-align: center; color: red;">
+					도전과제 정보를 불러올 수 없습니다.
+				</div>
+			</c:if>
+			<c:if test="${challengeDetail != null}">
 			<div class="challenge-header-section">
 				<h1 style="font-size: 24px; font-weight: 700; margin-bottom: var(--spacing-md);">
 					${challengeDetail.title}
@@ -571,17 +642,23 @@ $(function()
 								</td>
 								<td>${challenger.successedDate == null ? "-" : challenger.successedDate}</td>
 								<td>
+									<c:set var="totalItems" value="${challengeDetail.challengeType eq 1 ? 7 : 5}" />
+									<c:set var="checkedItems" value="${challenger.successedCount != null ? challenger.successedCount : 0}" />
+									<c:set var="personalRatio" value="${checkedItems / totalItems * 100}" />
 									<div class="progress-container">
-										<div class="progress-bar" style="width: ${challenger.successed == '달성' ? '100' : '0'}%"></div>
+										<div class="progress-bar" style="width: ${personalRatio}%"></div>
 									</div>
+									<span style="font-size: 12px; color: #666;">${checkedItems}/${totalItems}</span>
 								</td>
 							</tr>					
 						</c:forEach>
 					</tbody>
 				</table>
 			</div>
+			</c:if>
 
 			<!-- 2. 도전과제 체크리스트 -->
+			<c:if test="${challengeDetail != null}">
 			<div class="checklist-section">
 				<h3 style="font-size: 18px; font-weight: 700; margin-bottom: var(--spacing-lg); display: flex; align-items: center; gap: var(--spacing-sm);">
 					<span>✅</span>
@@ -597,13 +674,31 @@ $(function()
 					</span>
 				</h3>
 				
+				<c:choose>
+					<c:when test="${challengeContentList == null || challengeContentList.size() == 0}">
+						<div style="padding: 20px; text-align: center; color: #666;">
+							체크리스트 항목이 없습니다.
+						</div>
+					</c:when>
+					<c:otherwise>
 				<div class="checklist-grid">
 					<c:choose>
 						<c:when test="${challengeDetail.challengeType eq 1}">
 							<c:forEach var="challenge" items="${challengeContentList}">
-								<div class="checklist-item">
+								<c:set var="isChecked" value="false" />
+								<c:if test="${checkedDetailCodes != null}">
+									<c:forEach var="checkedCode" items="${checkedDetailCodes}">
+										<c:if test="${checkedCode eq challenge.challengeDetailCode}">
+											<c:set var="isChecked" value="true" />
+										</c:if>
+									</c:forEach>
+								</c:if>
+								<div class="checklist-item ${isChecked ? 'completed' : ''}" 
+									<c:if test="${!canEditChecklist || !isParticipated}">style="opacity: 0.6; cursor: not-allowed;"</c:if>>
 									<input type="checkbox" class="checklist-checkbox"
-										value="${challenge.challengeDetailCode}">
+										value="${challenge.challengeDetailCode}"
+										${isChecked ? 'checked' : ''}
+										<c:if test="${!canEditChecklist || !isParticipated}">disabled</c:if>>
 									<span class="checklist-step">Day ${challenge.round}</span>
 									<span class="checklist-content">${challenge.contentDetail}</span>
 								</div>
@@ -611,9 +706,20 @@ $(function()
 						</c:when>
 						<c:otherwise>
 							<c:forEach var="challenge" items="${challengeContentList}">
-								<div class="checklist-item">
+								<c:set var="isChecked" value="false" />
+								<c:if test="${checkedDetailCodes != null}">
+									<c:forEach var="checkedCode" items="${checkedDetailCodes}">
+										<c:if test="${checkedCode eq challenge.challengeDetailCode}">
+											<c:set var="isChecked" value="true" />
+										</c:if>
+									</c:forEach>
+								</c:if>
+								<div class="checklist-item ${isChecked ? 'completed' : ''}"
+									<c:if test="${!canEditChecklist || !isParticipated}">style="opacity: 0.6; cursor: not-allowed;"</c:if>>
 									<input type="checkbox" class="checklist-checkbox"
-										value="${challenge.challengeDetailCode}">
+										value="${challenge.challengeDetailCode}"
+										${isChecked ? 'checked' : ''}
+										<c:if test="${!canEditChecklist || !isParticipated}">disabled</c:if>>
 									<span class="checklist-step">Week ${challenge.round}</span>
 									<span class="checklist-content">${challenge.contentDetail}</span>
 								</div>
@@ -621,9 +727,28 @@ $(function()
 						</c:otherwise>
 					</c:choose>
 				</div>
+				<c:if test="${!canEditChecklist && isParticipated}">
+					<div style="margin-top: 10px; padding: 10px; background: #fff3cd; border-radius: 6px; color: #856404; font-size: 13px;">
+						<c:choose>
+							<c:when test="${checklistStatus == 'not_started'}">
+								⚠️ 도전과제가 아직 시작되지 않았습니다. (시작일: ${challengeDetail.startDate})
+							</c:when>
+							<c:when test="${checklistStatus == 'expired'}">
+								⚠️ 수정 기간이 지났습니다. (도전과제 종료 후 7일 이내에만 수정 가능)
+							</c:when>
+							<c:otherwise>
+								⚠️ 체크리스트를 수정할 수 없습니다.
+							</c:otherwise>
+						</c:choose>
+					</div>
+				</c:if>
+					</c:otherwise>
+				</c:choose>
 			</div>
+			</c:if>
 
 			<!-- 3. 인증 소감 -->
+			<c:if test="${challengeDetail != null}">
 			<div class="comments-section">
 				<h3 class="comments-title">
 					<span>💬</span>
@@ -679,6 +804,7 @@ $(function()
 					</div>
 				</div>
 			</div>
+			</c:if>
 
 		</div>
 	</div>
