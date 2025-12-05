@@ -100,12 +100,16 @@
                     <button class="btn-header" onclick="location.href='memberlist.do?groupApplyCode=${groupInfo.groupApplyCode}'">
                         	👥 모임원
                     </button>
+                    <c:if test="${isLoggedIn}">
                     <button class="btn-header" onclick="location.href='messagelist.do'">
                       		  ✉️ 쪽지
                     </button>
+                    </c:if>
+                    <c:if test="${canManage}">
                     <button class="btn-header" onclick="location.href='managelist.do?groupApplyCode=${groupInfo.groupApplyCode}'">
                        		 ⚙️ 관리
                     </button>
+                    </c:if>
                     <button class="btn-report" onclick="location.href='reportgroup.do?groupApplyCode=${groupInfo.groupApplyCode}'" title="신고">
 					    	🚨
 					</button>
@@ -169,7 +173,7 @@
                     <c:choose>
                         <c:when test="${not empty post}">
                             <c:forEach var="postDTO" items="${post}">
-                                <div class="notice-item" onclick="location.href='postdetail.do?postCode=${postDTO.postCode}'">
+                                <div class="notice-item" onclick="<c:choose><c:when test='${isLoggedIn}'>location.href='postdetail.do?postCode=${postDTO.postCode}'</c:when><c:otherwise>alert('로그인이 필요합니다.'); location.href='loginpage.do';</c:otherwise></c:choose>">
                                     <div class="notice-title">${postDTO.subject}</div>
                                     <div class="notice-meta">${postDTO.nickName} · ${postDTO.createdDate}</div>
                                 </div>
@@ -281,6 +285,7 @@
 				</c:if>
 
                 <!-- 알림 -->
+                <c:if test="${canSeeNotification}">
                 <div class="section-wrapper">
                     <div class="section-header">
                         <h2 class="section-title">🔔 알림</h2>
@@ -307,6 +312,7 @@
                         </div>
                     </div>
                 </div>
+                </c:if>
 
                 <!-- 내 한줄소개 -->
 				<c:if test="${not empty checkMember }">

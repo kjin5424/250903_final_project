@@ -43,4 +43,19 @@ public interface IChallengeDAO
 	
 	// 도전과제 달성 날짜 가져오기
 	public String getSuccessDate(@Param("joinCode")String joinCode, @Param("challengeCode")String challengeCode);
+	
+	// challengeCode로 groupApplyCode 조회
+	public String getGroupApplyCodeByChallengeCode(String challengeCode);
+	
+	// challengeMemberCode 조회
+	public String getChallengeMemberCode(@Param("challengeCode")String challengeCode, @Param("joinCode")String joinCode);
+	
+	// 체크된 challengeDetailCode 목록 조회
+	public ArrayList<String> getCheckedDetailCodes(String challengeMemberCode);
+	
+	// CHALLENGE_CHECK INSERT
+	public void insertChallengeCheck(@Param("challengeMemberCode")String challengeMemberCode, @Param("challengeDetailCode")String challengeDetailCode);
+	
+	// CHALLENGE_CHECK DELETE
+	public void deleteChallengeCheck(@Param("challengeMemberCode")String challengeMemberCode, @Param("challengeDetailCode")String challengeDetailCode);
 }

@@ -160,20 +160,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="getChallengerInfo" resultType="com.test.mybatis.dto.ChallengerDTO">
 		SELECT 
 		    CM.JOIN_CODE AS joinCode
-		    , COUNT(CC.CHALLENGE_CHECK_CODE) AS successedCount
+		    , NVL(COUNT(DISTINCT CC.CHALLENGE_DETAIL_CODE), 0) AS successedCount
 		    , CASE 
-		        WHEN C.CHALLENGE_TYPE = '1' AND COUNT(CC.CHALLENGE_CHECK_CODE) = 7 THEN '달성'
-		        WHEN C.CHALLENGE_TYPE = '1' AND COUNT(CC.CHALLENGE_CHECK_CODE) &lt;&gt; 7 THEN '미달성'
-		        WHEN C.CHALLENGE_TYPE = '2' AND COUNT(CC.CHALLENGE_CHECK_CODE) = 5 THEN '달성'
-		        WHEN C.CHALLENGE_TYPE = '2' AND COUNT(CC.CHALLENGE_CHECK_CODE) &lt;&gt; 5 THEN '미달성'
+		        WHEN C.CHALLENGE_TYPE = '1' AND NVL(COUNT(DISTINCT CC.CHALLENGE_DETAIL_CODE), 0) = 7 THEN '달성'
+		        WHEN C.CHALLENGE_TYPE = '1' AND NVL(COUNT(DISTINCT CC.CHALLENGE_DETAIL_CODE), 0) &lt;&gt; 7 THEN '미달성'
+		        WHEN C.CHALLENGE_TYPE = '2' AND NVL(COUNT(DISTINCT CC.CHALLENGE_DETAIL_CODE), 0) = 5 THEN '달성'
+		        WHEN C.CHALLENGE_TYPE = '2' AND NVL(COUNT(DISTINCT CC.CHALLENGE_DETAIL_CODE), 0) &lt;&gt; 5 THEN '미달성'
 		        ELSE '오류 발생'
 		      END AS successed
 		FROM
 			CHALLENGE_MEMBER CM
 			JOIN CHALLENGE C ON CM.CHALLENGE_CODE = C.CHALLENGE_CODE
 			LEFT JOIN CHALLENGE_CHECK CC ON CM.CHALLENGE_MEMBER_CODE = CC.CHALLENGE_MEMBER_CODE
-			LEFT JOIN CHALLENGE_DETAIL CD ON C.CHALLENGE_CODE = CD.CHALLENGE_CODE
-					AND CC.CHALLENGE_DETAIL_CODE = CD.CHALLENGE_DETAIL_CODE
 		WHERE
 			C.CHALLENGE_CODE = #{challengeCode}
 		GROUP
@@ -182,7 +180,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="getSuccessDate" resultType="java.lang.String">
 		SELECT
-			TO_CHAR(MAX(CC.CREATED_DATE), 'YYYY-MM-DD') AS 
+			TO_CHAR(MAX(CC.CREATED_DATE), 'YYYY-MM-DD') AS successDate
 		FROM
 			CHALLENGE_MEMBER CM
 			LEFT JOIN CHALLENGE_CHECK CC ON CM.CHALLENGE_MEMBER_CODE=CC.CHALLENGE_MEMBER_CODE
@@ -190,5 +188,56 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			CM.JOIN_CODE=#{joinCode}
 			AND CM.CHALLENGE_CODE=#{challengeCode}
 	</select>
+	
+	<select id="getGroupApplyCodeByChallengeCode" resultType="java.lang.String">
+		SELECT
+			GA.GROUP_APPLY_CODE AS groupApplyCode
+		FROM
+			CHALLENGE C
+			JOIN JOIN_TABLE JT ON JT.JOIN_CODE = C.JOIN_CODE
+			JOIN GROUP_APPLY GA ON GA.GROUP_APPLY_CODE = JT.GROUP_APPLY_CODE
+		WHERE
+			C.CHALLENGE_CODE = #{challengeCode}
+	</select>
+	
+	<select id="getChallengeMemberCode" resultType="java.lang.String">
+		SELECT
+			CHALLENGE_MEMBER_CODE AS challengeMemberCode
+		FROM
+			CHALLENGE_MEMBER
+		WHERE
+			CHALLENGE_CODE = #{challengeCode}
+			AND JOIN_CODE = #{joinCode}
+	</select>
+	
+	<select id="getCheckedDetailCodes" resultType="java.lang.String">
+		SELECT
+			CHALLENGE_DETAIL_CODE AS challengeDetailCode
+		FROM
+			CHALLENGE_CHECK
+		WHERE
+			CHALLENGE_MEMBER_CODE = #{challengeMemberCode}
+	</select>
+	
+	<insert id="insertChallengeCheck">
+		INSERT INTO CHALLENGE_CHECK (
+			CHALLENGE_CHECK_CODE,
+			CHALLENGE_MEMBER_CODE,
+			CHALLENGE_DETAIL_CODE,
+			CREATED_DATE
+		) VALUES (
+			CHALLENGE_CHECK_SEQ.NEXTVAL,
+			#{challengeMemberCode},
+			#{challengeDetailCode},
+			SYSDATE
+		)
+	</insert>
+	
+	<delete id="deleteChallengeCheck">
+		DELETE FROM CHALLENGE_CHECK
+		WHERE
+			CHALLENGE_MEMBER_CODE = #{challengeMemberCode}
+			AND CHALLENGE_DETAIL_CODE = #{challengeDetailCode}
+	</delete>
 
 </mapper>

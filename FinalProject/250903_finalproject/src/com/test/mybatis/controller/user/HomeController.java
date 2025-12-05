@@ -1,15 +1,9 @@
 package com.test.mybatis.controller.user;
 
-import java.io.File;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,19 +13,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.oreilly.servlet.MultipartRequest;
-import com.test.mybatis.dao.IActivityDAO;
 import com.test.mybatis.dao.IChallengeDAO;
 import com.test.mybatis.dao.IGroupDAO;
 import com.test.mybatis.dao.IGroupJoinDAO;
+import com.test.mybatis.dao.IGroupMemberDAO;
 import com.test.mybatis.dao.IHistoryDAO;
-import com.test.mybatis.dto.ActivityDTO;
 import com.test.mybatis.dto.GroupDTO;
 import com.test.mybatis.dto.GroupJoinDTO;
 import com.test.mybatis.dto.UserDTO;
-import com.test.util.Paging;
 
 
 @Controller
@@ -49,18 +39,53 @@ public class HomeController
 		IGroupJoinDAO joinDao = sqlSession.getMapper(IGroupJoinDAO.class);
 		
 		UserDTO user = (UserDTO)session.getAttribute("user");
-		String userCode = "UC00000010";
-		if(user!=null)
+		String userCode = null;
+		String position = null;
+		boolean isLoggedIn = (user != null);
+		boolean isMember = false;
+		boolean canManage = false;
+		boolean canSeeNotification = false;
+		
+		if(user != null)
+		{
 			userCode = user.getUserCode();
+			IGroupMemberDAO memberDao = sqlSession.getMapper(IGroupMemberDAO.class);
+			
+			// 모임원 여부 확인
+			String checkMember = dao.checkMember(groupApplyCode,userCode);
+			isMember = (checkMember != null && !checkMember.isEmpty());
+			
+			// 권한 확인 (모임원인 경우)
+			if (isMember)
+			{
+				position = memberDao.checkMemberGroup(userCode, groupApplyCode);
+				// 도우미, 부모임장, 모임장인 경우 관리 권한 있음
+				if (position != null && (position.equals("도우미") || position.equals("부모임장") || position.equals("모임장")))
+					canManage = true;
+				// 모임원이면 알림 섹션 볼 수 있음
+				canSeeNotification = true;
+			}
+			
+			model.addAttribute("checkMember", checkMember);
+			model.addAttribute("selfIntro", joinDao.getSelfIntro(groupApplyCode, userCode));
+		}
+		else
+		{
+			model.addAttribute("checkMember", null);
+			model.addAttribute("selfIntro", null);
+		}
 		
 		session.setAttribute("groupApplyCode", groupApplyCode);
 		
-		model.addAttribute("groupInfo",dao.groupHomeGroupInfo(userCode, groupApplyCode));
+		model.addAttribute("groupInfo", dao.groupHomeGroupInfo(userCode != null ? userCode : "UC00000010", groupApplyCode));
 		model.addAttribute("activity", sqlSession.selectList("com.test.mybatis.dao.IActivityDAO.activityListAtHome", groupApplyCode));
 		model.addAttribute("post", sqlSession.selectList("com.test.mybatis.dao.IGroupPostDAO.postListAtHome", groupApplyCode));
-		model.addAttribute("checkMember", dao.checkMember(groupApplyCode, userCode));
-		model.addAttribute("challenge", cDao.challengeAtHome(groupApplyCode, userCode));
-		model.addAttribute("selfIntro", joinDao.getSelfIntro(groupApplyCode, userCode));
+		model.addAttribute("challenge", userCode != null ? cDao.challengeAtHome(groupApplyCode, userCode) : null);
+		model.addAttribute("isLoggedIn", isLoggedIn);
+		model.addAttribute("isMember", isMember);
+		model.addAttribute("canManage", canManage);
+		model.addAttribute("canSeeNotification", canSeeNotification);
+		model.addAttribute("position", position);
 		
 		return "/WEB-INF/view/group_room/Home.jsp";
 	}
@@ -69,7 +94,7 @@ public class HomeController
 	@RequestMapping(value="/history.do", method=RequestMethod.GET)
 	public String histroy(Model model, @RequestParam("groupApplyCode") String groupApplyCode)
 	{
-		IGroupDAO groupDao = sqlSession.getMapper(IGroupDAO.class);
+		//IGroupDAO groupDao = sqlSession.getMapper(IGroupDAO.class);
 		IHistoryDAO historyDao = sqlSession.getMapper(IHistoryDAO.class);
 		
 		String groupLevel = "1";
@@ -263,60 +288,60 @@ public class HomeController
 	{
 		try
 		{
-		IGroupDAO dao = sqlSession.getMapper(IGroupDAO.class);
-		UserDTO user = (UserDTO)session.getAttribute("user");
-		if(user==null)
-			return "redirect:loginpage.do";
-		
-		//MultipartRequest multi = null;
-		//multi = new MultipartRequest(�슂泥�媛앹껜, ���옣寃쎈줈, 理쒕��뾽濡쒕뱶�겕湲�, �씤肄붾뵫諛⑹떇, �뙆�씪紐낆젙梨�);
-		//multi = new MultipartRequest(request, savePath, maxFileSize, encType, new DefaultFileRenamePolicy());
-				
-		
-		GroupDTO dto = new GroupDTO();
-	    dto.setProposerCode(user.getUserCode());
-	    System.out.println("userCode : " + user.getUserCode());
-	    
-	    dto.setOnOffType(Integer.parseInt((request.getParameter("onOffType"))));
-	    System.out.println("onOff : " + request.getParameter("onOffType"));
-	    
-	    dto.setFrequencyType(Integer.parseInt(request.getParameter("frequencyType")));
-	    System.out.println("frequency : " + request.getParameter("frequencyType"));
-	    
-	    dto.setDifficultyType(Integer.parseInt(request.getParameter("difficultyType")));
-	    System.out.println("difficulty : " + request.getParameter("difficultyType"));
-	    
-	    dto.setGroupTitle(request.getParameter("groupTitle"));
-	    System.out.println("groupTitle : " + request.getParameter("groupTitle"));
-	    
-	    dto.setGroupContent(request.getParameter("groupContent"));
-	    System.out.println("groupContent : " + request.getParameter("groupContent"));
-	    
-	    dto.setTopicType(Integer.parseInt(request.getParameter("topicType")));
-	    System.out.println("topic : " + request.getParameter("topicType"));
-	    
-	    dto.setYouthFriendlyType(Integer.parseInt(request.getParameter("youthFriendlyType")));
-	    System.out.println("youth : " + request.getParameter("youthFriendlyType"));
-	    
-	    dto.setGenderType(Integer.parseInt(request.getParameter("genderType")));
-	    System.out.println("gender : " + request.getParameter("genderType"));
-	    
-	    dto.setQuestion(request.getParameter("question"));
-	    System.out.println("question : " + request.getParameter("question"));
-	    
-	    dto.setRule(request.getParameter("rule"));
-	    System.out.println("rule : " + request.getParameter("rule"));
-	    
-	    dto.setKickOut(Integer.parseInt(request.getParameter("kickOut")));
-	    System.out.println("kickOut : " + request.getParameter("kickOut"));
-	    
-	    dto.setPassword(request.getParameter("password"));
-	    System.out.println("pw : " + request.getParameter("password"));
-	    
-	    dto.setRegion(request.getParameter("region") + request.getParameter("postcode"));
-	    System.out.println("region : " + request.getParameter("region") + request.getParameter("postcode"));
-	    sqlSession.insert("com.test.mybatis.dao.IGroupDAO.groupApply", dto);
-		
+			//IGroupDAO dao = sqlSession.getMapper(IGroupDAO.class);
+			UserDTO user = (UserDTO)session.getAttribute("user");
+			if(user==null)
+				return "redirect:loginpage.do";
+			
+			//MultipartRequest multi = null;
+			//multi = new MultipartRequest(�슂泥�媛앹껜, ���옣寃쎈줈, 理쒕��뾽濡쒕뱶�겕湲�, �씤肄붾뵫諛⑹떇, �뙆�씪紐낆젙梨�);
+			//multi = new MultipartRequest(request, savePath, maxFileSize, encType, new DefaultFileRenamePolicy());
+					
+			
+			GroupDTO dto = new GroupDTO();
+		    dto.setProposerCode(user.getUserCode());
+		    System.out.println("userCode : " + user.getUserCode());
+		    
+		    dto.setOnOffType(Integer.parseInt((request.getParameter("onOffType"))));
+		    System.out.println("onOff : " + request.getParameter("onOffType"));
+		    
+		    dto.setFrequencyType(Integer.parseInt(request.getParameter("frequencyType")));
+		    System.out.println("frequency : " + request.getParameter("frequencyType"));
+		    
+		    dto.setDifficultyType(Integer.parseInt(request.getParameter("difficultyType")));
+		    System.out.println("difficulty : " + request.getParameter("difficultyType"));
+		    
+		    dto.setGroupTitle(request.getParameter("groupTitle"));
+		    System.out.println("groupTitle : " + request.getParameter("groupTitle"));
+		    
+		    dto.setGroupContent(request.getParameter("groupContent"));
+		    System.out.println("groupContent : " + request.getParameter("groupContent"));
+		    
+		    dto.setTopicType(Integer.parseInt(request.getParameter("topicType")));
+		    System.out.println("topic : " + request.getParameter("topicType"));
+		    
+		    dto.setYouthFriendlyType(Integer.parseInt(request.getParameter("youthFriendlyType")));
+		    System.out.println("youth : " + request.getParameter("youthFriendlyType"));
+		    
+		    dto.setGenderType(Integer.parseInt(request.getParameter("genderType")));
+		    System.out.println("gender : " + request.getParameter("genderType"));
+		    
+		    dto.setQuestion(request.getParameter("question"));
+		    System.out.println("question : " + request.getParameter("question"));
+		    
+		    dto.setRule(request.getParameter("rule"));
+		    System.out.println("rule : " + request.getParameter("rule"));
+		    
+		    dto.setKickOut(Integer.parseInt(request.getParameter("kickOut")));
+		    System.out.println("kickOut : " + request.getParameter("kickOut"));
+		    
+		    dto.setPassword(request.getParameter("password"));
+		    System.out.println("pw : " + request.getParameter("password"));
+		    
+		    dto.setRegion(request.getParameter("region") + request.getParameter("postcode"));
+		    System.out.println("region : " + request.getParameter("region") + request.getParameter("postcode"));
+		    sqlSession.insert("com.test.mybatis.dao.IGroupDAO.groupApply", dto);
+			
 		} catch (Exception e)
 		{
 			System.out.println(e.toString());
@@ -407,11 +432,12 @@ public class HomeController
 		
 		IGroupJoinDAO joinDAO = sqlSession.getMapper(IGroupJoinDAO.class);
 		
+		/*
 		UserDTO user = (UserDTO)session.getAttribute("user");
 		String userCode = "UC00000010";
 		if(user!=null)
 			userCode = user.getUserCode();
-		
+		*/
 		joinDAO.updateIntroduce(joinCode, introduce);
 		
 		return url;
