@@ -46,9 +46,6 @@ public class HomeController
 		boolean canManage = false;
 		boolean canSeeNotification = false;
 
-		int authority = (int)request.getAttribute("authority");
-		System.out.println("authority : " + authority);
-		
 		if(user != null)
 		{
 			userCode = user.getUserCode();
