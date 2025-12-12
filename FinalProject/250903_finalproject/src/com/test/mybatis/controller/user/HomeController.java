@@ -32,7 +32,7 @@ public class HomeController
 	private SqlSession sqlSession;
 	
 	@RequestMapping(value="/home.do", method=RequestMethod.GET)
-	public String home(Model model, HttpSession session, String groupApplyCode)
+	public String home(Model model, HttpSession session, String groupApplyCode, HttpServletRequest request)
 	{
 		IGroupDAO dao = sqlSession.getMapper(IGroupDAO.class);
 		IChallengeDAO cDao = sqlSession.getMapper(IChallengeDAO.class);
@@ -45,6 +45,9 @@ public class HomeController
 		boolean isMember = false;
 		boolean canManage = false;
 		boolean canSeeNotification = false;
+
+		int authority = (int)request.getAttribute("authority");
+		System.out.println("authority : " + authority);
 		
 		if(user != null)
 		{
@@ -444,7 +447,6 @@ public class HomeController
 	}	
 	
 }
-
 
 
 
