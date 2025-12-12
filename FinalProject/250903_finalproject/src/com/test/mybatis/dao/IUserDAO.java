@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.test.mybatis.dto.GroupDTO;
 import com.test.mybatis.dto.GroupJoinDTO;
 import com.test.mybatis.dto.LoginLogDTO;
 import com.test.mybatis.dto.UserDTO;
@@ -28,7 +27,7 @@ public interface IUserDAO
 	
 	// 모임 컨텐츠 생산 폼 요청 시 해당 유저가 해당 모임의 모임원인지 검증하는 메소드
 	public String checkMember(@Param("userCode") String userCode, @Param("groupApplyCode") String groupApplyCode);
-	
+
 	// 마이페이지 열람시 필요한 항목(닉네임, 이메일, 사진, 현재 운영/가입중인 모임 등)
 	public UserDTO inMyPage(@Param("userCode")String userCode);
 	
@@ -37,6 +36,9 @@ public interface IUserDAO
 	
 	// 닉네임으로 회원코드 얻어내기
 	public String nickNameToUserCode(@Param("nickName") String nickName);
+	
+	// 조인코드로 회원코드 얻어내기
+	public String joinCodeToUserCode(@Param("joinCode") String joinCode);
 	
 	// 개인 회원 정보 업데이트하기 → 비밀번호 포함
 	public void updateUserInfo(@Param("userDTO") UserDTO userDTO);
@@ -58,4 +60,7 @@ public interface IUserDAO
 	
 	// 매니저(관리자)가 보는 특정 유저의 로그인 이력 메소드
 	public ArrayList<LoginLogDTO > loginLogListForManager(@Param("userCode")String userCode);
+	
+	// 조인코드 또는 유저코드로 포지션 확인하는 메소드
+	public int checkPosition(@Param("userCode") String userCode, @Param("groupApplyCode") String groupApplyCode);
 }

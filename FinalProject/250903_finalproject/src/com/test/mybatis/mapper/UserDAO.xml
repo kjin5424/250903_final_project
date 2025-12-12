@@ -229,6 +229,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 						 WHERE NICKNAME = #{nickName} )
 	</select>
 	
+	<select id="joinCodeToUserCode" parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT USERCODE AS userCode
+		FROM JOIN_TABLE
+		WHERE JOIN_CODE = #{joinCode}
+	</select>
+	
 	<update id="updateUserInfo" parameterType="com.test.mybatis.dto.UserDTO">
 		UPDATE USER_INFO
 		SET NICKNAME = #{userDTO.nickname}, PASSWORD = CRYPTPACK.ENCRYPT(#{userDTO.password}, USER_ID), ADDRESS = #{userDTO.address}
@@ -312,4 +318,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE USER_CODE = #{userCode}
 	</select>
 
+	<select id="checkPosition" resultType="java.lang.Integer" parameterType="java.lang.String">
+	SELECT CASE M.GRANT_TYPE WHEN 2 THEN 4
+	                         WHEN 1 THEN M.POSITION_TYPE
+	                         ELSE 4
+		       END AS position
+	FROM JOIN_TABLE J LEFT JOIN MEMBER_POSITION M
+	ON J.JOIN_CODE = M.JOIN_CODE
+	WHERE USER_CODE=#{userCode}
+	  AND GROUP_APPLY_CODE=#{groupApplyCode}
+	  AND (M.CREATED_DATE = (SELECT MAX(CREATED_DATE)
+	                         FROM MEMBER_POSITION
+	                         WHERE JOIN_CODE = J.JOIN_CODE)
+	    OR M.CREATED_DATE IS NULL)
+	</select>
 </mapper>
