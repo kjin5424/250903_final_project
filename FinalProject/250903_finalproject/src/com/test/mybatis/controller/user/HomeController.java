@@ -45,7 +45,7 @@ public class HomeController
 		boolean isMember = false;
 		boolean canManage = false;
 		boolean canSeeNotification = false;
-
+		
 		if(user != null)
 		{
 			userCode = user.getUserCode();
