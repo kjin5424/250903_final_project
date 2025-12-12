@@ -19,11 +19,6 @@
     <title>공모자들 - 모임 개설 안내</title>
 
     <style>
-
-		/* TopMenuBar 최대 너비 override */
-        .navbar-inner {
-            max-width: 1400px;
-        }
         
         * {
 
