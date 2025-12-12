@@ -32,7 +32,7 @@ public class HomeController
 	private SqlSession sqlSession;
 	
 	@RequestMapping(value="/home.do", method=RequestMethod.GET)
-	public String home(Model model, HttpSession session, String groupApplyCode, HttpServletRequest request)
+	public String home(Model model, HttpSession session, String groupApplyCode)
 	{
 		IGroupDAO dao = sqlSession.getMapper(IGroupDAO.class);
 		IChallengeDAO cDao = sqlSession.getMapper(IChallengeDAO.class);
