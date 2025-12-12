@@ -20,6 +20,11 @@
 
     <style>
 
+		/* TopMenuBar 최대 너비 override */
+        .navbar-inner {
+            max-width: 1400px;
+        }
+        
         * {
 
             margin: 0;
@@ -609,7 +614,6 @@
         }
 
     </style>
-
 </head>
 
 <body>
